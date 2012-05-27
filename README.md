@@ -6,7 +6,28 @@ based games, as well as overhead RPG type games.  It is heavily
 based off 8 bit scrolling engines of the mid 80's, only much more
 advanced.
 
-Log:
+Notes
+=====
+To build the game and tools you'll need the enviornment variable BEEMOUT set
+to something useful such as "D:\BuildOut\".
+
+Log
+===
+May 26, 2012
+
+I'm not really resurrecting this project or anything. I just thought I'd make
+the project open source. There isn't really much reason to develop this project
+further as better technologies exist.
+
+Basically this project was my introduction to Windows game development, as all
+my previous experience was in DOS. Looking back on this code, it is very crude,
+not well organized, and it runs really bad on modern computers due to the way
+it used DirectDraw.
+
+I may dabble around with this project a little more, but any major development
+is unlinkely. I'm just happy that I got the game and tools building again.
+
+== The log is now in chronological order ==
 
 April 07, 2002
 
