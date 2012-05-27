@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{a7dbdb79-13a8-4ed3-972d-3f3aaa4e9d5e}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{beaaedc1-2a25-4215-88ac-458319de9106}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="ImageLib">
+      <UniqueIdentifier>{e71f8187-07f0-46c6-9db9-c97407177e43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MapBoard">
+      <UniqueIdentifier>{af6584b2-04ad-401d-a5d5-1f03e67f5d6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GFXG7">
+      <UniqueIdentifier>{f943840e-24e7-47fb-b619-19b4e5cf2806}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Background.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="error.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GenFuncs.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Joes2.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjMan.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ScrollGIN.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ScrollGINFunc.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="TestAI.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="TileManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="view.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MapBoard\EditMapboard.cpp">
+      <Filter>MapBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MapBoard\Mapboard.cpp">
+      <Filter>MapBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ImageLib\Bitmap.c">
+      <Filter>ImageLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ImageLib\EditImageLibrary.cpp">
+      <Filter>ImageLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ImageLib\ImageArchive.cpp">
+      <Filter>ImageLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ImageLib\ImageLibrary.cpp">
+      <Filter>ImageLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GFXG7\DDFunc.c">
+      <Filter>GFXG7</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GFXG7\imageDD.cpp">
+      <Filter>GFXG7</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc">
+      <Filter>Source</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Background.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="view.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="defines.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="error.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="GenFuncs.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Joes2.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjMan.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="ScrollGIN.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="ScrollGINFunc.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteManager.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="TestAI.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="TileManager.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MapBoard\Defines.h">
+      <Filter>MapBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MapBoard\Mapboard.h">
+      <Filter>MapBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ImageLib\bitmapex.h">
+      <Filter>ImageLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ImageLib\Defines.h">
+      <Filter>ImageLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ImageLib\ImageLib.h">
+      <Filter>ImageLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GFXG7\Defines.h">
+      <Filter>GFXG7</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GFXG7\GFXG7.h">
+      <Filter>GFXG7</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="icon1.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Readme.txt" />
+  </ItemGroup>
+</Project>

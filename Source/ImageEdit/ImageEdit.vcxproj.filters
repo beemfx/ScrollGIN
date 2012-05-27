@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{0c6eff8d-dcb4-4826-8b96-6dc071fe7e21}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="ImageLib">
+      <UniqueIdentifier>{5e97818f-07ec-440e-9d4b-19b8be2c8451}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{f2e9d8a7-60b9-4047-af67-aeb9e5ad3052}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DiskDlg.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ImageLib\EditImageLibrary.cpp">
+      <Filter>ImageLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ImageLib\ImageArchive.cpp">
+      <Filter>ImageLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ImageLib\ImageLibrary.cpp">
+      <Filter>ImageLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ImageLib\Bitmap.c">
+      <Filter>ImageLib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc">
+      <Filter>Source</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="icon1.ico">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DiskDlg.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ImageLib\Defines.h">
+      <Filter>ImageLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ImageLib\ImageLib.h">
+      <Filter>ImageLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ImageLib\bitmapex.h">
+      <Filter>ImageLib</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
