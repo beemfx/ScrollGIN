@@ -1,0 +1,243 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_IMAGEEDIT DIALOG DISCARDABLE  20, 20, 292, 250
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ImageEdit"
+MENU IDR_MAINMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Close",IDC_CLOSE,235,230,50,14
+    LTEXT           "Entry Number:",IDC_STATIC,15,15,46,8
+    LTEXT           "Bitmap Name:",IDC_STATIC,115,15,45,8
+    LTEXT           "Source X:",IDC_STATIC,125,30,32,8
+    LTEXT           "Source Y:",IDC_STATIC,215,30,32,8
+    LTEXT           "Source Width:",IDC_STATIC,110,50,46,8
+    LTEXT           "Source Height:",IDC_STATIC,195,50,48,8
+    LTEXT           "Height:",IDC_STATIC,220,70,24,8
+    LTEXT           "Width:",IDC_STATIC,135,70,22,8
+    EDITTEXT        IDC_X,160,30,25,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_Y,250,30,25,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_SRCWIDTH,160,50,25,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_SRCHEIGHT,250,50,25,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_WIDTH,160,70,25,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_HEIGHT,250,70,25,14,ES_AUTOHSCROLL
+    GROUPBOX        "Entry Data:",IDC_STATIC,5,5,280,95
+    LTEXT           "Bitmap #:",IDC_STATIC,25,30,31,8
+    LTEXT           "Frames:",IDC_STATIC,30,50,26,8
+    LTEXT           "Image Label:",IDC_STATIC,10,70,42,8
+    EDITTEXT        IDC_BMPNUMBER,65,30,25,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_FRAMES,65,50,25,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_LABEL,55,70,70,14,ES_AUTOHSCROLL
+    LTEXT           "0",IDC_ENTRYNUMBER,65,15,45,8
+    LTEXT           "bitmapname.bmp",IDC_BITMAPNAME,165,15,115,8
+    DEFPUSHBUTTON   "Apply",IDC_APPLY,235,105,50,14
+    PUSHBUTTON      "Add Entry",IDC_ADDENTRY,185,105,50,14
+    SCROLLBAR       IDC_IMAGESCROLL,5,105,175,15
+    PUSHBUTTON      "Clear Entry",IDC_BUTTON1,5,230,50,14,WS_DISABLED
+    LTEXT           "",IDC_ERRORSTRING,60,230,170,8
+END
+
+IDD_BITMAPDIALOG DIALOG DISCARDABLE  0, 0, 262, 161
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ImageEdit Bitmaps..."
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "A&dd",ID_ADD,205,140,50,14
+    PUSHBUTTON      "&Finished",ID_FINISHED,150,140,50,14
+    LTEXT           "Add Bitmap:",IDC_STATIC,10,15,39,8
+    COMBOBOX        IDC_BITMAPFILES,55,15,160,60,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Current Bitmaps:",IDC_STATIC,5,35,245,100
+    LISTBOX         IDC_CURRENTBITMAPS,10,45,235,85,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "R&emove",IDC_BUTTON1,5,140,50,14,WS_DISABLED
+END
+
+IDD_AUTOGENERATE DIALOG DISCARDABLE  0, 0, 282, 130
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ImageEdit Auto Generate..."
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Generate",ID_GENERATE,225,110,50,14
+    PUSHBUTTON      "Cancel",ID_CANCEL,170,110,50,14
+    LTEXT           "Bitmap:",IDC_STATIC,10,20,24,8
+    LTEXT           "Width:",IDC_STATIC,20,45,22,8
+    LTEXT           "Height:",IDC_STATIC,95,45,24,8
+    LTEXT           "X Spacing:",IDC_STATIC,10,70,36,8
+    LTEXT           "Y Spacing:",IDC_STATIC,85,70,36,8
+    CONTROL         "Clear Current Data",IDC_CLEARDATA,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,125,95,74,10
+    EDITTEXT        IDC_WIDTH,50,45,25,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_HEIGHT,125,45,25,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_XSPACING,50,70,25,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_YSPACING,125,70,25,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_BITMAPS,40,20,25,14,ES_AUTOHSCROLL
+END
+
+IDD_ABOUT DIALOG DISCARDABLE  20, 10, 207, 122
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About ImageEdit"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&OK",IDOK,75,90,50,24
+    ICON            IDI_MAINICON,IDC_STATIC,10,10,20,20
+    LTEXT           "ImageEdit\nCopyright (c) 2003, Blaine Myers",IDC_STATIC,
+                    40,15,141,18
+    CTEXT           "version x.xx",IDC_VERSION,50,35,104,8
+    LTEXT           "ImageLibrary version x.xx",IDC_LIBRARYVERSION,15,65,180,
+                    15,SS_SUNKEN | WS_BORDER
+    LTEXT           "Additional Information:",IDC_STATIC,10,50,70,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_IMAGEEDIT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 285
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 243
+    END
+
+    IDD_BITMAPDIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 255
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 154
+    END
+
+    IDD_AUTOGENERATE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 275
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 123
+    END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 200
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 115
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_MAINICON            ICON    DISCARDABLE     "icon1.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New",                        ID_FILENEW
+        MENUITEM "&Open...",                    ID_FILEOPEN
+        MENUITEM "&Save",                       ID_FILESAVE
+        MENUITEM "Save &As...",                 ID_FILESAVEAS
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_FILEEXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "Bit&maps...",                 ID_EDIT_BITMAPS
+        MENUITEM "Auto &Generate...",           ID_EDIT_AUTOGENERATE
+    END
+    POPUP "&Library"
+    BEGIN
+        MENUITEM "&Build...",                   ID_LIBRARY_BUILD
+        MENUITEM "I&mport...",                  ID_LIBRARY_IMPORT
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About",                      ID_HELP_ABOUT
+    END
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

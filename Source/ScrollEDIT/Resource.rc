@@ -1,0 +1,282 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New...\tCtrl+N",             ID_FILENEW
+        MENUITEM "&Open...\tCtrl+O",            ID_FILEOPEN
+        MENUITEM "&Save\tCtrl+S",               ID_FILESAVE
+        MENUITEM "Save &As...",                 ID_FILESAVEAS
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit\tAlt+F4",               ID_FILEEXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Map Dimensions...",          ID_EDITMAPDIM
+        MENUITEM "&Library...",                 ID_EDITLIBRARY
+        MENUITEM "&Background...",              ID_EDITBG
+        MENUITEM SEPARATOR
+        MENUITEM "Map &Statistics...",          ID_EDITSTATS
+    END
+    POPUP "&Layer"
+    BEGIN
+        MENUITEM "&Tile\tCtrl+T",               ID_LAYERTILE, CHECKED
+        MENUITEM "&Architecture\tCtrl+A",       ID_LAYERARCH
+        MENUITEM "O&bject",                     ID_LAYEROBJECT
+        MENUITEM SEPARATOR
+        MENUITEM "C&lear Layer",                ID_LAYERCLEARLAYER
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "Show &Grid\tCtrl+G",          ID_VIEWSHOWGRID, CHECKED
+        MENUITEM "Show T&ransparency\tCtrl+R",  ID_VIEWUSETRANSPARENT
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "Help Topics\tF1",             ID_HELPTOPICS
+        MENUITEM "&About ScrollEdit...",        ID_HELPABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACCELERATOR ACCELERATORS DISCARDABLE 
+BEGIN
+    "A",            ID_LAYERARCH,           VIRTKEY, CONTROL, NOINVERT
+    "G",            ID_VIEWSHOWGRID,        VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_FILENEW,             VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILEOPEN,            VIRTKEY, CONTROL, NOINVERT
+    "R",            ID_VIEWUSETRANSPARENT,  VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILESAVE,            VIRTKEY, CONTROL, NOINVERT
+    "T",            ID_LAYERTILE,           VIRTKEY, CONTROL, NOINVERT
+    VK_F1,          ID_HELPTOPICS,          VIRTKEY, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICONMAIN            ICON    DISCARDABLE     "icon1.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_ARCHTILES           BITMAP  DISCARDABLE     "Archtiles.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_NEWDIALOG DIALOG DISCARDABLE  0, 0, 272, 126
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Generate New Map"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",ID_OK,205,10,50,14
+    PUSHBUTTON      "Cancel",ID_CANCEL,205,30,50,14
+    LTEXT           "Library Filename:",IDC_STATIC,25,70,55,8
+    LTEXT           "Background Filename:",IDC_STATIC,10,90,72,8
+    LTEXT           "Map Width:",IDC_STATIC,15,20,38,8
+    LTEXT           "Map Height:",IDC_STATIC,10,40,40,8
+    EDITTEXT        IDC_MAPWIDTH,60,20,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MAPHEIGHT,60,40,40,14,ES_AUTOHSCROLL
+    LTEXT           "Must be 16 or greater.",IDC_STATIC,105,20,70,8
+    LTEXT           "Must be 12 or greater.",IDC_STATIC,105,40,70,8
+    COMBOBOX        IDC_LIBRARYNAME,90,70,140,95,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_BGFILENAME,90,90,140,110,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_MAPSTATS DIALOG DISCARDABLE  0, 0, 200, 134
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Map Statistics"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,143,113,50,14
+    LTEXT           "Map Width:",IDC_STATIC,21,26,38,8
+    LTEXT           "Map Height:",IDC_STATIC,21,38,40,8
+    LTEXT           "Tile Library:",IDC_STATIC,19,79,37,8
+    LTEXT           "Background:",IDC_STATIC,20,92,42,8
+    GROUPBOX        "Map Dimensions",IDC_STATIC,13,13,90,43
+    GROUPBOX        "Attached Files",IDC_STATIC,14,69,167,40
+    LTEXT           "Width",IDC_MAPWIDTH,66,27,20,8
+    LTEXT           "Height",IDC_MAPHEIGHT,65,39,22,8
+    LTEXT           "Library Filename",IDC_LIBRARY,67,80,94,8
+    LTEXT           "Background Filename",IDC_BACKGROUND,67,92,99,8
+END
+
+IDD_MAPDIMS DIALOG DISCARDABLE  0, 0, 189, 87
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Map Dimensions"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Apply",IDAPPLY,73,66,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,132,66,50,14
+    LTEXT           "New Width:",IDC_STATIC,7,18,38,8
+    LTEXT           "New Height:",IDC_STATIC,7,38,40,8
+    EDITTEXT        IDC_NEWWIDTH,52,16,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_NEWHEIGHT,52,36,40,14,ES_AUTOHSCROLL
+    LTEXT           "Must be 16 or greater.",IDC_STATIC,97,17,70,8
+    LTEXT           "Must be 12 or greater.",IDC_STATIC,97,38,70,8
+END
+
+IDD_CHANGEFILENAME DIALOG DISCARDABLE  0, 0, 257, 61
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Change Filename"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Apply",IDAPPLY,135,40,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,195,40,50,14
+    LTEXT           "New Filename:",IDC_STATIC,10,20,48,8
+    COMBOBOX        IDC_NEWFILENAME,60,20,170,70,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_ABOUTDLG DIALOG DISCARDABLE  0, 0, 189, 109
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About ScrollEdit"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,70,81,50,21
+    ICON            IDI_ICONMAIN,IDC_STATIC,7,7,20,20
+    LTEXT           "ScrollEdit\nCopyright © 2002, 2003 Blaine Myers",
+                    IDC_STATIC,35,7,120,21
+    CTEXT           "Version 1.00 ANSI",IDC_VERSION,42,29,105,8
+    LTEXT           "Additional Information:",IDC_STATIC,15,42,70,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,13,52,
+                    157,25
+    LTEXT           "MapBoard Version 1.00\nImageLib Version 2.00",
+                    IDC_STATIC,15,54,77,19
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_NEWDIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 265
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 119
+    END
+
+    IDD_MAPSTATS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 193
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 127
+    END
+
+    IDD_MAPDIMS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 182
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 80
+    END
+
+    IDD_CHANGEFILENAME, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 250
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 54
+    END
+
+    IDD_ABOUTDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 182
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 102
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
