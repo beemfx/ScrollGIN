@@ -47,13 +47,13 @@ occurs, this does not happen with window mode.
 That problem with an error in full screen mode, was simply because
 I was releasing the backbuffer after the primary, I am so damn
 happy that I figured it out.  Now I just need to get windowed
-mode to work, and I'll be as happy as a cunt-penetrating penis.
+mode to work, and I'll be happy.
 
 April 08, 2002
 
 Generated the viewport class.  It's heavily based off of Ian
 Parberry's from ned's turkey farm, only designed for a real
-2d univers with x and y.  I've tested it and it works quite
+2d universe with x and y.  I've tested it and it works quite
 well.  I have not tested it's draw background feature yet.
 
 I also added a timer.  I used the one from ned's turkey farm,
@@ -161,7 +161,7 @@ July 03, 2002
 	I need to improve the object class somewhat for the multiple sprite thing.
 
 July 04, 2002
-	Thank God for our independence.  I've slightly upgraded 
+	Thank goodness for our independence.  I've slightly upgraded 
 	the CSprite and CSpriteManager classes.
 
 	The CSprite class now allows you to name the sprite, that 
@@ -182,7 +182,7 @@ July 04, 2002 (Supplimental)
 July 19, 2002
 	Added background class.  It supports up to ten different 
 	backgrounds.  It can automatically determine how to display
-	the background based on the viewport. I'm so damn glade
+	the background based on the viewport. I'm so damn glad
 	I got it working.
 
 	One thing I'd like to do is make it so that the background 
@@ -194,7 +194,7 @@ August 06, 2002
 	or not, so now windowed mode is clipped.
 
 September 05, 2002
-	I implimented a Direct3D8 engine as well as the DirectDraw7 
+	I implemented a Direct3D8 engine as well as the DirectDraw7 
 	engine.  The Direct3D engine seems to have some downsides, 
 	so the DD7 version is prefered. To select which engine to 
 	compite it is necessary to universally define either USED3D 
@@ -319,11 +319,8 @@ January 9, 2004
 
 	It's pretty amazing to think that I have been working on
 	this project for 2 and a half years and I still know how
-	it works.  Unfortunately I will probably not put much
-	more work into it for a while as I am about to serve a
-	mission for the Church of Jesus Christ of Latter-day Saints
-	for two years.  I hope I still have interest in game
-	development when I get back, and I hope I finally put
+	it works.  I hope I still have interest in game
+	development in the future, and I hope I finally put
 	a sound engine in this engine.
 
 About:
