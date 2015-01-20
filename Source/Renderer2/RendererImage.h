@@ -1,0 +1,18 @@
+////////////////////////////////////////////////////////////////////////////
+//
+// SgSprite - The main drawing object for the Renderer.
+//
+// (c) 2015 Blaine Myers
+//
+////////////////////////////////////////////////////////////////////////////
+#pragma once
+
+class SgRendererImage
+{
+public:
+	SgRendererImage();
+	~SgRendererImage();
+private:
+	struct sgData;
+	sgData* m_D;
+};

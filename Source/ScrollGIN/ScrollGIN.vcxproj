@@ -137,6 +137,8 @@
     <ClCompile Include="..\ImageLib\ImageLibrary.cpp" />
     <ClCompile Include="..\MapBoard\EditMapboard.cpp" />
     <ClCompile Include="..\MapBoard\Mapboard.cpp" />
+    <ClCompile Include="..\Renderer2\Renderer.cpp" />
+    <ClCompile Include="..\Renderer2\RendererImage.cpp" />
     <ClCompile Include="Background.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug Unicode|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -250,6 +252,8 @@
     <ClInclude Include="..\ImageLib\ImageLib.h" />
     <ClInclude Include="..\MapBoard\Defines.h" />
     <ClInclude Include="..\MapBoard\Mapboard.h" />
+    <ClInclude Include="..\Renderer2\Renderer.h" />
+    <ClInclude Include="..\Renderer2\RendererImage.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="defines.h" />
     <ClInclude Include="error.h" />
