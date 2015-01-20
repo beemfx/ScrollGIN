@@ -193,5 +193,5 @@ HRESULT CSTileManager::PlaceTile(int reference, LPVOID dest, int x, int y){
 		y<-TILEDIMENSION||y>g_nDeviceHeight)return S_FALSE;
 	*/
 	
-	return m_lpTile[reference-1].DrawPrefered(dest, x, y);
+	return m_lpTile[reference-1].DrawPrefered(x, y);
 }

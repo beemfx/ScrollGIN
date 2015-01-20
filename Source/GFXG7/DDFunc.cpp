@@ -29,14 +29,13 @@ HRESULT PageFlip(
 		if(bWindowed){
 			desc.dwSize=sizeof(DDSURFACEDESC2);
 			desc.dwFlags=DDSD_WIDTH|DDSD_HEIGHT;
-			lpBackBuffer->lpVtbl->GetSurfaceDesc(lpBackBuffer, &desc);
+			lpBackBuffer->GetSurfaceDesc(&desc);
 
 			rcSource.top=rcSource.left=0;
 			rcSource.bottom=desc.dwHeight;
 			rcSource.right=desc.dwWidth;
 			
-			if(hr = lpPrimary->lpVtbl->Blt(
-				lpPrimary,
+			if(hr = lpPrimary->Blt(
 				rcWindow, 
 				lpBackBuffer,
 				&rcSource, 
@@ -46,7 +45,7 @@ HRESULT PageFlip(
 				return Restore();
 			}
 		}else{
-			if(lpPrimary->lpVtbl->Flip(lpPrimary, NULL,DDFLIP_WAIT)==DDERR_SURFACELOST){
+			if(lpPrimary->Flip(NULL,DDFLIP_WAIT)==DDERR_SURFACELOST){
 				return Restore();
 			}
 		}
@@ -193,6 +192,9 @@ HRESULT InitDirectDraw(
 			rcWindow,
 			dwTransparentColor);
 	}
+
+	CImage7::InitDrawing( *lppBack );
+
 	return hr;
 }
 
@@ -215,10 +217,10 @@ HRESULT InitWindowedDirectDraw(
 	if(FAILED(hr=DirectDrawCreateEx(
 		NULL, 
 		(VOID**)&*lppDDraw,
-		&IID_IDirectDraw7, 
+		IID_IDirectDraw7, 
 		NULL)))return E_FAIL;
 
-	hr=(*lppDDraw)->lpVtbl->SetCooperativeLevel((*lppDDraw), hWnd, DDSCL_NORMAL);
+	hr=(*lppDDraw)->SetCooperativeLevel(hWnd, DDSCL_NORMAL);
 	if(FAILED(hr))return E_FAIL;
 
 	/* Create the primary surface. */
@@ -228,26 +230,26 @@ HRESULT InitWindowedDirectDraw(
    ddsd.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
 
 
-	if( FAILED( (*lppDDraw)->lpVtbl->CreateSurface((*lppDDraw), &ddsd, &*lppPrimary, NULL )))
+	if( FAILED( (*lppDDraw)->CreateSurface( &ddsd, &*lppPrimary, NULL )))
         return E_FAIL;
 
-	if(FAILED((*lppDDraw)->lpVtbl->CreateClipper((*lppDDraw), 0, &pcClipper, NULL)))return E_FAIL;
-	if( FAILED( hr = pcClipper->lpVtbl->SetHWnd(pcClipper, 0, hWnd)))
+	if(FAILED((*lppDDraw)->CreateClipper(0, &pcClipper, NULL)))return E_FAIL;
+	if( FAILED( hr = pcClipper->SetHWnd(0, hWnd)))
     {
-        pcClipper->lpVtbl->Release(pcClipper);
+        pcClipper->Release();
         return E_FAIL;
     }
 
 	
 
-    if( FAILED( hr = (*lppPrimary)->lpVtbl->SetClipper((*lppPrimary), pcClipper)))
+    if( FAILED( hr = (*lppPrimary)->SetClipper(pcClipper)))
     {
-        pcClipper->lpVtbl->Release(pcClipper);
+        pcClipper->Release();
         return E_FAIL;
     }
 	 	 
 	/* Done with clipper. */
-   pcClipper->lpVtbl->Release(pcClipper);
+   pcClipper->Release();
 
 	/* Create the backbuffer surface. */
    ddsd.dwFlags        = DDSD_CAPS|DDSD_WIDTH|DDSD_HEIGHT;    
@@ -255,7 +257,7 @@ HRESULT InitWindowedDirectDraw(
    ddsd.dwWidth        = dwWidth;
    ddsd.dwHeight       = dwHeight;
 
-   if( FAILED( hr = (*lppDDraw)->lpVtbl->CreateSurface((*lppDDraw), &ddsd, &*lppBackBuffer, NULL)))
+   if( FAILED( hr = (*lppDDraw)->CreateSurface(&ddsd, &*lppBackBuffer, NULL)))
         return E_FAIL;
 
 	*lpTransparentColor=WindowsColorToDirectDraw(*lpTransparentColor, *lppPrimary);
@@ -272,24 +274,24 @@ DWORD WindowsColorToDirectDraw(COLORREF rgb, LPDIRECTDRAWSURFACE7 surface){
 	DDSURFACEDESC2 ddsd;
 	HRESULT hres;
 
-	if(rgb!=CLR_INVALID&&SUCCEEDED(surface->lpVtbl->GetDC(surface, &hDc))){
+	if(rgb!=CLR_INVALID&&SUCCEEDED(surface->GetDC(&hDc))){
 		rgbT=GetPixel(hDc, 0, 0);
 		SetPixel(hDc, 0, 0, rgb);
-		surface->lpVtbl->ReleaseDC(surface, hDc);
+		surface->ReleaseDC(hDc);
 	}
 
 	ddsd.dwSize=sizeof(ddsd);
-	while((hres=surface->lpVtbl->Lock(surface, NULL, &ddsd, 0, NULL))==DDERR_WASSTILLDRAWING);
+	while((hres=surface->Lock(NULL, &ddsd, 0, NULL))==DDERR_WASSTILLDRAWING);
 	if(SUCCEEDED(hres)){
 		dw=*(DWORD*)ddsd.lpSurface;
 		if(ddsd.ddpfPixelFormat.dwRGBBitCount!=32)
 			dw&=(1<<ddsd.ddpfPixelFormat.dwRGBBitCount)-1;
-		surface->lpVtbl->Unlock(surface, NULL);
+		surface->Unlock(NULL);
 	}
 	
-	if(rgb!=CLR_INVALID&&SUCCEEDED(surface->lpVtbl->GetDC(surface, &hDc))){
+	if(rgb!=CLR_INVALID&&SUCCEEDED(surface->GetDC(&hDc))){
 		SetPixel(hDc, 0, 0, rgbT);
-		surface->lpVtbl->ReleaseDC(surface, hDc);
+		surface->ReleaseDC(hDc);
 	}
 	return dw;
 }
@@ -313,13 +315,13 @@ HRESULT InitFullScreenDirectDraw(
 	if(FAILED(hr=DirectDrawCreateEx(
 		NULL, 
 		(VOID**)&*lppDDraw,
-		&IID_IDirectDraw7, 
+		IID_IDirectDraw7, 
 		NULL)))return E_FAIL;
 
-	hr=(*lppDDraw)->lpVtbl->SetCooperativeLevel((*lppDDraw), hWnd, DDSCL_EXCLUSIVE|DDSCL_FULLSCREEN);
+	hr=(*lppDDraw)->SetCooperativeLevel(hWnd, DDSCL_EXCLUSIVE|DDSCL_FULLSCREEN);
 	if(FAILED(hr))return E_FAIL;
 
-	if(FAILED((*lppDDraw)->lpVtbl->SetDisplayMode((*lppDDraw), dwWidth, dwHeight, dwBitDepth, 0, 0)))
+	if(FAILED((*lppDDraw)->SetDisplayMode(dwWidth, dwHeight, dwBitDepth, 0, 0)))
 		return E_FAIL;
 	/* Create the primary surface. */
    ZeroMemory(&ddsd,sizeof( ddsd ) );
@@ -329,14 +331,14 @@ HRESULT InitFullScreenDirectDraw(
                           DDSCAPS_COMPLEX|DDSCAPS_3DDEVICE;
    ddsd.dwBackBufferCount = 1;
 
-	if(FAILED(hr=(*lppDDraw)->lpVtbl->CreateSurface((*lppDDraw), &ddsd, &*lppPrimary, NULL)))
+	if(FAILED(hr=(*lppDDraw)->CreateSurface(&ddsd, &*lppPrimary, NULL)))
         return E_FAIL;
 
 	/* Get a pointer to the back buffer. */
    ZeroMemory(&ddscaps, sizeof(ddscaps));
    ddscaps.dwCaps=DDSCAPS_BACKBUFFER;
 
-   if(FAILED(hr =(*lppPrimary)->lpVtbl->GetAttachedSurface((*lppPrimary), &ddscaps, &*lppBackBuffer)))
+   if(FAILED(hr =(*lppPrimary)->GetAttachedSurface(&ddscaps, &*lppBackBuffer)))
 		return E_FAIL;
 	
    dwStyle=WS_POPUP;

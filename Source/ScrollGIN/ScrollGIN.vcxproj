@@ -129,7 +129,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\GFXG7\DDFunc.c" />
+    <ClCompile Include="..\GFXG7\DDFunc.cpp" />
     <ClCompile Include="..\GFXG7\imageDD.cpp" />
     <ClCompile Include="..\ImageLib\Bitmap.c" />
     <ClCompile Include="..\ImageLib\EditImageLibrary.cpp" />
@@ -269,7 +269,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="icon1.ico" />
-    <None Include="Readme.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
