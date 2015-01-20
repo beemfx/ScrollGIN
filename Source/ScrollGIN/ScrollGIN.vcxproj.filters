@@ -86,10 +86,10 @@
     <ClCompile Include="..\ImageLib\ImageLibrary.cpp">
       <Filter>ImageLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\GFXG7\DDFunc.c">
+    <ClCompile Include="..\GFXG7\imageDD.cpp">
       <Filter>GFXG7</Filter>
     </ClCompile>
-    <ClCompile Include="..\GFXG7\imageDD.cpp">
+    <ClCompile Include="..\GFXG7\DDFunc.cpp">
       <Filter>GFXG7</Filter>
     </ClCompile>
   </ItemGroup>
@@ -173,6 +173,5 @@
     <None Include="icon1.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Readme.txt" />
   </ItemGroup>
 </Project>

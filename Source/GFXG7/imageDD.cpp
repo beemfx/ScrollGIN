@@ -9,7 +9,10 @@
 #include "defines.h"
 #include "gfxg7.h"
 
-CImage7::CImage7(){
+IDirectDrawSurface7* CImage7::s_Bb = NULL;
+
+CImage7::CImage7()
+{
 	m_lpImage=NULL;
 	m_hBitmap=NULL;
 }
@@ -69,21 +72,21 @@ DWORD CImage7::GetHeight(){
 }
 
 
-HRESULT CImage7::DrawPrefered(LPVOID lpBuffer, int x, int y){
+HRESULT CImage7::DrawPrefered(int x, int y){
 	//clipped image is always prefered
-	return DrawClippedImage(lpBuffer, x, y);
+	return DrawClippedImage(x, y);
 	//return DrawImage(lpBuffer, x, y);
 }
 
-HRESULT CImage7::DrawClippedImage(LPVOID lpBuffer, int x, int y){
-	if(!lpBuffer || !m_lpImage)return E_FAIL;
+HRESULT CImage7::DrawClippedImage(int x, int y){
+	if(!s_Bb || !m_lpImage)return E_FAIL;
 	
 	RECT rcSrc, rcDest;
 	
 	DDSURFACEDESC2 ddBufferDesc;
 	ZeroMemory(&ddBufferDesc, sizeof(ddBufferDesc));
 	ddBufferDesc.dwSize=sizeof(DDSURFACEDESC2);
-	if(FAILED(((LPDIRECTDRAWSURFACE7)lpBuffer)->GetSurfaceDesc(&ddBufferDesc)))return E_FAIL;
+	if(FAILED(s_Bb->GetSurfaceDesc(&ddBufferDesc)))return E_FAIL;
 	
 	DWORD nBufferWidth=ddBufferDesc.dwWidth;
 	DWORD nBufferHeight=ddBufferDesc.dwHeight;
@@ -96,7 +99,7 @@ HRESULT CImage7::DrawClippedImage(LPVOID lpBuffer, int x, int y){
 		//within the height
 		(y>=0) &&
 		((m_sImageData.nHeight+y)<nBufferHeight)
-	)return DrawImage(lpBuffer, x, y);
+	)return DrawImage(x, y);
 
 	//if the image is off screen we do no blt
 	if(x>(int)nBufferWidth)return S_FALSE;
@@ -150,14 +153,14 @@ HRESULT CImage7::DrawClippedImage(LPVOID lpBuffer, int x, int y){
 		rcSrc.bottom=nBufferHeight-y;
 
 
-	if(SUCCEEDED(((LPDIRECTDRAWSURFACE7)lpBuffer)->Blt(&rcDest, m_lpImage, &rcSrc, DDBLT_KEYSRC|DDBLT_WAIT, NULL))){
+	if(SUCCEEDED(s_Bb->Blt(&rcDest, m_lpImage, &rcSrc, DDBLT_KEYSRC|DDBLT_WAIT, NULL))){
 		return S_OK;
 	}
 	return E_FAIL;
 }
 
-HRESULT CImage7::DrawImage(LPVOID lpBuffer, int x, int y){
-	if(!lpBuffer || !m_lpImage)return E_FAIL;
+HRESULT CImage7::DrawImage(int x, int y){
+	if(!s_Bb || !m_lpImage)return E_FAIL;
 
 	RECT rcSrc, rcDest;
 
@@ -170,7 +173,7 @@ HRESULT CImage7::DrawImage(LPVOID lpBuffer, int x, int y){
 	rcSrc.bottom=m_sImageData.nHeight;
 	rcSrc.right=m_sImageData.nWidth;
 
-	if(SUCCEEDED(((LPDIRECTDRAWSURFACE7)lpBuffer)->Blt(&rcDest, m_lpImage, &rcSrc, DDBLT_KEYSRC|DDBLT_WAIT, NULL))){
+	if(SUCCEEDED(s_Bb->Blt(&rcDest, m_lpImage, &rcSrc, DDBLT_KEYSRC|DDBLT_WAIT, NULL))){
 			return S_OK;
 	}
 	return E_FAIL;
@@ -202,10 +205,6 @@ HRESULT CImage7::ReloadImageIntoSurface(){
 HRESULT CImage7::ClearSurface(){
 	Release();
 	return S_OK;
-}
-
-LPDIRECTDRAWSURFACE7* CImage7::GetPointerToSurface(){
-	return &m_lpImage;
 }
 
 void CImage7::Release(){

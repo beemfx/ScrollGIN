@@ -130,6 +130,7 @@ HRESULT PageFlip(
 class CImage7{
 private:
 	LPDIRECTDRAWSURFACE7 m_lpImage; //Surface for image
+	static IDirectDrawSurface7* s_Bb;
 	HBITMAP m_hBitmap; //Bitmap compatible version of image
 	IMAGEDATA3 m_sImageData; //data about image
 
@@ -142,6 +143,7 @@ private:
 
 	HRESULT LoadColorIntoSurface(DWORD dwColor); //loads color into surface
 public:
+	static void InitDrawing( IDirectDrawSurface7* Bb ){ s_Bb = Bb; }
 	CImage7(); //constructor
 	~CImage7(); //destructor
 
@@ -152,9 +154,6 @@ public:
 	HRESULT ReloadImageIntoSurface(); //reloads image into surface (for after a restore)
 	HRESULT ClearSurface(); //clears the surface to write new image to
 	void Release(); //releases the surface
-
-	LPDIRECTDRAWSURFACE7* GetPointerToSurface();
-
 
 	
 	HRESULT CreateImageBMA(
@@ -202,20 +201,9 @@ public:
 
 	//The following draws (and clips if necessary an image) the surface being blted to does
 	//not require a clipper for clipping to take place
-	HRESULT DrawClippedImage(
-		LPVOID lpBuffer, 
-		int x, 
-		int y);
-
-	HRESULT DrawImage(
-		LPVOID lpBuffer, 
-		int x, 
-		int y); //draws image at specified coords to specified buffer
-
-	HRESULT DrawPrefered(
-		LPVOID lpBuffer, 
-		int x, 
-		int y); //clips if in windowed mode
+	HRESULT DrawClippedImage( int x , int y );
+	HRESULT DrawImage( int x , int y); //draws image at specified coords to specified buffer
+	HRESULT DrawPrefered( int x , int y ); //clips if in windowed mode
 };
 #endif /* __cplusplus */
 

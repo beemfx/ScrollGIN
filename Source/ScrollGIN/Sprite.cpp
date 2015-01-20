@@ -269,11 +269,11 @@ HRESULT CSprite::DisplaySprite(LPVOID lpBuffer, int nFrame, SPRITEFACE nFace, in
 	switch(nFace){
 	case SF_RIGHT:
 		//To the right means we blt the actual image
-		if(SUCCEEDED(m_cSpriteImage[nFrame-1].DrawPrefered(lpBuffer, x-m_sImageDim[nFrame-1].nWidth/2, y-m_sImageDim[nFrame-1].nHeight/2)))return S_OK;
+		if(SUCCEEDED(m_cSpriteImage[nFrame-1].DrawPrefered(x-m_sImageDim[nFrame-1].nWidth/2, y-m_sImageDim[nFrame-1].nHeight/2)))return S_OK;
 	break;
 	case SF_LEFT:
 		//to the left means to reverse the iamge
-		if(SUCCEEDED(m_cReverseSpriteImage[nFrame-1].DrawPrefered(lpBuffer, x-m_sImageDim[nFrame-1].nWidth/2, y-m_sImageDim[nFrame-1].nHeight/2)))return S_OK;
+		if(SUCCEEDED(m_cReverseSpriteImage[nFrame-1].DrawPrefered(x-m_sImageDim[nFrame-1].nWidth/2, y-m_sImageDim[nFrame-1].nHeight/2)))return S_OK;
 		break;
 	}
 	return E_FAIL;

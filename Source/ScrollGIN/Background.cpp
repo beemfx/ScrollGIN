@@ -53,10 +53,10 @@ HRESULT CBackground::DisplayBackground(int nBGLayer, LPVOID lpBuffer, int x, int
 	int nXDisplayPos=nXOffset;
 	int nYDisplayPos=nYOffset;
 	
-	m_cBackgroundImage[nBGLayer-1].DrawPrefered(lpBuffer, nXDisplayPos, nYDisplayPos);
-	m_cBackgroundImage[nBGLayer-1].DrawPrefered(lpBuffer, nXDisplayPos+dwWidth, nYDisplayPos);
-	m_cBackgroundImage[nBGLayer-1].DrawPrefered(lpBuffer, nXDisplayPos, nYDisplayPos+dwHeight);
-	m_cBackgroundImage[nBGLayer-1].DrawPrefered(lpBuffer, nXDisplayPos+dwWidth, nYDisplayPos+dwHeight);
+	m_cBackgroundImage[nBGLayer-1].DrawPrefered(nXDisplayPos, nYDisplayPos);
+	m_cBackgroundImage[nBGLayer-1].DrawPrefered(nXDisplayPos+dwWidth, nYDisplayPos);
+	m_cBackgroundImage[nBGLayer-1].DrawPrefered(nXDisplayPos, nYDisplayPos+dwHeight);
+	m_cBackgroundImage[nBGLayer-1].DrawPrefered(nXDisplayPos+dwWidth, nYDisplayPos+dwHeight);
 	
 	
 	/*
