@@ -18,6 +18,9 @@
     <Filter Include="GFXG7">
       <UniqueIdentifier>{f943840e-24e7-47fb-b619-19b4e5cf2806}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Renderer2">
+      <UniqueIdentifier>{aa410ad1-2e0e-4282-926c-7ac31a52e7ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Background.cpp">
@@ -91,6 +94,12 @@
     </ClCompile>
     <ClCompile Include="..\GFXG7\DDFunc.cpp">
       <Filter>GFXG7</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Renderer2\Renderer.cpp">
+      <Filter>Renderer2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Renderer2\RendererImage.cpp">
+      <Filter>Renderer2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +176,12 @@
     </ClInclude>
     <ClInclude Include="..\GFXG7\GFXG7.h">
       <Filter>GFXG7</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Renderer2\Renderer.h">
+      <Filter>Renderer2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Renderer2\RendererImage.h">
+      <Filter>Renderer2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
