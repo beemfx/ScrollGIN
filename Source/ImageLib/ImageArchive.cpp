@@ -12,12 +12,12 @@ CImageArchive::~CImageArchive()
 	CloseArchive();
 }
 
-DWORD CImageArchive::GetSelectedEntry()
+sg_uint32 CImageArchive::GetSelectedEntry()
 {
 	return m_nSelectedEntry;
 }
 
-BOOL CImageArchive::SetSelectedEntry(DWORD nEntry)
+BOOL CImageArchive::SetSelectedEntry(sg_uint32 nEntry)
 {
 	if((nEntry<1) ||(nEntry>m_nNumImages))return FALSE;
 
@@ -54,7 +54,7 @@ HRESULT CImageArchive::LoadArchive(LPCSTR szFilename)
 		CloseHandle(hFile);
 		return E_FAIL;
 	}
-	if(lbHeader.wType!=*(WORD*)"IL"){
+	if(lbHeader.wType!=*(sg_uint16*)"IL"){
 		CloseHandle(hFile);
 		return E_FAIL;
 	}

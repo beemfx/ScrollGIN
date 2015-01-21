@@ -16,14 +16,14 @@ CMapBoard::CMapBoard()
 	m_dwTileDim=TILEDIM;
 }
 
-DWORD CMapBoard::GetTileDim()
+sg_uint32 CMapBoard::GetTileDim()
 {
 	return m_dwTileDim;
 }
 
-DWORD CMapBoard::SetTileDim(DWORD dwDim)
+sg_uint32 CMapBoard::SetTileDim(sg_uint32 dwDim)
 {
-	DWORD dwTemp;
+	sg_uint32 dwTemp;
 	dwTemp=m_dwTileDim;
 	m_dwTileDim=dwDim;
 	return dwTemp;
@@ -68,11 +68,11 @@ const char* CMapBoard::GetBGName()const
 	return m_lpBGFilenameA;
 }
 
-USHORT CMapBoard::GetMapWidth(){
+sg_uint16 CMapBoard::GetMapWidth(){
 	return m_nMapWidth;
 }
 
-USHORT CMapBoard::GetMapHeight(){
+sg_uint16 CMapBoard::GetMapHeight(){
 	return m_nMapHeight;
 }
 
@@ -94,7 +94,7 @@ BYTE CMapBoard::GetObject(int x, int y){
 	return m_pObject[CoordToPos(x, y)];
 }
 
-ULONG CMapBoard::CoordToPos(int x, int y){
+sg_uint32 CMapBoard::CoordToPos(int x, int y){
 	if(x<1||x>m_nMapWidth)return 0;
 	if(y<1||y>m_nMapHeight)return 0;
 	return y+m_nMapHeight*(x-1)-1;
@@ -130,7 +130,7 @@ HRESULT CMapBoard::LoadMap(LPCSTR lpMapFilename)
 	}
 
 	//Check for valid file
-	if(sMapHeader.wType!=*(WORD*)"SM"){
+	if(sMapHeader.wType!=*(sg_uint16*)"SM"){
 		CloseHandle(hFile);return E_FAIL;
 	}
 
@@ -147,16 +147,16 @@ HRESULT CMapBoard::LoadMap(LPCSTR lpMapFilename)
 	m_pArch=new BYTE[sMapHeader.lNumTiles];
 	m_pObject=new BYTE[sMapHeader.lNumTiles];
 
-	WCHAR szTempLibName[MAX_PATH];
-	WCHAR szTempBGName[MAX_PATH];
+	sg_char16 szTempLibName[MAX_PATH];
+	sg_char16 szTempBGName[MAX_PATH];
 	
 	//Read and convert lib filename
 	ReadFile(hFile, szTempLibName, sMapHeader.lLibraryNameSize, &dwBytesRead, NULL);
-	WideCharToMultiByte(CP_ACP, 0, szTempLibName, sMapHeader.lLibraryNameSize/sizeof(WCHAR), m_lpLibraryFilenameA, MAX_PATH, NULL, NULL);
+	WideCharToMultiByte(CP_ACP, 0, szTempLibName, sMapHeader.lLibraryNameSize/sizeof(sg_char16), m_lpLibraryFilenameA, MAX_PATH, NULL, NULL);
 	
 	//Read and convert bg filename
 	ReadFile(hFile, szTempBGName, sMapHeader.lBGNameSize, &dwBytesRead, NULL);
-	WideCharToMultiByte(CP_ACP, 0, szTempBGName, sMapHeader.lBGNameSize/sizeof(WCHAR), m_lpBGFilenameA, MAX_PATH, NULL, NULL);
+	WideCharToMultiByte(CP_ACP, 0, szTempBGName, sMapHeader.lBGNameSize/sizeof(sg_char16), m_lpBGFilenameA, MAX_PATH, NULL, NULL);
 	//#endif //unicode
 
 	//Read the tile data

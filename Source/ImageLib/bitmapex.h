@@ -26,7 +26,7 @@ BOOL TransparentBlt2(
 	int nYOriginSrc,
 	int nWidthSrc,
 	int nHeightSrc,
-	DWORD crTransparent);
+	sg_uint32 crTransparent);
 
 #ifdef __cplusplus
 } //extern "C"

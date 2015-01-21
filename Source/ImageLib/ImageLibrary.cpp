@@ -28,7 +28,7 @@ CImageLibrary::~CImageLibrary()
 	CloseMainBitmaps();
 }
 
-BOOL CImageLibrary::GetImageData(DWORD nEntry, IMAGEDATA *imgData)
+BOOL CImageLibrary::GetImageData(sg_uint32 nEntry, IMAGEDATA *imgData)
 {
 	if((nEntry<1) || (nEntry>m_nNumImages))return FALSE;
 
@@ -46,7 +46,7 @@ BOOL CImageLibrary::GetImageData(DWORD nEntry, IMAGEDATA *imgData)
 	return TRUE;
 }
 
-WORD CImageLibrary::GetNumFrames(DWORD nEntry)
+sg_uint16 CImageLibrary::GetNumFrames(sg_uint32 nEntry)
 {
 	//return 0 if image doesn't exist
 	if((nEntry<1) || (nEntry>m_nNumImages))return 0;
@@ -54,7 +54,7 @@ WORD CImageLibrary::GetNumFrames(DWORD nEntry)
 	return m_pImageData[nEntry-1].nFrames;
 }
 
-BOOL CImageLibrary::GetImageName(char* Out, size_t OutSize , DWORD nEntry )
+BOOL CImageLibrary::GetImageName(char* Out, size_t OutSize , sg_uint32 nEntry )
 {
 	char szTemp[IMAGE_NAME_LENGTH];
 
@@ -74,25 +74,25 @@ BOOL CImageLibrary::GetImageName(char* Out, size_t OutSize , DWORD nEntry )
 	return result;
 }
 
-HBITMAP CImageLibrary::GetBitmap(WORD nBitmap)
+HBITMAP CImageLibrary::GetBitmap(sg_uint16 nBitmap)
 {
 	if((nBitmap<1) || (nBitmap>MAX_BITMAPS))return NULL;
 
 	return m_hBitmap[nBitmap-1];
 }
 
-DWORD CImageLibrary::GetNumEntries()
+sg_uint32 CImageLibrary::GetNumEntries()
 {
 	return m_nNumImages;
 }
 
 
-HRESULT CImageLibrary::OpenBitmap(LPSTR szFilename, WORD nBitmap)
+HRESULT CImageLibrary::OpenBitmap(LPSTR szFilename, sg_uint16 nBitmap)
 {
 	return OpenBitmapOffset(szFilename, 0, nBitmap);
 }
 
-HRESULT CImageLibrary::OpenBitmapOffset(LPCSTR szFilename, DWORD nOffset, WORD nBitmap)
+HRESULT CImageLibrary::OpenBitmapOffset(LPCSTR szFilename, sg_uint32 nOffset, sg_uint16 nBitmap)
 {
 	if( (nBitmap<1) || (nBitmap>MAX_BITMAPS) )return E_FAIL;
 
@@ -117,7 +117,7 @@ void CImageLibrary::CloseMainBitmaps()
 
 HRESULT CImageLibrary::ClearDataBase()
 {
-	for(DWORD i=0;i<m_nNumImages;i++)
+	for(sg_uint32 i=0;i<m_nNumImages;i++)
 	{
 		ZeroMemory(&m_pImageData[i], sizeof(IMAGEDATA));
 	}
@@ -130,7 +130,7 @@ HRESULT CImageLibrary::ClearDataBase()
 }
 
 
-HRESULT CImageLibrary::CopyImageToDC(HDC hdcDest, DWORD nEntry, int x, int y, BOOL bTransp)
+HRESULT CImageLibrary::CopyImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, BOOL bTransp)
 {
 	HDC hdcMainBitmap=NULL;
 
@@ -174,12 +174,12 @@ HRESULT CImageLibrary::CopyImageToDC(HDC hdcDest, DWORD nEntry, int x, int y, BO
 	return S_OK;
 }
 
-WORD CImageLibrary::GetNumBitmaps()
+sg_uint16 CImageLibrary::GetNumBitmaps()
 {
 	return m_nNumBitmaps;
 }
 
-HRESULT CImageLibrary::StretchImageToDC(HDC hdcDest, DWORD nEntry, int x, int y, int nWidth, int nHeight, BOOL bTransp)
+HRESULT CImageLibrary::StretchImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, int nWidth, int nHeight, BOOL bTransp)
 {
 	HDC hdcMainBitmap=NULL;
 
@@ -223,7 +223,7 @@ HRESULT CImageLibrary::StretchImageToDC(HDC hdcDest, DWORD nEntry, int x, int y,
 	return S_OK;
 }
 
-void CImageLibrary::GetBitmapName(char* Out, size_t OutSize, WORD nBitmap)
+void CImageLibrary::GetBitmapName(char* Out, size_t OutSize, sg_uint16 nBitmap)
 {
 	if((nBitmap<1)||(nBitmap>m_nNumBitmaps)){
 		strcpy_s(Out, OutSize, "");

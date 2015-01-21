@@ -43,22 +43,22 @@ enum LAYER
 
 struct MAPHEADER
 {
-	WORD		wType;				//Map type, *(WORD*)"SM"
-	USHORT	nVersion;			//Map version, 1 for now
+	sg_uint16		wType;				//Map type, *(sg_uint16*)"SM"
+	sg_uint16	nVersion;			//Map version, 1 for now
 
-	ULONG		lReserved1;			//Reserved1, 0
-	ULONG		lReserved2;			//Reserved2, 0
+	sg_uint32		lReserved1;			//Reserved1, 0
+	sg_uint32		lReserved2;			//Reserved2, 0
 
-	USHORT	nMapWidth;			//Width, in tiles, of the map
-	USHORT	nMapHeight;			//Height, in tiles, of the map
-	ULONG		lNumTiles;			//Number of tiles in the map, width*height
+	sg_uint16	nMapWidth;			//Width, in tiles, of the map
+	sg_uint16	nMapHeight;			//Height, in tiles, of the map
+	sg_uint32		lNumTiles;			//Number of tiles in the map, width*height
 
-	ULONG		lLibraryNameSize;	//Size, in bytes, of the library filename
-	ULONG		lBGNameSize;		//Size, in bytes, of the background filename
+	sg_uint32		lLibraryNameSize;	//Size, in bytes, of the library filename
+	sg_uint32		lBGNameSize;		//Size, in bytes, of the background filename
 
-	ULONG		lTileDataSize;		//Size, in bytes, of the tile data
-	ULONG		lArchDataSize;		//Size, in bytes, of the architecture data
-	ULONG		lObjectDataSize;	//Size, in bytes, of the object data
+	sg_uint32		lTileDataSize;		//Size, in bytes, of the tile data
+	sg_uint32		lArchDataSize;		//Size, in bytes, of the architecture data
+	sg_uint32		lObjectDataSize;	//Size, in bytes, of the object data
 };
 
 class CMapBoard
@@ -69,25 +69,25 @@ protected:
 	BYTE	*m_pTile;	//Visible tile data
 	BYTE	*m_pArch;	//Unseen architecture data
 	BYTE	*m_pObject;	//Object data, objects, object generators etc
-	USHORT	m_nMapWidth;	//Width, in tiles, of the map
-	USHORT	m_nMapHeight;	//Height, in tiles, of the map
-	DWORD   m_dwTileDim;  //width height of each tile
+	sg_uint16	m_nMapWidth;	//Width, in tiles, of the map
+	sg_uint16	m_nMapHeight;	//Height, in tiles, of the map
+	sg_uint32   m_dwTileDim;  //width height of each tile
 	char    m_lpMapFilenameA[MAX_PATH];		//Filename of current map
 	char    m_lpLibraryFilenameA[MAX_PATH];	//Filename of the library being used
 	char    m_lpBGFilenameA[MAX_PATH];		//Filename of the background image
 
 	//Private member functions
-	ULONG CoordToPos(int x, int y); //Converts an x,y value to an array position
+	sg_uint32 CoordToPos(int x, int y); //Converts an x,y value to an array position
 
 public:
 	//Public member functions
 	CMapBoard();
 	~CMapBoard();
 
-	USHORT      GetMapWidth();		//Returns m_nMapWidth
-	USHORT      GetMapHeight();	//Returns m_nMapHeight
-	DWORD       GetTileDim();
-	DWORD       SetTileDim(DWORD dwDim);
+	sg_uint16      GetMapWidth();		//Returns m_nMapWidth
+	sg_uint16      GetMapHeight();	//Returns m_nMapHeight
+	sg_uint32       GetTileDim();
+	sg_uint32       SetTileDim(sg_uint32 dwDim);
 	BYTE        GetTile(int x, int y);	//Returns value of tile at x,y
 	BYTE        GetArch(int x, int y);	//Returns value of architecture at x,y
 	BYTE        GetArchType(int x, int y); //layer type (red, green, or blue)
