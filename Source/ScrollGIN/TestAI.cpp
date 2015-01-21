@@ -49,10 +49,6 @@ BOOL TestCreateObject(void* lpDD, SgObjectManager* lpObjMan)
 	//This function creates an object for testing purposes
 	TestCreate(lpDD, dwTrans, lpObjMan);
 	lpObjMan->LoadSpritesFromFile(TEXT("NedSprites.ilb"));
-	/*
-	ObjectManager.ObtainSpriteManager(&g_cSpriteManager);
-	ObjectManager.ObtainTimer(&Timer);
-	*/
 
 	lpObjMan->CreateObject((OBJECTTYPE)CROW_OBJECT, 100, 180, 5, 1);
 	lpObjMan->CreateObject((OBJECTTYPE)CROW_OBJECT, 20, 100, 6, 0);

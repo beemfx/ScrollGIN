@@ -8,7 +8,8 @@
 #define SAFE_FREE(p)         { if(p) { free(p); (p)=NULL; } }
 
 /* This function loads a bitmap from a given offset within a file. */
-HBITMAP LoadBitmapOffsetA(char szFilename[MAX_PATH], int nOffset){
+HBITMAP LoadBitmapOffsetA(const char szFilename[MAX_PATH], int nOffset)
+{
 	HBITMAP hBitmap=NULL;
 	HANDLE hFile;
 	BITMAPFILEHEADER bmfh;
@@ -60,7 +61,7 @@ HBITMAP LoadBitmapOffsetA(char szFilename[MAX_PATH], int nOffset){
 }
 
 //This function loads a bitmap from a given offset within a file
-HBITMAP LoadBitmapOffsetW(WCHAR szFilename[MAX_PATH], int nOffset){
+HBITMAP LoadBitmapOffsetW(const WCHAR szFilename[MAX_PATH], int nOffset){
 	HBITMAP hBitmap=NULL;
 	HANDLE hFile;
 	BITMAPFILEHEADER bmfh;

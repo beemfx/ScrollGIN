@@ -44,7 +44,7 @@ SgObject::SgObject()
 	m_nNumSprites=0;
 }
 
-SgObject::SgObject(SgSpriteManager * pSpriteMgr, DWORD dwTime)
+SgObject::SgObject(SgSpriteManager * pSpriteMgr, unsigned int dwTime)
 {
 	m_nNumMessages=0;
 	m_nX=m_nY=0;
@@ -75,7 +75,7 @@ SgObject::SgObject(SgSpriteManager * pSpriteMgr, DWORD dwTime)
 	m_nNumSprites=0;
 }
 
-SgObject::SgObject(SgSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed)
+SgObject::SgObject(SgSpriteManager * pSpriteMgr, unsigned int dwTime, int x, int y, int nXSpeed, int nYSpeed)
 {
 	m_nNumMessages=0;
 	m_nX=m_nY=0;
@@ -115,35 +115,36 @@ SgObject::~SgObject(){
 	
 }
 
-BOOL SgObject::SendMessage(LONG nMsg){
+bool SgObject::SendMessage(int nMsg)
+{
 	if(m_nNumMessages >= MESSAGE_BUFFER_SIZE)return FALSE;
 	//Filter out the message if it's already been sent
 	for(WORD i=0; i<m_nNumMessages; i++)
-		if(nMsg==m_nMessage[i])return FALSE;
+		if(nMsg==m_nMessage[i])return false;
 	//Put message in que
 	m_nMessage[m_nNumMessages]=nMsg;
 	m_nNumMessages++;
 
-	return TRUE;
+	return true;
 }
 
-BOOL SgObject::ProcessMessages(void* lpObjMan){
+bool SgObject::ProcessMessages(void* lpObjMan){
 	//All messages should be processed
 
 	//Clear the message que
 	m_nNumMessages=0;
-	return FALSE;
+	return false;
 }
 
-BOOL SgObject::IsAlive(){
+bool SgObject::IsAlive(){
 	return m_bAlive;
 }
 
-void SgObject::SetAliveState(BOOL bAlive){
+void SgObject::SetAliveState(bool bAlive){
 	m_bAlive=bAlive;
 }
 
-HRESULT SgObject::ProcessAI(SgInputManager* pInput, void* pObjMan, SgTimer* timer, CMapBoard* map)
+void SgObject::ProcessAI(SgInputManager* pInput, void* pObjMan, SgTimer* timer, CMapBoard* map)
 {
 	//SgObjectManager* pObjectMan=(SgObjectManager*)pObjMan;
 	
@@ -154,15 +155,6 @@ HRESULT SgObject::ProcessAI(SgInputManager* pInput, void* pObjMan, SgTimer* time
 	//if input manager exists we use input as intelligence
 	
 	}
-	return S_OK;
-}
-
-BOOL SgObject::LoadObjectSprites(SgSpriteManager* pSpriteMgr){	
-	return TRUE;
-}
-
-BOOL SgObject::CreateObjectModes(DWORD dwTime){
-	return TRUE;
 }
 
 RECT SgObject::GetObjectDim(){
@@ -219,17 +211,16 @@ COLLISIONTYPE SgObject::DetectCollision(SgObject *cObject){
 	return CT_NOCLSN;
 }
 
-BOOL SgObject::SetObjectMode(char szModeName[MAX_SPRITE_NAME_LENGTH], DWORD dwTime){
+void SgObject::SetObjectMode(char szModeName[MAX_SPRITE_NAME_LENGTH], int dwTime){
 	for(int i=1; i<=m_nNumModes; i++){
 		if(strcmp(szModeName, m_sObjectMode[i].szModeName)==0)
-			return SetObjectMode(i, dwTime);
+			SetObjectMode(i, dwTime);
 	}
-	return FALSE;
 }
 
-BOOL SgObject::SetObjectMode(int nNewMode, DWORD dwTime){
+void SgObject::SetObjectMode(int nNewMode, int dwTime){
 	//if the mode hasn't changed we do nothing
-	if(m_nCurrentMode==nNewMode)return FALSE;
+	if(m_nCurrentMode==nNewMode)return;
 
 	//if the mode is out of range we set it to the default mode
 	if(nNewMode>m_nNumModes || nNewMode<1){
@@ -238,7 +229,7 @@ BOOL SgObject::SetObjectMode(int nNewMode, DWORD dwTime){
 	m_nCurrentMode=nNewMode;
 
 	//Now that we have the current mode set we set the appropriate sprites
-	BOOL bNewStatus;
+	bool bNewStatus;
 	for(int i=0; i<m_nNumSprites; i++){
 		bNewStatus=m_sObjectMode[m_nCurrentMode].bActiveSprites[i];
 		if(m_sSpriteData[i].bActive!=bNewStatus){
@@ -247,14 +238,13 @@ BOOL SgObject::SetObjectMode(int nNewMode, DWORD dwTime){
 			m_sSpriteData[i].nLastUpdateTime=dwTime;
 		}
 	}
-	return TRUE;
 }
 
-DWORD SgObject::GetObjectAlign(){
+int SgObject::GetObjectAlign(){
 	return m_sObjectMode[m_nCurrentMode].nType;
 }
 
-BOOL SgObject::CreateMode(BOOL bActiveSprites[MAX_SPRITES_PER_OBJECT], RECT rcObjDim, DWORD nType, char szModeName[MAX_SPRITE_NAME_LENGTH])
+void SgObject::CreateMode(bool bActiveSprites[MAX_SPRITES_PER_OBJECT], RECT rcObjDim, int nType, char szModeName[MAX_SPRITE_NAME_LENGTH])
 {
 	for(int i=0; i<m_nNumSprites; i++)
 		m_sObjectMode[m_nNumModes+1].bActiveSprites[i]=bActiveSprites[i];
@@ -281,7 +271,6 @@ BOOL SgObject::CreateMode(BOOL bActiveSprites[MAX_SPRITES_PER_OBJECT], RECT rcOb
 	strcpy(m_sObjectMode[m_nNumModes+1].szModeName, szModeName);
 	
 	m_nNumModes++;
-	return TRUE;
 }
 
 SPRITEFACE SgObject::GetFace()
@@ -314,17 +303,17 @@ void SgObject::Draw(SgViewPort *vp){
 	#endif //DEBUGRECTS
 }
 
-BOOL SgObject::SetSpeed(int nXSpeed, int nYSpeed){
+bool SgObject::SetSpeed(int nXSpeed, int nYSpeed){
 	SetXSpeed(nXSpeed); SetYSpeed(nYSpeed);
 	return TRUE;
 }
 
-BOOL SgObject::SetXSpeed(int nXSpeed){
+bool SgObject::SetXSpeed(int nXSpeed){
 	m_nXSpeed=nXSpeed;
 	return TRUE;
 }
 
-BOOL SgObject::SetYSpeed(int nYSpeed){
+bool SgObject::SetYSpeed(int nYSpeed){
 	m_nYSpeed=nYSpeed;
 	return TRUE;
 }
@@ -337,9 +326,10 @@ int SgObject::GetY(){
 	return m_nY;
 }
 
-HRESULT SgObject::InitialMovement(SgTimer *timer, int nXSpeed, int nYSpeed){
+void SgObject::InitialMovement(SgTimer *timer, int nXSpeed, int nYSpeed)
+{
 	int xdelta=0, ydelta=0;
-	DWORD time=timer->Time();
+	int time=timer->Time();
 
 	const int MOVESPEEDADJUST=SPEEDADJUST
 
@@ -380,14 +370,13 @@ HRESULT SgObject::InitialMovement(SgTimer *timer, int nXSpeed, int nYSpeed){
 			}
 		}
 	}
-
-	return S_OK;
 }
 
-BOOL SgObject::CollisionWithRect(CMapBoard *map, RECT rect, DWORD nWidth, DWORD nHeight){
+bool SgObject::CollisionWithRect(CMapBoard *map, RECT rect, int nWidth, int nHeight)
+{
 	int i=0, j=0;
-	DWORD dwTileDim=map->GetTileDim();
-	BOOL result=FALSE;
+	int dwTileDim=map->GetTileDim();
+	bool result=FALSE;
 
 	//detect if there is a collision with the specifiect rectangle
 	for(i=rect.left; i <= rect.right; i+=dwTileDim){
@@ -429,15 +418,15 @@ BOOL SgObject::CollisionWithRect(CMapBoard *map, RECT rect, DWORD nWidth, DWORD 
 	written.  I can only imagine what it would be like to create a function
 	like this for a 3D game.
 */
-HRESULT SgObject::DefaultArchAdjust(CMapBoard *map)
+void SgObject::DefaultArchAdjust(CMapBoard *map)
 {
 	//the default move, stops no matter what type of architecture, should
 	//be used as a template for all movements
 
 	//we don't need to do anything if there wasn't any movement
-	if( (m_nDeltaX==0) && (m_nDeltaY==0 )) return S_OK;
+	if( (m_nDeltaX==0) && (m_nDeltaY==0 )) return;
 	//we need the tile width because we can use it to speed up the process
-	DWORD dwTileWidth=map->GetTileDim();
+	int dwTileWidth=map->GetTileDim();
 
 	int nHeight, nWidth;//width and height of the boject
 	nWidth=m_sObjectMode[m_nCurrentMode].rcObjDim.right-m_sObjectMode[m_nCurrentMode].rcObjDim.left;
@@ -627,17 +616,14 @@ HRESULT SgObject::DefaultArchAdjust(CMapBoard *map)
 
 		}
 	}	
-
-	return S_OK;
 }
 
-HRESULT SgObject::ArchAdjust(SgTimer *timer, CMapBoard *map){
+void SgObject::ArchAdjust(SgTimer *timer, CMapBoard *map)
+{
 	//at this point we should call a custom function that is designed for
 	//the specific game.  If there is no outside function we pull off the defult
 	//move
 	DefaultArchAdjust(map);
-
-	return S_OK;
 }
 
 int SgObject::GetXSpeed(){
@@ -648,7 +634,8 @@ int SgObject::GetYSpeed(){
 	return m_nYSpeed;
 }
 
-HRESULT SgObject::Animate(SgTimer *timer, CMapBoard *map, SgInputManager* pInput, void* pObjMan){
+void SgObject::Animate(SgTimer *timer, CMapBoard *map, SgInputManager* pInput, void* pObjMan)
+{
 	int nTempXSpeed=m_nXSpeed;
 	int nTempYSpeed=m_nYSpeed;
 
@@ -687,21 +674,14 @@ HRESULT SgObject::Animate(SgTimer *timer, CMapBoard *map, SgInputManager* pInput
 
 	if((m_nY+rcObject.bottom) > (signed int)(map->GetMapHeight()*map->GetTileDim()))
 		m_nY=map->GetMapHeight()*map->GetTileDim()-rcObject.bottom;
-	
-	return S_OK;
 }
 
-void SgObject::GetDelta(int *DeltaX, int *DeltaY){
-	*DeltaX=m_nDeltaX;
-	*DeltaY=m_nDeltaY;
-}
-
-BOOL SgObject::SetNumSprites(int nNumSprites){
+bool SgObject::SetNumSprites(int nNumSprites){
 	m_nNumSprites=nNumSprites;
 	return TRUE;
 }
 
-BOOL SgObject::SetObjectFace(SPRITEFACE nNewFace){
+bool SgObject::SetObjectFace(SPRITEFACE nNewFace){
 	//if the face is the same we don't need to change anything
 	if(nNewFace==m_nFace)return FALSE;
 	
@@ -713,25 +693,28 @@ BOOL SgObject::SetObjectFace(SPRITEFACE nNewFace){
 	}
 	return TRUE;
 }
-BOOL SgObject::SetPosition(int x, int y){
+bool SgObject::SetPosition(int x, int y){
 	m_nX=x;
 	m_nY=y;
 	return TRUE;
 }
 
 
-HRESULT SgObject::ObtainPointerToSprite(SgSprite* pSprite, int x, int y, int nAnimSpeed, LOOPMODE nLoopMode){
-	HRESULT hr;
-	if(m_nNumSprites>MAX_SPRITES_PER_OBJECT)return E_FAIL;
-	if(SUCCEEDED(hr=ObtainPointerToSprite(m_nNumSprites+1, pSprite, x, y, nAnimSpeed, nLoopMode))){
+bool SgObject::ObtainPointerToSprite(SgSprite* pSprite, int x, int y, int nAnimSpeed, LOOPMODE nLoopMode)
+{
+	if(m_nNumSprites>MAX_SPRITES_PER_OBJECT)return false;
+	bool Res = ObtainPointerToSprite(m_nNumSprites+1, pSprite, x, y, nAnimSpeed, nLoopMode);
+
+	if( Res )
 		m_nNumSprites++;
-		return hr;
-	}else return hr;
+
+	return Res;
 }
 
-HRESULT SgObject::ObtainPointerToSprite(int nIndex, SgSprite* pSprite, int x, int y, int nAnimSpeed, LOOPMODE nLoopMode){
-	if(nIndex<1 || nIndex > MAX_SPRITES_PER_OBJECT)return E_FAIL;
-	if(pSprite==NULL)return E_FAIL;
+bool SgObject::ObtainPointerToSprite(int nIndex, SgSprite* pSprite, int x, int y, int nAnimSpeed, LOOPMODE nLoopMode)
+{
+	if(nIndex<1 || nIndex > MAX_SPRITES_PER_OBJECT)return false;
+	if(pSprite==NULL)return false;
 	//Set the pointer
 	m_pSprite[nIndex-1]=pSprite;
 
@@ -744,11 +727,7 @@ HRESULT SgObject::ObtainPointerToSprite(int nIndex, SgSprite* pSprite, int x, in
 	m_sSpriteData[nIndex-1].bActive=TRUE;
 	m_sSpriteData[nIndex-1].nLoopMode=nLoopMode;
 
-	/*
-	if(m_pSprite[nIndex-1]==NULL)return E_FAIL;
-	else return S_OK;
-	*/
-	return S_OK;
+	return true;
 }
 
 BYTE SgObject::ArchRelative(CMapBoard *map, int x, int y){
@@ -770,13 +749,11 @@ BYTE SgObject::ArchRelative(CMapBoard *map, int x, int y){
 	return map->GetArch((int)x/map->GetTileDim()+1, (int)y/map->GetTileDim()+1);
 }
 
-BOOL SgObject::ArchRelative(
-	CMapBoard* map, 
-	DWORD dwRelativeFlags)
+unsigned __int8 SgObject::ArchRelative(CMapBoard* map, unsigned __int32 dwRelativeFlags)
 {
-	BOOL bArchIsRelative=FALSE;
+	bool bArchIsRelative=FALSE;
 	RECT rcCurrent=m_sObjectMode[m_nCurrentMode].rcObjDim;
-	DWORD dwTileDim=map->GetTileDim();
+	int dwTileDim=map->GetTileDim();
 	int i=0;
 
 	if((dwRelativeFlags&AR_ABOVE)==AR_ABOVE)
@@ -845,7 +822,7 @@ BOOL SgObject::ArchRelative(
 
 }
 
-BOOL SgObject::PreInitialMovement(
+bool SgObject::PreInitialMovement(
 	CMapBoard *map, 
 	int *nXSpeed, 
 	int *nYSpeed)

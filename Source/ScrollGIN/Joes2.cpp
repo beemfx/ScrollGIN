@@ -28,27 +28,27 @@
 class CJoes2Object: public SgObject
 {
 protected:
-	DWORD m_dwCreateTime;
-	DWORD m_dwLastAIUpdate;
+	int m_dwCreateTime;
+	int m_dwLastAIUpdate;
 public:
-	CJoes2Object(SgSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
-	virtual BOOL ProcessMessages(void* lpObjMan);
+	CJoes2Object(SgSpriteManager * pSpriteMgr, int dwTime, int x, int y, int nXSpeed, int nYSpeed);
+	virtual bool ProcessMessages(void* lpObjMan);
 };
 
 class CGoodCopterObject: public CJoes2Object
 {
 protected:
-	DWORD m_dwLastShot;
+	int m_dwLastShot;
 
 	SgObject* m_lpEnemy; //Pointer to target chosen as enemy.
-	BOOL ChooseEnemy(SgObject* lpEnemy); //Chooses which target it would like as enemy.
+	bool ChooseEnemy(SgObject* lpEnemy); //Chooses which target it would like as enemy.
 
-	virtual HRESULT ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *timer, CMapBoard* map);
+	virtual void ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *timer, CMapBoard* map);
 public:
-	CGoodCopterObject(SgSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
+	CGoodCopterObject(SgSpriteManager * pSpriteMgr, int dwTime, int x, int y, int nXSpeed, int nYSpeed);
 	
-	virtual BOOL LoadObjectSprites(SgSpriteManager *pSpriteMgr);
-	virtual BOOL CreateObjectModes(DWORD dwTime);
+	virtual void LoadObjectSprites(SgSpriteManager *pSpriteMgr);
+	virtual void CreateObjectModes(int dwTime);
 };
 
 class CBadCopterObject: public CGoodCopterObject
@@ -56,30 +56,30 @@ class CBadCopterObject: public CGoodCopterObject
 protected:
 
 public:
-	CBadCopterObject(SgSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
+	CBadCopterObject(SgSpriteManager * pSpriteMgr, int dwTime, int x, int y, int nXSpeed, int nYSpeed);
 	
-	virtual BOOL LoadObjectSprites(SgSpriteManager* pSpriteMgr);
-	virtual BOOL CreateObjectModes(DWORD dwTime);
+	virtual void LoadObjectSprites(SgSpriteManager* pSpriteMgr);
+	virtual void CreateObjectModes(int dwTime);
 };
 
 class CGoodMissileObject: public CJoes2Object
 {
 protected:
-	DWORD m_dwLastSmokeTime;
+	int m_dwLastSmokeTime;
 	int m_nLastX;
 	int m_nLastY;
-	virtual HRESULT ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *timer, CMapBoard* map);
+	virtual void ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *timer, CMapBoard* map);
 public:
 	CGoodMissileObject(
 		SgSpriteManager * pSpriteMgr, 
-		DWORD dwTime, 
+		int dwTime, 
 		int x, 
 		int y, 
 		int nXSpeed, 
 		int nYSpeed);
 
-	virtual BOOL LoadObjectSprites(SgSpriteManager *pSpriteMgr);
-	virtual BOOL CreateObjectModes(DWORD dwTime);
+	virtual void LoadObjectSprites(SgSpriteManager *pSpriteMgr);
+	virtual void CreateObjectModes(int dwTime);
 };
 
 class CBadMissileObject: public CGoodMissileObject
@@ -89,21 +89,21 @@ protected:
 public:
 	CBadMissileObject(
 		SgSpriteManager * pSpriteMgr, 
-		DWORD dwTime, 
+		int dwTime, 
 		int x, 
 		int y, 
 		int nXSpeed, 
 		int nYSpeed);
 
-	virtual BOOL LoadObjectSprites(SgSpriteManager *pSpriteMgr);
-	virtual BOOL CreateObjectModes(DWORD dwTime);
+	virtual void LoadObjectSprites(SgSpriteManager *pSpriteMgr);
+	virtual void CreateObjectModes(int dwTime);
 };
 
 class CSmokeObject: public CJoes2Object
 {
 protected:
 
-	virtual HRESULT ProcessAI(
+	virtual void ProcessAI(
 		SgInputManager *pInput, 
 		void* pObjMan, 
 		SgTimer *timer, 
@@ -112,21 +112,21 @@ protected:
 public:
 	CSmokeObject(
 		SgSpriteManager * pSpriteMgr, 
-		DWORD dwTime, 
+		int dwTime, 
 		int x, 
 		int y, 
 		int nXSpeed, 
 		int nYSpeed);
 
-	virtual BOOL LoadObjectSprites(SgSpriteManager *pSpriteMgr);
-	virtual BOOL CreateObjectModes(DWORD dwTime);
+	virtual void LoadObjectSprites(SgSpriteManager *pSpriteMgr);
+	virtual void CreateObjectModes(int dwTime);
 };
 
 class CExplosionObject: public CJoes2Object
 {
 protected:
 
-	virtual HRESULT ProcessAI(
+	virtual void ProcessAI(
 		SgInputManager *pInput, 
 		void* pObjMan, 
 		SgTimer *timer, 
@@ -134,21 +134,21 @@ protected:
 public:
 	CExplosionObject(
 		SgSpriteManager * pSpriteMgr, 
-		DWORD dwTime, 
+		int dwTime, 
 		int x, 
 		int y, 
 		int nXSpeed, 
 		int nYSpeed);
 
-	virtual BOOL LoadObjectSprites(SgSpriteManager *pSpriteMgr);
-	virtual BOOL CreateObjectModes(DWORD dwTime);
+	virtual void LoadObjectSprites(SgSpriteManager *pSpriteMgr);
+	virtual void CreateObjectModes(int dwTime);
 };
 
 ////////////////////////////////////
 /// Joes Copter 2 Object Manager ///
 ////////////////////////////////////
 
-CJoes2ObjMan::CJoes2ObjMan(DWORD dwMaxObjects):
+CJoes2ObjMan::CJoes2ObjMan(int dwMaxObjects):
 SgObjectManager(dwMaxObjects)
 {
 	
@@ -198,21 +198,16 @@ int CJoes2ObjMan::Initialize()
 	return 1;
 }
 
-HRESULT CJoes2ObjMan::CreateObject(
-	const OBJECTTYPE nType, 
-	int x, 
-	int y, 
-	int nXSpeed, 
-	int nYSpeed)
+void CJoes2ObjMan::CreateObject(const OBJECTTYPE nType, int x, int y, int nXSpeed, int nYSpeed)
 {
 	if(m_dwCount>=m_dwMaxObjects)
-		return E_FAIL;
+		return;
 
-	DWORD dwTime=0;
+	int dwTime=0;
 	if(m_pTimer)
 		dwTime=m_pTimer->Time();
 
-	DWORD i=0;
+	int i=0;
 	while(m_ppObject[i]!=NULL)i++;
 
 	switch(nType)
@@ -242,23 +237,21 @@ HRESULT CJoes2ObjMan::CreateObject(
 	}
 	m_pObjectType[i]=nType;
 	m_dwCount++;
-
-	return S_OK;
 }
 
 
-HRESULT CJoes2ObjMan::DetectCollisions()
+void CJoes2ObjMan::DetectCollisions()
 {
-	DWORD i=0, j=0;
-	for(i=0; i<m_dwMaxObjects; i++){
+	for(int i=0; i<m_dwMaxObjects; i++)
+	{
 		if(m_ppObject[i]!=NULL)
 		{
-			for(j=i+1; j<m_dwMaxObjects; j++)
+			for(int j=i+1; j<m_dwMaxObjects; j++)
 			{
 				if(m_ppObject[j]==NULL)
 					continue;
 
-				DWORD dwFirstAlign=0, dwSecondAlign=0;
+				int dwFirstAlign=0, dwSecondAlign=0;
 
 				dwFirstAlign=m_ppObject[i]->GetObjectAlign();
 				dwSecondAlign=m_ppObject[j]->GetObjectAlign();
@@ -266,17 +259,17 @@ HRESULT CJoes2ObjMan::DetectCollisions()
 				//appropriate action depending on type
 				//of collision.
 
-				BOOL bDestruct=FALSE;
+				bool bDestruct=false;
 
 				
 				//If both objects are nondestructive, continue
 				if( ((dwFirstAlign&JC_DESTRUCT)==JC_DESTRUCT) )
-					bDestruct=TRUE;
+					bDestruct=true;
 
 				if( ((dwSecondAlign&JC_DESTRUCT)==JC_DESTRUCT) )
-					bDestruct=TRUE;
+					bDestruct=true;
 				
-				if(bDestruct==FALSE)
+				if(bDestruct==false)
 					continue;
 
 
@@ -310,7 +303,6 @@ HRESULT CJoes2ObjMan::DetectCollisions()
 			}
 		}
 	}
-	return S_OK;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -319,7 +311,7 @@ HRESULT CJoes2ObjMan::DetectCollisions()
 
 CJoes2Object::CJoes2Object(
 	SgSpriteManager * pSpriteMgr, 
-	DWORD dwTime, 
+	int dwTime, 
 	int x, 
 	int y, 
 	int nXSpeed, 
@@ -337,13 +329,13 @@ CJoes2Object::CJoes2Object(
 
 }
 
-BOOL CJoes2Object::ProcessMessages(void* lpObjMan)
+bool CJoes2Object::ProcessMessages(void* lpObjMan)
 {
 	for(WORD i=0; i<m_nNumMessages; i++){
 		switch(m_nMessage[i])
 		{
 		case JM_KILL:
-			m_bAlive=FALSE;
+			m_bAlive=false;
 			break;
 		case JM_SHOOT:
 		{
@@ -385,7 +377,7 @@ BOOL CJoes2Object::ProcessMessages(void* lpObjMan)
 		}
 		case JM_HIT:
 		case JM_EXPLODE:
-			m_bAlive=FALSE;
+			m_bAlive=false;
 			((SgObjectManager*)lpObjMan)->CreateObject(
 				(OBJECTTYPE)JOES2_EXPLOSION, 
 				m_nX, 
@@ -399,7 +391,7 @@ BOOL CJoes2Object::ProcessMessages(void* lpObjMan)
 	}
 	//Clear the message que
 	m_nNumMessages=0;
-	return TRUE;
+	return true;
 }
 
 
@@ -407,7 +399,7 @@ BOOL CJoes2Object::ProcessMessages(void* lpObjMan)
 /// The Joes Copter 2 Good Copter Object ///
 ////////////////////////////////////////////
 
-HRESULT CGoodCopterObject::ProcessAI(
+void CGoodCopterObject::ProcessAI(
 	SgInputManager *pInput, 
 	void* pObjMan, 
 	SgTimer *timer, 
@@ -495,22 +487,16 @@ HRESULT CGoodCopterObject::ProcessAI(
 			break;
 		}
 	}
-	return S_OK;
 }
 
 
-BOOL CGoodCopterObject::LoadObjectSprites(SgSpriteManager* pSpriteMgr)
+void CGoodCopterObject::LoadObjectSprites(SgSpriteManager* pSpriteMgr)
 {
-	if(pSpriteMgr==NULL)
-		return FALSE;
-
 	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("COPTER1")), 0, 19, 150, LP_FORWARD);
 	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("DOWNCOPTER1")), 0, 15, 0, LP_FORWARD);
-
-	return TRUE;
 }
 
-BOOL CGoodCopterObject::CreateObjectModes(DWORD dwTime)
+void CGoodCopterObject::CreateObjectModes(int dwTime)
 {
 	//RECT rcDims={left, top, right, bottom};
 	RECT rcDims;
@@ -518,9 +504,9 @@ BOOL CGoodCopterObject::CreateObjectModes(DWORD dwTime)
 	rcDims.bottom=0;
 	rcDims.left=-34;
 	rcDims.right=34;
-	BOOL bActiveSprites[MAX_SPRITES_PER_OBJECT];
+	bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
 	memset(&bActiveSprites, 0, sizeof(bActiveSprites));
-	bActiveSprites[0]=TRUE;
+	bActiveSprites[0]=true;
 	CreateMode(bActiveSprites, rcDims, JC_GOOD|JC_NONDESTRUCT, TEXT("FLYING"));
 
 	rcDims.top=30;
@@ -528,34 +514,30 @@ BOOL CGoodCopterObject::CreateObjectModes(DWORD dwTime)
 	rcDims.left=-34;
 	rcDims.right=34;
 
-	bActiveSprites[0]=FALSE;
-	bActiveSprites[1]=TRUE;
+	bActiveSprites[0]=false;
+	bActiveSprites[1]=true;
 
 	CreateMode(bActiveSprites, rcDims, JC_NEUTRAL|JC_NONDESTRUCT, TEXT("DEAD"));
 
 	SetObjectMode(1, dwTime);
-	return TRUE;
 }
 
 
 CGoodCopterObject::CGoodCopterObject(
 	SgSpriteManager * pSpriteMgr, 
-	DWORD dwTime,
+	int dwTime,
 	int x, 
 	int y, 
 	int nXSpeed, 
-	int nYSpeed):
-	CJoes2Object(pSpriteMgr, dwTime, x, y, nXSpeed, nYSpeed),
-	m_dwLastShot(0)
+	int nYSpeed
+)
+: CJoes2Object(pSpriteMgr, dwTime, x, y, nXSpeed, nYSpeed)
+, m_dwLastShot(0)
 {
-	//Only create if there is a sprite manager,
-	//otherwise it will get in the way of objects that are based
-	//on this class (CBadCopterObject for instance).
-	if(pSpriteMgr)
-	{
-		LoadObjectSprites(pSpriteMgr);
-		CreateObjectModes(dwTime);
-	}
+	if( !pSpriteMgr )return; //If this is null then we inherited from bad and we want different sprites.
+
+	LoadObjectSprites(pSpriteMgr);
+	CreateObjectModes(dwTime);
 }
 
 ////////////////////////////////
@@ -564,13 +546,13 @@ CGoodCopterObject::CGoodCopterObject(
 
 CBadCopterObject::CBadCopterObject(
 	SgSpriteManager * pSpriteMgr, 
-	DWORD dwTime, 
+	int dwTime, 
 	int x, 
 	int y, 
 	int nXSpeed, 
 	int nYSpeed):
 	CGoodCopterObject(
-		NULL,
+		0,
 		dwTime,
 		x,
 		y,
@@ -582,16 +564,16 @@ CBadCopterObject::CBadCopterObject(
 	SetObjectFace(SF_LEFT);
 }
 
-BOOL CBadCopterObject::CreateObjectModes(DWORD dwTime)
+void CBadCopterObject::CreateObjectModes(int dwTime)
 {
 	RECT rcDims;
 	rcDims.top=36;
 	rcDims.bottom=0;
 	rcDims.left=-34;
 	rcDims.right=34;
-	BOOL bActiveSprites[MAX_SPRITES_PER_OBJECT];
+	bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
 	memset(&bActiveSprites, 0, sizeof(bActiveSprites));
-	bActiveSprites[0]=TRUE;
+	bActiveSprites[0]=true;
 	CreateMode(bActiveSprites, rcDims, JC_BAD|JC_NONDESTRUCT, TEXT("FLYING"));
 
 	rcDims.top=30;
@@ -599,30 +581,25 @@ BOOL CBadCopterObject::CreateObjectModes(DWORD dwTime)
 	rcDims.left=-34;
 	rcDims.right=34;
 
-	bActiveSprites[0]=FALSE;
-	bActiveSprites[1]=TRUE;
+	bActiveSprites[0]=false;
+	bActiveSprites[1]=true;
 
 	CreateMode(bActiveSprites, rcDims, JC_NEUTRAL|JC_NONDESTRUCT, TEXT("DEAD"));
 
 	SetObjectMode(1, dwTime);
-	return TRUE;
 }
 
-BOOL CBadCopterObject::LoadObjectSprites(SgSpriteManager* pSpriteMgr)
+void CBadCopterObject::LoadObjectSprites(SgSpriteManager* pSpriteMgr)
 {
-	if(pSpriteMgr==NULL)
-		return FALSE;
-
 	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("COPTER2")), 0, 19, 150, LP_FORWARD);
 	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("DOWNCOPTER2")), 0, 15, 0, LP_FORWARD);
-	return TRUE;
 }
 
 ///////////////////////////////
 /// The Good Missile Object ///
 ///////////////////////////////
 
-HRESULT CGoodMissileObject::ProcessAI(
+void CGoodMissileObject::ProcessAI(
 	SgInputManager *pInput, 
 	void* pObjMan, 
 	SgTimer *timer, 
@@ -675,12 +652,11 @@ HRESULT CGoodMissileObject::ProcessAI(
 	{
 
 	}
-	return S_OK;
 }
 
 CGoodMissileObject::CGoodMissileObject(
 	SgSpriteManager * pSpriteMgr, 
-	DWORD dwTime, 
+	int dwTime, 
 	int x, 
 	int y, 
 	int nXSpeed, 
@@ -704,29 +680,23 @@ CGoodMissileObject::CGoodMissileObject(
 	if(nXSpeed < 0)
 		m_nFace=SF_LEFT;
 }
-BOOL CGoodMissileObject::LoadObjectSprites(SgSpriteManager *pSpriteMgr)
+void CGoodMissileObject::LoadObjectSprites(SgSpriteManager *pSpriteMgr)
 {
-	if(pSpriteMgr==NULL)
-		return FALSE;
-
 	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("MISSILE2")), 0, 8, 150, LP_FORWARD);
-	return TRUE;
 }
-BOOL CGoodMissileObject::CreateObjectModes(DWORD dwTime)
+void CGoodMissileObject::CreateObjectModes(int dwTime)
 {
 	RECT rcDims;
 	rcDims.top=16;
 	rcDims.bottom=0;
 	rcDims.left=-20;
 	rcDims.right=20;
-	BOOL bActiveSprites[MAX_SPRITES_PER_OBJECT];
+	bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
 	memset(&bActiveSprites, 0, sizeof(bActiveSprites));
-	bActiveSprites[0]=TRUE;
+	bActiveSprites[0]=true;
 	CreateMode(bActiveSprites, rcDims, JC_GOOD|JC_DESTRUCT, TEXT("MISSILE"));
 	
 	SetObjectMode(1, dwTime);
-
-	return TRUE;
 }
 
 //////////////////////////////
@@ -735,7 +705,7 @@ BOOL CGoodMissileObject::CreateObjectModes(DWORD dwTime)
 
 CBadMissileObject::CBadMissileObject(
 	SgSpriteManager* pSpriteMgr, 
-	DWORD dwTime,
+	int dwTime,
 	int x,
 	int y,
 	int nXSpeed,
@@ -751,32 +721,24 @@ CBadMissileObject::CBadMissileObject(
 	LoadObjectSprites(pSpriteMgr);
 	CreateObjectModes(dwTime);
 }
-BOOL CBadMissileObject::LoadObjectSprites(SgSpriteManager *pSpriteMgr)
+void CBadMissileObject::LoadObjectSprites(SgSpriteManager *pSpriteMgr)
 {
-	if(pSpriteMgr==NULL)
-		return FALSE;
-
 	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("MISSILE3")), 0, 8, 150, LP_FORWARD);
-	return TRUE;
 }
-BOOL CBadMissileObject::CreateObjectModes(DWORD dwTime)
+void CBadMissileObject::CreateObjectModes(int dwTime)
 {
 	RECT rcDims;
 	rcDims.top=16;
 	rcDims.bottom=0;
 	rcDims.left=-20;
 	rcDims.right=20;
-	BOOL bActiveSprites[MAX_SPRITES_PER_OBJECT];
+	bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
 	memset(&bActiveSprites, 0, sizeof(bActiveSprites));
-	bActiveSprites[0]=TRUE;
+	bActiveSprites[0]=true;
 	CreateMode(bActiveSprites, rcDims, JC_BAD|JC_DESTRUCT, TEXT("MISSILE"));
 	
 	SetObjectMode(1, dwTime);
-
-	return TRUE;
 }
-
-
 
 ////////////////////////
 /// The smoke object ///
@@ -784,7 +746,7 @@ BOOL CBadMissileObject::CreateObjectModes(DWORD dwTime)
 
 CSmokeObject::CSmokeObject(
 	SgSpriteManager * pSpriteMgr, 
-	DWORD dwTime, 
+	int dwTime, 
 	int x, 
 	int y, 
 	int nXSpeed, 
@@ -801,32 +763,27 @@ CSmokeObject::CSmokeObject(
 	CreateObjectModes(dwTime);
 }
 
-BOOL CSmokeObject::LoadObjectSprites(SgSpriteManager* pSpriteMgr)
+void CSmokeObject::LoadObjectSprites(SgSpriteManager* pSpriteMgr)
 {
-	if(pSpriteMgr==NULL)
-		return FALSE;
-
 	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("SMOKE")), 0, 0, 150, LP_FORWARD);
-	return TRUE;
 }
 
-BOOL CSmokeObject::CreateObjectModes(DWORD dwTime)
+void CSmokeObject::CreateObjectModes(int dwTime)
 {
 	RECT rcDims;
 	rcDims.top=0;
 	rcDims.bottom=0;
 	rcDims.left=0;
 	rcDims.right=0;
-	BOOL bActiveSprites[MAX_SPRITES_PER_OBJECT];
+	bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
 	memset(&bActiveSprites, 0, sizeof(bActiveSprites));
-	bActiveSprites[0]=TRUE;
+	bActiveSprites[0]=true;
 	CreateMode(bActiveSprites, rcDims, JC_NEUTRAL|JC_NONDESTRUCT, TEXT("SMOKE"));
 	
 	SetObjectMode(1, dwTime);
-	return TRUE;
 }
 
-HRESULT CSmokeObject::ProcessAI(
+void CSmokeObject::ProcessAI(
 	SgInputManager* pInput, 
 	void* pObjMan, 
 	SgTimer* timer, 
@@ -842,7 +799,6 @@ HRESULT CSmokeObject::ProcessAI(
 	{
 
 	}
-	return S_OK;
 }
 
 ////////////////////////////
@@ -851,7 +807,7 @@ HRESULT CSmokeObject::ProcessAI(
 
 CExplosionObject::CExplosionObject(
 	SgSpriteManager * pSpriteMgr, 
-	DWORD dwTime, 
+	int dwTime, 
 	int x, 
 	int y, 
 	int nXSpeed, 
@@ -868,7 +824,7 @@ CExplosionObject::CExplosionObject(
 	CreateObjectModes(dwTime);
 }
 
-HRESULT CExplosionObject::ProcessAI(
+void CExplosionObject::ProcessAI(
 	SgInputManager *pInput,
 	void* pObjMan,
 	SgTimer* timer,
@@ -877,32 +833,25 @@ HRESULT CExplosionObject::ProcessAI(
 	
 	if( (timer->Time()-m_dwCreateTime) > 300)
 		SendMessage(JM_KILL);
-	return S_OK;
 }
 
-BOOL CExplosionObject::LoadObjectSprites(
-	SgSpriteManager* pSpriteMgr)
+void CExplosionObject::LoadObjectSprites(SgSpriteManager* pSpriteMgr)
 {
-	if(pSpriteMgr==NULL)
-		return FALSE;
-
 	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("EXPLOSION")), 0, 0, 25, LP_ONCEFORWARD);
-	return TRUE;
 }
 
-BOOL CExplosionObject::CreateObjectModes(DWORD dwTime)
+void CExplosionObject::CreateObjectModes(int dwTime)
 {
 	RECT rcDims;
 	rcDims.top=0;
 	rcDims.bottom=0;
 	rcDims.left=0;
 	rcDims.right=0;
-	BOOL bActiveSprites[MAX_SPRITES_PER_OBJECT];
+	bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
 	memset(&bActiveSprites, 0, sizeof(bActiveSprites));
-	bActiveSprites[0]=TRUE;
+	bActiveSprites[0]=true;
 	CreateMode(bActiveSprites, rcDims, JC_NEUTRAL|JC_NONDESTRUCT, TEXT("EXPLODE"));
 	
 	SetObjectMode(1, dwTime);
-	return TRUE;
 }
 

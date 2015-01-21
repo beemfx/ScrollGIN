@@ -13,12 +13,12 @@ protected:
 
 public:
 	CJoes2ObjMan();
-	CJoes2ObjMan(DWORD dwMax);
+	CJoes2ObjMan(int dwMax);
 
 	virtual ~CJoes2ObjMan();
 	virtual int Initialize();
-	virtual HRESULT CreateObject(const OBJECTTYPE nType, int x, int y, int nXSpeed, int nYSpeed);
-	virtual HRESULT DetectCollisions();
+	virtual void CreateObject(const OBJECTTYPE nType, int x, int y, int nXSpeed, int nYSpeed);
+	virtual void DetectCollisions();
 };
 
 
