@@ -59,15 +59,16 @@ struct BITMAPDATA
 class SgImgLib
 {
 protected:
-	sg_uint32 m_nNumImages;
-	IMAGEDATA *m_pImageData;
-	int       m_BmOffsets[MAX_BITMAPS];
-	HBITMAP   m_hBitmap[MAX_BITMAPS];
-	char      m_szBitmapFilenameA[MAX_BITMAPS][MAX_PATH];
-	sg_uint16 m_nNumBitmaps;
+	sg_uint32  m_nNumImages;
+	IMAGEDATA  *m_pImageData;
+	int        m_BmOffsets[MAX_BITMAPS];
+	HBITMAP    m_hBitmap[MAX_BITMAPS];
+	char       m_szBitmapFilenameA[MAX_BITMAPS][MAX_PATH];
+	sg_uint16  m_nNumBitmaps;
+	const bool m_DontLoadBms;
 	
 public:
-	SgImgLib();
+	SgImgLib( bool DontLoadBms );
 	~SgImgLib();
 
 	sg_uint32 GetNumEntries();
@@ -113,7 +114,7 @@ class SgImgLibArchive: public SgImgLib
 protected:
 	sg_uint32 m_nSelectedEntry;
 public:
-	SgImgLibArchive();
+	SgImgLibArchive( bool DontLoadBms );
 	~SgImgLibArchive();
 
 	bool      LoadArchive(LPCSTR szFilename);
