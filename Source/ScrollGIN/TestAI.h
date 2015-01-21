@@ -58,7 +58,7 @@ public:
 	CTestObjman(DWORD dwMax);
 	CTestObjman(DWORD dwMax, CTimerEx * pTimer);
 	virtual ~CTestObjman();
-	virtual int Initialize(void* lpDD, DWORD dwTransparent);
+	virtual int Initialize();
 	virtual HRESULT CreateObject(const OBJECTTYPE nType, int x, int y, int nXSpeed, int nYSpeed);
 	virtual HRESULT DetectCollisions();
 };

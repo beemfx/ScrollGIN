@@ -65,9 +65,9 @@ void CObjectManager::Release()
 	m_SpriteManager.Release();
 }
 
-HRESULT CObjectManager::LoadSpritesFromFile(LPTSTR szFilename, DWORD dwTransparent)
+HRESULT CObjectManager::LoadSpritesFromFile(LPTSTR szFilename)
 {
-	return m_SpriteManager.CreateSpritesFromFile(dwTransparent, szFilename);
+	return m_SpriteManager.CreateSpritesFromFile(szFilename);
 }
 int CObjectManager::ClearSprites()
 {
@@ -279,7 +279,7 @@ DWORD CObjectManager::GetUserObject(){
 	return m_dwUserObject;
 }
 
-int CObjectManager::Initialize(DWORD dwTransparent)
+int CObjectManager::Initialize()
 {
 	return 1;
 }

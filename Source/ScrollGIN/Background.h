@@ -32,8 +32,8 @@ public:
 	void SetScrollMode(SCROLLMODE nNewMode); //sets current scroll mode
 	bool DrawBackgrounds(int x, int y, DWORD dwWidth, DWORD dwHeight); //draw all backgrounds
 	HRESULT DisplayBackground(int BGLayer, int x, int y, DWORD dwWidth, DWORD dwHeight); //displays chosen background
-	HRESULT LoadBackgroundImage(DWORD dwTransparent, int nImage, TCHAR szBitmapName[MAX_PATH], int nScrollRatio,DWORD dwDeviceWidth,DWORD dwDeviceHeight); //creates a background layer in given slot
-	HRESULT LoadBackgroundImage(DWORD dwTransparent, TCHAR szBitmapName[MAX_PATH], int nScrollRatio,DWORD dwDeviceWidth,DWORD dwDeviceHeight); //creates background layer in next available slot
+	HRESULT LoadBackgroundImage(int nImage, TCHAR szBitmapName[MAX_PATH], int nScrollRatio,DWORD dwDeviceWidth,DWORD dwDeviceHeight); //creates a background layer in given slot
+	HRESULT LoadBackgroundImage(TCHAR szBitmapName[MAX_PATH], int nScrollRatio,DWORD dwDeviceWidth,DWORD dwDeviceHeight); //creates background layer in next available slot
 	SgRendererImage* LetPointer(int nImage); //relases a pointer to a background image
 };
 

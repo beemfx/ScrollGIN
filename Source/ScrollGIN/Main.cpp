@@ -41,7 +41,6 @@ HRESULT GameInit(HWND hWnd, BOOL bWindowed, HINSTANCE hInstance, int nShowCmd)
 	Game.GameInit(
 		640,
 		480,
-		TRANSPARENT_COLOR,
 		new CJoes2ObjMan(256),
 		hWnd);
 

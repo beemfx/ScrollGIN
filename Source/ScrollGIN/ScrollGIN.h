@@ -30,8 +30,6 @@ protected:
 
 	DWORD m_dwWidth;
 	DWORD m_dwHeight;
-
-	DWORD m_dwTransparentColor;
 public:
 	CScrollGINGame();
 	~CScrollGINGame();
@@ -39,7 +37,6 @@ public:
 	int GameInit(
 		DWORD dwWidth, 
 		DWORD dwHeight,
-		DWORD dwTransparentColor, 
 		CObjectManager* lpObjMan, 
 		HWND hwnd);
 

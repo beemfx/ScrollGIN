@@ -26,11 +26,9 @@ CJoes2ObjMan::~CJoes2ObjMan()
 	
 }
 
-int CJoes2ObjMan::Initialize(DWORD dwTransparent)
+int CJoes2ObjMan::Initialize()
 {
-	if(FAILED(LoadSpritesFromFile(
-		TEXT("JoesSprites.ilb"),
-		dwTransparent)))
+	if(FAILED(LoadSpritesFromFile(TEXT("JoesSprites.ilb"))))
 	{
 		return 0;
 	}

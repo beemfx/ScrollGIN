@@ -30,7 +30,6 @@
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 #define COLOR_DEPTH 16
-#define TRANSPARENT_COLOR RGB(255, 0, 255)
 
 
 //Custom DataTypes

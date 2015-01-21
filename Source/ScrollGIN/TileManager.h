@@ -27,9 +27,9 @@ public:
 	///tiles to the database.                                   ///
 	///////////////////////////////////////////////////////////////
 	void Release();
-	HRESULT CreateTilesFromLibrary(DWORD dwTransparent, TCHAR lpLibraryFilename[MAX_PATH], CMapBoard *map);  
+	HRESULT CreateTilesFromLibrary(TCHAR lpLibraryFilename[MAX_PATH], CMapBoard *map);  
 									//creates a set of tiles from a library, starting with first reference
-	HRESULT CreateTilesFromLibrary(DWORD dwTransparent, int reference, TCHAR lpLibraryFilename[MAX_PATH], CMapBoard *map);
+	HRESULT CreateTilesFromLibrary(int reference, TCHAR lpLibraryFilename[MAX_PATH], CMapBoard *map);
 									//creates a set of tiles from a libraray, starting with the chosen reference.
 	
 	////////////////////////////////////////////////////

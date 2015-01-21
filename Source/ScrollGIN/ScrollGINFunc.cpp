@@ -48,7 +48,6 @@ BOOL DrawMapBoard(
 
 BOOL LoadMapBoard(
 	LPTSTR szFilename,
-	DWORD dwTransparentColor,
 	DWORD dwScreenWidth,
 	DWORD dwScreenHeight,
 	CMapBoard * pMap,
@@ -67,11 +66,11 @@ BOOL LoadMapBoard(
 	
 	//get library and load it
 	pTileMgr->ClearTileDatabase();
-	if(FAILED(pTileMgr->CreateTilesFromLibrary(dwTransparentColor, szLibraryName, pMap)))bResult=FALSE;
+	if(FAILED(pTileMgr->CreateTilesFromLibrary(szLibraryName, pMap)))bResult=FALSE;
 
 	//get background and load it
 	pMap->GetBGName(szBGName);
-	pBG->LoadBackgroundImage(dwTransparentColor, szBGName, 2, dwScreenWidth, dwScreenHeight);
+	pBG->LoadBackgroundImage(szBGName, 2, dwScreenWidth, dwScreenHeight);
 
 	return bResult;
 }

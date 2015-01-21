@@ -20,7 +20,6 @@ BOOL DrawMapBoard(
 
 BOOL LoadMapBoard(
 	LPTSTR szFilename, 
-	DWORD dwTransparentColor,
 	DWORD dwScreenWidth,
 	DWORD dwScreenHeight,
 	CMapBoard * pMap, 

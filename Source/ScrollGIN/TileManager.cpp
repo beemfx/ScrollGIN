@@ -26,7 +26,7 @@ CSTileManager::~CSTileManager(void){
 }
 
 //creates many tile surfaces starting with chosen reference from a library
-HRESULT CSTileManager::CreateTilesFromLibrary(DWORD dwTransparent, int reference, TCHAR lpLibraryFilename[MAX_PATH], CMapBoard *map){
+HRESULT CSTileManager::CreateTilesFromLibrary(int reference, TCHAR lpLibraryFilename[MAX_PATH], CMapBoard *map){
 	//This will use a library to call CreateTilesFromFile functions
 	CImageArchive ILibrary;
 
@@ -76,8 +76,8 @@ HRESULT CSTileManager::CreateTilesFromLibrary(DWORD dwTransparent, int reference
 
 
 //creates many tile surfaces starting with first reference from a library
-HRESULT CSTileManager::CreateTilesFromLibrary(DWORD dwTransparent, TCHAR lpLibraryFilename[MAX_PATH], CMapBoard *map){
-	if(SUCCEEDED(CreateTilesFromLibrary(dwTransparent, m_iCurrentReference+1, lpLibraryFilename, map))){
+HRESULT CSTileManager::CreateTilesFromLibrary(TCHAR lpLibraryFilename[MAX_PATH], CMapBoard *map){
+	if(SUCCEEDED(CreateTilesFromLibrary(m_iCurrentReference+1, lpLibraryFilename, map))){
 		return S_OK;
 	}else return E_FAIL;
 }

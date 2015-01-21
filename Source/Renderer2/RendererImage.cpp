@@ -1,6 +1,8 @@
 #include "RendererImage.h"
 #include <ddraw.h>
 
+static const DWORD RENDER_IMAGE_TRANSPARENT_COLOR = 0xFFFF00FF;
+
 struct SgRendererImage::sgData
 {
 	IDirectDrawSurface7*       Surface;
@@ -31,7 +33,7 @@ SgRendererImage::SgRendererImage( const sgRendererImageCreateParms* CreateParms 
 
 	//Set transparent color 
 	DDCOLORKEY ddck;
-	ddck.dwColorSpaceLowValue = ddck.dwColorSpaceHighValue = 0xFF0000FF;
+	ddck.dwColorSpaceLowValue = ddck.dwColorSpaceHighValue = RENDER_IMAGE_TRANSPARENT_COLOR;
 	m_D->Surface->SetColorKey(DDCKEY_SRCBLT, &ddck);
 
 	Restore();
