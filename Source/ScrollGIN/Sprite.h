@@ -45,7 +45,7 @@ public:
 	void Destroy(); //releases the surfaces of the sprite
 	int  GetNumFrames(LOOPMODE nLoopMode); //Returns number of frames in sprite depending on loop mode
 	void NameSprite(const char* szSpriteName); //names the sprite for reference, no more than 32 characters
-	void GetSpriteName(char szSpriteName[MAX_SPRITE_NAME_LENGTH+1]); //retreives the naem of the sprite for reference
+	void GetSpriteName( char* Out , size_t MaxOut ); //retreives the naem of the sprite for reference
 private:
 	bool CreateNextSprite(int nFrame, HBITMAP hBitmap,int nWidth, int nHeight, int nFX,int nFY, int nFWidth, int nFHeight);//creaet sprite fraem from bitmap
 };

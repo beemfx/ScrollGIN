@@ -18,6 +18,9 @@
     <Filter Include="Renderer2">
       <UniqueIdentifier>{aa410ad1-2e0e-4282-926c-7ac31a52e7ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="img_lib">
+      <UniqueIdentifier>{bccf1deb-4047-48dc-9b30-0cc543d1e838}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Background.cpp">
@@ -85,6 +88,18 @@
     </ClCompile>
     <ClCompile Include="..\Renderer2\RendererImage.cpp">
       <Filter>Renderer2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\img_lib\img_bmp.c">
+      <Filter>img_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\img_lib\img_cb.c">
+      <Filter>img_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\img_lib\img_lib.c">
+      <Filter>img_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\img_lib\img_tga.c">
+      <Filter>img_lib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +170,18 @@
     </ClInclude>
     <ClInclude Include="..\Renderer2\RendererImage.h">
       <Filter>Renderer2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\img_lib\img_lib.h">
+      <Filter>img_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\img_lib\img_lib_types.h">
+      <Filter>img_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\img_lib\img_private.h">
+      <Filter>img_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="SgCommon.h">
+      <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -268,7 +268,7 @@ void SgObject::CreateMode(bool bActiveSprites[MAX_SPRITES_PER_OBJECT], RECT rcOb
 	m_sObjectMode[m_nNumModes+1].nType=nType;
 
 	m_sObjectMode[m_nNumModes+1].rcObjDim=rcObjDim;
-	strcpy(m_sObjectMode[m_nNumModes+1].szModeName, szModeName);
+	strcpy_s( m_sObjectMode[m_nNumModes+1].szModeName , countof(m_sObjectMode[m_nNumModes+1].szModeName) , szModeName );
 	
 	m_nNumModes++;
 }
@@ -357,9 +357,12 @@ void SgObject::InitialMovement(SgTimer *timer, int nXSpeed, int nYSpeed)
 	m_nDeltaY=ydelta;
 
 	//animate the sprites
-	for(int i=0; i<m_nNumSprites; i++){
-		if(m_sSpriteData[i].bActive==TRUE){
-			if((timer->Time()-m_sSpriteData[i].nLastUpdateTime)>m_sSpriteData[i].nAnimationSpeed){
+	for(int i=0; i<m_nNumSprites; i++)
+	{
+		if(m_sSpriteData[i].bActive==TRUE)
+		{
+			if(static_cast<int>((timer->Time()-m_sSpriteData[i].nLastUpdateTime))>m_sSpriteData[i].nAnimationSpeed)
+			{
 				m_sSpriteData[i].nLastUpdateTime=timer->Time();// just setting to this to the current time isn't the best way because the animation may be off by a few millisecons
 				m_sSpriteData[i].nCurrentFrame++;
 				if(m_sSpriteData[i].nCurrentFrame>m_sSpriteData[i].nNumFrames){
