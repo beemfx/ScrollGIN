@@ -12,7 +12,7 @@
 HBITMAP LoadBitmapOffset(const char szFilename[MAX_PATH], int nOffset)
 {
 	HANDLE hFile   = CreateFileA(szFilename, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
-	DWORD FileSize = GetFileSize( hFile , NULL );
+	sg_uint32 FileSize = GetFileSize( hFile , NULL );
 	if(hFile==INVALID_HANDLE_VALUE)return NULL;
 
 	unsigned __int8* FileData = malloc( FileSize );
@@ -22,7 +22,7 @@ HBITMAP LoadBitmapOffset(const char szFilename[MAX_PATH], int nOffset)
 		return NULL;
 	}
 	SetFilePointer( hFile , 0, NULL, FILE_BEGIN );
-	DWORD SizeRead = 0;
+	sg_uint32 SizeRead = 0;
 	BOOL ReadSucc = ReadFile( hFile , FileData , FileSize, &SizeRead , NULL );
 
 	if( !ReadSucc || SizeRead != FileSize )
@@ -102,7 +102,7 @@ BOOL TransparentBlt2(
 	int nYOriginSrc, 
 	int nWidthSrc, 
 	int nHeightSrc,
-	DWORD crTransparent)
+	sg_uint32 crTransparent)
 {	
 	HBITMAP hTileBitmap;
 	HDC hdcTileBitmap;
