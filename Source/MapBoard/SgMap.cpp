@@ -1,29 +1,203 @@
 /*
-	EditMapboard.cpp - functions for CEditMapBoard class, see
-	header for information about each function.
+	Mapboard.cpp - Functions for SgMap class.
 
 	Copyright (c) 2002, Blaine Myers
 */
-#include "mapboard.h"
-#include <windows.h>
-#include <stdio.h>
 
-void CEditMapBoard::ClearArch()
+#include "SgMap.h"
+#include <windows.h>
+
+SgMap::SgMap()
+{
+	m_pTile=new BYTE;
+	m_pArch=new BYTE;
+	m_pObject=new BYTE;
+
+	m_nMapWidth=m_nMapHeight=1;
+	m_dwTileDim=MAP_TILEDIM;
+}
+
+sg_uint32 SgMap::GetTileDim()
+{
+	return m_dwTileDim;
+}
+
+sg_uint32 SgMap::SetTileDim(sg_uint32 dwDim)
+{
+	sg_uint32 dwTemp;
+	dwTemp=m_dwTileDim;
+	m_dwTileDim=dwDim;
+	return dwTemp;
+}
+
+BYTE SgMap::GetArchType(int x, int y)
+{
+	if(x<1||x>m_nMapWidth)return 0x00;
+	if(y<1||y>m_nMapHeight)return 0x00;
+	
+	BYTE nByte=m_pArch[CoordToPos(x, y)];
+	nByte=nByte&0xf0;
+	nByte=nByte>>4;
+	return nByte;
+}
+
+BYTE SgMap::GetArchPiece(int x, int y)
+{ 
+	if(x<1||x>m_nMapWidth)return 0x00;
+	if(y<1||y>m_nMapHeight)return 0x00;
+
+	BYTE nByte=m_pArch[CoordToPos(x, y)];
+	nByte=nByte&0x0f;
+	return (ARCHTYPE)nByte;
+}
+
+SgMap::~SgMap()
+{
+	SAFE_DELETE_ARRAY(m_pTile);
+	SAFE_DELETE_ARRAY(m_pArch);
+	SAFE_DELETE_ARRAY(m_pObject);
+}
+
+const char* SgMap::GetLibraryName()const
+{
+	return m_lpLibraryFilenameA;
+}
+
+
+const char* SgMap::GetBGName()const
+{
+	return m_lpBGFilenameA;
+}
+
+sg_uint16 SgMap::GetMapWidth(){
+	return m_nMapWidth;
+}
+
+sg_uint16 SgMap::GetMapHeight(){
+	return m_nMapHeight;
+}
+
+sg_uint8 SgMap::GetTile(int x, int y){
+	if(x<1||x>m_nMapWidth)return 0;
+	if(y<1||y>m_nMapHeight)return 0;
+	return m_pTile[CoordToPos(x, y)];
+}
+
+sg_uint8 SgMap::GetArch(int x, int y){
+	if(x<1||x>m_nMapWidth)return 0;
+	if(y<1||y>m_nMapHeight)return 0;
+	return m_pArch[CoordToPos(x, y)];
+}
+
+sg_uint8 SgMap::GetObj(int x, int y){
+	if(x<1||x>m_nMapWidth)return 0;
+	if(y<1||y>m_nMapHeight)return 0;
+	return m_pObject[CoordToPos(x, y)];
+}
+
+sg_uint32 SgMap::CoordToPos(int x, int y){
+	if(x<1||x>m_nMapWidth)return 0;
+	if(y<1||y>m_nMapHeight)return 0;
+	return y+m_nMapHeight*(x-1)-1;
+}
+
+void SgMap::ClearMap(){
+	//Delete the map data
+	SAFE_DELETE_ARRAY(m_pTile);
+	SAFE_DELETE_ARRAY(m_pArch);
+	SAFE_DELETE_ARRAY(m_pObject);
+	
+	//Set dimensions to 0
+	m_nMapWidth=m_nMapHeight=0;
+
+	//nullify the filenames
+	m_lpMapFilenameA[0]=m_lpLibraryFilenameA[0]=m_lpBGFilenameA[0]=NULL;
+}
+
+bool SgMap::LoadMap(sg_cpstr lpMapFilename)
+{
+	HANDLE hFile;
+	//Open the file
+	hFile=CreateFileA(lpMapFilename, GENERIC_READ, FILE_SHARE_READ, (LPSECURITY_ATTRIBUTES)NULL,
+							OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, (HANDLE)NULL);
+	if(hFile==INVALID_HANDLE_VALUE)return false;
+	
+	DWORD dwBytesRead;
+	//Read Header First
+	MAPHEADER sMapHeader;
+	
+	if(!ReadFile(hFile, &sMapHeader, sizeof(sMapHeader), &dwBytesRead, NULL)){
+		CloseHandle(hFile);return false;
+	}
+
+	//Check for valid file
+	if(sMapHeader.wType!=*(sg_uint16*)"SM"){
+		CloseHandle(hFile);return false;
+	}
+
+	if(sMapHeader.nVersion!=1){
+		CloseHandle(hFile);return false;
+	}
+	
+	//We will now assume that it is a valid file, which may not necessarily be true
+	
+	//In case there is a current map loaded lets clear it
+	ClearMap();
+	//Lets prepare the data buffers
+	m_pTile=new BYTE[sMapHeader.lNumTiles];
+	m_pArch=new BYTE[sMapHeader.lNumTiles];
+	m_pObject=new BYTE[sMapHeader.lNumTiles];
+
+	sg_char16 szTempLibName[MAX_PATH];
+	sg_char16 szTempBGName[MAX_PATH];
+	
+	//Read and convert lib filename
+	ReadFile(hFile, szTempLibName, sMapHeader.lLibraryNameSize, &dwBytesRead, NULL);
+	WideCharToMultiByte(CP_ACP, 0, szTempLibName, sMapHeader.lLibraryNameSize/sizeof(sg_char16), m_lpLibraryFilenameA, MAX_PATH, NULL, NULL);
+	
+	//Read and convert bg filename
+	ReadFile(hFile, szTempBGName, sMapHeader.lBGNameSize, &dwBytesRead, NULL);
+	WideCharToMultiByte(CP_ACP, 0, szTempBGName, sMapHeader.lBGNameSize/sizeof(sg_char16), m_lpBGFilenameA, MAX_PATH, NULL, NULL);
+	//#endif //unicode
+
+	//Read the tile data
+	ReadFile(hFile, m_pTile, sMapHeader.lTileDataSize, &dwBytesRead, NULL);
+	//Read the architecture data
+	ReadFile(hFile, m_pArch, sMapHeader.lArchDataSize, &dwBytesRead, NULL);
+	//Read the object data
+	ReadFile(hFile, m_pObject, sMapHeader.lObjectDataSize, &dwBytesRead, NULL);
+
+	//Prepare the variables
+	m_nMapWidth=sMapHeader.nMapWidth;
+	m_nMapHeight=sMapHeader.nMapHeight;
+	strcpy_s(m_lpMapFilenameA, countof(m_lpMapFilenameA), lpMapFilename);
+
+
+	CloseHandle(hFile);
+	return true;
+}
+
+
+/***************************************************************************
+	SgMapEdit  - An editable map.
+***************************************************************************/
+
+void SgMapEdit::ClearArch()
 {
 	ZeroMemory(m_pArch, sizeof(*m_pArch)*m_nMapWidth*m_nMapHeight);
 }
 
-void CEditMapBoard::ClearTile()
+void SgMapEdit::ClearTile()
 {
 	ZeroMemory(m_pTile, sizeof(*m_pTile)*m_nMapWidth*m_nMapHeight);
 }
 
-void CEditMapBoard::ClearObject()
+void SgMapEdit::ClearObject()
 {
 	ZeroMemory(m_pObject, sizeof(*m_pObject)*m_nMapWidth*m_nMapHeight);
 }
 
-bool CEditMapBoard::SetTile(int x, int y, sg_uint8 nNewValue)
+bool SgMapEdit::SetTile(int x, int y, sg_uint8 nNewValue)
 {
 	if(x<0||x>m_nMapWidth)return false;
 	if(y<0||y>m_nMapHeight)return false;
@@ -35,7 +209,7 @@ bool CEditMapBoard::SetTile(int x, int y, sg_uint8 nNewValue)
 	return true;
 }
 
-bool CEditMapBoard::SetArch(int x, int y, sg_uint8 nNewValue)
+bool SgMapEdit::SetArch(int x, int y, sg_uint8 nNewValue)
 {
 	if(x<0||x>m_nMapWidth)return false;
 	if(y<0||y>m_nMapWidth)return false;
@@ -47,7 +221,7 @@ bool CEditMapBoard::SetArch(int x, int y, sg_uint8 nNewValue)
 	return true;
 }
 
-BYTE CEditMapBoard::GetArchSmart(int x, int y){
+BYTE SgMapEdit::GetArchSmart(int x, int y){
 	if(x<0||x>m_nMapWidth)return 0;
 	if(y<0||y>m_nMapWidth)return 0;
 
@@ -66,7 +240,7 @@ BYTE CEditMapBoard::GetArchSmart(int x, int y){
 	else return 0;
 }
 
-bool CEditMapBoard::SetArchSmart(int x, int y, sg_uint8 nNewValue)
+bool SgMapEdit::SetArchSmart(int x, int y, sg_uint8 nNewValue)
 {
 	if(x<0||x>m_nMapWidth)return false;
 	if(y<0||y>m_nMapWidth)return false;
@@ -119,7 +293,7 @@ bool CEditMapBoard::SetArchSmart(int x, int y, sg_uint8 nNewValue)
 	return false;
 }
 
-bool CEditMapBoard::SetObj(int x, int y, sg_uint8 nNewValue)
+bool SgMapEdit::SetObj(int x, int y, sg_uint8 nNewValue)
 {
 	if(x<0||x>m_nMapWidth)return false;
 	if(y<0||y>m_nMapWidth)return false;
@@ -131,7 +305,7 @@ bool CEditMapBoard::SetObj(int x, int y, sg_uint8 nNewValue)
 	return true;
 }
 
-bool CEditMapBoard::GenerateNewMap(int nWidth, int nHeight, sg_cpstr lpLibFilename, sg_cpstr lpBGFilename)
+bool SgMapEdit::GenerateNewMap(int nWidth, int nHeight, sg_cpstr lpLibFilename, sg_cpstr lpBGFilename)
 {
 	if(nWidth<1)return false;
 	if(nHeight<1)return false;
@@ -173,7 +347,7 @@ bool CEditMapBoard::GenerateNewMap(int nWidth, int nHeight, sg_cpstr lpLibFilena
 }
 
 
-bool CEditMapBoard::SaveMap(sg_cpstr lpMapFilename)
+bool SgMapEdit::SaveMap(sg_cpstr lpMapFilename)
 {
 	HANDLE hFile;
 	hFile=CreateFileA(lpMapFilename, GENERIC_WRITE, FILE_SHARE_WRITE, (LPSECURITY_ATTRIBUTES)NULL,
@@ -228,17 +402,17 @@ bool CEditMapBoard::SaveMap(sg_cpstr lpMapFilename)
 	return true;
 }
 
-void CEditMapBoard::ChangeBackground(sg_cpstr lpBackgroudFilename)
+void SgMapEdit::ChangeBackground(sg_cpstr lpBackgroudFilename)
 {
 	strcpy_s(m_lpBGFilenameA, countof(m_lpBGFilenameA), lpBackgroudFilename);
 }
 
-void CEditMapBoard::ChangeLibrary(sg_cpstr lpLibraryFilename)
+void SgMapEdit::ChangeLibrary(sg_cpstr lpLibraryFilename)
 {
 	strcpy_s(m_lpLibraryFilenameA, countof(m_lpLibraryFilenameA), lpLibraryFilename);
 }
 
-bool CEditMapBoard::ChangeMapDimensions(int nNewWidth, int nNewHeight)
+bool SgMapEdit::ChangeMapDimensions(int nNewWidth, int nNewHeight)
 {
 	if( (nNewWidth<1) || (nNewHeight<1) )return false;
 	

@@ -6,7 +6,7 @@
 #ifndef __OBJMAN_H__
 #define __OBJMAN_H__
 
-#include "../MapBoard/Mapboard.h"
+#include "Mapboard/SgMap.h"
 #include "Object.h"
 #include "Timer.h"
 #include "View.h"
@@ -37,7 +37,7 @@ public:
 
 	virtual int Initialize();
 
-	void Update( CMapBoard *map , SgViewPort *viewport , SgInputManager* pInput );
+	void Update( SgMap *map , SgViewPort *viewport , SgInputManager* pInput );
 	void Draw( SgViewPort *viewport ); //Animate all the objects and draw them
 
 	void ClearObjects(); //clear all objects from database

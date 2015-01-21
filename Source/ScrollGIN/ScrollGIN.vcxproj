@@ -139,8 +139,7 @@
     <ClCompile Include="..\img_lib\img_cb.c" />
     <ClCompile Include="..\img_lib\img_lib.c" />
     <ClCompile Include="..\img_lib\img_tga.c" />
-    <ClCompile Include="..\MapBoard\EditMapboard.cpp" />
-    <ClCompile Include="..\MapBoard\Mapboard.cpp" />
+    <ClCompile Include="..\MapBoard\SgMap.cpp" />
     <ClCompile Include="..\Renderer2\Renderer.cpp" />
     <ClCompile Include="..\Renderer2\RendererImage.cpp" />
     <ClCompile Include="Background.cpp">
@@ -242,7 +241,7 @@
     <ClInclude Include="..\img_lib\img_lib.h" />
     <ClInclude Include="..\img_lib\img_lib_types.h" />
     <ClInclude Include="..\img_lib\img_private.h" />
-    <ClInclude Include="..\MapBoard\Mapboard.h" />
+    <ClInclude Include="..\MapBoard\SgMap.h" />
     <ClInclude Include="..\Renderer2\Renderer.h" />
     <ClInclude Include="..\Renderer2\RendererImage.h" />
     <ClInclude Include="Background.h" />

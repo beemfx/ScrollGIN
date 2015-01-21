@@ -65,12 +65,6 @@
     <ClCompile Include="view.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\MapBoard\EditMapboard.cpp">
-      <Filter>MapBoard</Filter>
-    </ClCompile>
-    <ClCompile Include="..\MapBoard\Mapboard.cpp">
-      <Filter>MapBoard</Filter>
-    </ClCompile>
     <ClCompile Include="..\ImageLib\Bitmap.c">
       <Filter>ImageLib</Filter>
     </ClCompile>
@@ -100,6 +94,9 @@
     </ClCompile>
     <ClCompile Include="..\img_lib\img_tga.c">
       <Filter>img_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MapBoard\SgMap.cpp">
+      <Filter>MapBoard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -147,9 +144,6 @@
     <ClInclude Include="Timer.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\MapBoard\Mapboard.h">
-      <Filter>MapBoard</Filter>
-    </ClInclude>
     <ClInclude Include="..\ImageLib\bitmapex.h">
       <Filter>ImageLib</Filter>
     </ClInclude>
@@ -176,6 +170,9 @@
     </ClInclude>
     <ClInclude Include="GameConfig.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MapBoard\SgMap.h">
+      <Filter>MapBoard</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -13,7 +13,7 @@
 
 #include "ConstLibrary.h"
 #include "../ImageLib/ImageLib.h"
-#include "../MapBoard/Mapboard.h"
+#include "../MapBoard/SgMap.h"
 #include "resource.h"
 #include "defines.h"
 #include "registry.h"
@@ -31,7 +31,7 @@
 #define VERSIONTEXT TEXT("version x.xx  ANSI")
 #endif //unicode
 
-CEditMapBoard g_cEditMapboard;
+SgMapEdit g_cEditMapboard;
 CImageArchive ITileArchive;
 CConstantArchive g_cArchLibrary(MAKEINTRESOURCE(IDB_ARCHTILES), 28, MAP_TILEDIM, MAP_TILEDIM);
 

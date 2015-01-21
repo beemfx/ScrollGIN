@@ -43,7 +43,7 @@ protected:
 	SgObject* m_lpEnemy; //Pointer to target chosen as enemy.
 	bool ChooseEnemy(SgObject* lpEnemy); //Chooses which target it would like as enemy.
 
-	virtual void ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *timer, CMapBoard* map);
+	virtual void ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *timer, SgMap* map);
 public:
 	CGoodCopterObject(SgSpriteManager * pSpriteMgr, int dwTime, int x, int y, int nXSpeed, int nYSpeed);
 	
@@ -68,7 +68,7 @@ protected:
 	int m_dwLastSmokeTime;
 	int m_nLastX;
 	int m_nLastY;
-	virtual void ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *timer, CMapBoard* map);
+	virtual void ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *timer, SgMap* map);
 public:
 	CGoodMissileObject(
 		SgSpriteManager * pSpriteMgr, 
@@ -107,7 +107,7 @@ protected:
 		SgInputManager *pInput, 
 		void* pObjMan, 
 		SgTimer *timer, 
-		CMapBoard* map);
+		SgMap* map);
 
 public:
 	CSmokeObject(
@@ -130,7 +130,7 @@ protected:
 		SgInputManager *pInput, 
 		void* pObjMan, 
 		SgTimer *timer, 
-		CMapBoard* map);
+		SgMap* map);
 public:
 	CExplosionObject(
 		SgSpriteManager * pSpriteMgr, 
@@ -403,7 +403,7 @@ void CGoodCopterObject::ProcessAI(
 	SgInputManager *pInput, 
 	void* pObjMan, 
 	SgTimer *timer, 
-	CMapBoard* map)
+	SgMap* map)
 {
 	#define MOVEXSPEED 10
 	#define MOVEYSPEED 10
@@ -603,7 +603,7 @@ void CGoodMissileObject::ProcessAI(
 	SgInputManager *pInput, 
 	void* pObjMan, 
 	SgTimer *timer, 
-	CMapBoard* map)
+	SgMap* map)
 {
 	if(pInput==NULL)
 	{
@@ -787,7 +787,7 @@ void CSmokeObject::ProcessAI(
 	SgInputManager* pInput, 
 	void* pObjMan, 
 	SgTimer* timer, 
-	CMapBoard* map)
+	SgMap* map)
 {
 	if(pInput==NULL)
 	{
@@ -828,7 +828,7 @@ void CExplosionObject::ProcessAI(
 	SgInputManager *pInput,
 	void* pObjMan,
 	SgTimer* timer,
-	CMapBoard* map)
+	SgMap* map)
 {
 	
 	if( (timer->Time()-m_dwCreateTime) > 300)

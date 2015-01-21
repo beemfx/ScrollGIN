@@ -20,7 +20,7 @@ protected:
 	SgTimer          m_Timer;
 	SgViewPort       m_Viewport;
 	SgInputManager   m_Input;
-	CMapBoard        m_Mapboard;
+	SgMap        m_Mapboard;
 	SgBackground     m_Background;
 	SgObjectManager* m_lpObjectManager;
 	bool             m_bInitialized;
