@@ -41,11 +41,7 @@ int SgScrollGINGame::Render()
 	return 1;
 }
 
-int SgScrollGINGame::GameInit(
-	DWORD dwWidth, 
-	DWORD dwHeight, 
-	SgObjectManager* lpObjMan, 
-	HWND hwnd)
+int SgScrollGINGame::Init(DWORD dwWidth, DWORD dwHeight, SgObjectManager* lpObjMan, HWND hwnd)
 {
 	if(m_bInitialized)
 		return 0;
@@ -83,8 +79,8 @@ int SgScrollGINGame::LoadMap(LPTSTR szFilename)
 	m_Viewport.force_position(0, 0);
 	
 	//get library and load it
-	m_TileManager.ClearTileDatabase();
-	if(FAILED(m_TileManager.CreateTilesFromLibrary(szLibraryName, &m_Mapboard)))bResult=FALSE;
+	m_TileManager.Clear();
+	m_TileManager.LoadLib(szLibraryName, &m_Mapboard);
 
 	//get background and load it
 	m_Mapboard.GetBGName(szBGName);
@@ -95,10 +91,12 @@ int SgScrollGINGame::LoadMap(LPTSTR szFilename)
 
 int SgScrollGINGame::Release()
 {
-	m_TileManager.Release();
-	m_Background.Release();
+	m_TileManager.Clear();
+	m_Background.Destroy();
 	if(m_lpObjectManager)
-		m_lpObjectManager->Release();
+	{
+		m_lpObjectManager->ClearSprites();
+	}
 
 	return 1;
 }
@@ -147,7 +145,7 @@ void SgScrollGINGame::DrawMapBoard()
 
 	for(int x=nXStart; x<=nXEnd; x++){
 		for(int y=nYStart; y<=nYEnd; y++){
-			m_TileManager.PlaceTile(
+			m_TileManager.Draw(
 				m_Mapboard.GetTile(x, y), 
 				m_Viewport.screenX(x*m_Mapboard.GetTileDim()-m_Mapboard.GetTileDim()), 
 				m_Viewport.screenY(y*m_Mapboard.GetTileDim()-m_Mapboard.GetTileDim()));

@@ -10,6 +10,15 @@ void TestCreate(void* lpDD, DWORD dwTrans, SgObjectManager* lpObjMan)
 	//This function is merely a test to demonstrate how to create a sprite from data
 	char szImageName[] = TEXT("freedom sprites2.bmp");
 	char szImage2Name[] = TEXT("sprites.bmp");
+	struct SPRITECREATESTRUCT
+	{
+		int nFX;
+		int nFY;
+		int nFWidth;
+		int nFHeight;
+		int nWidth;
+		int nHeight;
+	};
 	SPRITECREATESTRUCT scs[6];
 	scs[0].nFX=11;scs[0].nFY=155;scs[0].nFWidth=85;scs[0].nFHeight=37;scs[0].nWidth=85;scs[0].nHeight=37;
 	scs[1].nFX=101;scs[1].nFY=155;scs[1].nFWidth=85;scs[1].nFHeight=37;scs[1].nWidth=85;scs[1].nHeight=37;

@@ -36,7 +36,7 @@ HRESULT GameInit(HWND hWnd, BOOL bWindowed, HINSTANCE hInstance, int nShowCmd)
 	ShowWindow(hWnd, nShowCmd);
 	SetFocus(hWnd);
 	Joes2ObjMan = new CJoes2ObjMan(256); 
-	Game.GameInit(640,480,Joes2ObjMan,hWnd);
+	Game.Init(640,480,Joes2ObjMan,hWnd);
 
 	return S_OK;
 }

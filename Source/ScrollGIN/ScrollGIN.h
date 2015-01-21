@@ -16,33 +16,23 @@
 class SgScrollGINGame
 {
 protected:
-	//ScrollGIN classes
-	SgTileManager m_TileManager;
-	SgTimer m_Timer;
-	SgViewPort m_Viewport;
-	SgInputManager m_Input;
-	CMapBoard m_Mapboard;
-	SgBackground m_Background;
-
+	SgTileManager    m_TileManager;
+	SgTimer          m_Timer;
+	SgViewPort       m_Viewport;
+	SgInputManager   m_Input;
+	CMapBoard        m_Mapboard;
+	SgBackground     m_Background;
 	SgObjectManager* m_lpObjectManager;
-
-	BOOL m_bInitialized;
-
-	DWORD m_dwWidth;
-	DWORD m_dwHeight;
+	BOOL             m_bInitialized;
+	DWORD            m_dwWidth;
+	DWORD            m_dwHeight;
 public:
 	SgScrollGINGame();
 	~SgScrollGINGame();
 
-	int GameInit(
-		DWORD dwWidth, 
-		DWORD dwHeight,
-		SgObjectManager* lpObjMan, 
-		HWND hwnd);
-
+	int Init(DWORD dwWidth, DWORD dwHeight, SgObjectManager* lpObjMan, HWND hwnd);
 	int Shutdown();
 
-	
 	int Pause(BOOL bPause);
 	int TogglePause();
 	int IsPaused();
@@ -50,11 +40,12 @@ public:
 	int Release();
 
 	int Render();
-	int LoadMap(LPTSTR szFilename);
 
 	void Update();
 
 	bool IsKeyPressed(int nKey);
+	int LoadMap(LPTSTR szFilename);
+
 private:
 	void DrawMapBoard();
 };

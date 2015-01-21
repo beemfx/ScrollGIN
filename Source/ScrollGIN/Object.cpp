@@ -293,7 +293,7 @@ void SgObject::Draw(SgViewPort *vp){
 	for(int i=0; i<m_nNumSprites; i++){
 		if(m_pSprite[i]!=NULL){
 			if(m_sSpriteData[i].bActive==TRUE){
-				m_pSprite[i]->DisplaySprite(
+				m_pSprite[i]->Draw(
 							m_sSpriteData[i].nCurrentFrame,
 							m_nFace, 
 							vp->screenX(m_nX+m_sSpriteData[i].nX), 

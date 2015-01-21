@@ -55,20 +55,14 @@ SgObjectManager::~SgObjectManager()
 	SAFE_DELETE_ARRAY(m_ppObject);
 }
 
-void SgObjectManager::Release()
+void SgObjectManager::ClearSprites()
 {
-	m_SpriteManager.Release();
+	m_SpriteManager.Clear();
 }
 
-HRESULT SgObjectManager::LoadSpritesFromFile(LPTSTR szFilename)
+void SgObjectManager::LoadSprites(LPTSTR szFilename)
 {
-	return m_SpriteManager.CreateSpritesFromFile(szFilename);
-}
-
-int SgObjectManager::ClearSprites()
-{
-	m_SpriteManager.ClearDataBase();
-	return 1;
+	 m_SpriteManager.LoadLib(szFilename);
 }
 
 void SgObjectManager::ClearObjects()

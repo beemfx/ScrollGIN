@@ -168,10 +168,8 @@ CJoes2ObjMan::~CJoes2ObjMan()
 
 int CJoes2ObjMan::Initialize()
 {
-	if(FAILED(LoadSpritesFromFile(TEXT("JoesSprites.ilb"))))
-	{
-		return 0;
-	}
+	LoadSprites("JoesSprites.ilb");
+
 	//Should create initial object.
 	CreateObject(
 		(OBJECTTYPE)JOES2_GOODCOPTER,
@@ -506,8 +504,8 @@ BOOL CGoodCopterObject::LoadObjectSprites(SgSpriteManager* pSpriteMgr)
 	if(pSpriteMgr==NULL)
 		return FALSE;
 
-	ObtainPointerToSprite(pSpriteMgr->LetPointer(TEXT("COPTER1")), 0, 19, 150, LP_FORWARD);
-	ObtainPointerToSprite(pSpriteMgr->LetPointer(TEXT("DOWNCOPTER1")), 0, 15, 0, LP_FORWARD);
+	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("COPTER1")), 0, 19, 150, LP_FORWARD);
+	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("DOWNCOPTER1")), 0, 15, 0, LP_FORWARD);
 
 	return TRUE;
 }
@@ -615,8 +613,8 @@ BOOL CBadCopterObject::LoadObjectSprites(SgSpriteManager* pSpriteMgr)
 	if(pSpriteMgr==NULL)
 		return FALSE;
 
-	ObtainPointerToSprite(pSpriteMgr->LetPointer(TEXT("COPTER2")), 0, 19, 150, LP_FORWARD);
-	ObtainPointerToSprite(pSpriteMgr->LetPointer(TEXT("DOWNCOPTER2")), 0, 15, 0, LP_FORWARD);
+	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("COPTER2")), 0, 19, 150, LP_FORWARD);
+	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("DOWNCOPTER2")), 0, 15, 0, LP_FORWARD);
 	return TRUE;
 }
 
@@ -711,7 +709,7 @@ BOOL CGoodMissileObject::LoadObjectSprites(SgSpriteManager *pSpriteMgr)
 	if(pSpriteMgr==NULL)
 		return FALSE;
 
-	ObtainPointerToSprite(pSpriteMgr->LetPointer(TEXT("MISSILE2")), 0, 8, 150, LP_FORWARD);
+	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("MISSILE2")), 0, 8, 150, LP_FORWARD);
 	return TRUE;
 }
 BOOL CGoodMissileObject::CreateObjectModes(DWORD dwTime)
@@ -758,7 +756,7 @@ BOOL CBadMissileObject::LoadObjectSprites(SgSpriteManager *pSpriteMgr)
 	if(pSpriteMgr==NULL)
 		return FALSE;
 
-	ObtainPointerToSprite(pSpriteMgr->LetPointer(TEXT("MISSILE3")), 0, 8, 150, LP_FORWARD);
+	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("MISSILE3")), 0, 8, 150, LP_FORWARD);
 	return TRUE;
 }
 BOOL CBadMissileObject::CreateObjectModes(DWORD dwTime)
@@ -808,7 +806,7 @@ BOOL CSmokeObject::LoadObjectSprites(SgSpriteManager* pSpriteMgr)
 	if(pSpriteMgr==NULL)
 		return FALSE;
 
-	ObtainPointerToSprite(pSpriteMgr->LetPointer(TEXT("SMOKE")), 0, 0, 150, LP_FORWARD);
+	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("SMOKE")), 0, 0, 150, LP_FORWARD);
 	return TRUE;
 }
 
@@ -888,7 +886,7 @@ BOOL CExplosionObject::LoadObjectSprites(
 	if(pSpriteMgr==NULL)
 		return FALSE;
 
-	ObtainPointerToSprite(pSpriteMgr->LetPointer(TEXT("EXPLOSION")), 0, 0, 25, LP_ONCEFORWARD);
+	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("EXPLOSION")), 0, 0, 25, LP_ONCEFORWARD);
 	return TRUE;
 }
 
