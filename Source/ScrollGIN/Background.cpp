@@ -6,6 +6,7 @@
 
 #include "background.h"
 #include "../Renderer2/RendererImage.h"
+#include "../ImageLib/bitmapex.h"
 
 SgBackground::SgBackground()
 {
@@ -38,7 +39,8 @@ void SgBackground::DrawBackgrounds(int x, int y, int dwWidth, int dwHeight)
 void SgBackground::DisplayBackground(int nBGLayer, int x, int y, int dwWidth, int dwHeight)
 {
 	//check scrollmode and disable necessary scrolling
-	switch(m_nScrollMode){
+	switch(m_nScrollMode)
+	{
 		case FOUR_DIRECTIONS:break;
 		case LEFT_RIGHT:y=0;break;
 		case UP_DOWN:x=0;break;
@@ -97,8 +99,7 @@ bool SgBackground::InsertImage(int nImage, const char* szBitmapName, int nScroll
 
 	if(szBitmapName[0]==0)return false;
 	
-	HBITMAP hTempBM=(HBITMAP)LoadImage(0, szBitmapName, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-	//HBITMAP hTempBM=LoadBitmapOffset(szBitmapName, 0);
+	HBITMAP hTempBM=LoadBitmapOffset(szBitmapName, 0);
 	BITMAP bmTemp;
 	GetObject(hTempBM, sizeof(bmTemp), &bmTemp);
 	int nFWidth=bmTemp.bmWidth;
