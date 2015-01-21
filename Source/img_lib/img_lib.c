@@ -339,7 +339,7 @@ img_bool IMG_GetPixelFilter(
 	IMGFMT Format,
 	unsigned char nExtra)
 {
-	unsigned long* lpPixels;
+	unsigned long lpPixels[1024];
 	unsigned short over=0, under=0;
 	unsigned long i=0;
 	unsigned long nCTR=0, nCTG=0, nCTB=0, nCTA=0;
@@ -347,13 +347,19 @@ img_bool IMG_GetPixelFilter(
 
 	nNumPix=(img_dword)pow((double)2, (double)(nSampleLevel+1));
 
-	lpPixels=malloc(nNumPix*sizeof(unsigned long));
+	if( nNumPix > countof(lpPixels))
+	{
+		return IMG_GetPixel(
+			hImage,
+			lpPix,
+			x,
+			y,
+			Format,
+			nExtra);
+	}
 
 	if(nNumPix<=1 || !lpPixels || nSampleLevel==0)
 	{
-		if(lpPixels)
-			free(lpPixels);
-
 		return IMG_GetPixel(
 			hImage,
 			lpPix,
@@ -381,8 +387,6 @@ img_bool IMG_GetPixelFilter(
 		nCTG+=(0x0000FF00&lpPixels[i])>>8;
 		nCTB+=(0x000000FF&lpPixels[i])>>0;
 	}
-
-	free(lpPixels);
 
 	nCTA/=(nNumPix);
 	nCTR/=(nNumPix);
