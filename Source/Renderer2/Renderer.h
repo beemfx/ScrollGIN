@@ -21,11 +21,5 @@ void Renderer_Deinit();
 void Renderer_BeginFrame();
 void Renderer_EndFrame();
 
-struct sgRendererImageCreateParms
-{
-	int Width;
-	int Height;
-};
-
-class SgRendererImage* Renderer_CreateSprite( const sgRendererImageCreateParms* CreateParms );
+class SgRendererImage* Renderer_CreateSprite( const struct sgRendererImageCreateParms* CreateParms );
 void                   Renderer_DestroySprite( class SgRendererImage* Sprite );
