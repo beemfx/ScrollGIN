@@ -8,14 +8,15 @@
 
 #include "sprite.h"
 
-typedef struct tagSPRITECREATESTRUCT{
+struct SPRITECREATESTRUCT
+{
 	int nFX;
 	int nFY;
 	int nFWidth;
 	int nFHeight;
 	int nWidth;
 	int nHeight;
-}SPRITECREATESTRUCT;
+};
 
 class SgSpriteManager{
 private:

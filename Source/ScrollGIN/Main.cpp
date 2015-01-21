@@ -18,7 +18,8 @@
 
 #include "ScrollGIN.h"
 #include "Joes2.h"
-SgScrollGINGame Game;
+static SgScrollGINGame Game;
+static CJoes2ObjMan*   Joes2ObjMan = 0;
 
 #define WM_USER_ACTIVEAPP (WM_USER+1)
 
@@ -34,8 +35,8 @@ HRESULT GameInit(HWND hWnd, BOOL bWindowed, HINSTANCE hInstance, int nShowCmd)
 
 	ShowWindow(hWnd, nShowCmd);
 	SetFocus(hWnd);
-	
-	Game.GameInit(640,480,new CJoes2ObjMan(256),hWnd);
+	Joes2ObjMan = new CJoes2ObjMan(256); 
+	Game.GameInit(640,480,Joes2ObjMan,hWnd);
 
 	return S_OK;
 }
@@ -45,6 +46,7 @@ static void GameShutdown()
 {
 	Game.Release();
 	Game.Shutdown();
+	delete Joes2ObjMan;
 	
 	//we need to release the screen buffers.
 	Renderer_Deinit();
