@@ -88,6 +88,8 @@ HRESULT CSprite::CreateSpriteFrameBMInMemory(
 	Parms.Height = nHeight;
 
 	m_cSpriteImage[nFrame-1]        = Renderer_CreateSprite( &Parms );
+	Parms.BmX = nFX + nFWidth;
+	Parms.BmWidth = -nFWidth;
 	m_cReverseSpriteImage[nFrame-1] = Renderer_CreateSprite( &Parms );
 	
 	return S_OK;
