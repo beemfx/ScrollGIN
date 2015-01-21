@@ -276,10 +276,10 @@ HRESULT SgInputManager::UpdateInputValues(){
 	return hr;
 }
 
-BOOL SgInputManager::GetEscapeStatus(){
-	if(!m_lpDIObject)return E_FAIL;
-	if(KEYDOWN(m_cKeyboardBuffer, DIK_ESCAPE))return TRUE;
-	else return FALSE;
+bool SgInputManager::GetEscapeStatus(){
+	if(!m_lpDIObject)return false;
+	if(KEYDOWN(m_cKeyboardBuffer, DIK_ESCAPE))return true;
+	else return false;
 }
 
 
@@ -333,16 +333,16 @@ DPAD SgInputManager::GetDPad(){
 	return DP_CENTER;
 }
 
-BOOL SgInputManager::GetKeyState(int nKey){
-	if(!m_lpDIObject)return FALSE;
-	if(!m_lpKeyboard)return FALSE;
-	if(KEYDOWN(m_cKeyboardBuffer, nKey))return TRUE;
-	else return FALSE;
+bool SgInputManager::GetKeyState(int nKey){
+	if(!m_lpDIObject)return false;
+	if(!m_lpKeyboard)return false;
+	if(KEYDOWN(m_cKeyboardBuffer, nKey))return true;
+	else return false;
 }
 
-BOOL SgInputManager::GetButtonState(BYTE nButton){
-	if(!m_lpDIObject)return FALSE;
-	if(!m_lpJoystick)return FALSE;
-	if((m_jsState.rgbButtons[nButton]&0x80)==0x80)return TRUE;
-	else return FALSE;
+bool SgInputManager::GetButtonState(BYTE nButton){
+	if(!m_lpDIObject)return false;
+	if(!m_lpJoystick)return false;
+	if((m_jsState.rgbButtons[nButton]&0x80)==0x80)return true;
+	else return false;
 }

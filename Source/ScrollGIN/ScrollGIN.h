@@ -52,24 +52,11 @@ public:
 	int Render();
 	int LoadMap(LPTSTR szFilename);
 
-	int PreRenderProcess();
+	void Update();
 
-	int IsKeyPressed(int nKey);
-
-	BOOL DrawMapBoard(
-		SgViewPort * pViewport, 
-		CMapBoard * pMap, 
-		SgTileManager * pTileManager,
-		SgBackground * pBG);
-
-	BOOL LoadMapBoard(
-		LPTSTR szFilename, 
-		DWORD dwScreenWidth,
-		DWORD dwScreenHeight,
-		CMapBoard * pMap, 
-		SgBackground * pBG, 
-		SgTileManager * pTileMgr,
-		SgViewPort * pView);
+	bool IsKeyPressed(int nKey);
+private:
+	void DrawMapBoard();
 };
 
 #endif //__SCROLLGIN_H__

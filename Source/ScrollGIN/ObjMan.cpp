@@ -8,8 +8,8 @@
 #include "ObjMan.h"
 #include "genfuncs.h"
 
-SgObjectManager::SgObjectManager():
-m_dwMaxObjects(DEFAULT_MAX_OBJECTS)
+SgObjectManager::SgObjectManager()
+: m_dwMaxObjects(DEFAULT_MAX_OBJECTS)
 {
 	m_dwCount=0;
 	m_dwUserObject=0;
@@ -20,8 +20,8 @@ m_dwMaxObjects(DEFAULT_MAX_OBJECTS)
 	}
 }
 
-SgObjectManager::SgObjectManager(DWORD dwMaxObjects):
-m_dwMaxObjects(dwMaxObjects)
+SgObjectManager::SgObjectManager(DWORD dwMaxObjects)
+: m_dwMaxObjects(dwMaxObjects)
 {
 	m_dwCount=0;
 	m_dwUserObject=0;
@@ -32,23 +32,23 @@ m_dwMaxObjects(dwMaxObjects)
 	}
 }
 
-SgObjectManager::SgObjectManager(
-	DWORD dwMaxObjects, 
-	SgTimer * pTimer):
-m_dwMaxObjects(dwMaxObjects)
+SgObjectManager::SgObjectManager(DWORD dwMaxObjects, SgTimer * pTimer)
+: m_dwMaxObjects(dwMaxObjects)
 {
 	m_dwCount=0;
 	m_dwUserObject=0;
 	m_ppObject=new SgObject*[m_dwMaxObjects];
 	m_pObjectType=new OBJECTTYPE[m_dwMaxObjects];
-	for(DWORD i=0; i<m_dwMaxObjects; i++){
+	for(DWORD i=0; i<m_dwMaxObjects; i++)
+	{
 		m_ppObject[i]=NULL;
 	}
 
 	ObtainTimer(pTimer);
 }
 
-SgObjectManager::~SgObjectManager(){
+SgObjectManager::~SgObjectManager()
+{
 	for(DWORD i=0; i<m_dwMaxObjects; i++){
 		SAFE_DELETE(m_ppObject[i]);
 	}
@@ -64,21 +64,25 @@ HRESULT SgObjectManager::LoadSpritesFromFile(LPTSTR szFilename)
 {
 	return m_SpriteManager.CreateSpritesFromFile(szFilename);
 }
+
 int SgObjectManager::ClearSprites()
 {
 	m_SpriteManager.ClearDataBase();
 	return 1;
 }
 
-void SgObjectManager::ClearObjects(){
+void SgObjectManager::ClearObjects()
+{
 	m_dwCount=0;
 
-	for(DWORD i=0; i<m_dwMaxObjects; i++){
+	for(DWORD i=0; i<m_dwMaxObjects; i++)
+	{
 		SAFE_DELETE(m_ppObject[i]);
 	}
 }
 
-void SgObjectManager::Kill(DWORD dwIndex){
+void SgObjectManager::Kill(DWORD dwIndex)
+{
 	if((m_dwCount<1))return;
 	if(m_ppObject[dwIndex-1]){
 		m_dwCount--;
@@ -86,7 +90,8 @@ void SgObjectManager::Kill(DWORD dwIndex){
 	}
 }
 
-void SgObjectManager::Cull(){
+void SgObjectManager::Cull()
+{
 	//This function should check each object
 	//and kill it if it's life has expired,
 	//or technically no longer exists
@@ -106,7 +111,6 @@ void SgObjectManager::Cull(){
 }
 
 
-
 BOOL SgObjectManager::ObtainTimer(SgTimer * pTimer)
 {
 	m_pTimer=pTimer;
@@ -116,13 +120,7 @@ BOOL SgObjectManager::ObtainTimer(SgTimer * pTimer)
 }
 
 
-
-HRESULT SgObjectManager::CreateObject(
-	const OBJECTTYPE nType, 
-	int x, 
-	int y, 
-	int nXSpeed, 
-	int nYSpeed)
+HRESULT SgObjectManager::CreateObject(	const OBJECTTYPE nType, int x, int y, int nXSpeed, int nYSpeed)
 {
 	if(m_dwCount<m_dwMaxObjects){
 		//Find first free slot
@@ -146,7 +144,8 @@ HRESULT SgObjectManager::CreateObject(
 	}else return E_FAIL;
 }
 
-void SgObjectManager::Replace(DWORD dwIndex){
+void SgObjectManager::Replace(DWORD dwIndex)
+{
 	if(dwIndex<1)return;
 	SgObject *pObject=m_ppObject[dwIndex-1];
 	if(pObject==NULL)return;
@@ -177,7 +176,8 @@ void SgObjectManager::Replace(DWORD dwIndex){
 	}
 }
 
-COLLISIONTYPE SgObjectManager::DetectCollision(DWORD dwIndex1, DWORD dwIndex2){
+COLLISIONTYPE SgObjectManager::DetectCollision(DWORD dwIndex1, DWORD dwIndex2)
+{
 	if((dwIndex1<1) || 
 		(dwIndex2<1) || 
 		(dwIndex1>m_dwMaxObjects) || 
@@ -190,7 +190,8 @@ COLLISIONTYPE SgObjectManager::DetectCollision(DWORD dwIndex1, DWORD dwIndex2){
 	return m_ppObject[dwIndex1-1]->DetectCollision(m_ppObject[dwIndex2-1]);
 }
 
-HRESULT SgObjectManager::DetectCollisions(){
+HRESULT SgObjectManager::DetectCollisions()
+{
 	DWORD i=0, j=0;
 	for(i=0; i<m_dwMaxObjects; i++){
 		if(m_ppObject[i]!=NULL){
@@ -265,12 +266,14 @@ HRESULT SgObjectManager::Animate(CMapBoard *map,SgViewPort *viewport,SgInputMana
 	return S_OK;
 }
 
-void SgObjectManager::SetUserObject(DWORD nIndex){
+void SgObjectManager::SetUserObject(DWORD nIndex)
+{
 	if((nIndex<1) || (nIndex>m_dwMaxObjects))return;
 	else m_dwUserObject=nIndex;
 }
 
-DWORD SgObjectManager::GetUserObject(){
+DWORD SgObjectManager::GetUserObject()
+{
 	return m_dwUserObject;
 }
 

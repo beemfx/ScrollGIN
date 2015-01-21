@@ -98,7 +98,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 static void GameLoop()
 {
 	
-	Game.PreRenderProcess();
+	Game.Update();
 	Renderer_BeginFrame();
 	Game.Render();
 	Renderer_EndFrame();
