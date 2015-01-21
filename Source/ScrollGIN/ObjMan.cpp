@@ -1,49 +1,45 @@
 /*
-	ObjMan.cpp - The CObjectManager class
+	ObjMan.cpp - The SgObjectManager class
 
 	Copyright (c) 2003, Blaine Myers
 */
 
 #include "Defines.h"
-#include "error.h"
 #include "ObjMan.h"
 #include "genfuncs.h"
 
-CObjectManager::CObjectManager():
+SgObjectManager::SgObjectManager():
 m_dwMaxObjects(DEFAULT_MAX_OBJECTS)
 {
-	SetError(TEXT("Created objects using default maximum"));
 	m_dwCount=0;
 	m_dwUserObject=0;
-	m_ppObject=new CObject*[m_dwMaxObjects];
+	m_ppObject=new SgObject*[m_dwMaxObjects];
 	m_pObjectType=new OBJECTTYPE[m_dwMaxObjects];
 	for(DWORD i=0; i<m_dwMaxObjects; i++){
 		m_ppObject[i]=NULL;
 	}
 }
 
-CObjectManager::CObjectManager(DWORD dwMaxObjects):
+SgObjectManager::SgObjectManager(DWORD dwMaxObjects):
 m_dwMaxObjects(dwMaxObjects)
 {
-	SetError(TEXT("Created objects using user maximum"));
 	m_dwCount=0;
 	m_dwUserObject=0;
-	m_ppObject=new CObject*[m_dwMaxObjects];
+	m_ppObject=new SgObject*[m_dwMaxObjects];
 	m_pObjectType=new OBJECTTYPE[m_dwMaxObjects];
 	for(DWORD i=0; i<m_dwMaxObjects; i++){
 		m_ppObject[i]=NULL;
 	}
 }
 
-CObjectManager::CObjectManager(
+SgObjectManager::SgObjectManager(
 	DWORD dwMaxObjects, 
-	CTimerEx * pTimer):
+	SgTimer * pTimer):
 m_dwMaxObjects(dwMaxObjects)
 {
-	SetError(TEXT("Created objects using user and obtained pointers"));
 	m_dwCount=0;
 	m_dwUserObject=0;
-	m_ppObject=new CObject*[m_dwMaxObjects];
+	m_ppObject=new SgObject*[m_dwMaxObjects];
 	m_pObjectType=new OBJECTTYPE[m_dwMaxObjects];
 	for(DWORD i=0; i<m_dwMaxObjects; i++){
 		m_ppObject[i]=NULL;
@@ -52,30 +48,29 @@ m_dwMaxObjects(dwMaxObjects)
 	ObtainTimer(pTimer);
 }
 
-CObjectManager::~CObjectManager(){
-	SetError(TEXT("Successfully closed object manager!"));
+SgObjectManager::~SgObjectManager(){
 	for(DWORD i=0; i<m_dwMaxObjects; i++){
 		SAFE_DELETE(m_ppObject[i]);
 	}
 	SAFE_DELETE_ARRAY(m_ppObject);
 }
 
-void CObjectManager::Release()
+void SgObjectManager::Release()
 {
 	m_SpriteManager.Release();
 }
 
-HRESULT CObjectManager::LoadSpritesFromFile(LPTSTR szFilename)
+HRESULT SgObjectManager::LoadSpritesFromFile(LPTSTR szFilename)
 {
 	return m_SpriteManager.CreateSpritesFromFile(szFilename);
 }
-int CObjectManager::ClearSprites()
+int SgObjectManager::ClearSprites()
 {
 	m_SpriteManager.ClearDataBase();
 	return 1;
 }
 
-void CObjectManager::ClearObjects(){
+void SgObjectManager::ClearObjects(){
 	m_dwCount=0;
 
 	for(DWORD i=0; i<m_dwMaxObjects; i++){
@@ -83,7 +78,7 @@ void CObjectManager::ClearObjects(){
 	}
 }
 
-void CObjectManager::Kill(DWORD dwIndex){
+void SgObjectManager::Kill(DWORD dwIndex){
 	if((m_dwCount<1))return;
 	if(m_ppObject[dwIndex-1]){
 		m_dwCount--;
@@ -91,11 +86,11 @@ void CObjectManager::Kill(DWORD dwIndex){
 	}
 }
 
-void CObjectManager::Cull(){
+void SgObjectManager::Cull(){
 	//This function should check each object
 	//and kill it if it's life has expired,
 	//or technically no longer exists
-	CObject* pObject;
+	SgObject* pObject;
 	for(DWORD i=0; i<m_dwMaxObjects; i++)
 	{
 		pObject=m_ppObject[i];
@@ -112,7 +107,7 @@ void CObjectManager::Cull(){
 
 
 
-BOOL CObjectManager::ObtainTimer(CTimerEx * pTimer)
+BOOL SgObjectManager::ObtainTimer(SgTimer * pTimer)
 {
 	m_pTimer=pTimer;
 
@@ -122,7 +117,7 @@ BOOL CObjectManager::ObtainTimer(CTimerEx * pTimer)
 
 
 
-HRESULT CObjectManager::CreateObject(
+HRESULT SgObjectManager::CreateObject(
 	const OBJECTTYPE nType, 
 	int x, 
 	int y, 
@@ -139,10 +134,10 @@ HRESULT CObjectManager::CreateObject(
 		switch(nType)
 		{
 		case OT_DEFAULT:
-			m_ppObject[i]=new CObject(&m_SpriteManager, dwTime, x, y, nXSpeed, nYSpeed);
+			m_ppObject[i]=new SgObject(&m_SpriteManager, dwTime, x, y, nXSpeed, nYSpeed);
 			break;
 		default:
-			m_ppObject[i]=new CObject(&m_SpriteManager, dwTime, x, y, nXSpeed, nYSpeed);
+			m_ppObject[i]=new SgObject(&m_SpriteManager, dwTime, x, y, nXSpeed, nYSpeed);
 			break;
 		}
 		m_pObjectType[i]=nType;
@@ -151,9 +146,9 @@ HRESULT CObjectManager::CreateObject(
 	}else return E_FAIL;
 }
 
-void CObjectManager::Replace(DWORD dwIndex){
+void SgObjectManager::Replace(DWORD dwIndex){
 	if(dwIndex<1)return;
-	CObject *pObject=m_ppObject[dwIndex-1];
+	SgObject *pObject=m_ppObject[dwIndex-1];
 	if(pObject==NULL)return;
 
 	BOOL bKill=TRUE;
@@ -182,7 +177,7 @@ void CObjectManager::Replace(DWORD dwIndex){
 	}
 }
 
-COLLISIONTYPE CObjectManager::DetectCollision(DWORD dwIndex1, DWORD dwIndex2){
+COLLISIONTYPE SgObjectManager::DetectCollision(DWORD dwIndex1, DWORD dwIndex2){
 	if((dwIndex1<1) || 
 		(dwIndex2<1) || 
 		(dwIndex1>m_dwMaxObjects) || 
@@ -195,7 +190,7 @@ COLLISIONTYPE CObjectManager::DetectCollision(DWORD dwIndex1, DWORD dwIndex2){
 	return m_ppObject[dwIndex1-1]->DetectCollision(m_ppObject[dwIndex2-1]);
 }
 
-HRESULT CObjectManager::DetectCollisions(){
+HRESULT SgObjectManager::DetectCollisions(){
 	DWORD i=0, j=0;
 	for(i=0; i<m_dwMaxObjects; i++){
 		if(m_ppObject[i]!=NULL){
@@ -216,7 +211,7 @@ HRESULT CObjectManager::DetectCollisions(){
 	return S_OK;
 }
 
-HRESULT CObjectManager::Animate(CMapBoard *map,CViewPort *viewport,CInputManager* pInput)
+HRESULT SgObjectManager::Animate(CMapBoard *map,SgViewPort *viewport,SgInputManager* pInput)
 {
 	DWORD i=0;
 	//if the game is paused we just draw the objects (and don't animate them)
@@ -270,16 +265,16 @@ HRESULT CObjectManager::Animate(CMapBoard *map,CViewPort *viewport,CInputManager
 	return S_OK;
 }
 
-void CObjectManager::SetUserObject(DWORD nIndex){
+void SgObjectManager::SetUserObject(DWORD nIndex){
 	if((nIndex<1) || (nIndex>m_dwMaxObjects))return;
 	else m_dwUserObject=nIndex;
 }
 
-DWORD CObjectManager::GetUserObject(){
+DWORD SgObjectManager::GetUserObject(){
 	return m_dwUserObject;
 }
 
-int CObjectManager::Initialize()
+int SgObjectManager::Initialize()
 {
 	return 1;
 }

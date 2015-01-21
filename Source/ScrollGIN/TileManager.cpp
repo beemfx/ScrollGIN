@@ -5,7 +5,6 @@
 	Copyright (c) 2002, Blaine Myers
 */
 
-#include "error.h"
 #include "../ImageLib/ImageLib.h"
 #include "../Renderer2/Renderer.h"
 #include "../Renderer2/RendererImage.h"
@@ -13,7 +12,7 @@
 
 
 //Constructor: Sets some default values
-CSTileManager::CSTileManager(void){
+SgTileManager::SgTileManager(void){
 	m_iCurrentReference=0;
 }
 
@@ -21,12 +20,12 @@ CSTileManager::CSTileManager(void){
 
 
 //Destructor
-CSTileManager::~CSTileManager(void){
+SgTileManager::~SgTileManager(void){
 
 }
 
 //creates many tile surfaces starting with chosen reference from a library
-HRESULT CSTileManager::CreateTilesFromLibrary(int reference, char lpLibraryFilename[MAX_PATH], CMapBoard *map){
+HRESULT SgTileManager::CreateTilesFromLibrary(int reference, char lpLibraryFilename[MAX_PATH], CMapBoard *map){
 	//This will use a library to call CreateTilesFromFile functions
 	CImageArchive ILibrary;
 
@@ -59,8 +58,7 @@ HRESULT CSTileManager::CreateTilesFromLibrary(int reference, char lpLibraryFilen
 				Parms.Width  = map->GetTileDim();
 				Parms.Height = map->GetTileDim();
 				m_lpTile[i-1] = Renderer_CreateSprite( &Parms );
-
-			}else SetError(TEXT("Attempted to create a tile that wasn't in ILB!\n"));
+			}
 
 		}
 		m_iCurrentReference++;
@@ -76,7 +74,7 @@ HRESULT CSTileManager::CreateTilesFromLibrary(int reference, char lpLibraryFilen
 
 
 //creates many tile surfaces starting with first reference from a library
-HRESULT CSTileManager::CreateTilesFromLibrary(char lpLibraryFilename[MAX_PATH], CMapBoard *map){
+HRESULT SgTileManager::CreateTilesFromLibrary(char lpLibraryFilename[MAX_PATH], CMapBoard *map){
 	if(SUCCEEDED(CreateTilesFromLibrary(m_iCurrentReference+1, lpLibraryFilename, map))){
 		return S_OK;
 	}else return E_FAIL;
@@ -87,13 +85,13 @@ HRESULT CSTileManager::CreateTilesFromLibrary(char lpLibraryFilename[MAX_PATH], 
 
 
 //Clears all tiles and releases surfaces from database
-HRESULT CSTileManager::ClearTileDatabase(void){
+HRESULT SgTileManager::ClearTileDatabase(void){
 	Release();
 	m_iCurrentReference=0;
 	return S_OK;
 }
 
-void CSTileManager::Release(){
+void SgTileManager::Release(){
 	for(int i=0;i<m_iCurrentReference;i++){
 		Renderer_DestroySprite( m_lpTile[i] );
 	}
@@ -103,7 +101,7 @@ void CSTileManager::Release(){
 //places a tile on x, y coordinate of the screen
 //remember to convert custom coords to standard before calling this
 //function is complete, but has not yet been tested.
-HRESULT CSTileManager::PlaceTile(int reference, int x, int y){
+HRESULT SgTileManager::PlaceTile(int reference, int x, int y){
 	//make sure reference is within range
 	if((reference<1)||(reference>m_iCurrentReference))return E_FAIL;
 	

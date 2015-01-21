@@ -7,26 +7,26 @@
 #include "timer.h"
 
 
-CTimerEx::CTimerEx(){
+SgTimer::SgTimer(){
 	m_nStartTime=0;
 	m_bPaused=FALSE;
 }
 
-CTimerEx::~CTimerEx(){
+SgTimer::~SgTimer(){
 
 }
 
-void CTimerEx::Start(){
+void SgTimer::Start(){
 	m_nStartTime=timeGetTime();
 }
 
-DWORD CTimerEx::Time(){
+DWORD SgTimer::Time(){
 	if(!m_bPaused)
 		return timeGetTime()-m_nStartTime;
 	else return m_nPausedTime;
 }
 
-BOOL CTimerEx::Elapsed(DWORD * pStart, DWORD nInterval){
+BOOL SgTimer::Elapsed(DWORD * pStart, DWORD nInterval){
 	DWORD nCurrentTime=Time();
 	if(nCurrentTime >= (*pStart+nInterval)){
 		*pStart=nCurrentTime; return TRUE;
@@ -35,7 +35,7 @@ BOOL CTimerEx::Elapsed(DWORD * pStart, DWORD nInterval){
 }
 
 
-BOOL CTimerEx::Pause(BOOL bPause){
+BOOL SgTimer::Pause(BOOL bPause){
 	if(bPause){
 		//Pause
 		m_nPausedTime=Time();
@@ -50,13 +50,13 @@ BOOL CTimerEx::Pause(BOOL bPause){
 	return m_bPaused;
 }
 
-BOOL CTimerEx::TogglePause(){
+BOOL SgTimer::TogglePause(){
 	if(m_bPaused)
 		return Pause(FALSE);
 	else
 		return Pause(TRUE);
 }
 
-BOOL CTimerEx::IsPaused(){
+BOOL SgTimer::IsPaused(){
 	return m_bPaused;
 }

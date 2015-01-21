@@ -1,5 +1,5 @@
 /*
-	input.h - header of CInputManager class
+	input.h - header of SgInputManager class
 
 	Copyright (c) 2002, Blaine Myers
 */
@@ -39,7 +39,7 @@ typedef struct tagINPUTCREATEDATA{
 }INPUTCREATEDATA;
 
 
-class CInputManager{
+class SgInputManager{
 private:
 	LPDIRECTINPUT8 m_lpDIObject; //direct input interface
 	LPDIRECTINPUTDEVICE8 m_lpKeyboard; //keyboard device
@@ -65,8 +65,8 @@ private:
 	HRESULT InitJoystick(HWND hWnd); //initializes the joystick
 	HRESULT InitMouse(HWND hWnd); //initializes the mouse
 public:
-	CInputManager(); //constructor
-	~CInputManager(); //destructor
+	SgInputManager(); //constructor
+	~SgInputManager(); //destructor
 	HRESULT CreateInputDevice(HINSTANCE hInst); //creates input device
 	HRESULT ShutDownDevices(); //shuts down devices
 	HRESULT CreateDevices(HWND hWnd, DWORD dwCreateFlags); //creates the devices, specify which deviceswith createflags

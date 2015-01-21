@@ -17,9 +17,9 @@
 typedef enum tagOBJECTTYPE{OT_DEFAULT=0}OBJECTTYPE;
 
 
-class CObjectManager{
+class SgObjectManager{
 protected:
-	CObject **m_ppObject; //array of pointers to objects
+	SgObject **m_ppObject; //array of pointers to objects
 	OBJECTTYPE *m_pObjectType; //array of the type of object
 	
 	const DWORD m_dwMaxObjects; //maximum objects available
@@ -27,24 +27,24 @@ protected:
 
 	DWORD m_dwUserObject; //Which object the user is controlling
 
-	CSpriteManager m_SpriteManager;
-	CTimerEx * m_pTimer;
+	SgSpriteManager m_SpriteManager;
+	SgTimer * m_pTimer;
 
 	void Cull();
 	void Kill(DWORD dwIndex);
 	void Replace(DWORD dwIndex);
 public:
-	CObjectManager();
-	CObjectManager(DWORD dwMaxObjects);
-	CObjectManager(DWORD dwMaxObjects, CTimerEx * pTimer);
-	virtual ~CObjectManager();
+	SgObjectManager();
+	SgObjectManager(DWORD dwMaxObjects);
+	SgObjectManager(DWORD dwMaxObjects, SgTimer * pTimer);
+	virtual ~SgObjectManager();
 
 	virtual int Initialize();
 
 	HRESULT Animate(
 		CMapBoard *map,
-		CViewPort *viewport,
-		CInputManager* pInput); //Animate all the objects and draw them
+		SgViewPort *viewport,
+		SgInputManager* pInput); //Animate all the objects and draw them
 
 	void ClearObjects(); //clear all objects from database
 
@@ -55,7 +55,7 @@ public:
 	void Release();
 
 	BOOL ObtainTimer(
-		CTimerEx * pTimer);
+		SgTimer * pTimer);
 
 	virtual HRESULT CreateObject(
 		const OBJECTTYPE nType, 

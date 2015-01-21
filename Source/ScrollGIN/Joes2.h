@@ -28,13 +28,13 @@
 #include "object.h"
 #include "objman.h"
 
-class CJoes2Object: public CObject
+class CJoes2Object: public SgObject
 {
 protected:
 	DWORD m_dwCreateTime;
 	DWORD m_dwLastAIUpdate;
 public:
-	CJoes2Object(CSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
+	CJoes2Object(SgSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
 	virtual BOOL ProcessMessages(void* lpObjMan);
 };
 
@@ -43,14 +43,14 @@ class CGoodCopterObject: public CJoes2Object
 protected:
 	DWORD m_dwLastShot;
 
-	CObject* m_lpEnemy; //Pointer to target chosen as enemy.
-	BOOL ChooseEnemy(CObject* lpEnemy); //Chooses which target it would like as enemy.
+	SgObject* m_lpEnemy; //Pointer to target chosen as enemy.
+	BOOL ChooseEnemy(SgObject* lpEnemy); //Chooses which target it would like as enemy.
 
-	virtual HRESULT ProcessAI(CInputManager *pInput, void* pObjMan, CTimerEx *timer, CMapBoard* map);
+	virtual HRESULT ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *timer, CMapBoard* map);
 public:
-	CGoodCopterObject(CSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
+	CGoodCopterObject(SgSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
 	
-	virtual BOOL LoadObjectSprites(CSpriteManager *pSpriteMgr);
+	virtual BOOL LoadObjectSprites(SgSpriteManager *pSpriteMgr);
 	virtual BOOL CreateObjectModes(DWORD dwTime);
 };
 
@@ -59,9 +59,9 @@ class CBadCopterObject: public CGoodCopterObject
 protected:
 
 public:
-	CBadCopterObject(CSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
+	CBadCopterObject(SgSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
 	
-	virtual BOOL LoadObjectSprites(CSpriteManager* pSpriteMgr);
+	virtual BOOL LoadObjectSprites(SgSpriteManager* pSpriteMgr);
 	virtual BOOL CreateObjectModes(DWORD dwTime);
 };
 
@@ -71,17 +71,17 @@ protected:
 	DWORD m_dwLastSmokeTime;
 	int m_nLastX;
 	int m_nLastY;
-	virtual HRESULT ProcessAI(CInputManager *pInput, void* pObjMan, CTimerEx *timer, CMapBoard* map);
+	virtual HRESULT ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *timer, CMapBoard* map);
 public:
 	CGoodMissileObject(
-		CSpriteManager * pSpriteMgr, 
+		SgSpriteManager * pSpriteMgr, 
 		DWORD dwTime, 
 		int x, 
 		int y, 
 		int nXSpeed, 
 		int nYSpeed);
 
-	virtual BOOL LoadObjectSprites(CSpriteManager *pSpriteMgr);
+	virtual BOOL LoadObjectSprites(SgSpriteManager *pSpriteMgr);
 	virtual BOOL CreateObjectModes(DWORD dwTime);
 };
 
@@ -91,14 +91,14 @@ protected:
 
 public:
 	CBadMissileObject(
-		CSpriteManager * pSpriteMgr, 
+		SgSpriteManager * pSpriteMgr, 
 		DWORD dwTime, 
 		int x, 
 		int y, 
 		int nXSpeed, 
 		int nYSpeed);
 
-	virtual BOOL LoadObjectSprites(CSpriteManager *pSpriteMgr);
+	virtual BOOL LoadObjectSprites(SgSpriteManager *pSpriteMgr);
 	virtual BOOL CreateObjectModes(DWORD dwTime);
 };
 
@@ -107,21 +107,21 @@ class CSmokeObject: public CJoes2Object
 protected:
 
 	virtual HRESULT ProcessAI(
-		CInputManager *pInput, 
+		SgInputManager *pInput, 
 		void* pObjMan, 
-		CTimerEx *timer, 
+		SgTimer *timer, 
 		CMapBoard* map);
 
 public:
 	CSmokeObject(
-		CSpriteManager * pSpriteMgr, 
+		SgSpriteManager * pSpriteMgr, 
 		DWORD dwTime, 
 		int x, 
 		int y, 
 		int nXSpeed, 
 		int nYSpeed);
 
-	virtual BOOL LoadObjectSprites(CSpriteManager *pSpriteMgr);
+	virtual BOOL LoadObjectSprites(SgSpriteManager *pSpriteMgr);
 	virtual BOOL CreateObjectModes(DWORD dwTime);
 };
 
@@ -130,24 +130,24 @@ class CExplosionObject: public CJoes2Object
 protected:
 
 	virtual HRESULT ProcessAI(
-		CInputManager *pInput, 
+		SgInputManager *pInput, 
 		void* pObjMan, 
-		CTimerEx *timer, 
+		SgTimer *timer, 
 		CMapBoard* map);
 public:
 	CExplosionObject(
-		CSpriteManager * pSpriteMgr, 
+		SgSpriteManager * pSpriteMgr, 
 		DWORD dwTime, 
 		int x, 
 		int y, 
 		int nXSpeed, 
 		int nYSpeed);
 
-	virtual BOOL LoadObjectSprites(CSpriteManager *pSpriteMgr);
+	virtual BOOL LoadObjectSprites(SgSpriteManager *pSpriteMgr);
 	virtual BOOL CreateObjectModes(DWORD dwTime);
 };
 
-class CJoes2ObjMan: public CObjectManager
+class CJoes2ObjMan: public SgObjectManager
 {
 protected:
 

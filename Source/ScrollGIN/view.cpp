@@ -10,13 +10,13 @@
 #include "view.h"
 
 
-//extern CTimerEx Timer;
+//extern SgTimer Timer;
 /*
 extern DWORD g_nDeviceHeight;
 extern DWORD g_nDeviceWidth;
 */
 
-CViewPort::CViewPort(){
+SgViewPort::SgViewPort(){
 	m_nX=m_nY=0;
 	m_nDesiredX=m_nDesiredY=0;
 	m_nLastTimeUpdatedX=0;
@@ -27,26 +27,26 @@ CViewPort::CViewPort(){
 	m_nScrollSpeedX=m_nScrollSpeedY=6;
 }
 
-void CViewPort::SetViewportDimensions(DWORD dwWidth, DWORD dwHeight){
+void SgViewPort::SetViewportDimensions(DWORD dwWidth, DWORD dwHeight){
 	m_dwWidth=dwWidth;
 	m_dwHeight=dwHeight;
 }
 
-void CViewPort::stop_scroll(){
+void SgViewPort::stop_scroll(){
 	set_desired_position(m_nX, m_nY);
 }
 
-int CViewPort::screenX(int x){
+int SgViewPort::screenX(int x){
 	int delta=x-m_nX;
 	return delta+m_dwWidth/2;
 }
 
-int CViewPort::screenY(int y){
+int SgViewPort::screenY(int y){
 	int delta=y-m_nY;
 	return delta+m_dwHeight/2;
 }
 
-void CViewPort::force_position(int x, int y){
+void SgViewPort::force_position(int x, int y){
 	if((x>=(int)(0+m_dwWidth/2)) && (x<=(int)(m_nWorldWidth-m_dwWidth/2))){
 		normalizeX(&x);
 		m_nX=x;
@@ -71,15 +71,15 @@ void CViewPort::force_position(int x, int y){
 		m_nY=m_nWorldHeight-m_dwHeight/2;
 }
 
-int CViewPort::normalizeX(int *x){
+int SgViewPort::normalizeX(int *x){
 	return *x;
 }
 
-int CViewPort::normalizeY(int *y){
+int SgViewPort::normalizeY(int *y){
 	return *y;
 }
 
-void CViewPort::set_desired_position(int x, int y){
+void SgViewPort::set_desired_position(int x, int y){
 	normalizeX(&x);
 	m_nDesiredX=x;
 	normalizeY(&y);
@@ -87,34 +87,34 @@ void CViewPort::set_desired_position(int x, int y){
 	
 }
 
-void CViewPort::set_scroll_speed(int speedX, int speedY){
+void SgViewPort::set_scroll_speed(int speedX, int speedY){
 	m_nScrollSpeedX=speedX;
 	m_nScrollSpeedY=speedY;
 }
 
 
-void CViewPort::set_world_dimensions(int width, int height){
+void SgViewPort::set_world_dimensions(int width, int height){
 	m_nWorldHeight=height;
 	m_nWorldWidth=width;
 }
 
-int CViewPort::GetScreenXPos(){
+int SgViewPort::GetScreenXPos(){
 	return m_nX;
 }
 
-int CViewPort::GetScreenYPos(){
+int SgViewPort::GetScreenYPos(){
 	return m_nY;
 }
 
-int CViewPort::GetWorldHeight(){
+int SgViewPort::GetWorldHeight(){
 	return m_nWorldHeight;
 }
 
-int CViewPort::GetWorldWidth(){
+int SgViewPort::GetWorldWidth(){
 	return m_nWorldWidth;
 }
 
-void CViewPort::update(DWORD dwTime){
+void SgViewPort::update(DWORD dwTime){
 
 	int nScrollSpeedX=0;
 	int nScrollSpeedY=0;

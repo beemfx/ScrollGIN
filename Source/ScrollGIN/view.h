@@ -9,7 +9,7 @@
 
 #include <windows.h>
 
-class CViewPort{
+class SgViewPort{
 private:
 	int m_nX; //Viewport x coordinate
 	int m_nY; //viewport y coordinate
@@ -25,7 +25,7 @@ private:
 	DWORD m_dwWidth;
 	DWORD m_dwHeight;
 public:
-	CViewPort(); //consturctor
+	SgViewPort(); //consturctor
 	int GetScreenXPos();//returns view x
 	int GetScreenYPos();//returns view y
 	int GetWorldWidth();//returns world width

@@ -1,5 +1,5 @@
 /*
-	tilemanager.h - header for Scrolling CSTileManager class
+	tilemanager.h - header for Scrolling SgTileManager class
 
 	Copyright (c) 2002, Blaine Myers
 */
@@ -11,7 +11,7 @@
 #include "../Renderer2/Renderer.h"
 #include "../MapBoard/mapboard.h"
 
-class CSTileManager{
+class SgTileManager{
 private:
 	//member varialbes
 	USHORT m_iCurrentReference;
@@ -19,8 +19,8 @@ private:
 									
 public:
 	//Constructor and destructor
-	CSTileManager(void);
-	~CSTileManager(void);
+	SgTileManager(void);
+	~SgTileManager(void);
 	///////////////////////////////////////////////////////////////
 	///The following public member functions are used to add    ///
 	///tiles to the database.                                   ///

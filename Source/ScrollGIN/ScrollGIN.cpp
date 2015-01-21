@@ -2,9 +2,8 @@
 	Copyright (c) 2004 Blaine Myers */
 
 #include "ScrollGIN.h"
-#include "ScrollGINFunc.h"
 
-CScrollGINGame::CScrollGINGame()
+SgScrollGINGame::SgScrollGINGame()
 {
 	m_lpObjectManager=NULL;
 	m_bInitialized=FALSE;
@@ -13,27 +12,27 @@ CScrollGINGame::CScrollGINGame()
 }
 
 
-CScrollGINGame::~CScrollGINGame()
+SgScrollGINGame::~SgScrollGINGame()
 {
 	SAFE_DELETE(m_lpObjectManager);
 }
 
-int CScrollGINGame::Pause(BOOL bPause)
+int SgScrollGINGame::Pause(BOOL bPause)
 {
 	m_Timer.Pause(bPause);
 	return 1;
 }
-int CScrollGINGame::TogglePause()
+int SgScrollGINGame::TogglePause()
 {
 	m_Timer.TogglePause();
 	return 1;
 }
-int CScrollGINGame::IsPaused()
+int SgScrollGINGame::IsPaused()
 {
 	return m_Timer.IsPaused();
 }
 
-int CScrollGINGame::Render()
+int SgScrollGINGame::Render()
 {
 	DrawMapBoard(
 		&m_Viewport,
@@ -51,10 +50,10 @@ int CScrollGINGame::Render()
 	return 1;
 }
 
-int CScrollGINGame::GameInit(
+int SgScrollGINGame::GameInit(
 	DWORD dwWidth, 
 	DWORD dwHeight, 
-	CObjectManager* lpObjMan, 
+	SgObjectManager* lpObjMan, 
 	HWND hwnd)
 {
 	if(m_bInitialized)
@@ -81,7 +80,7 @@ int CScrollGINGame::GameInit(
 	return 1;
 }
 
-int CScrollGINGame::LoadMap(LPTSTR szFilename)
+int SgScrollGINGame::LoadMap(LPTSTR szFilename)
 {
 	return LoadMapBoard(
 		szFilename,
@@ -93,7 +92,7 @@ int CScrollGINGame::LoadMap(LPTSTR szFilename)
 		&m_Viewport);
 }
 
-int CScrollGINGame::Release()
+int SgScrollGINGame::Release()
 {
 	m_TileManager.Release();
 	m_Background.Release();
@@ -103,19 +102,19 @@ int CScrollGINGame::Release()
 	return 1;
 }
 
-int CScrollGINGame::PreRenderProcess()
+int SgScrollGINGame::PreRenderProcess()
 {
 	m_Input.UpdateInputValues();
 	
 	return 1;
 }
 
-int CScrollGINGame::IsKeyPressed(int nKey)
+int SgScrollGINGame::IsKeyPressed(int nKey)
 {
 	return m_Input.GetKeyState(nKey);
 }
 
-int CScrollGINGame::Shutdown()
+int SgScrollGINGame::Shutdown()
 {
 	if(m_lpObjectManager)
 		m_lpObjectManager->ClearObjects();
@@ -123,4 +122,72 @@ int CScrollGINGame::Shutdown()
 	SAFE_DELETE(m_lpObjectManager);
 
 	return 1;
+}
+
+BOOL SgScrollGINGame::DrawMapBoard(
+	SgViewPort * pViewport, 
+	CMapBoard * pMap, 
+	SgTileManager * pTileManager,
+	SgBackground * pBG)
+{
+
+	//draw the background
+	pBG->DrawBackgrounds(
+		pViewport->GetScreenXPos()-640/2, 
+		pViewport->GetScreenYPos()-480/2,
+		640,
+		480);
+
+	//draw the mapboard
+
+	//The next few lines determine where the drawing should
+	//begin and end to avoid drawing tiles that arean't on the the
+	//screen (this actually only slightly reduces rendering time, but
+	//we do it anyway).
+	int nXStart=0, nYStart=0, nXEnd=0, nYEnd=0;
+	
+	nXStart=(pViewport->GetScreenXPos()-640/2)/pMap->GetTileDim() + 1;
+	nYStart=(pViewport->GetScreenYPos()-480/2)/pMap->GetTileDim() + 1;
+
+	nXEnd=(pViewport->GetScreenXPos()+640/2)/pMap->GetTileDim() + 1;//map->GetMapWidth();
+	nYEnd=(pViewport->GetScreenYPos()+480/2)/pMap->GetTileDim() + 1;//map->GetMapHeight();
+
+	for(int x=nXStart; x<=nXEnd; x++){
+		for(int y=nYStart; y<=nYEnd; y++){
+			pTileManager->PlaceTile(
+				pMap->GetTile(x, y), 
+				pViewport->screenX(x*pMap->GetTileDim()-pMap->GetTileDim()), 
+				pViewport->screenY(y*pMap->GetTileDim()-pMap->GetTileDim()));
+		}
+	}
+	return TRUE;
+}
+
+BOOL SgScrollGINGame::LoadMapBoard(
+	LPTSTR szFilename,
+	DWORD dwScreenWidth,
+	DWORD dwScreenHeight,
+	CMapBoard * pMap,
+	SgBackground * pBG,
+	SgTileManager * pTileMgr,
+	SgViewPort * pView)
+{
+	char szLibraryName[MAX_PATH];
+	char szBGName[MAX_PATH];
+	BOOL bResult=TRUE;
+	if(FAILED(pMap->LoadMap(szFilename)))return FALSE;
+	pMap->GetLibraryName(szLibraryName);
+	
+	pView->set_world_dimensions(pMap->GetMapWidth()*pMap->GetTileDim(), pMap->GetMapHeight()*pMap->GetTileDim());
+	pView->force_position(0, 0);
+	
+	//get library and load it
+	pTileMgr->ClearTileDatabase();
+	if(FAILED(pTileMgr->CreateTilesFromLibrary(szLibraryName, pMap)))bResult=FALSE;
+
+	//get background and load it
+	pMap->GetBGName(szBGName);
+	pBG->LoadBackgroundImage(szBGName, 2, dwScreenWidth, dwScreenHeight);
+
+	return bResult;
 }

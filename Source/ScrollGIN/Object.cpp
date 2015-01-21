@@ -11,7 +11,7 @@
 #include "view.h"
 
 
-CObject::CObject()
+SgObject::SgObject()
 {
 	m_nNumMessages=0;
 	m_nX=m_nY=0;
@@ -44,7 +44,7 @@ CObject::CObject()
 	m_nNumSprites=0;
 }
 
-CObject::CObject(CSpriteManager * pSpriteMgr, DWORD dwTime)
+SgObject::SgObject(SgSpriteManager * pSpriteMgr, DWORD dwTime)
 {
 	m_nNumMessages=0;
 	m_nX=m_nY=0;
@@ -75,7 +75,7 @@ CObject::CObject(CSpriteManager * pSpriteMgr, DWORD dwTime)
 	m_nNumSprites=0;
 }
 
-CObject::CObject(CSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed)
+SgObject::SgObject(SgSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed)
 {
 	m_nNumMessages=0;
 	m_nX=m_nY=0;
@@ -111,11 +111,11 @@ CObject::CObject(CSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nX
 	SetSpeed(nXSpeed, nYSpeed);
 }
 
-CObject::~CObject(){
+SgObject::~SgObject(){
 	
 }
 
-BOOL CObject::SendMessage(LONG nMsg){
+BOOL SgObject::SendMessage(LONG nMsg){
 	if(m_nNumMessages >= MESSAGE_BUFFER_SIZE)return FALSE;
 	//Filter out the message if it's already been sent
 	for(WORD i=0; i<m_nNumMessages; i++)
@@ -127,7 +127,7 @@ BOOL CObject::SendMessage(LONG nMsg){
 	return TRUE;
 }
 
-BOOL CObject::ProcessMessages(void* lpObjMan){
+BOOL SgObject::ProcessMessages(void* lpObjMan){
 	//All messages should be processed
 
 	//Clear the message que
@@ -135,17 +135,17 @@ BOOL CObject::ProcessMessages(void* lpObjMan){
 	return FALSE;
 }
 
-BOOL CObject::IsAlive(){
+BOOL SgObject::IsAlive(){
 	return m_bAlive;
 }
 
-void CObject::SetAliveState(BOOL bAlive){
+void SgObject::SetAliveState(BOOL bAlive){
 	m_bAlive=bAlive;
 }
 
-HRESULT CObject::ProcessAI(CInputManager* pInput, void* pObjMan, CTimerEx* timer, CMapBoard* map)
+HRESULT SgObject::ProcessAI(SgInputManager* pInput, void* pObjMan, SgTimer* timer, CMapBoard* map)
 {
-	//CObjectManager* pObjectMan=(CObjectManager*)pObjMan;
+	//SgObjectManager* pObjectMan=(SgObjectManager*)pObjMan;
 	
 	if(pInput==NULL){
 	//If the input manager is null it means we use AI
@@ -157,19 +157,19 @@ HRESULT CObject::ProcessAI(CInputManager* pInput, void* pObjMan, CTimerEx* timer
 	return S_OK;
 }
 
-BOOL CObject::LoadObjectSprites(CSpriteManager* pSpriteMgr){	
+BOOL SgObject::LoadObjectSprites(SgSpriteManager* pSpriteMgr){	
 	return TRUE;
 }
 
-BOOL CObject::CreateObjectModes(DWORD dwTime){
+BOOL SgObject::CreateObjectModes(DWORD dwTime){
 	return TRUE;
 }
 
-RECT CObject::GetObjectDim(){
+RECT SgObject::GetObjectDim(){
 	return m_sObjectMode[m_nCurrentMode].rcObjDim;
 }
 
-int CObject::DistanceFrom(CObject *cObject){
+int SgObject::DistanceFrom(SgObject *cObject){
 	if(this==cObject)return 0;
 	//get the x and y distance
 	int x = abs(m_nX - cObject->GetX());
@@ -179,7 +179,7 @@ int CObject::DistanceFrom(CObject *cObject){
 	return (int)sqrt((double)x*x+(double)y*y);
 }
 
-COLLISIONTYPE CObject::DetectCollision(CObject *cObject){
+COLLISIONTYPE SgObject::DetectCollision(SgObject *cObject){
 	//if we passed the object to itself we return
 	if(this==cObject)return CT_NOCLSN;
 
@@ -219,7 +219,7 @@ COLLISIONTYPE CObject::DetectCollision(CObject *cObject){
 	return CT_NOCLSN;
 }
 
-BOOL CObject::SetObjectMode(char szModeName[MAX_SPRITE_NAME_LENGTH], DWORD dwTime){
+BOOL SgObject::SetObjectMode(char szModeName[MAX_SPRITE_NAME_LENGTH], DWORD dwTime){
 	for(int i=1; i<=m_nNumModes; i++){
 		if(strcmp(szModeName, m_sObjectMode[i].szModeName)==0)
 			return SetObjectMode(i, dwTime);
@@ -227,7 +227,7 @@ BOOL CObject::SetObjectMode(char szModeName[MAX_SPRITE_NAME_LENGTH], DWORD dwTim
 	return FALSE;
 }
 
-BOOL CObject::SetObjectMode(int nNewMode, DWORD dwTime){
+BOOL SgObject::SetObjectMode(int nNewMode, DWORD dwTime){
 	//if the mode hasn't changed we do nothing
 	if(m_nCurrentMode==nNewMode)return FALSE;
 
@@ -250,11 +250,11 @@ BOOL CObject::SetObjectMode(int nNewMode, DWORD dwTime){
 	return TRUE;
 }
 
-DWORD CObject::GetObjectAlign(){
+DWORD SgObject::GetObjectAlign(){
 	return m_sObjectMode[m_nCurrentMode].nType;
 }
 
-BOOL CObject::CreateMode(BOOL bActiveSprites[MAX_SPRITES_PER_OBJECT], RECT rcObjDim, DWORD nType, char szModeName[MAX_SPRITE_NAME_LENGTH])
+BOOL SgObject::CreateMode(BOOL bActiveSprites[MAX_SPRITES_PER_OBJECT], RECT rcObjDim, DWORD nType, char szModeName[MAX_SPRITE_NAME_LENGTH])
 {
 	for(int i=0; i<m_nNumSprites; i++)
 		m_sObjectMode[m_nNumModes+1].bActiveSprites[i]=bActiveSprites[i];
@@ -284,12 +284,12 @@ BOOL CObject::CreateMode(BOOL bActiveSprites[MAX_SPRITES_PER_OBJECT], RECT rcObj
 	return TRUE;
 }
 
-SPRITEFACE CObject::GetFace()
+SPRITEFACE SgObject::GetFace()
 {
 	return m_nFace;
 }
 
-void CObject::Draw(CViewPort *vp){
+void SgObject::Draw(SgViewPort *vp){
 	for(int i=0; i<m_nNumSprites; i++){
 		if(m_pSprite[i]!=NULL){
 			if(m_sSpriteData[i].bActive==TRUE){
@@ -314,30 +314,30 @@ void CObject::Draw(CViewPort *vp){
 	#endif //DEBUGRECTS
 }
 
-BOOL CObject::SetSpeed(int nXSpeed, int nYSpeed){
+BOOL SgObject::SetSpeed(int nXSpeed, int nYSpeed){
 	SetXSpeed(nXSpeed); SetYSpeed(nYSpeed);
 	return TRUE;
 }
 
-BOOL CObject::SetXSpeed(int nXSpeed){
+BOOL SgObject::SetXSpeed(int nXSpeed){
 	m_nXSpeed=nXSpeed;
 	return TRUE;
 }
 
-BOOL CObject::SetYSpeed(int nYSpeed){
+BOOL SgObject::SetYSpeed(int nYSpeed){
 	m_nYSpeed=nYSpeed;
 	return TRUE;
 }
 
-int CObject::GetX(){
+int SgObject::GetX(){
 	return m_nX;
 }
 
-int CObject::GetY(){
+int SgObject::GetY(){
 	return m_nY;
 }
 
-HRESULT CObject::InitialMovement(CTimerEx *timer, int nXSpeed, int nYSpeed){
+HRESULT SgObject::InitialMovement(SgTimer *timer, int nXSpeed, int nYSpeed){
 	int xdelta=0, ydelta=0;
 	DWORD time=timer->Time();
 
@@ -384,7 +384,7 @@ HRESULT CObject::InitialMovement(CTimerEx *timer, int nXSpeed, int nYSpeed){
 	return S_OK;
 }
 
-BOOL CObject::CollisionWithRect(CMapBoard *map, RECT rect, DWORD nWidth, DWORD nHeight){
+BOOL SgObject::CollisionWithRect(CMapBoard *map, RECT rect, DWORD nWidth, DWORD nHeight){
 	int i=0, j=0;
 	DWORD dwTileDim=map->GetTileDim();
 	BOOL result=FALSE;
@@ -429,7 +429,7 @@ BOOL CObject::CollisionWithRect(CMapBoard *map, RECT rect, DWORD nWidth, DWORD n
 	written.  I can only imagine what it would be like to create a function
 	like this for a 3D game.
 */
-HRESULT CObject::DefaultArchAdjust(CMapBoard *map)
+HRESULT SgObject::DefaultArchAdjust(CMapBoard *map)
 {
 	//the default move, stops no matter what type of architecture, should
 	//be used as a template for all movements
@@ -631,7 +631,7 @@ HRESULT CObject::DefaultArchAdjust(CMapBoard *map)
 	return S_OK;
 }
 
-HRESULT CObject::ArchAdjust(CTimerEx *timer, CMapBoard *map){
+HRESULT SgObject::ArchAdjust(SgTimer *timer, CMapBoard *map){
 	//at this point we should call a custom function that is designed for
 	//the specific game.  If there is no outside function we pull off the defult
 	//move
@@ -640,15 +640,15 @@ HRESULT CObject::ArchAdjust(CTimerEx *timer, CMapBoard *map){
 	return S_OK;
 }
 
-int CObject::GetXSpeed(){
+int SgObject::GetXSpeed(){
 	return m_nXSpeed;
 }
 
-int CObject::GetYSpeed(){
+int SgObject::GetYSpeed(){
 	return m_nYSpeed;
 }
 
-HRESULT CObject::Animate(CTimerEx *timer, CMapBoard *map, CInputManager* pInput, void* pObjMan){
+HRESULT SgObject::Animate(SgTimer *timer, CMapBoard *map, SgInputManager* pInput, void* pObjMan){
 	int nTempXSpeed=m_nXSpeed;
 	int nTempYSpeed=m_nYSpeed;
 
@@ -691,17 +691,17 @@ HRESULT CObject::Animate(CTimerEx *timer, CMapBoard *map, CInputManager* pInput,
 	return S_OK;
 }
 
-void CObject::GetDelta(int *DeltaX, int *DeltaY){
+void SgObject::GetDelta(int *DeltaX, int *DeltaY){
 	*DeltaX=m_nDeltaX;
 	*DeltaY=m_nDeltaY;
 }
 
-BOOL CObject::SetNumSprites(int nNumSprites){
+BOOL SgObject::SetNumSprites(int nNumSprites){
 	m_nNumSprites=nNumSprites;
 	return TRUE;
 }
 
-BOOL CObject::SetObjectFace(SPRITEFACE nNewFace){
+BOOL SgObject::SetObjectFace(SPRITEFACE nNewFace){
 	//if the face is the same we don't need to change anything
 	if(nNewFace==m_nFace)return FALSE;
 	
@@ -713,14 +713,14 @@ BOOL CObject::SetObjectFace(SPRITEFACE nNewFace){
 	}
 	return TRUE;
 }
-BOOL CObject::SetPosition(int x, int y){
+BOOL SgObject::SetPosition(int x, int y){
 	m_nX=x;
 	m_nY=y;
 	return TRUE;
 }
 
 
-HRESULT CObject::ObtainPointerToSprite(SgSprite* pSprite, int x, int y, int nAnimSpeed, LOOPMODE nLoopMode){
+HRESULT SgObject::ObtainPointerToSprite(SgSprite* pSprite, int x, int y, int nAnimSpeed, LOOPMODE nLoopMode){
 	HRESULT hr;
 	if(m_nNumSprites>MAX_SPRITES_PER_OBJECT)return E_FAIL;
 	if(SUCCEEDED(hr=ObtainPointerToSprite(m_nNumSprites+1, pSprite, x, y, nAnimSpeed, nLoopMode))){
@@ -729,7 +729,7 @@ HRESULT CObject::ObtainPointerToSprite(SgSprite* pSprite, int x, int y, int nAni
 	}else return hr;
 }
 
-HRESULT CObject::ObtainPointerToSprite(int nIndex, SgSprite* pSprite, int x, int y, int nAnimSpeed, LOOPMODE nLoopMode){
+HRESULT SgObject::ObtainPointerToSprite(int nIndex, SgSprite* pSprite, int x, int y, int nAnimSpeed, LOOPMODE nLoopMode){
 	if(nIndex<1 || nIndex > MAX_SPRITES_PER_OBJECT)return E_FAIL;
 	if(pSprite==NULL)return E_FAIL;
 	//Set the pointer
@@ -751,7 +751,7 @@ HRESULT CObject::ObtainPointerToSprite(int nIndex, SgSprite* pSprite, int x, int
 	return S_OK;
 }
 
-BYTE CObject::ArchRelative(CMapBoard *map, int x, int y){
+BYTE SgObject::ArchRelative(CMapBoard *map, int x, int y){
 	//we first need to adjust the coordinates relative to the object
 	x+=m_nX;
 	y+=m_nY;
@@ -770,7 +770,7 @@ BYTE CObject::ArchRelative(CMapBoard *map, int x, int y){
 	return map->GetArch((int)x/map->GetTileDim()+1, (int)y/map->GetTileDim()+1);
 }
 
-BOOL CObject::ArchRelative(
+BOOL SgObject::ArchRelative(
 	CMapBoard* map, 
 	DWORD dwRelativeFlags)
 {
@@ -845,7 +845,7 @@ BOOL CObject::ArchRelative(
 
 }
 
-BOOL CObject::PreInitialMovement(
+BOOL SgObject::PreInitialMovement(
 	CMapBoard *map, 
 	int *nXSpeed, 
 	int *nYSpeed)

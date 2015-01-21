@@ -13,23 +13,23 @@
 #include "../ImageLib/ImageLib.h"
 #include "spritemanager.h"
 
-CSpriteManager::CSpriteManager():
+SgSpriteManager::SgSpriteManager():
 m_dwMaxSprites(MAX_SPRITES)
 {
 	m_nNumSprites=0;
 }
 
-CSpriteManager::~CSpriteManager(){
+SgSpriteManager::~SgSpriteManager(){
 
 }
 
-HRESULT CSpriteManager::CreateSpritesFromFile(LPTSTR szFilename)
+HRESULT SgSpriteManager::CreateSpritesFromFile(LPTSTR szFilename)
 {
 	if(m_nNumSprites>=MAX_SPRITES)return E_FAIL;
 	return CreateSpritesFromFile(m_nNumSprites+1, szFilename);
 }
 
-HRESULT CSpriteManager::CreateSpritesFromFile(DWORD nSprite, LPTSTR szFilename){
+HRESULT SgSpriteManager::CreateSpritesFromFile(DWORD nSprite, LPTSTR szFilename){
 	if((nSprite<1) || (nSprite>=MAX_SPRITES))return E_FAIL;
 	m_nNumSprites=nSprite;
 	CImageArchive ILibrary;
@@ -96,18 +96,18 @@ HRESULT CSpriteManager::CreateSpritesFromFile(DWORD nSprite, LPTSTR szFilename){
 	return S_OK;
 }
 
-void CSpriteManager::Release(){
+void SgSpriteManager::Release(){
 	for(int i=0; i<m_nNumSprites; i++)
 		m_cSprite[i].Release();
 }
 
-HRESULT CSpriteManager::DisplaySprite(int nSprite, int nFrame, SPRITEFACE nFace, int x, int y){
+HRESULT SgSpriteManager::DisplaySprite(int nSprite, int nFrame, SPRITEFACE nFace, int x, int y){
 	if(nSprite<1 || nSprite>m_nNumSprites)return E_FAIL;
 
 	return m_cSprite[nSprite-1].DisplaySprite(nFrame, nFace, x, y, LP_FORWARD);
 }
 
-void CSpriteManager::ClearDataBase(){
+void SgSpriteManager::ClearDataBase(){
 	Release();
 	m_nNumSprites=0;
 }
@@ -115,12 +115,12 @@ void CSpriteManager::ClearDataBase(){
 //LetPointer() function release the address of the sprite
 //of the chosen index, to allow another class to use that sprite
 //directly.
-SgSprite* CSpriteManager::LetPointer(int nSpriteIndex){
+SgSprite* SgSpriteManager::LetPointer(int nSpriteIndex){
 	if((nSpriteIndex<1) || (nSpriteIndex>(int)m_dwMaxSprites))return NULL;
 	return &m_cSprite[nSpriteIndex-1];
 }
 
-SgSprite* CSpriteManager::LetPointer(LPTSTR szSpriteName){
+SgSprite* SgSpriteManager::LetPointer(LPTSTR szSpriteName){
 	char szTempSpriteName[MAX_SPRITE_NAME_LENGTH+1];
 	for(int i=0; i<m_nNumSprites; i++){
 		m_cSprite[i].GetSpriteName(szTempSpriteName);
