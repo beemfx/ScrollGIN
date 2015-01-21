@@ -17,37 +17,34 @@ SgScrollGINGame::~SgScrollGINGame()
 
 }
 
-int SgScrollGINGame::Pause(BOOL bPause)
+void SgScrollGINGame::Pause(bool bPause)
 {
 	m_Timer.Pause(bPause);
-	return 1;
 }
-int SgScrollGINGame::TogglePause()
+
+void SgScrollGINGame::TogglePause()
 {
 	m_Timer.TogglePause();
-	return 1;
-}
-int SgScrollGINGame::IsPaused()
-{
-	return m_Timer.IsPaused();
 }
 
-int SgScrollGINGame::Render()
+bool SgScrollGINGame::IsPaused()const
+{
+	return TRUE == m_Timer.IsPaused();
+}
+
+void SgScrollGINGame::Render()
 {
 	DrawMapBoard();
-
 	m_lpObjectManager->Animate(&m_Mapboard,&m_Viewport,&m_Input);
-
-	return 1;
 }
 
-int SgScrollGINGame::Init(DWORD dwWidth, DWORD dwHeight, SgObjectManager* lpObjMan, HWND hwnd)
+void SgScrollGINGame::Init( int dwWidth , int dwHeight , SgObjectManager* lpObjMan , HWND hwnd )
 {
 	if(m_bInitialized)
-		return 0;
+		return;
 
 	if(lpObjMan==NULL)
-		return 0;
+		return;
 
 
 	m_lpObjectManager=lpObjMan;
@@ -64,15 +61,13 @@ int SgScrollGINGame::Init(DWORD dwWidth, DWORD dwHeight, SgObjectManager* lpObjM
 
 	lpObjMan->ObtainTimer(&m_Timer);
 	lpObjMan->Initialize();
-	return 1;
 }
 
-int SgScrollGINGame::LoadMap(LPTSTR szFilename)
+void SgScrollGINGame::LoadMap(const char* szFilename)
 {
 	char szLibraryName[MAX_PATH];
 	char szBGName[MAX_PATH];
-	BOOL bResult=TRUE;
-	if(FAILED(m_Mapboard.LoadMap(szFilename)))return FALSE;
+	m_Mapboard.LoadMap(szFilename);
 	m_Mapboard.GetLibraryName(szLibraryName);
 	
 	m_Viewport.set_world_dimensions(m_Mapboard.GetMapWidth()*m_Mapboard.GetTileDim(), m_Mapboard.GetMapHeight()*m_Mapboard.GetTileDim());
@@ -85,20 +80,6 @@ int SgScrollGINGame::LoadMap(LPTSTR szFilename)
 	//get background and load it
 	m_Mapboard.GetBGName(szBGName);
 	m_Background.LoadBackgroundImage(szBGName, 2, m_dwWidth, m_dwHeight);
-
-	return bResult;
-}
-
-int SgScrollGINGame::Release()
-{
-	m_TileManager.Clear();
-	m_Background.Destroy();
-	if(m_lpObjectManager)
-	{
-		m_lpObjectManager->ClearSprites();
-	}
-
-	return 1;
 }
 
 void SgScrollGINGame::Update()
@@ -111,12 +92,18 @@ bool SgScrollGINGame::IsKeyPressed(int nKey)
 	return m_Input.GetKeyState(nKey);
 }
 
-int SgScrollGINGame::Shutdown()
+void SgScrollGINGame::Deinit()
 {
 	if(m_lpObjectManager)
 		m_lpObjectManager->ClearObjects();
 	m_lpObjectManager = 0;
-	return 1;
+
+	m_TileManager.Clear();
+	m_Background.Destroy();
+	if(m_lpObjectManager)
+	{
+		m_lpObjectManager->ClearSprites();
+	}
 }
 
 void SgScrollGINGame::DrawMapBoard()

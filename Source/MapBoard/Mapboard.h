@@ -140,8 +140,8 @@ public:
 	
 	BYTE GetObject(int x, int y);	//Returns value of object at x,y
 
-	HRESULT LoadMapA(LPSTR lpMapFilename);	//Loads map of filename into memory
-	HRESULT LoadMapW(LPWSTR lpMapFilename); //same as above but unicode
+	HRESULT LoadMapA(LPCSTR lpMapFilename);	//Loads map of filename into memory
+	HRESULT LoadMapW(LPCWSTR lpMapFilename); //same as above but unicode
 
 	void GetLibraryNameA(LPTSTR lpLibraryName);
 	void GetLibraryNameW(LPWSTR lpLibraryName);
