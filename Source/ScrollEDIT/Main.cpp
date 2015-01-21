@@ -55,7 +55,7 @@ BOOL RemoveDir(TCHAR szOutput[MAX_PATH], TCHAR szFilename[MAX_PATH])
 		szTempString[i]=szFilename[j];
 	}
 	szTempString[i]=NULL;
-	_tcscpy(szOutput, szTempString);
+	_tcscpy_s(szOutput, MAX_PATH, szTempString);
 	return TRUE;
 }
 
@@ -111,7 +111,7 @@ BOOL QueryForSave(HWND hwnd, TCHAR szMapName[MAX_PATH])
 {
 	TCHAR szQuestion[MAX_PATH+20];
 	TCHAR szSaveFilename[MAX_PATH];
-	_stprintf(szQuestion, TEXT("Save changes to %s?"), szMapName);
+	_stprintf_s(szQuestion, countof(szQuestion), TEXT("Save changes to %s?"), szMapName);
 		
 	//we should only query on exit if the last move in someway edited the map
 	
@@ -125,7 +125,7 @@ BOOL QueryForSave(HWND hwnd, TCHAR szMapName[MAX_PATH])
 		}
 		else
 		{ 
-			_tcscpy(szSaveFilename, TEXT("Map name"));
+			_tcscpy_s(szSaveFilename, countof(szSaveFilename), TEXT("Map name"));
 			if(GetSaveFilename(
 				TEXT("Save map..."), 
 				TEXT("ScrollGIN Map (*.map)\0*.map\0All Files (*.*)\0*.*\0"), 
@@ -133,7 +133,7 @@ BOOL QueryForSave(HWND hwnd, TCHAR szMapName[MAX_PATH])
 				hwnd, 
 				szSaveFilename))
 			{
-				_tcscpy(szMapName, szSaveFilename);
+				_tcscpy_s(szMapName, countof(szMapName), szSaveFilename);
 				g_cEditMapboard.SaveMap(szMapName);
 				return TRUE;
 			}
@@ -418,15 +418,14 @@ BOOL CALLBACK StatsDlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	switch(uMsg)
 	{
 	case WM_INITDIALOG:
-		TCHAR szTempName[MAX_PATH];
-		g_cEditMapboard.GetLibraryName(szTempName);
+	{
+		const TCHAR* szTempName = g_cEditMapboard.GetLibraryName();
 		SetDlgItemText(hwnd, IDC_LIBRARY , szTempName);
-		g_cEditMapboard.GetBGName(szTempName);
+		szTempName = g_cEditMapboard.GetBGName();
 		SetDlgItemText(hwnd, IDC_BACKGROUND, szTempName);
 		SetDlgItemInt(hwnd, IDC_MAPWIDTH, g_cEditMapboard.GetMapWidth(), FALSE);
 		SetDlgItemInt(hwnd, IDC_MAPHEIGHT, g_cEditMapboard.GetMapHeight(), FALSE);
-
-		break;
+	} break;
 	
 	case WM_COMMAND:
 	{
@@ -1317,12 +1316,11 @@ BOOL LoadMap(
 	{
 		UpdateEditScroll(hwndEdit, TILEDIM, 0, 0);
 
-		_tcscpy(szCurrentMap, szFilename);
-		_stprintf(szWindowText, TEXT("ScrollEdit [%s]"), szCurrentMap);
+		_tcscpy_s(szCurrentMap, MAX_PATH, szFilename);
+		_stprintf_s(szWindowText, countof(szWindowText), TEXT("ScrollEdit [%s]"), szCurrentMap);
 		SetWindowText(hwnd, szWindowText);
 
-		TCHAR szLibraryName[MAX_PATH];
-		g_cEditMapboard.GetLibraryName(szLibraryName);
+		const TCHAR* szLibraryName = g_cEditMapboard.GetLibraryName();
 
 		if(FAILED(ITileArchive.LoadArchive(szLibraryName)))
 		{
@@ -1386,7 +1384,7 @@ BOOL MainCommandProc(
 			UpdateEditScroll(hwndEdit, TILEDIM, 0, 0);
 			UpdatePalScroll(hwndPal, TILEDIM, 0);
 			szCurrentMap[0]=NULL;
-			_stprintf(szWindowText, TEXT("ScrollEdit [%s]"), szCurrentMap);
+			_stprintf_s(szWindowText, countof(szWindowText), TEXT("ScrollEdit [%s]"), szCurrentMap);
 			SetWindowText(hwnd, szWindowText);
 			MessageBox(hwnd, TEXT("New map successfully genereated"), TEXT("ScrollEdit"), MB_OK|MB_ICONINFORMATION);
 			g_bQueryForSave=TRUE;
@@ -1407,7 +1405,7 @@ BOOL MainCommandProc(
 		}
 
 		TCHAR szOpenFilename[MAX_PATH];
-		_tcscpy(szOpenFilename, TEXT("Map name"));
+		_tcscpy_s(szOpenFilename, countof(szOpenFilename), TEXT("Map name"));
 		if(GetOpenFilename(
 			TEXT("Open map..."), 
 			TEXT("ScrollGIN Map (*.map)\0*.map\0All Files (*.*)\0*.*\0"), 
@@ -1426,7 +1424,7 @@ BOOL MainCommandProc(
 	case ID_FILESAVEAS:
 	{
 		TCHAR szSaveFilename[MAX_PATH];
-		_tcscpy(szSaveFilename, szCurrentMap);
+		_tcscpy_s(szSaveFilename, countof(szSaveFilename), szCurrentMap);
 		if(GetSaveFilename(
 			TEXT("Save map..."), 
 			TEXT("ScrollGIN Map (*.map)\0*.map\0All Files (*.*)\0*.*\0"), 
@@ -1434,7 +1432,7 @@ BOOL MainCommandProc(
 			hwnd, 
 			szSaveFilename))
 		{
-			_tcscpy(szCurrentMap, szSaveFilename);
+			_tcscpy_s(szCurrentMap, MAX_PATH, szSaveFilename);
 		}
 		else 
 			break;
@@ -1451,7 +1449,7 @@ BOOL MainCommandProc(
 				ID_FILESAVEAS, 
 				NULL);
 
-			_stprintf(szWindowText, TEXT("ScrollEdit [%s]"), szCurrentMap);
+			_stprintf_s(szWindowText, countof(szWindowText), TEXT("ScrollEdit [%s]"), szCurrentMap);
 
 			SetWindowText(hwnd, szWindowText);
 			break;
@@ -1460,7 +1458,7 @@ BOOL MainCommandProc(
 		if(SUCCEEDED(g_cEditMapboard.SaveMap(szCurrentMap)))
 		{
 			SaveRegFilename(szCurrentMap);
-			_stprintf(szWindowText, TEXT("ScrollEdit [%s]"), szCurrentMap);
+			_stprintf_s(szWindowText, countof(szWindowText), TEXT("ScrollEdit [%s]"), szCurrentMap);
 			SetWindowText(hwnd, szWindowText);
 			g_bQueryForSave=FALSE;
 			MessageBox(
