@@ -16,15 +16,15 @@ extern "C"
 HBITMAP LoadBitmapOffset(const char szFilename[MAX_PATH], int nOffset);
 
 BOOL TransparentBlt2(
-	HDC hdcDest, 
-	int nXOriginDest, 
-	int nYOriginDest, 
-	int nWidthDest, 
-	int nHeightDest, 
-	HDC hdcSrc, 
-	int nXOriginSrc, 
-	int nYOriginSrc, 
-	int nWidthSrc, 
+	HDC hdcDest,
+	int nXOriginDest,
+	int nYOriginDest,
+	int nWidthDest,
+	int nHeightDest,
+	HDC hdcSrc,
+	int nXOriginSrc,
+	int nYOriginSrc,
+	int nWidthSrc,
 	int nHeightSrc,
 	DWORD crTransparent);
 
