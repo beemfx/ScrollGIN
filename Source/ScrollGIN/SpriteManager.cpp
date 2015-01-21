@@ -49,7 +49,7 @@ void SgSpriteManager::InsertSprites(int nSprite, const char* szFilename)
 	for(i=1; i<=ILibrary.GetNumEntries(); i++){
 		
 		ILibrary.GetImageData(i, &id);
-		ILibrary.GetImageName(szImageName, i);
+		ILibrary.GetImageName(szImageName, countof(szImageName), i);
 	
 		if(id.nFrames==1)
 		{
