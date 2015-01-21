@@ -123,9 +123,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\ImageLib\Bitmap.c" />
-    <ClCompile Include="..\ImageLib\EditImageLibrary.cpp" />
-    <ClCompile Include="..\ImageLib\ImageArchive.cpp" />
-    <ClCompile Include="..\ImageLib\ImageLibrary.cpp" />
+    <ClCompile Include="..\ImageLib\ImgLib.cpp" />
     <ClCompile Include="..\img_lib\img_bmp.c" />
     <ClCompile Include="..\img_lib\img_cb.c" />
     <ClCompile Include="..\img_lib\img_lib.c" />
@@ -138,7 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ImageLib\bitmapex.h" />
-    <ClInclude Include="..\ImageLib\ImageLib.h" />
+    <ClInclude Include="..\ImageLib\ImgLib.h" />
     <ClInclude Include="..\img_lib\img_lib.h" />
     <ClInclude Include="..\img_lib\img_lib_types.h" />
     <ClInclude Include="..\img_lib\img_private.h" />

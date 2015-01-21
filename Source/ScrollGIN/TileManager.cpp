@@ -5,9 +5,9 @@
 	Copyright (c) 2002, Blaine Myers
 */
 
-#include "../ImageLib/ImageLib.h"
-#include "../Renderer2/Renderer.h"
-#include "../Renderer2/RendererImage.h"
+#include "ImageLib/ImgLib.h"
+#include "Renderer2/Renderer.h"
+#include "Renderer2/RendererImage.h"
 #include "TileManager.h"
 
 
@@ -30,7 +30,7 @@ SgTileManager::~SgTileManager(void)
 //creates many tile surfaces starting with chosen reference from a library
 bool SgTileManager::LoadLib(const char* lpLibraryFilename, SgMap *map){
 	//This will use a library to call CreateTilesFromFile functions
-	CImageArchive ILibrary;
+	SgImgLibArchive ILibrary;
 
 	bool Res = ILibrary.LoadArchive(lpLibraryFilename);
 

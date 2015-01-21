@@ -1,9 +1,9 @@
 #ifndef __CONSTLIBRARY_H__
 #define __CONSTLIBRARY_H__
 
-#include "../ImageLib/ImageLib.h"
+#include "ImageLib/ImgLib.h"
 
-class CConstantArchive: public CImageArchive{
+class CConstantArchive: public SgImgLibArchive{
 private:
 public:
 	CConstantArchive(LPCTSTR, int, WORD, WORD);
