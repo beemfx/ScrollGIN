@@ -6,7 +6,7 @@
 #ifndef __TILEMANAGER_H__
 #define __TILEMANAGER_H__
 
-#include "defines.h"
+#include "GameConfig.h"
 #include "../Renderer2/Renderer.h"
 #include "../MapBoard/mapboard.h"
 

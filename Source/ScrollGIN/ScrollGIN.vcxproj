@@ -73,7 +73,7 @@
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalIncludeDirectories>../;../DXLIB;./;</AdditionalIncludeDirectories>
-      <ForcedIncludeFiles>SgCommon.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles>ScrollGIN/SgCommon.h</ForcedIncludeFiles>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -113,7 +113,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalIncludeDirectories>../;../DXLIB;./;</AdditionalIncludeDirectories>
-      <ForcedIncludeFiles>SgCommon.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles>ScrollGIN/SgCommon.h</ForcedIncludeFiles>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -238,17 +238,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ImageLib\bitmapex.h" />
-    <ClInclude Include="..\ImageLib\Defines.h" />
     <ClInclude Include="..\ImageLib\ImageLib.h" />
     <ClInclude Include="..\img_lib\img_lib.h" />
     <ClInclude Include="..\img_lib\img_lib_types.h" />
     <ClInclude Include="..\img_lib\img_private.h" />
-    <ClInclude Include="..\MapBoard\Defines.h" />
     <ClInclude Include="..\MapBoard\Mapboard.h" />
     <ClInclude Include="..\Renderer2\Renderer.h" />
     <ClInclude Include="..\Renderer2\RendererImage.h" />
     <ClInclude Include="Background.h" />
-    <ClInclude Include="defines.h" />
+    <ClInclude Include="GameConfig.h" />
     <ClInclude Include="GenFuncs.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="Joes2.h" />

@@ -8,7 +8,7 @@
 
 #include <dinput.h>
 #include <windows.h>
-#include "defines.h"
+#include "GameConfig.h"
 
 
 

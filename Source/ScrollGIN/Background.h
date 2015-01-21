@@ -7,7 +7,7 @@
 #ifndef __BACKGROUND_H__
 #define __BACKGROUND_H__
 
-#include "defines.h"
+#include "GameConfig.h"
 #include "../Renderer2/Renderer.h"
 
 enum SCROLLMODE

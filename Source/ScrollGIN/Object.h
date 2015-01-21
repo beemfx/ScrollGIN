@@ -7,7 +7,7 @@
 #define __OBJECT_H__
 
 #include <windows.h>
-#include "defines.h"
+#include "GameConfig.h"
 #include "Input.h"
 #include "../MapBoard/mapboard.h"
 #include "SpriteManager.h"

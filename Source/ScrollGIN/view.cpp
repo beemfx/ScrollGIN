@@ -4,9 +4,9 @@
 
 	Copyright (c) 2002, Blaine Myers
 */
-#include "defines.h"
-#include "timer.h"
 #include "view.h"
+#include "timer.h"
+#include "GameConfig.h"
 
 
 SgViewPort::SgViewPort()

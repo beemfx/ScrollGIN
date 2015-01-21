@@ -4,7 +4,7 @@
 	Copyright (c) 2003, Blaine Myers
 */
 
-#include "Defines.h"
+#include "GameConfig.h"
 #include "ObjMan.h"
 #include "genfuncs.h"
 

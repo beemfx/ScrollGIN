@@ -11,3 +11,11 @@ typedef wchar_t          sg_char16;
 #else
 
 #endif
+
+
+#define SAFE_DELETE(p)       { if(p) { delete (p);     (p)=NULL; } }
+#define SAFE_DELETE_ARRAY(p) { if(p) { delete[] (p);   (p)=NULL; } }
+
+#define SAFE_RELEASE(p)      { if(p) { (p)->Release(); (p)=NULL; } }
+
+#define SAFE_FREE(p)         { if(p) { free(p); (p)=NULL; } }

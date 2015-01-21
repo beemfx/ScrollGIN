@@ -4,9 +4,8 @@
 	Copyright (c) 2003, Blaine Myers
 */
 
-#include <stdio.h>
-#include "defines.h"
 #include "imagelib.h"
+#include <stdio.h>
 
 CEditImageLibrary::CEditImageLibrary()
 {

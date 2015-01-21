@@ -114,9 +114,6 @@
     <ClInclude Include="view.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="defines.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="GenFuncs.h">
       <Filter>Source</Filter>
     </ClInclude>
@@ -150,16 +147,10 @@
     <ClInclude Include="Timer.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\MapBoard\Defines.h">
-      <Filter>MapBoard</Filter>
-    </ClInclude>
     <ClInclude Include="..\MapBoard\Mapboard.h">
       <Filter>MapBoard</Filter>
     </ClInclude>
     <ClInclude Include="..\ImageLib\bitmapex.h">
-      <Filter>ImageLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ImageLib\Defines.h">
       <Filter>ImageLib</Filter>
     </ClInclude>
     <ClInclude Include="..\ImageLib\ImageLib.h">
@@ -181,6 +172,9 @@
       <Filter>img_lib</Filter>
     </ClInclude>
     <ClInclude Include="SgCommon.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameConfig.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>

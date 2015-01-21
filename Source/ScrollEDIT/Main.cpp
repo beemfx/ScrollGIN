@@ -3,7 +3,7 @@
 
 	Main.cpp - Entry point for ScrollEdit
 
-	Coyright (c) 2002, Blaine Myers
+	Copyright (c) 2002, Blaine Myers
 */
 
 #include <windows.h>
@@ -22,6 +22,9 @@
 #define ID_PALETTE_WINDOW 0x12340001
 #define ID_EDIT_WINDOW    0x12340002
 
+#define PALETTEDIM (MAP_TILEDIM*PALETTEWIDTH+GetSystemMetrics(SM_CXHSCROLL))
+#define PALETTEWIDTH 3
+
 #ifdef UNICODE
 #define VERSIONTEXT TEXT("version x.xx  UNICODE")
 #else //unicode
@@ -30,7 +33,7 @@
 
 CEditMapBoard g_cEditMapboard;
 CImageArchive ITileArchive;
-CConstantArchive g_cArchLibrary(MAKEINTRESOURCE(IDB_ARCHTILES), 28, TILEDIM, TILEDIM);
+CConstantArchive g_cArchLibrary(MAKEINTRESOURCE(IDB_ARCHTILES), 28, MAP_TILEDIM, MAP_TILEDIM);
 
 BOOL g_bQueryForSave=FALSE;
 
@@ -657,7 +660,7 @@ BOOL SetSelectedLayer(HWND hwnd, HWND hwndPal, LAYER nNewLayer)
 		mi.fState=MFS_UNCHECKED;
 		SetMenuItemInfo(GetMenu(hwnd), ID_LAYERARCH, FALSE, &mi);
 		SetMenuItemInfo(GetMenu(hwnd), ID_LAYEROBJECT, FALSE, &mi);
-		UpdatePalScroll(hwndPal, TILEDIM, NULL);
+		UpdatePalScroll(hwndPal, MAP_TILEDIM, NULL);
 		RedrawWindow(hwnd, NULL, NULL, RDW_INVALIDATE|RDW_ERASE);
 	
 		break;
@@ -672,7 +675,7 @@ BOOL SetSelectedLayer(HWND hwnd, HWND hwndPal, LAYER nNewLayer)
 		mi.fState=MFS_UNCHECKED;
 		SetMenuItemInfo(GetMenu(hwnd), ID_LAYERTILE, FALSE, &mi);
 		SetMenuItemInfo(GetMenu(hwnd), ID_LAYEROBJECT, FALSE, &mi);
-		UpdatePalScroll(hwndPal, TILEDIM, NULL);
+		UpdatePalScroll(hwndPal, MAP_TILEDIM, NULL);
 		RedrawWindow(hwnd, NULL, NULL, RDW_INVALIDATE|RDW_ERASE);
 	
 		break;
@@ -687,7 +690,7 @@ BOOL SetSelectedLayer(HWND hwnd, HWND hwndPal, LAYER nNewLayer)
 		mi.fState=MFS_UNCHECKED;
 		SetMenuItemInfo(GetMenu(hwnd), ID_LAYERARCH, FALSE, &mi);
 		SetMenuItemInfo(GetMenu(hwnd), ID_LAYERTILE, FALSE, &mi);
-		UpdatePalScroll(hwndPal, TILEDIM, NULL);
+		UpdatePalScroll(hwndPal, MAP_TILEDIM, NULL);
 		RedrawWindow(hwnd, NULL, NULL, RDW_INVALIDATE|RDW_ERASE);
 	
 		break;
@@ -713,7 +716,7 @@ void WndPosToTile(HWND hwnd, POINT *ps, int nBlockDim)
 	if(rect.bottom%nBlockDim)nTilesHigh++;
 
 	//Find out the size of each block
-	//Should be the same as TILEDIM
+	//Should be the same as MAP_TILEDIM
 	int nxBlock = nBlockDim;
 	int nyBlock = nBlockDim;
 
@@ -744,10 +747,10 @@ void DrawPaletteCursor(HDC hDc, int x, int y)
 	
 	Rectangle(
 		hDc, 
-		x*TILEDIM-TILEDIM+2, 
-		y*TILEDIM-TILEDIM+2, 
-		x*TILEDIM, 
-		y*TILEDIM);
+		x*MAP_TILEDIM-MAP_TILEDIM+2, 
+		y*MAP_TILEDIM-MAP_TILEDIM+2, 
+		x*MAP_TILEDIM, 
+		y*MAP_TILEDIM);
 
 	DeleteObject(SelectObject(hDc, GetStockObject(WHITE_BRUSH)));
 	DeleteObject(SelectObject(hDc, GetStockObject(BLACK_PEN)));
@@ -785,10 +788,10 @@ BOOL PalWndPaint(HWND hwnd, HDC hDc)
 				ITileArchive.StretchImageToDC(
 					hDc, 
 					nCurRef, 
-					x*TILEDIM-TILEDIM, 
-					y*TILEDIM-TILEDIM, 
-					TILEDIM, 
-					TILEDIM, 
+					x*MAP_TILEDIM-MAP_TILEDIM, 
+					y*MAP_TILEDIM-MAP_TILEDIM, 
+					MAP_TILEDIM, 
+					MAP_TILEDIM, 
 					FALSE);
 
 				//Now draw a rectangle around selected tile.
@@ -808,10 +811,10 @@ BOOL PalWndPaint(HWND hwnd, HDC hDc)
 				g_cArchLibrary.StretchImageToDC(
 					hDc, 
 					nCurRef, 
-					x*TILEDIM-TILEDIM, 
-					y*TILEDIM-TILEDIM,
-					TILEDIM, 
-					TILEDIM, 
+					x*MAP_TILEDIM-MAP_TILEDIM, 
+					y*MAP_TILEDIM-MAP_TILEDIM,
+					MAP_TILEDIM, 
+					MAP_TILEDIM, 
 					FALSE);
 				
 				if(g_cArchLibrary.GetSelectedEntry()==nCurRef)
@@ -829,14 +832,14 @@ BOOL PalWndPaint(HWND hwnd, HDC hDc)
 	hPen=CreatePen(PS_SOLID, 0, RGB(0, 0, 0));
 
 	SelectObject(hDc, hPen);
-	for(int i=0; i<rcWindow.right; i+=TILEDIM)
+	for(int i=0; i<rcWindow.right; i+=MAP_TILEDIM)
 	{
 		MoveToEx(hDc, i, 0, NULL);
 		LineTo(hDc, i, rcWindow.bottom);
 	}
 	for(i=0; i<g_cTileLibrary.GetNumEntries()/PALETTEWIDTH; i++)
 	{
-		MoveToEx(hDc, 0, i*TILEDIM-TILEDIM, NULL);
+		MoveToEx(hDc, 0, i*MAP_TILEDIM-MAP_TILEDIM, NULL);
 		LineTo(hDc, rcWindow.right, i);
 	}
 
@@ -854,13 +857,13 @@ LRESULT CALLBACK PalWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	switch(msg)
 	{
 	case WM_CREATE:
-		UpdatePalScroll(hwnd, TILEDIM, 1);
+		UpdatePalScroll(hwnd, MAP_TILEDIM, 1);
 		break;
 	case WM_DESTROY:
 		break;
 	case WM_SIZE:
 	case WM_SIZING:
-		UpdatePalScroll(hwnd, TILEDIM, NULL);
+		UpdatePalScroll(hwnd, MAP_TILEDIM, NULL);
 		break;
 	case WM_VSCROLL:
 	{
@@ -904,7 +907,7 @@ LRESULT CALLBACK PalWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		POINT ps;
 		ps.x = LOWORD(lParam);
 		ps.y = HIWORD(lParam);
-		WndPosToTile(hwnd, &ps, TILEDIM);
+		WndPosToTile(hwnd, &ps, MAP_TILEDIM);
 
 		SCROLLINFO si;
 		si.cbSize=sizeof(si);
@@ -974,10 +977,10 @@ BOOL EditWndPaint(HWND hwnd, HDC hDc)
 
 	//we determine where the drawing should start and end to avoid
 	//drawing offscreen (which will just waste time)
-	nXStart=psOffset.x/TILEDIM;
-	nYStart=psOffset.y/TILEDIM;
-	nXEnd=nXStart+rcWindow.right/TILEDIM+TILEDIM;//g_cEditMapboard.GetMapWidth();
-	nYEnd=nYStart+rcWindow.bottom/TILEDIM+TILEDIM;//g_cEditMapboard.GetMapHeight();
+	nXStart=psOffset.x/MAP_TILEDIM;
+	nYStart=psOffset.y/MAP_TILEDIM;
+	nXEnd=nXStart+rcWindow.right/MAP_TILEDIM+MAP_TILEDIM;//g_cEditMapboard.GetMapWidth();
+	nYEnd=nYStart+rcWindow.bottom/MAP_TILEDIM+MAP_TILEDIM;//g_cEditMapboard.GetMapHeight();
 
 	if(nXEnd>g_cEditMapboard.GetMapWidth())
 		nXEnd=g_cEditMapboard.GetMapWidth();
@@ -990,8 +993,8 @@ BOOL EditWndPaint(HWND hwnd, HDC hDc)
 		{
 			
 			//These aer the coordinates where the specified tile/arch/object should be painted
-			const int nXPaint=(x*TILEDIM-TILEDIM-psOffset.x);
-			const int nYPaint=(y*TILEDIM-TILEDIM-psOffset.y);
+			const int nXPaint=(x*MAP_TILEDIM-MAP_TILEDIM-psOffset.x);
+			const int nYPaint=(y*MAP_TILEDIM-MAP_TILEDIM-psOffset.y);
 			
 			//we check to see if we should paint with transparency
 			BOOL bTransp=FALSE;
@@ -1014,8 +1017,8 @@ BOOL EditWndPaint(HWND hwnd, HDC hDc)
 				g_cEditMapboard.GetTile(x, y), 
 				nXPaint,
 				nYPaint,
-				TILEDIM,
-				TILEDIM,
+				MAP_TILEDIM,
+				MAP_TILEDIM,
 				bTransp);
 
 			switch(nLayer)
@@ -1028,8 +1031,8 @@ BOOL EditWndPaint(HWND hwnd, HDC hDc)
 					g_cEditMapboard.GetArchSmart(x, y), 
 					nXPaint,
 					nYPaint,
-					TILEDIM,
-					TILEDIM, 
+					MAP_TILEDIM,
+					MAP_TILEDIM, 
 					TRUE);
 
 				break;
@@ -1047,15 +1050,15 @@ BOOL EditWndPaint(HWND hwnd, HDC hDc)
 
 	if((mi.fState&MFS_CHECKED)==MFS_CHECKED)
 	{
-		for(int i=0; i<=g_cEditMapboard.GetMapWidth()*TILEDIM; i+=TILEDIM)
+		for(int i=0; i<=g_cEditMapboard.GetMapWidth()*MAP_TILEDIM; i+=MAP_TILEDIM)
 		{
 			MoveToEx(hDc, i-psOffset.x, 0, NULL);
-			LineTo(hDc, i-psOffset.x, g_cEditMapboard.GetMapHeight()*TILEDIM);
+			LineTo(hDc, i-psOffset.x, g_cEditMapboard.GetMapHeight()*MAP_TILEDIM);
 		}
-		for(int i=0; i<=g_cEditMapboard.GetMapHeight()*TILEDIM; i+=TILEDIM)
+		for(int i=0; i<=g_cEditMapboard.GetMapHeight()*MAP_TILEDIM; i+=MAP_TILEDIM)
 		{
 			MoveToEx(hDc, 0, i-psOffset.y, NULL);
-			LineTo(hDc, g_cEditMapboard.GetMapWidth()*TILEDIM, i-psOffset.y);
+			LineTo(hDc, g_cEditMapboard.GetMapWidth()*MAP_TILEDIM, i-psOffset.y);
 		}
 	}
 	
@@ -1072,12 +1075,12 @@ LRESULT CALLBACK EditWndProc(
 	LPARAM lParam)
 {
 	SCROLLINFO siPrevInfo;
-	#define MOVEDIST (TILEDIM/2)
+	#define MOVEDIST (MAP_TILEDIM/2)
 	
 	switch(msg)
 	{
 	case WM_CREATE:
-		UpdateEditScroll(hwnd, TILEDIM, 0, 0);
+		UpdateEditScroll(hwnd, MAP_TILEDIM, 0, 0);
 		break;
 	case WM_DESTROY:
 		break;
@@ -1175,7 +1178,7 @@ LRESULT CALLBACK EditWndProc(
 	}
 	case WM_SIZE:
 	case WM_SIZING:
-		UpdateEditScroll(hwnd, TILEDIM, -1, -1);
+		UpdateEditScroll(hwnd, MAP_TILEDIM, -1, -1);
 		break;
 	case WM_MOUSEMOVE:
 		//If the mouse button is held down
@@ -1201,7 +1204,7 @@ LRESULT CALLBACK EditWndProc(
 
 		ps.x+=psOffset.x;
 		ps.y+=psOffset.y;
-		WndPosToTile(hwnd, &ps, TILEDIM);
+		WndPosToTile(hwnd, &ps, MAP_TILEDIM);
 
 
 		LAYER nLayer=GetSelectedLayer(GetParent(hwnd));
@@ -1211,10 +1214,10 @@ LRESULT CALLBACK EditWndProc(
 			{
 				//Set update region and have the WM_PAINT Redraw
 				RECT rect;
-				rect.left=ps.x*TILEDIM-TILEDIM-psOffset.x;
-				rect.right=ps.x*TILEDIM-psOffset.x;
-				rect.top=ps.y*TILEDIM-TILEDIM-psOffset.y;
-				rect.bottom=ps.y*TILEDIM-psOffset.y;
+				rect.left=ps.x*MAP_TILEDIM-MAP_TILEDIM-psOffset.x;
+				rect.right=ps.x*MAP_TILEDIM-psOffset.x;
+				rect.top=ps.y*MAP_TILEDIM-MAP_TILEDIM-psOffset.y;
+				rect.bottom=ps.y*MAP_TILEDIM-psOffset.y;
 				RedrawWindow(hwnd, &rect, NULL, RDW_INVALIDATE|RDW_ERASE);
 				g_bQueryForSave=TRUE;
 			}
@@ -1224,10 +1227,10 @@ LRESULT CALLBACK EditWndProc(
 			{
 				//Set update region and have the WM_PAINT Redraw
 				RECT rect;
-				rect.left=ps.x*TILEDIM-TILEDIM-psOffset.x;
-				rect.right=ps.x*TILEDIM-psOffset.x;
-				rect.top=ps.y*TILEDIM-TILEDIM-psOffset.y;
-				rect.bottom=ps.y*TILEDIM-psOffset.y;
+				rect.left=ps.x*MAP_TILEDIM-MAP_TILEDIM-psOffset.x;
+				rect.right=ps.x*MAP_TILEDIM-psOffset.x;
+				rect.top=ps.y*MAP_TILEDIM-MAP_TILEDIM-psOffset.y;
+				rect.bottom=ps.y*MAP_TILEDIM-psOffset.y;
 				RedrawWindow(hwnd, &rect, NULL, RDW_INVALIDATE|RDW_ERASE);
 				g_bQueryForSave=TRUE;
 			}
@@ -1257,7 +1260,7 @@ LRESULT CALLBACK EditWndProc(
 
 		ps.x+=psOffset.x;
 		ps.y+=psOffset.y;
-		WndPosToTile(hwnd, &ps, TILEDIM);
+		WndPosToTile(hwnd, &ps, MAP_TILEDIM);
 
 		LAYER nLayer=GetSelectedLayer(GetParent(hwnd));
 
@@ -1266,10 +1269,10 @@ LRESULT CALLBACK EditWndProc(
 			if(g_cEditMapboard.SetTile(ps.x, ps.y, 0))
 			{
 				RECT rect;
-				rect.left=ps.x*TILEDIM-TILEDIM-psOffset.x;
-				rect.right=ps.x*TILEDIM-psOffset.x;
-				rect.top=ps.y*TILEDIM-TILEDIM-psOffset.y;
-				rect.bottom=ps.y*TILEDIM-psOffset.y;
+				rect.left=ps.x*MAP_TILEDIM-MAP_TILEDIM-psOffset.x;
+				rect.right=ps.x*MAP_TILEDIM-psOffset.x;
+				rect.top=ps.y*MAP_TILEDIM-MAP_TILEDIM-psOffset.y;
+				rect.bottom=ps.y*MAP_TILEDIM-psOffset.y;
 				RedrawWindow(hwnd, &rect, NULL, RDW_INVALIDATE|RDW_ERASE);
 				g_bQueryForSave=TRUE;
 			}
@@ -1280,10 +1283,10 @@ LRESULT CALLBACK EditWndProc(
 			if(g_cEditMapboard.SetArch(ps.x, ps.y, 0x00))
 			{
 				RECT rect;
-				rect.left=ps.x*TILEDIM-TILEDIM-psOffset.x;
-				rect.right=ps.x*TILEDIM-psOffset.x;
-				rect.top=ps.y*TILEDIM-TILEDIM-psOffset.y;
-				rect.bottom=ps.y*TILEDIM-psOffset.y;
+				rect.left=ps.x*MAP_TILEDIM-MAP_TILEDIM-psOffset.x;
+				rect.right=ps.x*MAP_TILEDIM-psOffset.x;
+				rect.top=ps.y*MAP_TILEDIM-MAP_TILEDIM-psOffset.y;
+				rect.bottom=ps.y*MAP_TILEDIM-psOffset.y;
 				RedrawWindow(hwnd, &rect, NULL, RDW_INVALIDATE|RDW_ERASE);
 				g_bQueryForSave=TRUE;
 			}
@@ -1314,7 +1317,7 @@ BOOL LoadMap(
 	TCHAR szWindowText[MAX_PATH+14];
 	if(g_cEditMapboard.LoadMap(szFilename))
 	{
-		UpdateEditScroll(hwndEdit, TILEDIM, 0, 0);
+		UpdateEditScroll(hwndEdit, MAP_TILEDIM, 0, 0);
 
 		_tcscpy_s(szCurrentMap, MAX_PATH, szFilename);
 		_stprintf_s(szWindowText, countof(szWindowText), TEXT("ScrollEdit [%s]"), szCurrentMap);
@@ -1333,7 +1336,7 @@ BOOL LoadMap(
 
 			return FALSE;
 		}
-		UpdatePalScroll(hwndPal, TILEDIM, 1);
+		UpdatePalScroll(hwndPal, MAP_TILEDIM, 1);
 		RedrawWindow(hwnd, NULL, NULL, RDW_INVALIDATE|RDW_ERASE);
 	}else{
 		MessageBox(
@@ -1381,8 +1384,8 @@ BOOL MainCommandProc(
 			NewDlgProc)==0)
 		{
 			RedrawWindow(hwnd, NULL, NULL, RDW_INVALIDATE|RDW_ERASE);
-			UpdateEditScroll(hwndEdit, TILEDIM, 0, 0);
-			UpdatePalScroll(hwndPal, TILEDIM, 0);
+			UpdateEditScroll(hwndEdit, MAP_TILEDIM, 0, 0);
+			UpdatePalScroll(hwndPal, MAP_TILEDIM, 0);
 			szCurrentMap[0]=NULL;
 			_stprintf_s(szWindowText, countof(szWindowText), TEXT("ScrollEdit [%s]"), szCurrentMap);
 			SetWindowText(hwnd, szWindowText);
@@ -1485,8 +1488,8 @@ BOOL MainCommandProc(
 		if(DialogBox(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_MAPDIMS), hwnd, DimDlgProc))
 		{
 			RedrawWindow(hwnd, NULL, NULL, RDW_INVALIDATE|RDW_ERASE);
-			UpdateEditScroll(hwndEdit, TILEDIM, 0, 0);
-			UpdatePalScroll(hwndPal, TILEDIM, 0);
+			UpdateEditScroll(hwndEdit, MAP_TILEDIM, 0, 0);
+			UpdatePalScroll(hwndPal, MAP_TILEDIM, 0);
 			g_bQueryForSave=TRUE;
 		}
 		break;
@@ -1496,8 +1499,8 @@ BOOL MainCommandProc(
 		if(DialogBox(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_CHANGEFILENAME), hwnd, LibDlgProc))
 		{
 			RedrawWindow(hwnd, NULL, NULL, RDW_INVALIDATE|RDW_ERASE);
-			UpdateEditScroll(hwndEdit, TILEDIM, 0, 0);
-			UpdatePalScroll(hwndPal, TILEDIM, 0);
+			UpdateEditScroll(hwndEdit, MAP_TILEDIM, 0, 0);
+			UpdatePalScroll(hwndPal, MAP_TILEDIM, 0);
 			g_bQueryForSave=TRUE;
 		}
 		break;

@@ -3,7 +3,7 @@
 
 	Copyright (c) 2002, Blaine Myers
 */
-#include "defines.h"
+
 #include "MapBoard.h"
 #include <windows.h>
 
@@ -14,7 +14,7 @@ CMapBoard::CMapBoard()
 	m_pObject=new BYTE;
 
 	m_nMapWidth=m_nMapHeight=1;
-	m_dwTileDim=TILEDIM;
+	m_dwTileDim=MAP_TILEDIM;
 }
 
 sg_uint32 CMapBoard::GetTileDim()

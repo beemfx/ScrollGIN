@@ -12,7 +12,7 @@
 */
 #include <stdio.h>
 #include <windows.h>
-#include "defines.h"
+#include "GameConfig.h"
 #include "../Renderer2/Renderer.h"
 
 

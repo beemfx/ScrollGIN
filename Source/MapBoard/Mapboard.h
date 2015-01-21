@@ -7,7 +7,8 @@
 #ifndef __MAPBOARD_H__
 #define __MAPBOARD_H__
 
-static const size_t MAP_MAX_PATH=255;
+static const int MAP_MAX_PATH = 255;
+static const int MAP_TILEDIM  = 40;
 
 //Note on architecture type:
 //the first four bits represent the layer indirect (either blue, red, or green in the editor)
