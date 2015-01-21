@@ -11,7 +11,9 @@
 #endif //transparecty
 
 
-CConstantArchive::CConstantArchive(LPCTSTR szBitmapName, int nNumEntries, WORD nWidth, WORD nHeight){
+CConstantArchive::CConstantArchive(LPCTSTR szBitmapName, int nNumEntries, WORD nWidth, WORD nHeight)
+: SgImgLibArchive( false )
+{
 	m_nNumImages=nNumEntries;
 	m_pImageData=new IMAGEDATA[nNumEntries];
 	m_hBitmap[0]=NULL;

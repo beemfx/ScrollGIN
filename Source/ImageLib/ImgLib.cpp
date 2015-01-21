@@ -7,7 +7,8 @@
 #include "bitmapex.h"
 #include <stdio.h>
 
-SgImgLib::SgImgLib()
+SgImgLib::SgImgLib( bool DontLoadBms )
+: m_DontLoadBms( DontLoadBms )
 {
 	m_nNumImages=0;
 	m_nNumBitmaps=0;
@@ -65,7 +66,6 @@ bool SgImgLib::GetImageName(char* Out, size_t OutSize , sg_uint32 nEntry )
 HBITMAP SgImgLib::GetBitmap(sg_uint16 nBitmap)
 {
 	if((nBitmap<1) || (nBitmap>MAX_BITMAPS))return NULL;
-
 	return m_hBitmap[nBitmap-1];
 }
 
@@ -84,12 +84,21 @@ bool SgImgLib::OpenBitmapOffset(LPCSTR szFilename, sg_uint32 nOffset, sg_uint16 
 {
 	if( (nBitmap<1) || (nBitmap>MAX_BITMAPS) )return false;
 
-	DeleteObject(m_hBitmap[nBitmap-1]);
-	m_hBitmap[nBitmap-1]=LoadBitmapOffset(szFilename, nOffset);
+	if( m_DontLoadBms )
+	{
+		m_hBitmap[nBitmap - 1] = 0;
+		m_BmOffsets[nBitmap - 1] = nOffset;
+		strcpy_s(m_szBitmapFilenameA[nBitmap - 1], countof(m_szBitmapFilenameA[nBitmap - 1]), szFilename);
+	}
+	else
+	{
+		DeleteObject(m_hBitmap[nBitmap - 1]);
+		m_hBitmap[nBitmap - 1] = LoadBitmapOffset(szFilename, nOffset);
 
-	if(m_hBitmap[nBitmap-1] == NULL)return false;
-	m_BmOffsets[nBitmap-1] = nOffset;
-	strcpy_s(m_szBitmapFilenameA[nBitmap-1], countof(m_szBitmapFilenameA[nBitmap-1]), szFilename);
+		if (m_hBitmap[nBitmap - 1] == NULL)return false;
+		m_BmOffsets[nBitmap - 1] = nOffset;
+		strcpy_s(m_szBitmapFilenameA[nBitmap - 1], countof(m_szBitmapFilenameA[nBitmap - 1]), szFilename);
+	}
 	return true;
 }
 
@@ -97,7 +106,7 @@ void SgImgLib::CloseMainBitmaps()
 {
 	for(int i=0; i<m_nNumBitmaps; i++)
 	{
-		DeleteObject(m_hBitmap[i]);
+		if( m_hBitmap[i] )DeleteObject(m_hBitmap[i]);
 		m_hBitmap[i] = NULL;
 	}
 	m_nNumBitmaps=0;
@@ -222,12 +231,14 @@ void SgImgLib::GetBitmapName(char* Out, size_t OutSize, sg_uint16 nBitmap)
 ***************************************************************************/
 
 SgImgLibEdit::SgImgLibEdit()
+: SgImgLib( false )
 {
 	m_pImageData=new IMAGEDATA[DEFAULT_MAX_ENTRIES];
 	m_nMaxEntries=DEFAULT_MAX_ENTRIES;
 }
 
 SgImgLibEdit::SgImgLibEdit(sg_uint32 nMaxEntries)
+: SgImgLib( false )
 {
 	m_pImageData=new IMAGEDATA[nMaxEntries];
 	m_nMaxEntries=nMaxEntries;
@@ -755,7 +766,8 @@ void SgImgLibEdit::ClearDataBase()
 
 ***************************************************************************/
 
-SgImgLibArchive::SgImgLibArchive()
+SgImgLibArchive::SgImgLibArchive( bool DontLoadBms )
+: SgImgLib( DontLoadBms )
 {
 	m_nSelectedEntry = 1;
 
@@ -841,8 +853,12 @@ bool SgImgLibArchive::LoadArchive(LPCSTR szFilename)
 void SgImgLibArchive::CloseArchive()
 {
 	SAFE_DELETE_ARRAY(m_pImageData);
-	for (int i = 0; i < m_nNumBitmaps; i++){
-		DeleteObject(m_hBitmap[i]);
+	for (int i = 0; i < m_nNumBitmaps; i++)
+	{
+		if( m_hBitmap[i] ) DeleteObject(m_hBitmap[i]);
+		m_hBitmap[i] = NULL;
+		m_BmOffsets[i] = 0;
+		m_szBitmapFilenameA[i][0]=0;
 	}
 	m_nNumImages = 0;
 	m_nNumBitmaps = 0;

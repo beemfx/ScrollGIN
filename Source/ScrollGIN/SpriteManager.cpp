@@ -33,13 +33,12 @@ void SgSpriteManager::InsertSprites(int nSprite, const char* szFilename)
 {
 	if((nSprite<1) || (nSprite>=MAX_SPRITES))return;
 	m_nNumSprites=nSprite;
-	SgImgLibArchive ILibrary;
+	SgImgLibArchive ILibrary( true );
 
 	bool Res = ILibrary.LoadArchive(szFilename);
 	if(!(Res))return;
 	//The following algorithm loads all sprites from library
 	DWORD i=0, j=0, nFrames=0;
-	HBITMAP hBitmap=0;
 	IMAGEDATA id;
 	char szImageName[IMAGE_NAME_LENGTH];
 	ZeroMemory(&id, sizeof(IMAGEDATA));
@@ -52,8 +51,6 @@ void SgSpriteManager::InsertSprites(int nSprite, const char* szFilename)
 	
 		if(id.nFrames==1)
 		{
-			hBitmap=ILibrary.GetBitmap(id.nBitmap);
-
 			m_cSprite[m_nNumSprites-1].CreateSprite(
 				szFilename,
 				ILibrary.GetBitmapOffset(id.nBitmap),
@@ -76,7 +73,6 @@ void SgSpriteManager::InsertSprites(int nSprite, const char* szFilename)
 			nFrames=id.nFrames;
 			for(j=1; j<=nFrames; j++){
 				ILibrary.GetImageData(j+i-1, &id);
-				hBitmap=ILibrary.GetBitmap(id.nBitmap);
 
 				m_cSprite[m_nNumSprites-1].CreateSprite(
 					szFilename,

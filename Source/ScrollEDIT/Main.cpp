@@ -32,7 +32,7 @@
 #endif //unicode
 
 SgMapEdit g_cEditMapboard;
-SgImgLibArchive ITileArchive;
+SgImgLibArchive ITileArchive( false );
 CConstantArchive g_cArchLibrary(MAKEINTRESOURCE(IDB_ARCHTILES), 28, MAP_TILEDIM, MAP_TILEDIM);
 
 BOOL g_bQueryForSave=FALSE;

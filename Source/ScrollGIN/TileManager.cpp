@@ -30,14 +30,13 @@ SgTileManager::~SgTileManager(void)
 //creates many tile surfaces starting with chosen reference from a library
 bool SgTileManager::LoadLib(const char* lpLibraryFilename, SgMap *map){
 	//This will use a library to call CreateTilesFromFile functions
-	SgImgLibArchive ILibrary;
+	SgImgLibArchive ILibrary( true );
 
 	bool Res = ILibrary.LoadArchive(lpLibraryFilename);
 
 	if(!(Res))return false;
 	
 	
-	HBITMAP hBitmap=0;
 	IMAGEDATA id;
 	ZeroMemory(&id, sizeof(IMAGEDATA));
 
@@ -46,10 +45,8 @@ bool SgTileManager::LoadLib(const char* lpLibraryFilename, SgMap *map){
 	int Start = m_iCurrentReference+1;
 	for(i=Start, j=1; j<=ILibrary.GetNumEntries(); i++, j++){
 		if( (i>0) && (i<MAX_TILESURFACES)){
-			if(ILibrary.GetImageData(j, &id)){
-
-				hBitmap=ILibrary.GetBitmap(id.nBitmap);
-
+			if(ILibrary.GetImageData(j, &id))
+			{
 				sgRendererImageCreateParms Parms;
 				memset( &Parms , 0 , sizeof(Parms) );
 				Parms.Type = RENDERER_IMAGE_BITMAP;
