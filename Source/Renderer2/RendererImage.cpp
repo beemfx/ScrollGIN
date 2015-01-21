@@ -1,5 +1,6 @@
 #include "RendererImage.h"
 #include <ddraw.h>
+#include "ImageLib/bitmapex.h"
 
 static const DWORD RENDER_IMAGE_TRANSPARENT_COLOR = 0xFFFF00FF;
 
@@ -25,6 +26,17 @@ SgRendererImage::SgRendererImage( const sgRendererImageCreateParms* CreateParms 
 	ddsd.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN;
 	ddsd.dwWidth = m_D->CreateParms.Width;
 	ddsd.dwHeight = m_D->CreateParms.Height;
+
+	if( ddsd.dwWidth == IMAGE_CREATE_DEFAULT )
+	{
+		ddsd.dwWidth = m_D->CreateParms.Width;
+	}
+
+	if( ddsd.dwHeight == IMAGE_CREATE_DEFAULT )
+	{
+		ddsd.dwHeight = m_D->CreateParms.Height;
+	}
+
 	//create the surface
 	HRESULT Res = m_D->RendererData.Dd->CreateSurface( &ddsd , &m_D->Surface , NULL );
 
@@ -48,29 +60,71 @@ SgRendererImage::~SgRendererImage()
 void SgRendererImage::CreateBitmap()
 {
 	HDC hdcSurface = 0, hdcImage = 0;
+	HBITMAP Bm = LoadBitmapOffset( m_D->CreateParms.BmFile , m_D->CreateParms.BmFileOffset );
 
 	m_D->Surface->GetDC(&hdcSurface);
 	hdcImage = CreateCompatibleDC(hdcSurface);
 
-	SelectObject(hdcImage, m_D->CreateParms.Bitmap);
+	SelectObject(hdcImage, Bm);
 
 	SetMapMode(hdcImage, GetMapMode(hdcSurface));
 	SetStretchBltMode(hdcImage, COLORONCOLOR);
+
+	int SrcWidth = m_D->CreateParms.BmWidth;
+	int SrcHeight = m_D->CreateParms.BmHeight;
+	int SrcX = m_D->CreateParms.BmX;
+	int SrcY = m_D->CreateParms.BmY;
+	int DestWidth = m_D->CreateParms.Width;
+	int DestHeight = m_D->CreateParms.Height;
+
+	BITMAP bmTemp;
+	GetObject(Bm, sizeof(bmTemp), &bmTemp);
+
+	if( SrcWidth == IMAGE_CREATE_DEFAULT )
+	{
+		SrcWidth = bmTemp.bmWidth;
+	}
+
+	if( SrcHeight == IMAGE_CREATE_DEFAULT )
+	{
+		SrcHeight = bmTemp.bmHeight;
+	}
+
+	if( SrcX == IMAGE_CREATE_DEFAULT )
+	{
+		SrcX = 0;
+	}
+
+	if( SrcY == IMAGE_CREATE_DEFAULT )
+	{
+		SrcY = 0;
+	}
+
+	if( DestHeight == IMAGE_CREATE_DEFAULT )
+	{
+		DestHeight = m_D->CreateParms.Width;
+	}
+
+	if( SrcHeight == IMAGE_CREATE_DEFAULT )
+	{
+		SrcHeight = m_D->CreateParms.Height;
+	}
 
 	StretchBlt(
 		hdcSurface,
 		0,
 		0,
-		m_D->CreateParms.Width,
-		m_D->CreateParms.Height,
+		DestWidth,
+		DestHeight,
 		hdcImage,
-		m_D->CreateParms.BmX,
-		m_D->CreateParms.BmY,
-		m_D->CreateParms.BmWidth,
-		m_D->CreateParms.BmHeight,
+		SrcX,
+		SrcY,
+		SrcWidth,
+		SrcHeight,
 		SRCCOPY);
 
 	DeleteDC(hdcImage);
+	DeleteObject( Bm );
 	m_D->Surface->ReleaseDC(hdcSurface);
 }
 

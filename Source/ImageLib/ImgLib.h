@@ -61,6 +61,7 @@ class SgImgLib
 protected:
 	sg_uint32 m_nNumImages;
 	IMAGEDATA *m_pImageData;
+	int       m_BmOffsets[MAX_BITMAPS];
 	HBITMAP   m_hBitmap[MAX_BITMAPS];
 	char      m_szBitmapFilenameA[MAX_BITMAPS][MAX_PATH];
 	sg_uint16 m_nNumBitmaps;
@@ -73,6 +74,7 @@ public:
 	sg_uint16 GetNumBitmaps();
 	void      GetBitmapName(char* Out, size_t OutSize, sg_uint16 nBitmap);
 	HBITMAP   GetBitmap(sg_uint16 nBitmap);
+	int       GetBitmapOffset(sg_uint16 nBitmap )const{ return ((nBitmap<1)||(nBitmap>m_nNumBitmaps)) ? 0 : m_BmOffsets[nBitmap-1]; }
 	void      CloseMainBitmaps();
 	void      ClearDataBase();
 	void      CopyImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, BOOL bTransp);

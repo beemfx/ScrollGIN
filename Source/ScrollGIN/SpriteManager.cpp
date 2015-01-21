@@ -55,7 +55,8 @@ void SgSpriteManager::InsertSprites(int nSprite, const char* szFilename)
 			hBitmap=ILibrary.GetBitmap(id.nBitmap);
 
 			m_cSprite[m_nNumSprites-1].CreateSprite(
-				hBitmap,
+				szFilename,
+				ILibrary.GetBitmapOffset(id.nBitmap),
 				id.nWidth,
 				id.nHeight,
 				id.nX,
@@ -78,7 +79,8 @@ void SgSpriteManager::InsertSprites(int nSprite, const char* szFilename)
 				hBitmap=ILibrary.GetBitmap(id.nBitmap);
 
 				m_cSprite[m_nNumSprites-1].CreateSprite(
-					hBitmap,
+					szFilename,
+					ILibrary.GetBitmapOffset(id.nBitmap),
 					id.nWidth,
 					id.nHeight,
 					id.nX,

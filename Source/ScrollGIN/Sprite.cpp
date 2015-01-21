@@ -31,12 +31,13 @@ void SgSprite::NameSprite(const char* szSpriteName)
 	strcpy_s( m_szSpriteName , countof(m_szSpriteName) , szSpriteName );
 }
 
-bool SgSprite::CreateSprite(HBITMAP hBitmap, int nWidth, int nHeight, int nFX, int nFY, int nFWidth, int nFHeight)
+bool SgSprite::CreateSprite(sg_cpstr BmFile , int BmOffset, int nWidth, int nHeight, int nFX, int nFY, int nFWidth, int nFHeight)
 {
 
 	if(CreateNextSprite(
 		m_nFrames+1,
-		hBitmap,
+		BmFile,
+		BmOffset,
 		nWidth,
 		nHeight,
 		nFX,
@@ -51,7 +52,7 @@ bool SgSprite::CreateSprite(HBITMAP hBitmap, int nWidth, int nHeight, int nFX, i
 	return false;	
 }
 
-bool SgSprite::CreateNextSprite(int nFrame, HBITMAP hBitmap,int nWidth, int nHeight, int nFX, int nFY, int nFWidth, int nFHeight)
+bool SgSprite::CreateNextSprite(int nFrame, sg_cpstr BmFile , int BmOffset, int nWidth, int nHeight, int nFX, int nFY, int nFWidth, int nFHeight)
 {
 	if(nFrame<1)return false;
 	if(nFrame>MAX_IMAGES_PER_SPRITE)return false;
@@ -66,9 +67,10 @@ bool SgSprite::CreateNextSprite(int nFrame, HBITMAP hBitmap,int nWidth, int nHei
 	Parms.BmY = nFY;
 	Parms.BmWidth = nFWidth;
 	Parms.BmHeight = nFHeight;
-	Parms.Bitmap = hBitmap;
 	Parms.Width = nWidth;
 	Parms.Height = nHeight;
+	strcpy_s(Parms.BmFile, countof(Parms.BmFile), BmFile);
+	Parms.BmFileOffset = BmOffset;
 
 	m_cSpriteImage[nFrame-1]        = Renderer_CreateSprite( &Parms );
 	Parms.BmX = nFX + nFWidth;

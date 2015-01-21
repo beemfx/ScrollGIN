@@ -41,13 +41,13 @@ public:
 	SgSprite();
 	~SgSprite();
 	void Draw(int nFrame, SPRITEFACE nFace, int x, int y, LOOPMODE nLoopMode);
-	bool CreateSprite(HBITMAP hBitmap, int nWidth, int nHeight, int nFX, int nFY, int nFWidth, int nFHeight);
+	bool CreateSprite(sg_cpstr BmFile , int BmOffset, int nWidth, int nHeight, int nFX, int nFY, int nFWidth, int nFHeight);
 	void Destroy(); //releases the surfaces of the sprite
 	int  GetNumFrames(LOOPMODE nLoopMode); //Returns number of frames in sprite depending on loop mode
 	void NameSprite(const char* szSpriteName); //names the sprite for reference, no more than 32 characters
 	void GetSpriteName( char* Out , size_t MaxOut ); //retreives the naem of the sprite for reference
 private:
-	bool CreateNextSprite(int nFrame, HBITMAP hBitmap,int nWidth, int nHeight, int nFX,int nFY, int nFWidth, int nFHeight);//creaet sprite fraem from bitmap
+	bool CreateNextSprite(int nFrame, sg_cpstr BmFile , int BmOffset,int nWidth, int nHeight, int nFX,int nFY, int nFWidth, int nFHeight);//creaet sprite fraem from bitmap
 };
 
 #endif //__sprite_h__

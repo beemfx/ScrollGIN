@@ -27,6 +27,8 @@ enum RENDERER_IMAGE_T
 	RENDERER_IMAGE_COLOR,
 };
 
+static const int IMAGE_CREATE_DEFAULT = -1;
+
 struct sgRendererImageCreateParms
 {
 	RENDERER_IMAGE_T Type;
@@ -37,8 +39,8 @@ struct sgRendererImageCreateParms
 	int              BmY;
 	int              BmWidth;
 	int              BmHeight;
-	void*            Bitmap; //(HBITMAP)
-	size_t           BitmapSize;
+	char             BmFile[256];
+	int              BmFileOffset;
 };
 
 struct sgRendererData
