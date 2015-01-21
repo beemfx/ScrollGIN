@@ -41,10 +41,8 @@ public:
 
 	virtual int Initialize();
 
-	HRESULT Animate(
-		CMapBoard *map,
-		SgViewPort *viewport,
-		SgInputManager* pInput); //Animate all the objects and draw them
+	void Update( CMapBoard *map , SgViewPort *viewport , SgInputManager* pInput );
+	void Draw( SgViewPort *viewport ); //Animate all the objects and draw them
 
 	void ClearObjects(); //clear all objects from database
 
