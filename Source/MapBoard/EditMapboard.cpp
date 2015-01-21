@@ -9,41 +9,43 @@
 #include "defines.h"
 #include "mapboard.h"
 
-HRESULT CEditMapBoard::ClearArch(){
+void CEditMapBoard::ClearArch()
+{
 	ZeroMemory(m_pArch, sizeof(*m_pArch)*m_nMapWidth*m_nMapHeight);
-	return S_OK;
 }
 
-HRESULT CEditMapBoard::ClearTile(){
+void CEditMapBoard::ClearTile()
+{
 	ZeroMemory(m_pTile, sizeof(*m_pTile)*m_nMapWidth*m_nMapHeight);
-	return S_OK;
 }
 
-HRESULT CEditMapBoard::ClearObject(){
+void CEditMapBoard::ClearObject()
+{
 	ZeroMemory(m_pObject, sizeof(*m_pObject)*m_nMapWidth*m_nMapHeight);
-	return S_OK;
 }
 
-HRESULT CEditMapBoard::SetTile(int x, int y, BYTE nNewValue){
-	if(x<0||x>m_nMapWidth)return E_FAIL;
-	if(y<0||y>m_nMapHeight)return E_FAIL;
+bool CEditMapBoard::SetTile(int x, int y, sg_uint8 nNewValue)
+{
+	if(x<0||x>m_nMapWidth)return false;
+	if(y<0||y>m_nMapHeight)return false;
 
 	//We don't need to change the value if it's the same
-	if(m_pTile[CoordToPos(x, y)]==nNewValue)return S_FALSE;
+	if(m_pTile[CoordToPos(x, y)]==nNewValue)return false;
 
 	m_pTile[CoordToPos(x, y)]=nNewValue;
-	return S_OK;
+	return true;
 }
 
-HRESULT CEditMapBoard::SetArch(int x, int y, BYTE nNewValue){
-	if(x<0||x>m_nMapWidth)return E_FAIL;
-	if(y<0||y>m_nMapWidth)return E_FAIL;
+bool CEditMapBoard::SetArch(int x, int y, sg_uint8 nNewValue)
+{
+	if(x<0||x>m_nMapWidth)return false;
+	if(y<0||y>m_nMapWidth)return false;
 
 	//We don't need to change the value if it's the same
-	if(m_pArch[CoordToPos(x, y)]==nNewValue)return S_FALSE;
+	if(m_pArch[CoordToPos(x, y)]==nNewValue)return false;
 
 	m_pArch[CoordToPos(x, y)]=nNewValue;
-	return S_OK;
+	return true;
 }
 
 BYTE CEditMapBoard::GetArchSmart(int x, int y){
@@ -65,12 +67,13 @@ BYTE CEditMapBoard::GetArchSmart(int x, int y){
 	else return 0;
 }
 
-HRESULT CEditMapBoard::SetArchSmart(int x, int y, BYTE nNewValue){
-	if(x<0||x>m_nMapWidth)return E_FAIL;
-	if(y<0||y>m_nMapWidth)return E_FAIL;
+bool CEditMapBoard::SetArchSmart(int x, int y, sg_uint8 nNewValue)
+{
+	if(x<0||x>m_nMapWidth)return false;
+	if(y<0||y>m_nMapWidth)return false;
 
 	//We don't need to change the value if it's the same
-	if(m_pArch[CoordToPos(x, y)]==nNewValue)return S_FALSE;
+	if(m_pArch[CoordToPos(x, y)]==nNewValue)return false;
 
 	BYTE nTempValue=0x00;
 
@@ -107,57 +110,35 @@ HRESULT CEditMapBoard::SetArchSmart(int x, int y, BYTE nNewValue){
 		case 27: nTempValue=0x38;break;
 		case 28: nTempValue=0x39;break;
 	}
-	/*
-	if((nNewValue>=2) && (nNewValue<=10)){
-		nTempValue=0x11+(2-nNewValue);
-	}
-	*/
-	/*
-	if(nNewValue==1)
-	{		
-		nTempValue=0x00;
-	}
-	else if((nNewValue>1) && (nNewValue <11))
-	{
-		nTempValue=0x10+(2-nNewValue);
-	}
-	*/
-	/*
-	else if((nNewValue>11) && (nNewValue <20))
-	{
-		nTempValue=0x20+(20-nNewValue);
-	}
-	else if((nNewValue>20) &&(nNewValue <30))
-	{
-		nTempValue=0x30+(30-nNewValue);
-	}
-	else return E_FAIL;
-	*/
 
-	if(m_pArch[CoordToPos(x, y)]!=nTempValue){
+	if(m_pArch[CoordToPos(x, y)]!=nTempValue)
+	{
 		m_pArch[CoordToPos(x, y)]=nTempValue;
-		return S_OK;
-	}else return S_FALSE;
+		return true;
+	}
+	
+	return false;
 }
 
-HRESULT CEditMapBoard::SetObject(int x, int y, BYTE nNewValue){
-	if(x<0||x>m_nMapWidth)return E_FAIL;
-	if(y<0||y>m_nMapWidth)return E_FAIL;
+bool CEditMapBoard::SetObj(int x, int y, sg_uint8 nNewValue)
+{
+	if(x<0||x>m_nMapWidth)return false;
+	if(y<0||y>m_nMapWidth)return false;
 
 	//We don't need to change the value if it's the same
-	if(m_pObject[CoordToPos(x, y)]==nNewValue)return S_FALSE;
+	if(m_pObject[CoordToPos(x, y)]==nNewValue)return false;
 
 	m_pObject[CoordToPos(x, y)]=nNewValue;
-	return S_OK;
+	return true;
 }
 
-HRESULT CEditMapBoard::GenerateNewMap(int nWidth, int nHeight, LPSTR lpLibFilename, LPSTR lpBGFilename)
+bool CEditMapBoard::GenerateNewMap(int nWidth, int nHeight, sg_cpstr lpLibFilename, sg_cpstr lpBGFilename)
 {
-	if(nWidth<1)return E_FAIL;
-	if(nHeight<1)return E_FAIL;
-	if(lpLibFilename==NULL)return E_FAIL;
+	if(nWidth<1)return false;
+	if(nHeight<1)return false;
+	if(lpLibFilename==NULL)return false;
 	
-	//Now we know were capabe of creating a map, so lets do it
+	//Now we know were capable of creating a map, so lets do it
 	
 	//Clear the map
 	ClearMap();
@@ -180,26 +161,26 @@ HRESULT CEditMapBoard::GenerateNewMap(int nWidth, int nHeight, LPSTR lpLibFilena
 	m_pArch=new BYTE[nWidth*nHeight];
 	m_pObject=new BYTE[nWidth*nHeight];
 	//Make sure the memory was allocated correctly.
-	if(!m_pTile)return E_FAIL;
-	if(!m_pArch)return E_FAIL;
-	if(!m_pObject)return E_FAIL;
+	if(!m_pTile)return false;
+	if(!m_pArch)return false;
+	if(!m_pObject)return false;
 
 	//Clear data buffers in case they aren't
 	ZeroMemory(m_pTile, sizeof(*m_pTile)*nWidth*nHeight);
 	ZeroMemory(m_pArch, sizeof(*m_pArch)*nWidth*nHeight);
 	ZeroMemory(m_pObject, sizeof(*m_pObject)*nWidth*nHeight);
 
-	return S_OK;
+	return true;
 }
 
 
-HRESULT CEditMapBoard::SaveMap(LPSTR lpMapFilename)
+bool CEditMapBoard::SaveMap(sg_cpstr lpMapFilename)
 {
 	HANDLE hFile;
 	hFile=CreateFileA(lpMapFilename, GENERIC_WRITE, FILE_SHARE_WRITE, (LPSECURITY_ATTRIBUTES)NULL,
 							CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, (HANDLE)NULL);
 
-	if(hFile==INVALID_HANDLE_VALUE)return E_FAIL;
+	if(hFile==INVALID_HANDLE_VALUE)return false;
 
 	//Now that we have a file, lets prepare to write
 
@@ -245,22 +226,22 @@ HRESULT CEditMapBoard::SaveMap(LPSTR lpMapFilename)
 
 	CloseHandle(hFile);
 	strcpy_s(m_lpMapFilenameA, countof(m_lpMapFilenameA), lpMapFilename);
-	return S_OK;
+	return true;
 }
 
-void CEditMapBoard::ChangeBackground(LPCSTR lpBackgroudFilename)
+void CEditMapBoard::ChangeBackground(sg_cpstr lpBackgroudFilename)
 {
 	strcpy_s(m_lpBGFilenameA, countof(m_lpBGFilenameA), lpBackgroudFilename);
 }
 
-void CEditMapBoard::ChangeLibrary(LPCSTR lpLibraryFilename)
+void CEditMapBoard::ChangeLibrary(sg_cpstr lpLibraryFilename)
 {
 	strcpy_s(m_lpLibraryFilenameA, countof(m_lpLibraryFilenameA), lpLibraryFilename);
 }
 
-HRESULT CEditMapBoard::ChangeMapDimensions(int nNewWidth, int nNewHeight)
+bool CEditMapBoard::ChangeMapDimensions(int nNewWidth, int nNewHeight)
 {
-	if( (nNewWidth<1) || (nNewHeight<1) )return E_FAIL;
+	if( (nNewWidth<1) || (nNewHeight<1) )return false;
 	
 	//We need to create temporary buffers to hold our data
 	BYTE *pTempTile;
@@ -314,5 +295,5 @@ HRESULT CEditMapBoard::ChangeMapDimensions(int nNewWidth, int nNewHeight)
 	SAFE_DELETE_ARRAY(pTempArch);
 	SAFE_DELETE_ARRAY(pTempObject);
 
-	return S_OK;
+	return true;
 }

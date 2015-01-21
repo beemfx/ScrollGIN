@@ -519,7 +519,7 @@ BOOL CALLBACK NewDlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 					
 			//We don't bother to check whether the background is valid or not,
 			//because we don't actually need a background
-			if(SUCCEEDED(g_cEditMapboard.GenerateNewMap(nWidth, nHeight, szLibraryName, szBGName)))
+			if((g_cEditMapboard.GenerateNewMap(nWidth, nHeight, szLibraryName, szBGName)))
 			{
 				EndDialog(hwnd, 0);
 				break;
@@ -1207,7 +1207,7 @@ LRESULT CALLBACK EditWndProc(
 		LAYER nLayer=GetSelectedLayer(GetParent(hwnd));
 		switch(nLayer){
 		case LAYER_TILE:
-			if(g_cEditMapboard.SetTile(ps.x, ps.y, (BYTE)ITileArchive.GetSelectedEntry())==S_OK)
+			if(g_cEditMapboard.SetTile(ps.x, ps.y, (BYTE)ITileArchive.GetSelectedEntry()))
 			{
 				//Set update region and have the WM_PAINT Redraw
 				RECT rect;
@@ -1220,7 +1220,7 @@ LRESULT CALLBACK EditWndProc(
 			}
 			break;
 		case LAYER_ARCH:
-			if(g_cEditMapboard.SetArchSmart(ps.x, ps.y, (BYTE)g_cArchLibrary.GetSelectedEntry())==S_OK)
+			if(g_cEditMapboard.SetArchSmart(ps.x, ps.y, (BYTE)g_cArchLibrary.GetSelectedEntry()))
 			{
 				//Set update region and have the WM_PAINT Redraw
 				RECT rect;
@@ -1263,7 +1263,7 @@ LRESULT CALLBACK EditWndProc(
 
 		switch(nLayer){
 		case LAYER_TILE:
-			if(g_cEditMapboard.SetTile(ps.x, ps.y, 0)==S_OK)
+			if(g_cEditMapboard.SetTile(ps.x, ps.y, 0))
 			{
 				RECT rect;
 				rect.left=ps.x*TILEDIM-TILEDIM-psOffset.x;
@@ -1277,7 +1277,7 @@ LRESULT CALLBACK EditWndProc(
 			break;
 			
 		case LAYER_ARCH:
-			if(g_cEditMapboard.SetArch(ps.x, ps.y, 0x00)==S_OK)
+			if(g_cEditMapboard.SetArch(ps.x, ps.y, 0x00))
 			{
 				RECT rect;
 				rect.left=ps.x*TILEDIM-TILEDIM-psOffset.x;
@@ -1312,7 +1312,7 @@ BOOL LoadMap(
 	TCHAR szCurrentMap[MAX_PATH])
 {
 	TCHAR szWindowText[MAX_PATH+14];
-	if(SUCCEEDED(g_cEditMapboard.LoadMap(szFilename)))
+	if(g_cEditMapboard.LoadMap(szFilename))
 	{
 		UpdateEditScroll(hwndEdit, TILEDIM, 0, 0);
 
@@ -1455,7 +1455,7 @@ BOOL MainCommandProc(
 			break;
 		}
 
-		if(SUCCEEDED(g_cEditMapboard.SaveMap(szCurrentMap)))
+		if((g_cEditMapboard.SaveMap(szCurrentMap)))
 		{
 			SaveRegFilename(szCurrentMap);
 			_stprintf_s(szWindowText, countof(szWindowText), TEXT("ScrollEdit [%s]"), szCurrentMap);

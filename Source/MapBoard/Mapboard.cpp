@@ -1,10 +1,11 @@
 /*
 	Mapboard.cpp - Functions for CMapBoard class.
 
-	Coyright (c) 2002, Blaine Myers
+	Copyright (c) 2002, Blaine Myers
 */
 #include "defines.h"
 #include "MapBoard.h"
+#include <windows.h>
 
 CMapBoard::CMapBoard()
 {
@@ -76,19 +77,19 @@ sg_uint16 CMapBoard::GetMapHeight(){
 	return m_nMapHeight;
 }
 
-BYTE CMapBoard::GetTile(int x, int y){
+sg_uint8 CMapBoard::GetTile(int x, int y){
 	if(x<1||x>m_nMapWidth)return 0;
 	if(y<1||y>m_nMapHeight)return 0;
 	return m_pTile[CoordToPos(x, y)];
 }
 
-BYTE CMapBoard::GetArch(int x, int y){
+sg_uint8 CMapBoard::GetArch(int x, int y){
 	if(x<1||x>m_nMapWidth)return 0;
 	if(y<1||y>m_nMapHeight)return 0;
 	return m_pArch[CoordToPos(x, y)];
 }
 
-BYTE CMapBoard::GetObject(int x, int y){
+sg_uint8 CMapBoard::GetObj(int x, int y){
 	if(x<1||x>m_nMapWidth)return 0;
 	if(y<1||y>m_nMapHeight)return 0;
 	return m_pObject[CoordToPos(x, y)];
@@ -113,29 +114,29 @@ void CMapBoard::ClearMap(){
 	m_lpMapFilenameA[0]=m_lpLibraryFilenameA[0]=m_lpBGFilenameA[0]=NULL;
 }
 
-HRESULT CMapBoard::LoadMap(LPCSTR lpMapFilename)
+bool CMapBoard::LoadMap(sg_cpstr lpMapFilename)
 {
 	HANDLE hFile;
 	//Open the file
 	hFile=CreateFileA(lpMapFilename, GENERIC_READ, FILE_SHARE_READ, (LPSECURITY_ATTRIBUTES)NULL,
 							OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, (HANDLE)NULL);
-	if(hFile==INVALID_HANDLE_VALUE)return E_FAIL;
+	if(hFile==INVALID_HANDLE_VALUE)return false;
 	
 	DWORD dwBytesRead;
 	//Read Header First
 	MAPHEADER sMapHeader;
 	
 	if(!ReadFile(hFile, &sMapHeader, sizeof(sMapHeader), &dwBytesRead, NULL)){
-		CloseHandle(hFile);return E_FAIL;
+		CloseHandle(hFile);return false;
 	}
 
 	//Check for valid file
 	if(sMapHeader.wType!=*(sg_uint16*)"SM"){
-		CloseHandle(hFile);return E_FAIL;
+		CloseHandle(hFile);return false;
 	}
 
 	if(sMapHeader.nVersion!=1){
-		CloseHandle(hFile);return E_FAIL;
+		CloseHandle(hFile);return false;
 	}
 	
 	//We will now assume that it is a valid file, which may not necessarily be true
@@ -173,5 +174,5 @@ HRESULT CMapBoard::LoadMap(LPCSTR lpMapFilename)
 
 
 	CloseHandle(hFile);
-	return S_OK;
+	return true;
 }
