@@ -11,20 +11,10 @@
 /* This function loads a bitmap from a given offset within a file. */
 HBITMAP LoadBitmapOffset(const char szFilename[MAX_PATH], int nOffset)
 {
-	#if 0
-	HBITMAP hBitmap=NULL;
-	HANDLE hFile;
-	BITMAPFILEHEADER bmfh;
-	BITMAPINFO *pbmi;
-	BYTE *pBits;
-	DWORD dwBytesRead;
-	BOOL bSuccess;
-	DWORD dwInfoSize;
-	#endif
-	HANDLE hFile=CreateFileA(szFilename, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+	HANDLE hFile   = CreateFileA(szFilename, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
 	DWORD FileSize = GetFileSize( hFile , NULL );
-
 	if(hFile==INVALID_HANDLE_VALUE)return NULL;
+
 	unsigned __int8* FileData = malloc( FileSize );
 	if( NULL == FileData )
 	{
@@ -41,10 +31,10 @@ HBITMAP LoadBitmapOffset(const char szFilename[MAX_PATH], int nOffset)
 		CloseHandle( hFile );
 		return NULL;
 	}
+	CloseHandle( hFile );
 
 	HIMG Img = IMG_OpenMemory( &FileData[nOffset] , FileSize-nOffset );
 	SAFE_FREE( FileData );
-	CloseHandle( hFile );
 
 	if( IMG_NULL == Img )
 	{
@@ -87,7 +77,7 @@ HBITMAP LoadBitmapOffset(const char szFilename[MAX_PATH], int nOffset)
 	DestRect.rcCopy.right  = ImgDesc.Width;
 
 	img_bool Copied = IMG_CopyBits( Img , &DestRect , IMGFILTER_NONE , IMG_NULL , 0 );
-
+	
 	IMG_Delete(Img);
 	Img = IMG_NULL;
 
