@@ -21,14 +21,14 @@ SgSprite::SgSprite()
 SgSprite::~SgSprite(){
 }
 
-void SgSprite::GetSpriteName(char szSpriteName[MAX_SPRITE_NAME_LENGTH+1])
+void SgSprite::GetSpriteName( char* Out , size_t MaxOut )
 {
-	strcpy(szSpriteName, m_szSpriteName);
+	strcpy_s( Out , MaxOut , m_szSpriteName );
 }
 
 void SgSprite::NameSprite(const char* szSpriteName)
 {
-	strcpy(m_szSpriteName, szSpriteName);
+	strcpy_s( m_szSpriteName , countof(m_szSpriteName) , szSpriteName );
 }
 
 bool SgSprite::CreateSprite(HBITMAP hBitmap, int nWidth, int nHeight, int nFX, int nFY, int nFWidth, int nFHeight)

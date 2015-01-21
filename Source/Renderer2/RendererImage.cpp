@@ -109,8 +109,8 @@ void SgRendererImage::Draw( int x , int y )
 	ddBufferDesc.dwSize = sizeof(DDSURFACEDESC2);
 	if (FAILED(Bb->GetSurfaceDesc(&ddBufferDesc)))return;
 
-	DWORD nBufferWidth = ddBufferDesc.dwWidth;
-	DWORD nBufferHeight = ddBufferDesc.dwHeight;
+	int nBufferWidth = ddBufferDesc.dwWidth;
+	int nBufferHeight = ddBufferDesc.dwHeight;
 
 	//if we don't need to clip we do a regular blt
 	if (

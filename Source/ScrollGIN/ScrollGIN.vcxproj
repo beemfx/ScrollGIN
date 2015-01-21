@@ -72,7 +72,8 @@
       <BrowseInformation>true</BrowseInformation>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalIncludeDirectories>../DXLIB</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../DXLIB;./;</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>SgCommon.h</ForcedIncludeFiles>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -111,7 +112,8 @@
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>../DXLIB</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../DXLIB;./;</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>SgCommon.h</ForcedIncludeFiles>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -133,6 +135,10 @@
     <ClCompile Include="..\ImageLib\EditImageLibrary.cpp" />
     <ClCompile Include="..\ImageLib\ImageArchive.cpp" />
     <ClCompile Include="..\ImageLib\ImageLibrary.cpp" />
+    <ClCompile Include="..\img_lib\img_bmp.c" />
+    <ClCompile Include="..\img_lib\img_cb.c" />
+    <ClCompile Include="..\img_lib\img_lib.c" />
+    <ClCompile Include="..\img_lib\img_tga.c" />
     <ClCompile Include="..\MapBoard\EditMapboard.cpp" />
     <ClCompile Include="..\MapBoard\Mapboard.cpp" />
     <ClCompile Include="..\Renderer2\Renderer.cpp" />
@@ -234,6 +240,9 @@
     <ClInclude Include="..\ImageLib\bitmapex.h" />
     <ClInclude Include="..\ImageLib\Defines.h" />
     <ClInclude Include="..\ImageLib\ImageLib.h" />
+    <ClInclude Include="..\img_lib\img_lib.h" />
+    <ClInclude Include="..\img_lib\img_lib_types.h" />
+    <ClInclude Include="..\img_lib\img_private.h" />
     <ClInclude Include="..\MapBoard\Defines.h" />
     <ClInclude Include="..\MapBoard\Mapboard.h" />
     <ClInclude Include="..\Renderer2\Renderer.h" />
@@ -246,6 +255,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjMan.h" />
     <ClInclude Include="ScrollGIN.h" />
+    <ClInclude Include="SgCommon.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteManager.h" />
     <ClInclude Include="TestAI.h" />

@@ -110,7 +110,7 @@ SgSprite* SgSpriteManager::GetSprite(const char* szSpriteName)
 {
 	char szTempSpriteName[MAX_SPRITE_NAME_LENGTH+1];
 	for(int i=0; i<m_nNumSprites; i++){
-		m_cSprite[i].GetSpriteName(szTempSpriteName);
+		m_cSprite[i].GetSpriteName(szTempSpriteName,countof(szTempSpriteName));
 		if(strcmp(szTempSpriteName, szSpriteName)==0)
 			return &m_cSprite[i];
 	}

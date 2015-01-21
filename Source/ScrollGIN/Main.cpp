@@ -105,7 +105,8 @@ static void Main_ProcessCommandLine(BOOL* lpWindowed)
 	LPTSTR szCommandLine=GetCommandLine();
 	char* token=NULL;
 	char steps[]="-";
-	token=strtok(szCommandLine, steps);
+	char* NextToken = NULL;
+	token=strtok_s(szCommandLine, steps, &NextToken );
 	while(token != NULL)
 	{
 		if(_strnicmp("window", token, 7)==0)
@@ -114,7 +115,7 @@ static void Main_ProcessCommandLine(BOOL* lpWindowed)
 		if(_strnicmp("w", token, 2)==0)
 			*lpWindowed=TRUE;
 
-		token=strtok(NULL, steps);
+		token=strtok_s(NULL, steps, &NextToken );
 	}
 }
 
