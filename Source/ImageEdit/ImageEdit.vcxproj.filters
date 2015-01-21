@@ -12,6 +12,9 @@
       <UniqueIdentifier>{f2e9d8a7-60b9-4047-af67-aeb9e5ad3052}</UniqueIdentifier>
       <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
     </Filter>
+    <Filter Include="img_lib">
+      <UniqueIdentifier>{b4ead6e6-773a-4201-85c0-6b8ad48aefa1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DiskDlg.c">
@@ -31,6 +34,18 @@
     </ClCompile>
     <ClCompile Include="..\ImageLib\Bitmap.c">
       <Filter>ImageLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\img_lib\img_bmp.c">
+      <Filter>img_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\img_lib\img_cb.c">
+      <Filter>img_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\img_lib\img_lib.c">
+      <Filter>img_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\img_lib\img_tga.c">
+      <Filter>img_lib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +70,15 @@
     </ClInclude>
     <ClInclude Include="..\ImageLib\bitmapex.h">
       <Filter>ImageLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\img_lib\img_lib.h">
+      <Filter>img_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\img_lib\img_lib_types.h">
+      <Filter>img_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\img_lib\img_private.h">
+      <Filter>img_lib</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -97,7 +97,7 @@ HRESULT CImageLibrary::OpenBitmapOffset(LPCSTR szFilename, DWORD nOffset, WORD n
 	if( (nBitmap<1) || (nBitmap>MAX_BITMAPS) )return E_FAIL;
 
 	DeleteObject(m_hBitmap[nBitmap-1]);
-	m_hBitmap[nBitmap-1]=LoadBitmapOffsetA(szFilename, nOffset);
+	m_hBitmap[nBitmap-1]=LoadBitmapOffset(szFilename, nOffset);
 
 	if(m_hBitmap[nBitmap-1] == NULL)return E_FAIL;
 	strcpy_s(m_szBitmapFilenameA[nBitmap-1], countof(m_szBitmapFilenameA[nBitmap-1]), szFilename);
