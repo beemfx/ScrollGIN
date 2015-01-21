@@ -16,7 +16,6 @@
 #include "defines.h"
 #include "error.h"
 #include "../Renderer2/Renderer.h"
-#include "resource.h"
 
 
 #include "ScrollGIN.h"
@@ -38,11 +37,7 @@ HRESULT GameInit(HWND hWnd, BOOL bWindowed, HINSTANCE hInstance, int nShowCmd)
 	ShowWindow(hWnd, nShowCmd);
 	SetFocus(hWnd);
 	
-	Game.GameInit(
-		640,
-		480,
-		new CJoes2ObjMan(256),
-		hWnd);
+	Game.GameInit(640,480,new CJoes2ObjMan(256),hWnd);
 
 	return S_OK;
 }
@@ -58,18 +53,9 @@ static void GameShutdown()
 }
 
 
-LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam){
+LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
 	switch(msg){
-	case WM_COMMAND:
-	{
-		switch(LOWORD(wParam))
-		{
-		case ID_FILE_EXIT:
-			SendMessage(hWnd, WM_CLOSE, 0, 0);
-			break;	
-		}
-		break;
-	}
 	case WM_ACTIVATEAPP:
 		if(wParam)
 		{
@@ -138,7 +124,8 @@ BOOL ProcessCommandLine(BOOL* lpWindowed)
 }
 
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd){
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
+{
 	MSG msg;
 	HWND hWnd=NULL;
 	WNDCLASSEX wc;
@@ -155,7 +142,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	wc.lpfnWndProc=MainWndProc;
 	wc.hInstance=hInstance;
 	wc.hbrBackground=(HBRUSH)GetStockObject(DKGRAY_BRUSH);
-	wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_MAIN_ICON));
+	wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(101));
 	wc.hIconSm = NULL;//LoadIcon(NULL, IDI_APPLICATION);
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.lpszMenuName=NULL;
