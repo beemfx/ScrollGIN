@@ -169,7 +169,7 @@ HRESULT CMapBoard::LoadMap(LPCSTR lpMapFilename)
 	//Prepare the variables
 	m_nMapWidth=sMapHeader.nMapWidth;
 	m_nMapHeight=sMapHeader.nMapHeight;
-	strcpy(m_lpMapFilenameA, lpMapFilename);
+	strcpy_s(m_lpMapFilenameA, countof(m_lpMapFilenameA), lpMapFilename);
 
 
 	CloseHandle(hFile);
