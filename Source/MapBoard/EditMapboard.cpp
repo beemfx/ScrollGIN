@@ -163,11 +163,11 @@ HRESULT CEditMapBoard::GenerateNewMap(int nWidth, int nHeight, LPSTR lpLibFilena
 	ClearMap();
 	
 	//Copy filenames into memory
-	strcpy(m_lpLibraryFilenameA, lpLibFilename);
+	strcpy_s(m_lpLibraryFilenameA, countof(m_lpLibraryFilenameA), lpLibFilename);
 
 	//Only copy background if it exist, a background isn't necessary
 	if(lpBGFilename!=NULL)
-		strcpy(m_lpBGFilenameA, lpBGFilename);
+		strcpy_s(m_lpBGFilenameA, countof(m_lpBGFilenameA), lpBGFilename);
 
 	//Set width and height
 	m_nMapWidth=nWidth;
@@ -244,18 +244,18 @@ HRESULT CEditMapBoard::SaveMap(LPSTR lpMapFilename)
 	WriteFile(hFile, m_pObject, sMapHeader.lObjectDataSize, &dwBytesWritten, NULL);
 
 	CloseHandle(hFile);
-	strcpy(m_lpMapFilenameA, lpMapFilename);
+	strcpy_s(m_lpMapFilenameA, countof(m_lpMapFilenameA), lpMapFilename);
 	return S_OK;
 }
 
 void CEditMapBoard::ChangeBackground(LPCSTR lpBackgroudFilename)
 {
-	strcpy(m_lpBGFilenameA, lpBackgroudFilename);
+	strcpy_s(m_lpBGFilenameA, countof(m_lpBGFilenameA), lpBackgroudFilename);
 }
 
 void CEditMapBoard::ChangeLibrary(LPCSTR lpLibraryFilename)
 {
-	strcpy(m_lpLibraryFilenameA, lpLibraryFilename);
+	strcpy_s(m_lpLibraryFilenameA, countof(m_lpLibraryFilenameA), lpLibraryFilename);
 }
 
 HRESULT CEditMapBoard::ChangeMapDimensions(int nNewWidth, int nNewHeight)
