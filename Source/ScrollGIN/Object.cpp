@@ -157,7 +157,7 @@ BOOL CObject::SendMessage(LONG nMsg){
 	return TRUE;
 }
 
-BOOL CObject::ProcessMessages(LPVOID lpObjMan){
+BOOL CObject::ProcessMessages(void* lpObjMan){
 	//All messages should be processed
 
 	//Clear the message que
@@ -173,7 +173,7 @@ void CObject::SetAliveState(BOOL bAlive){
 	m_bAlive=bAlive;
 }
 
-HRESULT CObject::ProcessAI(CInputManager* pInput, LPVOID pObjMan, CTimerEx* timer, CMapBoard* map)
+HRESULT CObject::ProcessAI(CInputManager* pInput, void* pObjMan, CTimerEx* timer, CMapBoard* map)
 {
 	//CObjectManager* pObjectMan=(CObjectManager*)pObjMan;
 	
@@ -332,12 +332,11 @@ SPRITEFACE CObject::GetFace(){
 	return m_nFace;
 }
 
-void CObject::Draw(CViewPort *vp, LPVOID lpBuffer){
+void CObject::Draw(CViewPort *vp){
 	for(int i=0; i<m_nNumSprites; i++){
 		if(m_pSprite[i]!=NULL){
 			if(m_sSpriteData[i].bActive==TRUE){
 				m_pSprite[i]->DisplaySprite(
-							lpBuffer, 
 							m_sSpriteData[i].nCurrentFrame,
 							m_nFace, 
 							vp->screenX(m_nX+m_sSpriteData[i].nX), 
@@ -692,7 +691,7 @@ int CObject::GetYSpeed(){
 	return m_nYSpeed;
 }
 
-HRESULT CObject::Animate(CTimerEx *timer, CMapBoard *map, CInputManager* pInput, LPVOID pObjMan){
+HRESULT CObject::Animate(CTimerEx *timer, CMapBoard *map, CInputManager* pInput, void* pObjMan){
 	int nTempXSpeed=m_nXSpeed;
 	int nTempYSpeed=m_nYSpeed;
 

@@ -60,45 +60,14 @@ CObjectManager::~CObjectManager(){
 	SAFE_DELETE_ARRAY(m_ppObject);
 }
 
-HRESULT CObjectManager::CreateSpriteFromData(
-	LPTSTR szFilename,
-	LPVOID lpDirectDraw,
-	DWORD dwTransparent,
-	int nNumImages,
-	LPTSTR szSpriteName,
-	LPVOID lpCreationData)
-{
-	return m_SpriteManager.CreateSpriteFromData(
-		lpDirectDraw,
-		dwTransparent,
-		nNumImages,
-		szSpriteName,
-		szFilename,
-		lpCreationData);
-}
-
 void CObjectManager::Release()
 {
 	m_SpriteManager.Release();
 }
-void CObjectManager::Restore()
-{
-	m_SpriteManager.Restore();
-}
-void CObjectManager::ReloadImages()
-{
-	m_SpriteManager.ReloadImages();
-}
 
-HRESULT CObjectManager::LoadSpritesFromFile(
-	LPTSTR szFilename, 
-	LPVOID lpDirectDraw, 
-	DWORD dwTransparent)
+HRESULT CObjectManager::LoadSpritesFromFile(LPTSTR szFilename, DWORD dwTransparent)
 {
-	return m_SpriteManager.CreateSpritesFromFile(
-		lpDirectDraw, 
-		dwTransparent, 
-		szFilename);
+	return m_SpriteManager.CreateSpritesFromFile(dwTransparent, szFilename);
 }
 int CObjectManager::ClearSprites()
 {
@@ -247,18 +216,14 @@ HRESULT CObjectManager::DetectCollisions(){
 	return S_OK;
 }
 
-HRESULT CObjectManager::Animate(
-	LPVOID lpSurface, 
-	CMapBoard *map,
-	CViewPort *viewport,
-	CInputManager* pInput)
+HRESULT CObjectManager::Animate(CMapBoard *map,CViewPort *viewport,CInputManager* pInput)
 {
 	DWORD i=0;
 	//if the game is paused we just draw the objects (and don't animate them)
 	if(m_pTimer->IsPaused()){
 		for(i=0; i<m_dwMaxObjects; i++){
 			if(m_ppObject[i]!=NULL)
-				m_ppObject[i]->Draw(viewport, lpSurface);
+				m_ppObject[i]->Draw(viewport);
 		}
 		return S_OK;
 	}
@@ -299,7 +264,7 @@ HRESULT CObjectManager::Animate(
 	//Draw each of the objects
 	for(i=0; i<m_dwMaxObjects; i++){
 		if(m_ppObject[i]!=NULL)
-			m_ppObject[i]->Draw(viewport, lpSurface);
+			m_ppObject[i]->Draw(viewport);
 	}
 
 	return S_OK;
@@ -314,7 +279,7 @@ DWORD CObjectManager::GetUserObject(){
 	return m_dwUserObject;
 }
 
-int CObjectManager::Initialize(LPVOID lpDD, DWORD dwTransparent)
+int CObjectManager::Initialize(DWORD dwTransparent)
 {
 	return 1;
 }

@@ -18,6 +18,8 @@ struct sgRendererInitParms
 void Renderer_Init( const sgRendererInitParms* InitParms );
 void Renderer_Deinit();
 
+void Renderer_UpdateBounds();
+
 void Renderer_BeginFrame();
 void Renderer_EndFrame();
 

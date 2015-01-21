@@ -39,34 +39,22 @@ public:
 	CObjectManager(DWORD dwMaxObjects, CTimerEx * pTimer);
 	virtual ~CObjectManager();
 
-	virtual int Initialize(LPVOID lpDD, DWORD dwTransparent);
+	virtual int Initialize(DWORD dwTransparent);
 
 	HRESULT Animate(
-		LPVOID lpSurface,  
 		CMapBoard *map,
 		CViewPort *viewport,
 		CInputManager* pInput); //Animate all the objects and draw them
 
 	void ClearObjects(); //clear all objects from database
 
-	HRESULT CreateSpriteFromData(
-		LPTSTR szFilename,
-		LPVOID lpDirectDraw,
-		DWORD dwTransparent,
-		int nNumImages,
-		LPTSTR szSpriteName,
-		LPVOID lpCreationData);
-
 	HRESULT LoadSpritesFromFile(
 		LPTSTR szFilename, 
-		LPVOID lpDirectDraw, 
 		DWORD dwTransparent);
 	
 	int ClearSprites();
 
 	void Release();
-	void Restore();
-	void ReloadImages();
 
 	BOOL ObtainTimer(
 		CTimerEx * pTimer);

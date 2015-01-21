@@ -10,7 +10,7 @@
 
 #include "input.h"
 
-BOOL CALLBACK EnumAxis(LPCDIDEVICEOBJECTINSTANCE lpddoi, LPVOID pvRef){
+BOOL CALLBACK EnumAxis(LPCDIDEVICEOBJECTINSTANCE lpddoi, void* pvRef){
 
 	LPDIRECTINPUTDEVICE8 *lpJoystick=(LPDIRECTINPUTDEVICE8*)pvRef;
 	
@@ -31,7 +31,7 @@ BOOL CALLBACK EnumAxis(LPCDIDEVICEOBJECTINSTANCE lpddoi, LPVOID pvRef){
 
 
 
-BOOL CALLBACK EnumJoysticks(LPCDIDEVICEINSTANCE lpdii, LPVOID pvRef){
+BOOL CALLBACK EnumJoysticks(LPCDIDEVICEINSTANCE lpdii, void* pvRef){
 	
 	INPUTCREATEDATA* diData;
 
@@ -151,7 +151,7 @@ HRESULT CInputManager::InitJoystick(HWND hWnd){
 	diData.lpDI=&m_lpDIObject;
 	diData.lpDevice=&m_lpJoystick;
 	if(FAILED(hr=m_lpDIObject->EnumDevices(DI8DEVCLASS_GAMECTRL,
-				EnumJoysticks, (LPVOID)&diData, DIEDFL_ATTACHEDONLY)))return hr;
+				EnumJoysticks, (void*)&diData, DIEDFL_ATTACHEDONLY)))return hr;
 
 
 	if(m_lpJoystick == NULL)return E_FAIL;
@@ -218,7 +218,7 @@ HRESULT CInputManager::ProcessMouseInput(){
 
 	HRESULT hr;
 
-	if(FAILED(hr=m_lpMouse->GetDeviceState(sizeof(m_diMouseState), (LPVOID)&m_diMouseState))){
+	if(FAILED(hr=m_lpMouse->GetDeviceState(sizeof(m_diMouseState), (void*)&m_diMouseState))){
 		if(hr==DIERR_INPUTLOST){
 			//we lost mouse, lets reaquire it
 			hr=m_lpMouse->Acquire();
@@ -244,7 +244,7 @@ HRESULT CInputManager::ProcessKeyboardInput(){
 	
 	HRESULT hr;
 
-	if(FAILED(hr=m_lpKeyboard->GetDeviceState(sizeof(m_cKeyboardBuffer), (LPVOID)&m_cKeyboardBuffer))){
+	if(FAILED(hr=m_lpKeyboard->GetDeviceState(sizeof(m_cKeyboardBuffer), (void*)&m_cKeyboardBuffer))){
 		if(hr==DIERR_INPUTLOST){
 			//we lost the keyboard, lets reaquire it
 			hr = m_lpKeyboard->Acquire();

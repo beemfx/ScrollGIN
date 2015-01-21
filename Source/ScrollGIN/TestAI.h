@@ -1,6 +1,8 @@
 #ifndef __TESTAI_H__
 #define __TESTAI_H__
 
+#if 0
+
 #include "object.h"
 #include "objman.h"
 
@@ -32,7 +34,7 @@ public:
 	CCrowObject(CSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
 	virtual BOOL LoadObjectSprites(CSpriteManager *pSpriteMgr);
 	virtual BOOL CreateObjectModes(DWORD dwTime);
-	virtual BOOL ProcessMessages(LPVOID lpObjMan);
+	virtual BOOL ProcessMessages(void* lpObjMan);
 };
 
 class CFighterObject: public CObject{
@@ -45,7 +47,7 @@ public:
 	virtual BOOL LoadObjectSprites(CSpriteManager *pSpriteMgr);
 	virtual BOOL CreateObjectModes(DWORD dwTime);
 
-	virtual HRESULT ProcessAI(CInputManager* pInput, LPVOID pObjMan, CTimerEx* timer, CMapBoard* map);
+	virtual HRESULT ProcessAI(CInputManager* pInput, void* pObjMan, CTimerEx* timer, CMapBoard* map);
 };
 
 class CTestObjman: public CObjectManager{
@@ -56,9 +58,11 @@ public:
 	CTestObjman(DWORD dwMax);
 	CTestObjman(DWORD dwMax, CTimerEx * pTimer);
 	virtual ~CTestObjman();
-	virtual int Initialize(LPVOID lpDD, DWORD dwTransparent);
+	virtual int Initialize(void* lpDD, DWORD dwTransparent);
 	virtual HRESULT CreateObject(const OBJECTTYPE nType, int x, int y, int nXSpeed, int nYSpeed);
 	virtual HRESULT DetectCollisions();
 };
+
+#endif
 
 #endif //__TESTAI_H__

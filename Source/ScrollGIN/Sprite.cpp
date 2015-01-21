@@ -6,10 +6,16 @@
 
 #include <tchar.h>
 #include "sprite.h"
+#include "../Renderer2/RendererImage.h"
 
 CSprite::CSprite(){
 	m_nFrames=0;
 	m_szSpriteName[0]=NULL;
+	for( int i=0; i<MAX_IMAGES_PER_SPRITE; i++ )
+	{
+		m_cSpriteImage[i] = 0;
+		m_cReverseSpriteImage[i] = 0;
+	}
 }
 
 CSprite::~CSprite(){
@@ -26,7 +32,6 @@ BOOL CSprite::NameSprite(TCHAR szSpriteName[MAX_SPRITE_NAME_LENGTH+1]){
 }
 
 HRESULT CSprite::CreateSpriteFrameBMInMemory(
-	LPVOID lpDevice, 
 	DWORD dwTransparent,
 	HBITMAP hBitmap, 
 	int nWidth, 
@@ -38,7 +43,6 @@ HRESULT CSprite::CreateSpriteFrameBMInMemory(
 {
 
 	if(SUCCEEDED(CreateSpriteFrameBMInMemory(
-		lpDevice,
 		dwTransparent,
 		m_nFrames+1,
 		hBitmap,
@@ -55,36 +59,7 @@ HRESULT CSprite::CreateSpriteFrameBMInMemory(
 	
 }
 
-HRESULT CSprite::CreateSpriteFrameBM(
-	LPVOID lpDevice, 
-	DWORD dwTransparent,
-	TCHAR lpFilename[MAX_PATH],
-	int nWidth,
-	int nHeight,
-	int nFX,
-	int nFY,
-	int nFWidth,
-	int nFHeight
-){
-	if(SUCCEEDED(CreateSpriteFrameBM(
-		lpDevice,
-		dwTransparent,
-		m_nFrames+1,
-		lpFilename,
-		nWidth,
-		nHeight,
-		nFX,
-		nFY,
-		nFWidth,
-		nFHeight)))
-	{
-		m_nFrames++;
-		return S_OK;
-	}else return E_FAIL;
-}
-
 HRESULT CSprite::CreateSpriteFrameBMInMemory(
-	LPVOID lpDevice, 
 	DWORD dwTransparent,
 	int nFrame, 
 	HBITMAP hBitmap,
@@ -101,78 +76,16 @@ HRESULT CSprite::CreateSpriteFrameBMInMemory(
 	m_sImageDim[nFrame-1].nWidth=nWidth;
 	m_sImageDim[nFrame-1].nHeight=nHeight;
 
-	if(FAILED(m_cSpriteImage[nFrame-1].CreateImageBMInMemory(
-		lpDevice,
-		dwTransparent,
-		hBitmap,
-		nFX,
-		nFY,
-		nFWidth,
-		nFHeight,
-		nWidth,
-		nHeight,
-		NULL)))return E_FAIL;
+	sgRendererImageCreateParms Parms;
+	memset( &Parms , 0 , sizeof(Parms) );
+	Parms.Type = RENDERER_IMAGE_BITMAP;
+	Parms.Bitmap = hBitmap;
+	Parms.Width = nWidth;
+	Parms.Height = nHeight;
 
-	if(FAILED(m_cReverseSpriteImage[nFrame-1].CreateImageBMInMemory(
-		lpDevice,
-		dwTransparent,
-		hBitmap,
-		nFX,
-		nFY,
-		nFWidth,
-		nFHeight,
-		nWidth,
-		nHeight,
-		RV_LEFTRIGHT)))return E_FAIL;
+	m_cSpriteImage[nFrame-1]        = Renderer_CreateSprite( &Parms );
+	m_cReverseSpriteImage[nFrame-1] = Renderer_CreateSprite( &Parms );
 	
-	return S_OK;
-}
-
-HRESULT CSprite::CreateSpriteFrameBM(
-	LPVOID lpDevice, 
-	DWORD dwTransparent,
-	int nFrame,
-	TCHAR lpFilename[MAX_PATH],
-	int nWidth,
-	int nHeight,
-	int nFX,
-	int nFY,
-	int nFWidth,
-	int nFHeight
-){
-	if(nFrame<1)return E_FAIL;
-	if(nFrame>MAX_IMAGES_PER_SPRITE)return E_FAIL;
-
-	m_sImageDim[nFrame-1].nWidth=nWidth;
-	m_sImageDim[nFrame-1].nHeight=nHeight;
-
-	if(FAILED(m_cSpriteImage[nFrame-1].CreateImageBM(
-		lpDevice,
-		dwTransparent,
-		lpFilename,
-		nFX,
-		nFY,
-		nFWidth,
-		nFHeight,
-		nWidth,
-		nHeight,
-		NULL)))return E_FAIL;
-
-	
-	//this isn't working
-	if(FAILED(m_cReverseSpriteImage[nFrame-1].CreateImageBM( 
-		lpDevice,
-		dwTransparent,
-		lpFilename, 
-		nFX, 
-		nFY, 
-		nFWidth, 
-		nFHeight,
-		nWidth, 
-		nHeight,
-		RV_LEFTRIGHT)))return E_FAIL;
-	
-
 	return S_OK;
 }
 
@@ -199,32 +112,18 @@ int CSprite::GetNumFrames(LOOPMODE nLoopMode){
 	else return m_nFrames;
 }
 
-HRESULT CSprite::ReloadImages(){
-	for(int i=0; i<m_nFrames; i++){
-		m_cSpriteImage[i].ReloadImageIntoSurface();
-		m_cReverseSpriteImage[i].ReloadImageIntoSurface();
-	}
-
-	return S_OK;
-}
-
-HRESULT CSprite::Restore(){
-	for(int i=0; i<m_nFrames; i++){
-		m_cSpriteImage[i].Restore();
-		m_cReverseSpriteImage[i].Restore();
-	}
-	return S_OK;
-}
-
 void CSprite::Release(){
-	for(int i=0; i<MAX_IMAGES_PER_SPRITE; i++){
-		m_cSpriteImage[i].Release();
-		m_cReverseSpriteImage[i].Release();
+	for(int i=0; i<MAX_IMAGES_PER_SPRITE; i++)
+	{
+		Renderer_DestroySprite( m_cSpriteImage[i] );
+		m_cSpriteImage[i] = 0;
+		Renderer_DestroySprite( m_cReverseSpriteImage[i] );
+		m_cReverseSpriteImage[i] = 0;
 	}
 }
 
-HRESULT CSprite::DisplaySprite(LPVOID lpBuffer, int nFrame, SPRITEFACE nFace, int x, int y, LOOPMODE nLoopMode){
-	if(!lpBuffer)return E_FAIL;
+HRESULT CSprite::DisplaySprite(int nFrame, SPRITEFACE nFace, int x, int y, LOOPMODE nLoopMode)
+{
 	switch(nLoopMode)
 	{
 	case LP_FORWARDBACKWARD:
@@ -269,12 +168,12 @@ HRESULT CSprite::DisplaySprite(LPVOID lpBuffer, int nFrame, SPRITEFACE nFace, in
 	switch(nFace){
 	case SF_RIGHT:
 		//To the right means we blt the actual image
-		if(SUCCEEDED(m_cSpriteImage[nFrame-1].DrawPrefered(x-m_sImageDim[nFrame-1].nWidth/2, y-m_sImageDim[nFrame-1].nHeight/2)))return S_OK;
-	break;
+		m_cSpriteImage[nFrame-1]->Draw(x-m_sImageDim[nFrame-1].nWidth/2, y-m_sImageDim[nFrame-1].nHeight/2);
+		break;
 	case SF_LEFT:
 		//to the left means to reverse the iamge
-		if(SUCCEEDED(m_cReverseSpriteImage[nFrame-1].DrawPrefered(x-m_sImageDim[nFrame-1].nWidth/2, y-m_sImageDim[nFrame-1].nHeight/2)))return S_OK;
+		m_cReverseSpriteImage[nFrame-1]->Draw(x-m_sImageDim[nFrame-1].nWidth/2, y-m_sImageDim[nFrame-1].nHeight/2);
 		break;
 	}
-	return E_FAIL;
+	return S_OK;
 }

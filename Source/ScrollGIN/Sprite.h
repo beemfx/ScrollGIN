@@ -8,7 +8,7 @@
 
 #include <windows.h>
 #include "defines.h"
-#include "../GFXG7/gfxg7.h"
+#include "../Renderer2/Renderer.h"
 
 typedef enum tagSPRITEFACE{
 	SF_LEFT=0, 
@@ -31,8 +31,8 @@ typedef enum tagLOOPMODE{
 
 class CSprite{
 private:
-	CImage m_cSpriteImage[MAX_IMAGES_PER_SPRITE]; //contains the default sprite images
-	CImage m_cReverseSpriteImage[MAX_IMAGES_PER_SPRITE]; //contains a left/right swaped version of teh sprite images
+	SgRendererImage* m_cSpriteImage[MAX_IMAGES_PER_SPRITE]; //contains the default sprite images
+	SgRendererImage* m_cReverseSpriteImage[MAX_IMAGES_PER_SPRITE]; //contains a left/right swaped version of teh sprite images
 	IMAGEDIM m_sImageDim[MAX_IMAGES_PER_SPRITE];  //contains the dimensions of the sprite
 	int m_nFrames; //indicates how many frames are in teh sprite
 	TCHAR m_szSpriteName[MAX_SPRITE_NAME_LENGTH+1]; //The name of the sprite, used to objtain a sprite
@@ -40,39 +40,15 @@ private:
 public:
 	CSprite();  //cosntructor
 	~CSprite(); //destructor
-	HRESULT DisplaySprite(LPVOID lpBuffer, 
+	HRESULT DisplaySprite(
 						int nFrame, 
 						SPRITEFACE nFace, 
 						int x, 
 						int y,
 						LOOPMODE nLoopMode); //pastes the sprite to the indicated surface using the center of the image as the x, y
-	HRESULT Restore(); //restores the surfaces of the sprite
 	void Release(); //releases the surfaces of the sprite
-	HRESULT ReloadImages(); //reloads images into sprites
 	HRESULT ClearSprite();  //clears the current sprite for replacement
-	HRESULT CreateSpriteFrameBM(
-		LPVOID lpDevice, 
-		DWORD dwTransparent,
-		int nFrame, 
-		TCHAR lpFilename[MAX_PATH],
-		int nWidth, 
-		int nHeight, 
-		int nFX, 
-		int nFY, 
-		int nFWidth, 
-		int nFHeight);//creaet sprite fraem from bitmap
-	HRESULT CreateSpriteFrameBM(
-		LPVOID lpDevice, 
-		DWORD dwTransparent,
-		TCHAR lpFilename[MAX_PATH], 
-		int nWidth, 
-		int nHeight, 
-		int nFX, 
-		int nFY, 
-		int nFWidth, 
-		int nFHeight);//create sprite frame from bitmap at next available position
 	HRESULT CreateSpriteFrameBMInMemory(
-		LPVOID lpDevice, 
 		DWORD dwTransparent,
 		int nFrame, 
 		HBITMAP hBitmap,
@@ -83,7 +59,6 @@ public:
 		int nFWidth, 
 		int nFHeight);//creaet sprite fraem from bitmap
 	HRESULT CreateSpriteFrameBMInMemory(
-		LPVOID lpDevice, 
 		DWORD dwTransparent,
 		HBITMAP hBitmap, 
 		int nWidth, 

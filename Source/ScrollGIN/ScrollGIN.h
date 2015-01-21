@@ -32,8 +32,6 @@ protected:
 	DWORD m_dwHeight;
 
 	DWORD m_dwTransparentColor;
-	LPVOID m_lpDD;
-
 public:
 	CScrollGINGame();
 	~CScrollGINGame();
@@ -43,8 +41,7 @@ public:
 		DWORD dwHeight,
 		DWORD dwTransparentColor, 
 		CObjectManager* lpObjMan, 
-		HWND hwnd,
-		LPVOID lpDirectDraw);
+		HWND hwnd);
 
 	int Shutdown();
 
@@ -54,10 +51,8 @@ public:
 	int IsPaused();
 
 	int Release();
-	int Restore();
-	int ReloadImages();
 
-	int Render(LPVOID lpBuffer);
+	int Render();
 	int LoadMap(LPTSTR szFilename);
 
 	int PreRenderProcess();

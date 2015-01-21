@@ -1,10 +1,11 @@
+#if 0
+
 #include <stdio.h>
 #include "Error.h"
 #include "TestAI.h"
 
 
-
-void TestCreate(LPVOID lpDD, DWORD dwTrans, CObjectManager* lpObjMan)
+void TestCreate(void* lpDD, DWORD dwTrans, CObjectManager* lpObjMan)
 {
 	//This function is merely a test to demonstrate how to create a sprite from data
 	TCHAR szImageName[] = TEXT("freedom sprites2.bmp");
@@ -16,29 +17,29 @@ void TestCreate(LPVOID lpDD, DWORD dwTrans, CObjectManager* lpObjMan)
 	scs[3].nFX=281;scs[3].nFY=155;scs[3].nFWidth=85;scs[3].nFHeight=37;scs[3].nWidth=85;scs[3].nHeight=37;
 	scs[4].nFX=372;scs[4].nFY=155;scs[4].nFWidth=85;scs[4].nFHeight=37;scs[4].nWidth=85;scs[4].nHeight=37;
 	scs[5].nFX=462;scs[5].nFY=155;scs[5].nFWidth=85;scs[5].nFHeight=37;scs[5].nWidth=85;scs[5].nHeight=37;	
-	lpObjMan->CreateSpriteFromData(szImageName, lpDD, dwTrans, 6, TEXT("legsrunning"), (LPVOID)scs);
+	lpObjMan->CreateSpriteFromData(szImageName, lpDD, dwTrans, 6, TEXT("legsrunning"), (void*)scs);
 	scs[0].nWidth=85;scs[0].nHeight=40;scs[0].nFX=11;scs[0].nFY=43;scs[0].nFWidth=85;scs[0].nFHeight=40;
-	lpObjMan->CreateSpriteFromData(szImageName, lpDD, dwTrans, 1, TEXT("upperbody"), (LPVOID)scs);
+	lpObjMan->CreateSpriteFromData(szImageName, lpDD, dwTrans, 1, TEXT("upperbody"), (void*)scs);
 	scs[0].nWidth=85;scs[0].nHeight=37;scs[0].nFX=11;scs[0].nFY=112;scs[0].nFWidth=85;scs[0].nFHeight=37;
-	lpObjMan->CreateSpriteFromData(szImageName, lpDD, dwTrans, 1, TEXT("legsstanding"), (LPVOID)scs);
+	lpObjMan->CreateSpriteFromData(szImageName, lpDD, dwTrans, 1, TEXT("legsstanding"), (void*)scs);
 	scs[0].nFX=102;scs[0].nFY=37;scs[0].nFWidth=85;scs[0].nFHeight=46;scs[0].nWidth=85;scs[0].nHeight=46;
-	lpObjMan->CreateSpriteFromData(szImageName, lpDD, dwTrans, 1, TEXT("ubangleup"), (LPVOID)scs);
+	lpObjMan->CreateSpriteFromData(szImageName, lpDD, dwTrans, 1, TEXT("ubangleup"), (void*)scs);
 	scs[0].nFX=200;scs[0].nFY=37;scs[0].nFWidth=85;scs[0].nFHeight=56;scs[0].nWidth=85;scs[0].nHeight=56;
-	lpObjMan->CreateSpriteFromData(szImageName, lpDD, dwTrans, 1, TEXT("ubangledown"), (LPVOID)scs);
+	lpObjMan->CreateSpriteFromData(szImageName, lpDD, dwTrans, 1, TEXT("ubangledown"), (void*)scs);
 	scs[0].nFX=294;scs[0].nFY=36;scs[0].nFWidth=85;scs[0].nFHeight=56;scs[0].nWidth=85;scs[0].nHeight=56;
-	lpObjMan->CreateSpriteFromData(szImageName, lpDD, dwTrans, 1, TEXT("ubup"), (LPVOID)scs);
+	lpObjMan->CreateSpriteFromData(szImageName, lpDD, dwTrans, 1, TEXT("ubup"), (void*)scs);
 	scs[0].nFX=384;scs[0].nFY=36;scs[0].nFWidth=85;scs[0].nFHeight=72;scs[0].nWidth=85;scs[0].nHeight=72;
-	lpObjMan->CreateSpriteFromData(szImageName, lpDD, dwTrans, 1, TEXT("ubdown"), (LPVOID)scs);
+	lpObjMan->CreateSpriteFromData(szImageName, lpDD, dwTrans, 1, TEXT("ubdown"), (void*)scs);
 	scs[0].nFX=109;scs[0].nFY=106;scs[0].nFWidth=91;scs[0].nFHeight=31;scs[0].nWidth=91;scs[0].nHeight=31;
-	lpObjMan->CreateSpriteFromData(szImageName, lpDD, dwTrans, 1, TEXT("ducking"), (LPVOID)scs);
+	lpObjMan->CreateSpriteFromData(szImageName, lpDD, dwTrans, 1, TEXT("ducking"), (void*)scs);
 
 }
 
-BOOL TestCreateObject(LPVOID lpDD, DWORD dwTrans, CObjectManager* lpObjMan)
+BOOL TestCreateObject(void* lpDD, DWORD dwTrans, CObjectManager* lpObjMan)
 {
 	//This function creates an object for testing purposes
 	TestCreate(lpDD, dwTrans, lpObjMan);
-	lpObjMan->LoadSpritesFromFile(TEXT("NedSprites.ilb"), lpDD, dwTrans);
+	lpObjMan->LoadSpritesFromFile(TEXT("NedSprites.ilb"), dwTrans);
 	/*
 	ObjectManager.ObtainSpriteManager(&g_cSpriteManager);
 	ObjectManager.ObtainTimer(&Timer);
@@ -77,7 +78,7 @@ CTestObjman::~CTestObjman(){
 	SetError(TEXT("Text successfully close test objmgr"));
 }
 
-int CTestObjman::Initialize(LPVOID lpDD, DWORD dwTransparent)
+int CTestObjman::Initialize(void* lpDD, DWORD dwTransparent)
 {
 	TestCreateObject(lpDD, dwTransparent, this);
 	return 1;
@@ -155,7 +156,7 @@ HRESULT CTestObjman::DetectCollisions(){
 	return S_OK;
 }
 
-HRESULT CFighterObject::ProcessAI(CInputManager *pInput, LPVOID pObjMan, CTimerEx *timer, CMapBoard* map){
+HRESULT CFighterObject::ProcessAI(CInputManager *pInput, void* pObjMan, CTimerEx *timer, CMapBoard* map){
 	if(pInput==NULL){
 		//ai
 	}else{
@@ -309,7 +310,7 @@ CFighterObject::CFighterObject(
 }
 
 
-BOOL CCrowObject::ProcessMessages(LPVOID lpObjMan)
+BOOL CCrowObject::ProcessMessages(void* lpObjMan)
 {
 	for(WORD i=0; i<m_nNumMessages; i++){
 		switch(m_nMessage[i])
@@ -393,3 +394,4 @@ CCrowObject::CCrowObject(
 
 }
 
+#endif
