@@ -6,7 +6,8 @@
 #include "defines.h"
 #include "MapBoard.h"
 
-CMapBoard::CMapBoard(){
+CMapBoard::CMapBoard()
+{
 	m_pTile=new BYTE;
 	m_pArch=new BYTE;
 	m_pObject=new BYTE;
@@ -15,18 +16,21 @@ CMapBoard::CMapBoard(){
 	m_dwTileDim=TILEDIM;
 }
 
-DWORD CMapBoard::GetTileDim(){
+DWORD CMapBoard::GetTileDim()
+{
 	return m_dwTileDim;
 }
 
-DWORD CMapBoard::SetTileDim(DWORD dwDim){
+DWORD CMapBoard::SetTileDim(DWORD dwDim)
+{
 	DWORD dwTemp;
 	dwTemp=m_dwTileDim;
 	m_dwTileDim=dwDim;
 	return dwTemp;
 }
 
-BYTE CMapBoard::GetArchType(int x, int y){
+BYTE CMapBoard::GetArchType(int x, int y)
+{
 	if(x<1||x>m_nMapWidth)return 0x00;
 	if(y<1||y>m_nMapHeight)return 0x00;
 	
@@ -36,7 +40,8 @@ BYTE CMapBoard::GetArchType(int x, int y){
 	return nByte;
 }
 
-BYTE CMapBoard::GetArchPiece(int x, int y){ 
+BYTE CMapBoard::GetArchPiece(int x, int y)
+{ 
 	if(x<1||x>m_nMapWidth)return 0x00;
 	if(y<1||y>m_nMapHeight)return 0x00;
 
@@ -45,26 +50,22 @@ BYTE CMapBoard::GetArchPiece(int x, int y){
 	return (ARCHTYPE)nByte;
 }
 
-CMapBoard::~CMapBoard(){
+CMapBoard::~CMapBoard()
+{
 	SAFE_DELETE_ARRAY(m_pTile);
 	SAFE_DELETE_ARRAY(m_pArch);
 	SAFE_DELETE_ARRAY(m_pObject);
 }
 
-void CMapBoard::GetLibraryNameA(LPSTR lpLibraryName){
-	strcpy(lpLibraryName, m_lpLibraryFilenameA);
+const char* CMapBoard::GetLibraryName()const
+{
+	return m_lpLibraryFilenameA;
 }
 
-void CMapBoard::GetLibraryNameW(LPWSTR lpLibraryName){
-	wcscpy(lpLibraryName, m_lpLibraryFilenameW);
-}
 
-void CMapBoard::GetBGNameA(LPSTR lpBGName){
-	strcpy(lpBGName, m_lpBGFilenameA);
-}
-
-void CMapBoard::GetBGNameW(LPWSTR lpBGName){
-	wcscpy(lpBGName, m_lpBGFilenameW);
+const char* CMapBoard::GetBGName()const
+{
+	return m_lpBGFilenameA;
 }
 
 USHORT CMapBoard::GetMapWidth(){
@@ -110,10 +111,10 @@ void CMapBoard::ClearMap(){
 
 	//nullify the filenames
 	m_lpMapFilenameA[0]=m_lpLibraryFilenameA[0]=m_lpBGFilenameA[0]=NULL;
-	m_lpMapFilenameW[0]=m_lpLibraryFilenameW[0]=m_lpBGFilenameW[0]=NULL;
 }
 
-HRESULT CMapBoard::LoadMapA(LPCSTR lpMapFilename){
+HRESULT CMapBoard::LoadMap(LPCSTR lpMapFilename)
+{
 	HANDLE hFile;
 	//Open the file
 	hFile=CreateFileA(lpMapFilename, GENERIC_READ, FILE_SHARE_READ, (LPSECURITY_ATTRIBUTES)NULL,
@@ -146,17 +147,6 @@ HRESULT CMapBoard::LoadMapA(LPCSTR lpMapFilename){
 	m_pArch=new BYTE[sMapHeader.lNumTiles];
 	m_pObject=new BYTE[sMapHeader.lNumTiles];
 
-	/*
-		See editmaboard comments for information on conversion
-	*/
-	/*
-	#ifdef UNICODE
-	//Next we read the library name
-	ReadFile(hFile, m_lpLibraryFilename, sMapHeader.lLibraryNameSize, &dwBytesRead, NULL);
-	//Read the background name
-	ReadFile(hFile, m_lpBGFilename, sMapHeader.lBGNameSize, &dwBytesRead, NULL);
-	#else //unicode not defined
-	*/
 	WCHAR szTempLibName[MAX_PATH];
 	WCHAR szTempBGName[MAX_PATH];
 	
@@ -180,79 +170,6 @@ HRESULT CMapBoard::LoadMapA(LPCSTR lpMapFilename){
 	m_nMapWidth=sMapHeader.nMapWidth;
 	m_nMapHeight=sMapHeader.nMapHeight;
 	strcpy(m_lpMapFilenameA, lpMapFilename);
-
-
-	CloseHandle(hFile);
-	return S_OK;
-}
-
-HRESULT CMapBoard::LoadMapW(LPCWSTR lpMapFilename){
-	HANDLE hFile;
-	//Open the file
-	hFile=CreateFileW(lpMapFilename, GENERIC_READ, FILE_SHARE_READ, (LPSECURITY_ATTRIBUTES)NULL,
-							OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, (HANDLE)NULL);
-	if(hFile==INVALID_HANDLE_VALUE)return E_FAIL;
-	
-	DWORD dwBytesRead;
-	//Read Header First
-	MAPHEADER sMapHeader;
-	
-	if(!ReadFile(hFile, &sMapHeader, sizeof(sMapHeader), &dwBytesRead, NULL)){
-		CloseHandle(hFile);return E_FAIL;
-	}
-
-	//Check for valid file
-	if(sMapHeader.wType!=*(WORD*)"SM"){
-		CloseHandle(hFile);return E_FAIL;
-	}
-
-	if(sMapHeader.nVersion!=1){
-		CloseHandle(hFile);return E_FAIL;
-	}
-	
-	//We will now assume that it is a valid file, which may not necessarily be true
-	
-	//In case there is a current map loaded lets clear it
-	ClearMap();
-	//Lets prepare the data buffers
-	m_pTile=new BYTE[sMapHeader.lNumTiles];
-	m_pArch=new BYTE[sMapHeader.lNumTiles];
-	m_pObject=new BYTE[sMapHeader.lNumTiles];
-
-	/*
-		See editmaboard comments for information on conversion
-	*/
-	//#ifdef UNICODE
-	//Next we read the library name
-	ReadFile(hFile, m_lpLibraryFilenameW, sMapHeader.lLibraryNameSize, &dwBytesRead, NULL);
-	//Read the background name
-	ReadFile(hFile, m_lpBGFilenameW, sMapHeader.lBGNameSize, &dwBytesRead, NULL);
-	//#else //unicode not defined
-	/*
-	WCHAR szTempLibName[MAX_PATH];
-	WCHAR szTempBGName[MAX_PATH];
-	
-	//Read and convert lib filename
-	ReadFile(hFile, szTempLibName, sMapHeader.lLibraryNameSize, &dwBytesRead, NULL);
-	WideCharToMultiByte(CP_ACP, 0, szTempLibName, sMapHeader.lLibraryNameSize/sizeof(WCHAR), m_lpLibraryFilename, MAX_PATH, NULL, NULL);
-	
-	//Read and convert bg filename
-	ReadFile(hFile, szTempBGName, sMapHeader.lBGNameSize, &dwBytesRead, NULL);
-	WideCharToMultiByte(CP_ACP, 0, szTempBGName, sMapHeader.lBGNameSize/sizeof(WCHAR), m_lpBGFilename, MAX_PATH, NULL, NULL);
-	#endif //unicode
-	*/
-
-	//Read the tile data
-	ReadFile(hFile, m_pTile, sMapHeader.lTileDataSize, &dwBytesRead, NULL);
-	//Read the architecture data
-	ReadFile(hFile, m_pArch, sMapHeader.lArchDataSize, &dwBytesRead, NULL);
-	//Read the object data
-	ReadFile(hFile, m_pObject, sMapHeader.lObjectDataSize, &dwBytesRead, NULL);
-
-	//Prepare the variables
-	m_nMapWidth=sMapHeader.nMapWidth;
-	m_nMapHeight=sMapHeader.nMapHeight;
-	wcscpy(m_lpMapFilenameW, lpMapFilename);
 
 
 	CloseHandle(hFile);

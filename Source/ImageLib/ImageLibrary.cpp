@@ -9,14 +9,12 @@
 #include "ImageLib.h"
 #include "Defines.h"
 
-CImageLibrary::CImageLibrary(){
+CImageLibrary::CImageLibrary()
+{
 	m_nNumImages=0;
 	m_nNumBitmaps=0;
 	m_pImageData=NULL;
-	/*
-	ZeroMemory(m_szBitmapFilenameA, sizeof(m_szBitmapFilenameA));
-	ZeroMemory(m_szBitmapFilenameW, sizeof(m_szBitmapFilenameW));
-	*/
+
 	for(int i=0; i<MAX_BITMAPS; i++)
 	{
 		m_szBitmapFilenameA[i][0]=0;
@@ -24,7 +22,8 @@ CImageLibrary::CImageLibrary(){
 	}
 }
 
-CImageLibrary::~CImageLibrary(){
+CImageLibrary::~CImageLibrary()
+{
 	SAFE_DELETE_ARRAY(m_pImageData);
 	CloseMainBitmaps();
 }
@@ -97,7 +96,7 @@ HRESULT CImageLibrary::OpenBitmapOffset(LPCSTR szFilename, DWORD nOffset, WORD n
 {
 	if( (nBitmap<1) || (nBitmap>MAX_BITMAPS) )return E_FAIL;
 
-	CloseHandle(m_hBitmap[nBitmap-1]);
+	DeleteObject(m_hBitmap[nBitmap-1]);
 	m_hBitmap[nBitmap-1]=LoadBitmapOffsetA(szFilename, nOffset);
 
 	if(m_hBitmap[nBitmap-1] == NULL)return E_FAIL;
@@ -110,6 +109,7 @@ void CImageLibrary::CloseMainBitmaps()
 	for(int i=0; i<m_nNumBitmaps; i++)
 	{
 		DeleteObject(m_hBitmap[i]);
+		m_hBitmap[i] = NULL;
 	}
 	m_nNumBitmaps=0;
 }
@@ -117,7 +117,8 @@ void CImageLibrary::CloseMainBitmaps()
 
 HRESULT CImageLibrary::ClearDataBase()
 {
-	for(DWORD i=0;i<m_nNumImages;i++){
+	for(DWORD i=0;i<m_nNumImages;i++)
+	{
 		ZeroMemory(&m_pImageData[i], sizeof(IMAGEDATA));
 	}
 	m_nNumImages=0;
