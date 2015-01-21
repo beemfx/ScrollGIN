@@ -245,14 +245,18 @@ public:
 		}
 	}
 
-	class SgRendererImage* CreateSprite(const sgRendererImageCreateParms* CreateParms)
+	class SgRendererImage* CreateSprite( const sgRendererImageCreateParms* CreateParms )
 	{
-		return 0;
+		sgRendererData Data;
+		Data.Dd = m_Dd;
+		Data.BackSurface = m_BackSurface;
+		SgRendererImage* NewImg = new SgRendererImage( CreateParms , &Data );
+		return NewImg;
 	}
 
 	void DestroySprite(class SgRendererImage* Sprite)
 	{
-		
+		delete Sprite;
 	}
 
 } Renderer;

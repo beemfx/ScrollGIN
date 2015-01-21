@@ -10,11 +10,6 @@
 #include <ddraw.h>
 #include <windows.h>
 
-#ifdef __cplusplus
-extern "C"{
-#endif /* __cplusplus */
-
-
 typedef struct tagSAVEDPARAMETERS{
 	DWORD dwWidth;
 	DWORD dwHeight;
@@ -126,7 +121,6 @@ HRESULT PageFlip(
 	RECT * rcWindow, 
 	HRESULT ( * Restore)());
 
-#ifdef __cplusplus
 class CImage7{
 private:
 	LPDIRECTDRAWSURFACE7 m_lpImage; //Surface for image
@@ -205,10 +199,6 @@ public:
 	HRESULT DrawImage( int x , int y); //draws image at specified coords to specified buffer
 	HRESULT DrawPrefered( int x , int y ); //clips if in windowed mode
 };
-#endif /* __cplusplus */
 
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
 
 #endif /* __GFXG7_H__ */
