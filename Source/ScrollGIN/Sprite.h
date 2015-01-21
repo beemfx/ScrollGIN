@@ -7,7 +7,7 @@
 #define __SPRITE_H__
 
 #include <windows.h>
-#include "defines.h"
+#include "GameConfig.h"
 #include "../Renderer2/Renderer.h"
 
 typedef enum tagSPRITEFACE{

@@ -331,7 +331,7 @@ void SgObject::InitialMovement(SgTimer *timer, int nXSpeed, int nYSpeed)
 	int xdelta=0, ydelta=0;
 	int time=timer->Time();
 
-	const int MOVESPEEDADJUST=SPEEDADJUST
+	const int MOVESPEEDADJUST=SPEEDADJUST;
 
 	//we need to animate the x
 	int tfactor=time-m_nXLastMoveTime;

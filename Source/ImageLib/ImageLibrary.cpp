@@ -3,11 +3,9 @@
 
 	Copyright (c) 2003, Blaine Myers
 */
-
+#include "ImageLib.h"
 #include "bitmapex.h"
 #include <stdio.h>
-#include "ImageLib.h"
-#include "Defines.h"
 
 CImageLibrary::CImageLibrary()
 {

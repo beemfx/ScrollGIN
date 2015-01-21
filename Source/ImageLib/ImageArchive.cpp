@@ -1,5 +1,4 @@
 #include "imagelib.h"
-#include "defines.h"
 
 CImageArchive::CImageArchive()
 {

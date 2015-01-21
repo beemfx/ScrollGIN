@@ -2,12 +2,11 @@
 	EditMapboard.cpp - functions for CEditMapBoard class, see
 	header for information about each function.
 
-	Coyright (c) 2002, Blaine Myers
+	Copyright (c) 2002, Blaine Myers
 */
+#include "mapboard.h"
 #include <windows.h>
 #include <stdio.h>
-#include "defines.h"
-#include "mapboard.h"
 
 void CEditMapBoard::ClearArch()
 {

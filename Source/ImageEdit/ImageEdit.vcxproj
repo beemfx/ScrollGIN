@@ -59,8 +59,8 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
-      <ForcedIncludeFiles>../ScrollGIN/SgCommon.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>../;</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>ScrollGIN/SgCommon.h</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>../;../DXLIB;./;</AdditionalIncludeDirectories>
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -97,8 +97,8 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
-      <ForcedIncludeFiles>../ScrollGIN/SgCommon.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>../;</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>ScrollGIN/SgCommon.h</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>../;../DXLIB;./;</AdditionalIncludeDirectories>
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -138,7 +138,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ImageLib\bitmapex.h" />
-    <ClInclude Include="..\ImageLib\Defines.h" />
     <ClInclude Include="..\ImageLib\ImageLib.h" />
     <ClInclude Include="..\img_lib\img_lib.h" />
     <ClInclude Include="..\img_lib\img_lib_types.h" />
