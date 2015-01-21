@@ -9,7 +9,7 @@
 #include <windows.h>
 #include "GameConfig.h"
 #include "Input.h"
-#include "../MapBoard/mapboard.h"
+#include "Mapboard/SgMap.h"
 #include "SpriteManager.h"
 #include "timer.h"
 #include "view.h"
@@ -101,22 +101,22 @@ public:
 	virtual void CreateObjectModes(int dwTime){ };
 
 	//animation functions
-	void Animate(SgTimer *timer, CMapBoard *map, SgInputManager* pInput, void* pObjMan); //Moves the sprite, based on how much time has passed
+	void Animate(SgTimer *timer, SgMap *map, SgInputManager* pInput, void* pObjMan); //Moves the sprite, based on how much time has passed
 
 	bool SendMessage(int nMsg); //Sends a message to the object
 
 	virtual bool ProcessMessages(void* lpObjMan); //should process all messages in que
-	virtual void ProcessAI(	SgInputManager* pInput, void* pObjMan, SgTimer* timer, CMapBoard* map);
-	virtual bool PreInitialMovement(CMapBoard *map, int *nXSpeed, int *nYSpeed);
+	virtual void ProcessAI(	SgInputManager* pInput, void* pObjMan, SgTimer* timer, SgMap* map);
+	virtual bool PreInitialMovement(SgMap *map, int *nXSpeed, int *nYSpeed);
 	virtual void InitialMovement(	SgTimer *timer, int nXSpeed, int nYSpeed);
-	virtual void ArchAdjust(SgTimer *timer, CMapBoard *map);
+	virtual void ArchAdjust(SgTimer *timer, SgMap *map);
 
-	void DefaultArchAdjust(CMapBoard *map);
+	void DefaultArchAdjust(SgMap *map);
 	
 	//collision detectin with architecture
-	virtual bool CollisionWithRect(CMapBoard *map, RECT rect, int nWidth, int nHeight);
-	unsigned __int8 ArchRelative(CMapBoard* map, unsigned __int32 dwRelativeFlags);
-	unsigned __int8 ArchRelative(CMapBoard* map, int x, int y);
+	virtual bool CollisionWithRect(SgMap *map, RECT rect, int nWidth, int nHeight);
+	unsigned __int8 ArchRelative(SgMap* map, unsigned __int32 dwRelativeFlags);
+	unsigned __int8 ArchRelative(SgMap* map, int x, int y);
 
 	int DistanceFrom(SgObject *cObject);
 

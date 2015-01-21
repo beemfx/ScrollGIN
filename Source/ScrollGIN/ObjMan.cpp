@@ -170,7 +170,7 @@ void SgObjectManager::DetectCollisions()
 	}
 }
 
-void SgObjectManager::Update( CMapBoard *map , SgViewPort *viewport , SgInputManager* pInput )
+void SgObjectManager::Update( SgMap *map , SgViewPort *viewport , SgInputManager* pInput )
 {
 	int i=0;
 	//if the game is paused we just draw the objects (and don't animate them)

@@ -26,8 +26,8 @@
 
 class CCrowObject: public SgObject{
 protected:
-	virtual HRESULT ArchAdjust(SgTimer *timer, CMapBoard *map);
-	virtual BOOL PreInitialMovement(CMapBoard *map, int *nXSpeed, int *nYSpeed);
+	virtual HRESULT ArchAdjust(SgTimer *timer, SgMap *map);
+	virtual BOOL PreInitialMovement(SgMap *map, int *nXSpeed, int *nYSpeed);
 public:
 	CCrowObject();
 	CCrowObject(SgSpriteManager * pSpriteMgr, DWORD dwTime);
@@ -47,7 +47,7 @@ public:
 	virtual BOOL LoadObjectSprites(SgSpriteManager *pSpriteMgr);
 	virtual BOOL CreateObjectModes(DWORD dwTime);
 
-	virtual HRESULT ProcessAI(SgInputManager* pInput, void* pObjMan, SgTimer* timer, CMapBoard* map);
+	virtual HRESULT ProcessAI(SgInputManager* pInput, void* pObjMan, SgTimer* timer, SgMap* map);
 };
 
 class CTestObjman: public SgObjectManager{

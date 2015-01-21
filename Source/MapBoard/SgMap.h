@@ -1,5 +1,5 @@
 /*
-	MapBoard Class - Used for reading a ScrollGIN map
+	SgMap Class - Used for reading a ScrollGIN map
 
 	Copyright (c) 2002, Blaine Myers
 */
@@ -58,7 +58,7 @@ struct MAPHEADER
 	sg_uint32 lObjectDataSize;	//Size, in bytes, of the object data
 };
 
-class CMapBoard
+class SgMap
 {
 protected:
 	//Private member variables
@@ -77,8 +77,8 @@ protected:
 
 public:
 	//Public member functions
-	CMapBoard();
-	~CMapBoard();
+	SgMap();
+	~SgMap();
 
 	sg_uint16   GetMapWidth();		//Returns m_nMapWidth
 	sg_uint16   GetMapHeight();	//Returns m_nMapHeight
@@ -95,7 +95,7 @@ public:
 	void        ClearMap();	//Clear all data out of map
 };
 
-class CEditMapBoard: public CMapBoard
+class SgMapEdit: public SgMap
 {
 public:
 	void     ClearArch();

@@ -132,8 +132,7 @@
     <ClCompile Include="..\img_lib\img_cb.c" />
     <ClCompile Include="..\img_lib\img_lib.c" />
     <ClCompile Include="..\img_lib\img_tga.c" />
-    <ClCompile Include="..\MapBoard\EditMapboard.cpp" />
-    <ClCompile Include="..\MapBoard\Mapboard.cpp" />
+    <ClCompile Include="..\MapBoard\SgMap.cpp" />
     <ClCompile Include="ConstLibrary.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Registry.cpp" />
@@ -147,9 +146,8 @@
     <ClInclude Include="..\img_lib\img_lib.h" />
     <ClInclude Include="..\img_lib\img_lib_types.h" />
     <ClInclude Include="..\img_lib\img_private.h" />
-    <ClInclude Include="..\MapBoard\Mapboard.h" />
+    <ClInclude Include="..\MapBoard\SgMap.h" />
     <ClInclude Include="ConstLibrary.h" />
-    <ClInclude Include="Defines.h" />
     <ClInclude Include="Registry.h" />
   </ItemGroup>
   <ItemGroup>

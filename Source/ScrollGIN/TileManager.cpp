@@ -28,7 +28,7 @@ SgTileManager::~SgTileManager(void)
 }
 
 //creates many tile surfaces starting with chosen reference from a library
-bool SgTileManager::LoadLib(const char* lpLibraryFilename, CMapBoard *map){
+bool SgTileManager::LoadLib(const char* lpLibraryFilename, SgMap *map){
 	//This will use a library to call CreateTilesFromFile functions
 	CImageArchive ILibrary;
 

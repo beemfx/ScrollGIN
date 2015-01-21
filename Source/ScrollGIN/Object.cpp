@@ -144,7 +144,7 @@ void SgObject::SetAliveState(bool bAlive){
 	m_bAlive=bAlive;
 }
 
-void SgObject::ProcessAI(SgInputManager* pInput, void* pObjMan, SgTimer* timer, CMapBoard* map)
+void SgObject::ProcessAI(SgInputManager* pInput, void* pObjMan, SgTimer* timer, SgMap* map)
 {
 	//SgObjectManager* pObjectMan=(SgObjectManager*)pObjMan;
 	
@@ -375,7 +375,7 @@ void SgObject::InitialMovement(SgTimer *timer, int nXSpeed, int nYSpeed)
 	}
 }
 
-bool SgObject::CollisionWithRect(CMapBoard *map, RECT rect, int nWidth, int nHeight)
+bool SgObject::CollisionWithRect(SgMap *map, RECT rect, int nWidth, int nHeight)
 {
 	int i=0, j=0;
 	int dwTileDim=map->GetTileDim();
@@ -421,7 +421,7 @@ bool SgObject::CollisionWithRect(CMapBoard *map, RECT rect, int nWidth, int nHei
 	written.  I can only imagine what it would be like to create a function
 	like this for a 3D game.
 */
-void SgObject::DefaultArchAdjust(CMapBoard *map)
+void SgObject::DefaultArchAdjust(SgMap *map)
 {
 	//the default move, stops no matter what type of architecture, should
 	//be used as a template for all movements
@@ -621,7 +621,7 @@ void SgObject::DefaultArchAdjust(CMapBoard *map)
 	}	
 }
 
-void SgObject::ArchAdjust(SgTimer *timer, CMapBoard *map)
+void SgObject::ArchAdjust(SgTimer *timer, SgMap *map)
 {
 	//at this point we should call a custom function that is designed for
 	//the specific game.  If there is no outside function we pull off the defult
@@ -637,7 +637,7 @@ int SgObject::GetYSpeed(){
 	return m_nYSpeed;
 }
 
-void SgObject::Animate(SgTimer *timer, CMapBoard *map, SgInputManager* pInput, void* pObjMan)
+void SgObject::Animate(SgTimer *timer, SgMap *map, SgInputManager* pInput, void* pObjMan)
 {
 	int nTempXSpeed=m_nXSpeed;
 	int nTempYSpeed=m_nYSpeed;
@@ -733,7 +733,7 @@ bool SgObject::ObtainPointerToSprite(int nIndex, SgSprite* pSprite, int x, int y
 	return true;
 }
 
-BYTE SgObject::ArchRelative(CMapBoard *map, int x, int y){
+BYTE SgObject::ArchRelative(SgMap *map, int x, int y){
 	//we first need to adjust the coordinates relative to the object
 	x+=m_nX;
 	y+=m_nY;
@@ -752,7 +752,7 @@ BYTE SgObject::ArchRelative(CMapBoard *map, int x, int y){
 	return map->GetArch((int)x/map->GetTileDim()+1, (int)y/map->GetTileDim()+1);
 }
 
-unsigned __int8 SgObject::ArchRelative(CMapBoard* map, unsigned __int32 dwRelativeFlags)
+unsigned __int8 SgObject::ArchRelative(SgMap* map, unsigned __int32 dwRelativeFlags)
 {
 	bool bArchIsRelative=FALSE;
 	RECT rcCurrent=m_sObjectMode[m_nCurrentMode].rcObjDim;
@@ -826,7 +826,7 @@ unsigned __int8 SgObject::ArchRelative(CMapBoard* map, unsigned __int32 dwRelati
 }
 
 bool SgObject::PreInitialMovement(
-	CMapBoard *map, 
+	SgMap *map, 
 	int *nXSpeed, 
 	int *nYSpeed)
 {

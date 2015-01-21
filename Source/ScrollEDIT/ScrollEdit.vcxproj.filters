@@ -41,12 +41,6 @@
     <ClCompile Include="..\ImageLib\ImageLibrary.cpp">
       <Filter>ImageLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\MapBoard\EditMapboard.cpp">
-      <Filter>MapBoard</Filter>
-    </ClCompile>
-    <ClCompile Include="..\MapBoard\Mapboard.cpp">
-      <Filter>MapBoard</Filter>
-    </ClCompile>
     <ClCompile Include="..\img_lib\img_bmp.c">
       <Filter>img_lib</Filter>
     </ClCompile>
@@ -58,6 +52,9 @@
     </ClCompile>
     <ClCompile Include="..\img_lib\img_tga.c">
       <Filter>img_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MapBoard\SgMap.cpp">
+      <Filter>MapBoard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -72,17 +69,11 @@
     <ClInclude Include="Registry.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Defines.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="..\ImageLib\bitmapex.h">
       <Filter>ImageLib</Filter>
     </ClInclude>
     <ClInclude Include="..\ImageLib\ImageLib.h">
       <Filter>ImageLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\MapBoard\Mapboard.h">
-      <Filter>MapBoard</Filter>
     </ClInclude>
     <ClInclude Include="..\img_lib\img_lib.h">
       <Filter>img_lib</Filter>
@@ -92,6 +83,9 @@
     </ClInclude>
     <ClInclude Include="..\img_lib\img_private.h">
       <Filter>img_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MapBoard\SgMap.h">
+      <Filter>MapBoard</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -161,7 +161,7 @@ HRESULT CTestObjman::DetectCollisions(){
 	return S_OK;
 }
 
-HRESULT CFighterObject::ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *timer, CMapBoard* map){
+HRESULT CFighterObject::ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *timer, SgMap* map){
 	if(pInput==NULL){
 		//ai
 	}else{
@@ -332,11 +332,11 @@ BOOL CCrowObject::ProcessMessages(void* lpObjMan)
 	return TRUE;
 }
 
-HRESULT CCrowObject::ArchAdjust(SgTimer *timer, CMapBoard *map){
+HRESULT CCrowObject::ArchAdjust(SgTimer *timer, SgMap *map){
 	return S_OK;
 }
 
-BOOL CCrowObject::PreInitialMovement(CMapBoard *map, int *nXSpeed, int *nYSpeed){
+BOOL CCrowObject::PreInitialMovement(SgMap *map, int *nXSpeed, int *nYSpeed){
 	return TRUE;
 }
 

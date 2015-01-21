@@ -8,7 +8,7 @@
 
 #include "GameConfig.h"
 #include "../Renderer2/Renderer.h"
-#include "../MapBoard/mapboard.h"
+#include "Mapboard/SgMap.h"
 
 class SgTileManager
 {
@@ -21,7 +21,7 @@ public:
 	SgTileManager(void);
 	~SgTileManager(void);
 
-	bool LoadLib(const char* lpLibraryFilename, CMapBoard* map);  
+	bool LoadLib(const char* lpLibraryFilename, SgMap* map);  
 	void Clear(void);
 
 	void Draw(int reference, int x, int y);
