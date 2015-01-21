@@ -55,8 +55,8 @@ BOOL LoadMapBoard(
 	CSTileManager * pTileMgr,
 	CViewPort * pView)
 {
-	TCHAR szLibraryName[MAX_PATH];
-	TCHAR szBGName[MAX_PATH];
+	char szLibraryName[MAX_PATH];
+	char szBGName[MAX_PATH];
 	BOOL bResult=TRUE;
 	if(FAILED(pMap->LoadMap(szFilename)))return FALSE;
 	pMap->GetLibraryName(szLibraryName);

@@ -6,45 +6,13 @@
 
 #include <math.h>
 #include <stdio.h>
-#include <tchar.h>
 #include "object.h"
 #include "ObjMan.h"
 #include "view.h"
 
 
-//The following code, and some code elswhere will draw a rectangles to show
-//object locations
-
-//#define DEBUGRECTS
-#ifdef DEBUGRECTS
-
-void PutText(LPTSTR text,LPDIRECTDRAWSURFACE7 surface){
-  HDC hdc;
-  if(SUCCEEDED(surface->GetDC(&hdc))){
-    /*
-	 RECT rect;
-    rect.left=10; rect.right=g_nDeviceWidth-10; 
-    rect.top=10; rect.bottom=g_nDeviceHeight-10; 
-	 */
-    //DrawText(hdc,text,_tcslen(text),&rect,0);
-	 TextOut(hdc, 0, 0, text, _tcslen(text));
-    surface->ReleaseDC(hdc);
-  }
-}
-
-void DrawRect(RECT rect, LPDIRECTDRAWSURFACE7 surface, CViewPort* vp){
-	HDC hdc;
-  if(SUCCEEDED(surface->GetDC(&hdc))){
-    Rectangle(hdc, vp->screenX(rect.left), vp->screenY(rect.top), vp->screenX(rect.right), vp->screenY(rect.bottom));
-    //Rectangle(hdc, rect.left, rect.top, rect.right, rect.bottom);
-	 surface->ReleaseDC(hdc);
-  }
-}
-
-#endif //DEBUGRECTS
-
-
-CObject::CObject(){
+CObject::CObject()
+{
 	m_nNumMessages=0;
 	m_nX=m_nY=0;
 	m_nXSpeed=m_nYSpeed=0;
@@ -56,7 +24,9 @@ CObject::CObject(){
 
 	//Set the default object mode
 	for(int i=0; i<MAX_OBJECT_MODES; i++)
-			m_sObjectMode[0].bActiveSprites[i]=TRUE;
+	{
+		m_sObjectMode[0].bActiveSprites[i]=TRUE;
+	}
 
 	m_sObjectMode[0].rcObjDim.top=-50;
 	m_sObjectMode[0].rcObjDim.bottom=50;
@@ -249,9 +219,9 @@ COLLISIONTYPE CObject::DetectCollision(CObject *cObject){
 	return CT_NOCLSN;
 }
 
-BOOL CObject::SetObjectMode(TCHAR szModeName[MAX_SPRITE_NAME_LENGTH], DWORD dwTime){
+BOOL CObject::SetObjectMode(char szModeName[MAX_SPRITE_NAME_LENGTH], DWORD dwTime){
 	for(int i=1; i<=m_nNumModes; i++){
-		if(_tcscmp(szModeName, m_sObjectMode[i].szModeName)==0)
+		if(strcmp(szModeName, m_sObjectMode[i].szModeName)==0)
 			return SetObjectMode(i, dwTime);
 	}
 	return FALSE;
@@ -284,7 +254,8 @@ DWORD CObject::GetObjectAlign(){
 	return m_sObjectMode[m_nCurrentMode].nType;
 }
 
-BOOL CObject::CreateMode(BOOL bActiveSprites[MAX_SPRITES_PER_OBJECT], RECT rcObjDim, DWORD nType, TCHAR szModeName[MAX_SPRITE_NAME_LENGTH]){
+BOOL CObject::CreateMode(BOOL bActiveSprites[MAX_SPRITES_PER_OBJECT], RECT rcObjDim, DWORD nType, char szModeName[MAX_SPRITE_NAME_LENGTH])
+{
 	for(int i=0; i<m_nNumSprites; i++)
 		m_sObjectMode[m_nNumModes+1].bActiveSprites[i]=bActiveSprites[i];
 	//we revers top and bottom for the rects
@@ -307,28 +278,14 @@ BOOL CObject::CreateMode(BOOL bActiveSprites[MAX_SPRITES_PER_OBJECT], RECT rcObj
 	m_sObjectMode[m_nNumModes+1].nType=nType;
 
 	m_sObjectMode[m_nNumModes+1].rcObjDim=rcObjDim;
-	_tcscpy(m_sObjectMode[m_nNumModes+1].szModeName, szModeName);
+	strcpy(m_sObjectMode[m_nNumModes+1].szModeName, szModeName);
 	
 	m_nNumModes++;
 	return TRUE;
 }
 
-/*
-BOOL CObject::SetActiveStatus(DWORD dwStatus){
-	//we need to reset any animations during a status change
-	for(int i=0; i<m_nNumSprites; i++){
-		if(m_sSpriteData[i].dwStatus!=(m_sSpriteData[i].dwStatus&dwStatus)){
-			//the status of this sprite has changed so we need to reset it
-			m_sSpriteData[i].nCurrentFrame=1;
-			m_sSpriteData[i].nLastUpdateTime=Timer.time();
-		}
-	}
-	m_dwStatus=dwStatus;
-	return TRUE;
-}
-*/
-
-SPRITEFACE CObject::GetFace(){
+SPRITEFACE CObject::GetFace()
+{
 	return m_nFace;
 }
 
@@ -763,7 +720,7 @@ BOOL CObject::SetPosition(int x, int y){
 }
 
 
-HRESULT CObject::ObtainPointerToSprite(CSprite* pSprite, int x, int y, int nAnimSpeed, LOOPMODE nLoopMode){
+HRESULT CObject::ObtainPointerToSprite(SgSprite* pSprite, int x, int y, int nAnimSpeed, LOOPMODE nLoopMode){
 	HRESULT hr;
 	if(m_nNumSprites>MAX_SPRITES_PER_OBJECT)return E_FAIL;
 	if(SUCCEEDED(hr=ObtainPointerToSprite(m_nNumSprites+1, pSprite, x, y, nAnimSpeed, nLoopMode))){
@@ -772,7 +729,7 @@ HRESULT CObject::ObtainPointerToSprite(CSprite* pSprite, int x, int y, int nAnim
 	}else return hr;
 }
 
-HRESULT CObject::ObtainPointerToSprite(int nIndex, CSprite* pSprite, int x, int y, int nAnimSpeed, LOOPMODE nLoopMode){
+HRESULT CObject::ObtainPointerToSprite(int nIndex, SgSprite* pSprite, int x, int y, int nAnimSpeed, LOOPMODE nLoopMode){
 	if(nIndex<1 || nIndex > MAX_SPRITES_PER_OBJECT)return E_FAIL;
 	if(pSprite==NULL)return E_FAIL;
 	//Set the pointer

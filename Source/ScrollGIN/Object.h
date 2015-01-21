@@ -63,7 +63,7 @@ typedef struct tagOBJECTMODE
 	RECT rcObjDim; //rectangular structure containing size of object, this represent the dimension
 								//releative to the location of the object, in which the sprite exists
 	DWORD nType; //the type of object
-	TCHAR szModeName[MAX_SPRITE_NAME_LENGTH];
+	char szModeName[MAX_SPRITE_NAME_LENGTH];
 }OBJECTMODE;
 
 
@@ -76,7 +76,7 @@ protected:
 
 	int m_nXLastMoveTime, m_nYLastMoveTime; //Last time object moved
 
-	CSprite* m_pSprite[MAX_SPRITES_PER_OBJECT]; //pointer to sprites used by the object
+	SgSprite* m_pSprite[MAX_SPRITES_PER_OBJECT]; //pointer to sprites used by the object
 	SPRITEDATA m_sSpriteData[MAX_SPRITES_PER_OBJECT]; //Data about each sprite
 	WORD m_nNumSprites;	//how many sprites there are
 
@@ -159,14 +159,14 @@ public:
 		BOOL bActiveSprites[MAX_SPRITES_PER_OBJECT], 
 		RECT rcObjDim, 
 		DWORD nType, 
-		TCHAR szModeName[MAX_SPRITE_NAME_LENGTH]);
+		char szModeName[MAX_SPRITE_NAME_LENGTH]);
 
 	BOOL SetObjectMode(
 		int nNewMode, 
 		DWORD dwTime);
 
 	BOOL SetObjectMode(
-		TCHAR szModeName[MAX_SPRITE_NAME_LENGTH], 
+		char szModeName[MAX_SPRITE_NAME_LENGTH], 
 		DWORD dwTime);
 
 	//Object location and speed functions
@@ -196,7 +196,7 @@ public:
 
 	//sprite functions
 	HRESULT ObtainPointerToSprite(
-		CSprite* pSprite, 
+		SgSprite* pSprite, 
 		int x, 
 		int y, 
 		int nAnimSpeed, 
@@ -204,7 +204,7 @@ public:
 
 	HRESULT ObtainPointerToSprite(
 		int nIndex, 
-		CSprite* pSprite, 
+		SgSprite* pSprite, 
 		int x, 
 		int y, 
 		int nAnimSpeed, 

@@ -4,11 +4,10 @@
 	Copyright (c) 2002, Blaine Myers
 */
 
-#include <tchar.h>
 #include "sprite.h"
 #include "../Renderer2/RendererImage.h"
 
-CSprite::CSprite(){
+SgSprite::SgSprite(){
 	m_nFrames=0;
 	m_szSpriteName[0]=NULL;
 	for( int i=0; i<MAX_IMAGES_PER_SPRITE; i++ )
@@ -18,20 +17,20 @@ CSprite::CSprite(){
 	}
 }
 
-CSprite::~CSprite(){
+SgSprite::~SgSprite(){
 }
 
-BOOL CSprite::GetSpriteName(TCHAR szSpriteName[MAX_SPRITE_NAME_LENGTH+1]){
-	_tcscpy(szSpriteName, m_szSpriteName);
+BOOL SgSprite::GetSpriteName(char szSpriteName[MAX_SPRITE_NAME_LENGTH+1]){
+	strcpy(szSpriteName, m_szSpriteName);
 	return TRUE;
 }
 
-BOOL CSprite::NameSprite(TCHAR szSpriteName[MAX_SPRITE_NAME_LENGTH+1]){
-	_tcscpy(m_szSpriteName, szSpriteName);
+BOOL SgSprite::NameSprite(char szSpriteName[MAX_SPRITE_NAME_LENGTH+1]){
+	strcpy(m_szSpriteName, szSpriteName);
 	return TRUE;
 }
 
-HRESULT CSprite::CreateSpriteFrameBMInMemory(
+HRESULT SgSprite::CreateSpriteFrameBMInMemory(
 	HBITMAP hBitmap, 
 	int nWidth, 
 	int nHeight, 
@@ -57,7 +56,7 @@ HRESULT CSprite::CreateSpriteFrameBMInMemory(
 	
 }
 
-HRESULT CSprite::CreateSpriteFrameBMInMemory(
+HRESULT SgSprite::CreateSpriteFrameBMInMemory(
 	int nFrame, 
 	HBITMAP hBitmap,
 	int nWidth, 
@@ -93,13 +92,13 @@ HRESULT CSprite::CreateSpriteFrameBMInMemory(
 }
 
 /*
-HRESULT CSprite::SetLoopBackward(BOOL bLoopMode){
+HRESULT SgSprite::SetLoopBackward(BOOL bLoopMode){
 	m_bLoopBackward=bLoopMode;
 	return S_OK;
 }
 */
 
-HRESULT CSprite::ClearSprite(){
+HRESULT SgSprite::ClearSprite(){
 	Release();
 
 	m_nFrames=0;
@@ -107,7 +106,7 @@ HRESULT CSprite::ClearSprite(){
 	return S_OK;
 }
 
-int CSprite::GetNumFrames(LOOPMODE nLoopMode){
+int SgSprite::GetNumFrames(LOOPMODE nLoopMode){
 	if((nLoopMode==LP_FORWARDBACKWARD))
 		if(m_nFrames==1)return 1;
 		else return ((m_nFrames*2)-2);
@@ -115,7 +114,7 @@ int CSprite::GetNumFrames(LOOPMODE nLoopMode){
 	else return m_nFrames;
 }
 
-void CSprite::Release(){
+void SgSprite::Release(){
 	for(int i=0; i<MAX_IMAGES_PER_SPRITE; i++)
 	{
 		Renderer_DestroySprite( m_cSpriteImage[i] );
@@ -125,7 +124,7 @@ void CSprite::Release(){
 	}
 }
 
-HRESULT CSprite::DisplaySprite(int nFrame, SPRITEFACE nFace, int x, int y, LOOPMODE nLoopMode)
+HRESULT SgSprite::DisplaySprite(int nFrame, SPRITEFACE nFace, int x, int y, LOOPMODE nLoopMode)
 {
 	switch(nLoopMode)
 	{

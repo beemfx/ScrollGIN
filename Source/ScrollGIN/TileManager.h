@@ -7,7 +7,6 @@
 #define __TILEMANAGER_H__
 
 #include <stdio.h>
-#include <tchar.h>
 #include "defines.h"
 #include "../Renderer2/Renderer.h"
 #include "../MapBoard/mapboard.h"
@@ -27,9 +26,9 @@ public:
 	///tiles to the database.                                   ///
 	///////////////////////////////////////////////////////////////
 	void Release();
-	HRESULT CreateTilesFromLibrary(TCHAR lpLibraryFilename[MAX_PATH], CMapBoard *map);  
+	HRESULT CreateTilesFromLibrary(char lpLibraryFilename[MAX_PATH], CMapBoard *map);  
 									//creates a set of tiles from a library, starting with first reference
-	HRESULT CreateTilesFromLibrary(int reference, TCHAR lpLibraryFilename[MAX_PATH], CMapBoard *map);
+	HRESULT CreateTilesFromLibrary(int reference, char lpLibraryFilename[MAX_PATH], CMapBoard *map);
 									//creates a set of tiles from a libraray, starting with the chosen reference.
 	
 	////////////////////////////////////////////////////

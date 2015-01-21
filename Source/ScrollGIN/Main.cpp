@@ -11,7 +11,6 @@
 		unless otherwise specified.
 */
 #include <stdio.h>
-#include <tchar.h>
 #include <windows.h>
 #include "defines.h"
 #include "error.h"
@@ -133,7 +132,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	BOOL bActiveApp=TRUE;
 
-	static TCHAR szAppName[] = TEXT("ScrollGIN");
+	static char szAppName[] = TEXT("ScrollGIN");
 
 	wc.cbSize=sizeof(wc);
 	wc.style = CS_HREDRAW|CS_VREDRAW|CS_OWNDC;
