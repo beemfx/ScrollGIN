@@ -5,59 +5,56 @@
 */
 
 #include "timer.h"
+#include <Windows.h>
 
-
-SgTimer::SgTimer(){
+SgTimer::SgTimer()
+{
 	m_nStartTime=0;
-	m_bPaused=FALSE;
+	m_bPaused=false;
 }
 
-SgTimer::~SgTimer(){
+SgTimer::~SgTimer()
+{
 
 }
 
-void SgTimer::Start(){
+void SgTimer::Start()
+{
 	m_nStartTime=timeGetTime();
 }
 
-DWORD SgTimer::Time(){
+unsigned __int32 SgTimer::Time()
+{
 	if(!m_bPaused)
 		return timeGetTime()-m_nStartTime;
 	else return m_nPausedTime;
 }
 
-BOOL SgTimer::Elapsed(DWORD * pStart, DWORD nInterval){
-	DWORD nCurrentTime=Time();
-	if(nCurrentTime >= (*pStart+nInterval)){
-		*pStart=nCurrentTime; return TRUE;
-	}
-	return FALSE;
-}
-
-
-BOOL SgTimer::Pause(BOOL bPause){
-	if(bPause){
+void SgTimer::Pause(bool bPause)
+{
+	if(bPause)
+	{
 		//Pause
 		m_nPausedTime=Time();
-
-	}else{
+	}
+	else
+	{
 		//resume
 		m_nStartTime=timeGetTime()-m_nPausedTime;
 	}
 
 	m_bPaused=bPause;
-
-	return m_bPaused;
 }
 
-BOOL SgTimer::TogglePause(){
+void SgTimer::TogglePause()
+{
 	if(m_bPaused)
-		return Pause(FALSE);
+		 Pause(false);
 	else
-		return Pause(TRUE);
+		 Pause(true);
 }
 
-BOOL SgTimer::IsPaused()const
+bool SgTimer::IsPaused()const
 {
 	return m_bPaused;
 }
