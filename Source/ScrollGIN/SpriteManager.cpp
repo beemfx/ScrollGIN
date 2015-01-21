@@ -24,16 +24,13 @@ CSpriteManager::~CSpriteManager(){
 
 }
 
-HRESULT CSpriteManager::CreateSpritesFromFile(
-	LPVOID lpDevice, 
-	DWORD dwTransparent,
-	LPTSTR szFilename)
+HRESULT CSpriteManager::CreateSpritesFromFile(DWORD dwTransparent,LPTSTR szFilename)
 {
 	if(m_nNumSprites>=MAX_SPRITES)return E_FAIL;
-	return CreateSpritesFromFile(lpDevice, dwTransparent, m_nNumSprites+1, szFilename);
+	return CreateSpritesFromFile(dwTransparent, m_nNumSprites+1, szFilename);
 }
 
-HRESULT CSpriteManager::CreateSpritesFromFile(LPVOID lpDevice, DWORD dwTransparent, DWORD nSprite, LPTSTR szFilename){
+HRESULT CSpriteManager::CreateSpritesFromFile(DWORD dwTransparent, DWORD nSprite, LPTSTR szFilename){
 	if((nSprite<1) || (nSprite>=MAX_SPRITES))return E_FAIL;
 	m_nNumSprites=nSprite;
 	CImageArchive ILibrary;
@@ -62,7 +59,6 @@ HRESULT CSpriteManager::CreateSpritesFromFile(LPVOID lpDevice, DWORD dwTranspare
 			hBitmap=ILibrary.GetBitmap(id.nBitmap);
 
 			m_cSprite[m_nNumSprites-1].CreateSpriteFrameBMInMemory(
-				lpDevice,
 				dwTransparent,
 				hBitmap,
 				id.nWidth,
@@ -83,7 +79,6 @@ HRESULT CSpriteManager::CreateSpritesFromFile(LPVOID lpDevice, DWORD dwTranspare
 				hBitmap=ILibrary.GetBitmap(id.nBitmap);
 
 				m_cSprite[m_nNumSprites-1].CreateSpriteFrameBMInMemory(
-					lpDevice,
 					dwTransparent,
 					hBitmap,
 					id.nWidth,
@@ -104,75 +99,15 @@ HRESULT CSpriteManager::CreateSpritesFromFile(LPVOID lpDevice, DWORD dwTranspare
 	return S_OK;
 }
 
-HRESULT CSpriteManager::CreateSpriteFromData(
-	LPVOID lpDevice, 
-	DWORD dwTransparent, 
-	int nNumImages, 
-	LPTSTR szSpriteName, 
-	LPTSTR szBitmapFilename, 
-	LPVOID pCreationData
-){
-	if(m_nNumSprites>=MAX_SPRITES)return E_FAIL;
-	if(SUCCEEDED(CreateSpriteFromData(lpDevice, dwTransparent, m_nNumSprites+1, nNumImages,
-						szSpriteName, szBitmapFilename, pCreationData)))
-	{
-		m_nNumSprites++;
-		return S_OK;
-	}else return E_FAIL;
-}
-
-HRESULT CSpriteManager::CreateSpriteFromData(
-	LPVOID lpDevice, 
-	DWORD dwTransparent, 
-	int nSprite, 
-	int nImages, 
-	LPTSTR szSpriteName, 
-	LPTSTR szBitmapFilename, 
-	LPVOID pCreationData
-){
-	SPRITECREATESTRUCT *scs;
-	scs=(SPRITECREATESTRUCT*)pCreationData;
-	for(int i=0; i<nImages; i++){
-		m_cSprite[nSprite-1].CreateSpriteFrameBM(
-			lpDevice,
-			dwTransparent,
-			szBitmapFilename, 
-			scs[i].nWidth,
-			scs[i].nHeight, 
-			scs[i].nFX, 
-			scs[i].nFY, 
-			scs[i].nWidth, 
-			scs[i].nHeight);
-		m_cSprite[nSprite-1].NameSprite(szSpriteName);
-	}
-	return S_OK;
-}
-
-
 void CSpriteManager::Release(){
 	for(int i=0; i<m_nNumSprites; i++)
 		m_cSprite[i].Release();
 }
 
-HRESULT CSpriteManager::DisplaySprite(LPVOID lpBuffer, int nSprite, int nFrame, SPRITEFACE nFace, int x, int y){
+HRESULT CSpriteManager::DisplaySprite(int nSprite, int nFrame, SPRITEFACE nFace, int x, int y){
 	if(nSprite<1 || nSprite>m_nNumSprites)return E_FAIL;
-	if(!lpBuffer)return E_FAIL;
 
-	return m_cSprite[nSprite-1].DisplaySprite(lpBuffer, nFrame, nFace, x, y, LP_FORWARD);
-}
-
-HRESULT CSpriteManager::Restore(){
-	for(int i=0; i<m_nNumSprites; i++)
-		m_cSprite[i].Restore();
-
-	return S_OK;
-}
-
-HRESULT CSpriteManager::ReloadImages(){
-	for(int i=0; i<m_nNumSprites; i++)
-		m_cSprite[i].ReloadImages();
-
-	return S_OK;
+	return m_cSprite[nSprite-1].DisplaySprite(nFrame, nFace, x, y, LP_FORWARD);
 }
 
 void CSpriteManager::ClearDataBase(){

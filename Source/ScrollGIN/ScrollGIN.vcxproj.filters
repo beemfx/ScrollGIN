@@ -15,9 +15,6 @@
     <Filter Include="MapBoard">
       <UniqueIdentifier>{af6584b2-04ad-401d-a5d5-1f03e67f5d6e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GFXG7">
-      <UniqueIdentifier>{f943840e-24e7-47fb-b619-19b4e5cf2806}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Renderer2">
       <UniqueIdentifier>{aa410ad1-2e0e-4282-926c-7ac31a52e7ab}</UniqueIdentifier>
     </Filter>
@@ -88,12 +85,6 @@
     </ClCompile>
     <ClCompile Include="..\ImageLib\ImageLibrary.cpp">
       <Filter>ImageLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\GFXG7\imageDD.cpp">
-      <Filter>GFXG7</Filter>
-    </ClCompile>
-    <ClCompile Include="..\GFXG7\DDFunc.cpp">
-      <Filter>GFXG7</Filter>
     </ClCompile>
     <ClCompile Include="..\Renderer2\Renderer.cpp">
       <Filter>Renderer2</Filter>
@@ -170,12 +161,6 @@
     </ClInclude>
     <ClInclude Include="..\ImageLib\ImageLib.h">
       <Filter>ImageLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\GFXG7\Defines.h">
-      <Filter>GFXG7</Filter>
-    </ClInclude>
-    <ClInclude Include="..\GFXG7\GFXG7.h">
-      <Filter>GFXG7</Filter>
     </ClInclude>
     <ClInclude Include="..\Renderer2\Renderer.h">
       <Filter>Renderer2</Filter>

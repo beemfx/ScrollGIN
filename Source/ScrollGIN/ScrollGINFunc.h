@@ -13,7 +13,6 @@
 
 //DrawMapBoard() draws the backgrounds and the mapboard as they should appear
 BOOL DrawMapBoard(
-	LPVOID lpBuffer, 
 	CViewPort * pViewport, 
 	CMapBoard * pMap, 
 	CSTileManager * pTileManager,
@@ -21,7 +20,6 @@ BOOL DrawMapBoard(
 
 BOOL LoadMapBoard(
 	LPTSTR szFilename, 
-	LPVOID lpDD,
 	DWORD dwTransparentColor,
 	DWORD dwScreenWidth,
 	DWORD dwScreenHeight,

@@ -35,7 +35,7 @@ protected:
 	DWORD m_dwLastAIUpdate;
 public:
 	CJoes2Object(CSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
-	virtual BOOL ProcessMessages(LPVOID lpObjMan);
+	virtual BOOL ProcessMessages(void* lpObjMan);
 };
 
 class CGoodCopterObject: public CJoes2Object
@@ -46,7 +46,7 @@ protected:
 	CObject* m_lpEnemy; //Pointer to target chosen as enemy.
 	BOOL ChooseEnemy(CObject* lpEnemy); //Chooses which target it would like as enemy.
 
-	virtual HRESULT ProcessAI(CInputManager *pInput, LPVOID pObjMan, CTimerEx *timer, CMapBoard* map);
+	virtual HRESULT ProcessAI(CInputManager *pInput, void* pObjMan, CTimerEx *timer, CMapBoard* map);
 public:
 	CGoodCopterObject(CSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
 	
@@ -71,7 +71,7 @@ protected:
 	DWORD m_dwLastSmokeTime;
 	int m_nLastX;
 	int m_nLastY;
-	virtual HRESULT ProcessAI(CInputManager *pInput, LPVOID pObjMan, CTimerEx *timer, CMapBoard* map);
+	virtual HRESULT ProcessAI(CInputManager *pInput, void* pObjMan, CTimerEx *timer, CMapBoard* map);
 public:
 	CGoodMissileObject(
 		CSpriteManager * pSpriteMgr, 
@@ -108,7 +108,7 @@ protected:
 
 	virtual HRESULT ProcessAI(
 		CInputManager *pInput, 
-		LPVOID pObjMan, 
+		void* pObjMan, 
 		CTimerEx *timer, 
 		CMapBoard* map);
 
@@ -131,7 +131,7 @@ protected:
 
 	virtual HRESULT ProcessAI(
 		CInputManager *pInput, 
-		LPVOID pObjMan, 
+		void* pObjMan, 
 		CTimerEx *timer, 
 		CMapBoard* map);
 public:
@@ -156,7 +156,7 @@ public:
 	CJoes2ObjMan(DWORD dwMax);
 
 	virtual ~CJoes2ObjMan();
-	virtual int Initialize(LPVOID lpDD, DWORD dwTransparent);
+	virtual int Initialize(DWORD dwTransparent);
 	virtual HRESULT CreateObject(const OBJECTTYPE nType, int x, int y, int nXSpeed, int nYSpeed);
 	virtual HRESULT DetectCollisions();
 };

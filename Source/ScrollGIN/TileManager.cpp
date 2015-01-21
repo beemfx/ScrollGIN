@@ -7,6 +7,8 @@
 
 #include "error.h"
 #include "../ImageLib/ImageLib.h"
+#include "../Renderer2/Renderer.h"
+#include "../Renderer2/RendererImage.h"
 #include "TileManager.h"
 
 
@@ -23,61 +25,8 @@ CSTileManager::~CSTileManager(void){
 
 }
 
-
-//Creates a tile surface from file in next available reference
-HRESULT CSTileManager::CreateTileFromFile(LPVOID lpDevice, DWORD dwTransparent, TCHAR lpBitmapFilename[MAX_PATH], int x, int y, int width, int height, CMapBoard *map){
-	if(SUCCEEDED(CreateTileFromFile(lpDevice, dwTransparent, m_iCurrentReference+1, lpBitmapFilename, x, y, width, height, map))){
-		m_iCurrentReference++; //we add after call to function in case it doesn't succeed
-		return S_OK;
-	}else return E_FAIL;
-}
-
-
-
-
-//creates a tile surface from a file in chosen reference
-HRESULT CSTileManager::CreateTileFromFile(LPVOID lpDevice, DWORD dwTransparent, int reference, TCHAR lpBitmapFilename[MAX_PATH], int x, int y, int width, int height, CMapBoard *map){	
-	
-	if(FAILED(m_lpTile[reference-1].CreateImageBM(
-		lpDevice,
-		dwTransparent,
-		lpBitmapFilename, 
-		x, 
-		y, 
-		width, 
-		height, 
-		map->GetTileDim(), 
-		map->GetTileDim(), 
-		NULL)))return E_FAIL;
-	return S_OK;
-}
-
-
-
-
-//Creates a tile surface from a color
-HRESULT CSTileManager::CreateTileFromColor(LPVOID lpDevice, DWORD dwTransparent, COLORREF crefTileColor, CMapBoard *map){
-	if(SUCCEEDED(CreateTileFromColor(lpDevice, dwTransparent, m_iCurrentReference+1, crefTileColor, map))){
-		m_iCurrentReference++; //we add after call to function in case it doesn't succeed
-		return S_OK;
-	}else return E_FAIL;
-}
-
-
-
-//creates a tile surface from color in chosen reference
-HRESULT CSTileManager::CreateTileFromColor(LPVOID lpDevice, DWORD dwTransparent, int reference, COLORREF crefTileColor, CMapBoard *map){
-	
-	if(FAILED(m_lpTile[reference-1].CreateImageColor(lpDevice, dwTransparent, crefTileColor, map->GetTileDim(), map->GetTileDim())))return E_FAIL;
-
-	return S_OK;
-}
-
-
-
-
 //creates many tile surfaces starting with chosen reference from a library
-HRESULT CSTileManager::CreateTilesFromLibrary(LPVOID lpDevice, DWORD dwTransparent, int reference, TCHAR lpLibraryFilename[MAX_PATH], CMapBoard *map){
+HRESULT CSTileManager::CreateTilesFromLibrary(DWORD dwTransparent, int reference, TCHAR lpLibraryFilename[MAX_PATH], CMapBoard *map){
 	//This will use a library to call CreateTilesFromFile functions
 	CImageArchive ILibrary;
 
@@ -99,17 +48,14 @@ HRESULT CSTileManager::CreateTilesFromLibrary(LPVOID lpDevice, DWORD dwTranspare
 
 				hBitmap=ILibrary.GetBitmap(id.nBitmap);
 
-				m_lpTile[i-1].CreateImageBMInMemory(
-					lpDevice,
-					dwTransparent,
-					hBitmap, 
-					id.nX, 
-					id.nY,
-					id.nWidthSrc, 
-					id.nHeightSrc, 
-					map->GetTileDim(), 
-					map->GetTileDim(), 
-					NULL);
+				sgRendererImageCreateParms Parms;
+				memset( &Parms , 0 , sizeof(Parms) );
+				Parms.Type = RENDERER_IMAGE_BITMAP;
+				Parms.Bitmap = hBitmap;
+				Parms.Width  = map->GetTileDim();
+				Parms.Height = map->GetTileDim();
+				m_lpTile[i-1] = Renderer_CreateSprite( &Parms );
+
 			}else SetError(TEXT("Attempted to create a tile that wasn't in ILB!\n"));
 
 		}
@@ -126,8 +72,8 @@ HRESULT CSTileManager::CreateTilesFromLibrary(LPVOID lpDevice, DWORD dwTranspare
 
 
 //creates many tile surfaces starting with first reference from a library
-HRESULT CSTileManager::CreateTilesFromLibrary(LPVOID lpDevice, DWORD dwTransparent, TCHAR lpLibraryFilename[MAX_PATH], CMapBoard *map){
-	if(SUCCEEDED(CreateTilesFromLibrary(lpDevice, dwTransparent, m_iCurrentReference+1, lpLibraryFilename, map))){
+HRESULT CSTileManager::CreateTilesFromLibrary(DWORD dwTransparent, TCHAR lpLibraryFilename[MAX_PATH], CMapBoard *map){
+	if(SUCCEEDED(CreateTilesFromLibrary(dwTransparent, m_iCurrentReference+1, lpLibraryFilename, map))){
 		return S_OK;
 	}else return E_FAIL;
 }
@@ -145,53 +91,18 @@ HRESULT CSTileManager::ClearTileDatabase(void){
 
 void CSTileManager::Release(){
 	for(int i=0;i<m_iCurrentReference;i++){
-		m_lpTile[i].Release();
+		Renderer_DestroySprite( m_lpTile[i] );
 	}
 }
-
-
-
-
-
-//restores tile surfaces
-HRESULT CSTileManager::Restore(void){
-	for(int i=0;i<m_iCurrentReference;i++){
-		m_lpTile[i].Restore();
-	}
-	return S_OK;
-}
-
-
-
-
-
-//reloads images into tile surfaces
-HRESULT CSTileManager::ReloadImages(void){
-	HRESULT hr=S_OK;
-
-	//code should look something like this
-	for(int i=0; i<m_iCurrentReference;i++){
-		m_lpTile[i].ReloadImageIntoSurface();
-	}
-	return hr;
-}
-
 
 
 //places a tile on x, y coordinate of the screen
 //remember to convert custom coords to standard before calling this
 //function is complete, but has not yet been tested.
-HRESULT CSTileManager::PlaceTile(int reference, LPVOID dest, int x, int y){
+HRESULT CSTileManager::PlaceTile(int reference, int x, int y){
 	//make sure reference is within range
 	if((reference<1)||(reference>m_iCurrentReference))return E_FAIL;
-	//make sure surfaces exist
-	if(!dest)return E_FAIL;
-
-	//make sure within screen, because if it isn't why draw it
-	/*
-	if(x<-TILEDIMENSION||x>g_nDeviceWidth||
-		y<-TILEDIMENSION||y>g_nDeviceHeight)return S_FALSE;
-	*/
 	
-	return m_lpTile[reference-1].DrawPrefered(x, y);
+	m_lpTile[reference-1]->Draw(x, y);
+	return S_OK;
 }

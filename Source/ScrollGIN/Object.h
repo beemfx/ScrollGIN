@@ -105,15 +105,15 @@ public:
 		CTimerEx *timer, 
 		CMapBoard *map, 
 		CInputManager* pInput, 
-		LPVOID pObjMan); //Moves the sprite, based on how much time has passed
+		void* pObjMan); //Moves the sprite, based on how much time has passed
 
 	BOOL SendMessage(LONG nMsg); //Sends a message to the object
 
-	virtual BOOL ProcessMessages(LPVOID lpObjMan); //should process all messages in que
+	virtual BOOL ProcessMessages(void* lpObjMan); //should process all messages in que
 
 	virtual HRESULT ProcessAI(
 		CInputManager* pInput, 
-		LPVOID pObjMan, 
+		void* pObjMan, 
 		CTimerEx* timer,
 		CMapBoard* map);
 
@@ -213,9 +213,7 @@ public:
 	BOOL SetNumSprites(int nNumSprites);
 
 	//Drawing function
-	void Draw(
-		CViewPort *vp, 
-		LPVOID lpBuffer); //Draws the appropriate sprites for object
+	void Draw(CViewPort *vp); //Draws the appropriate sprites for object
 };
 
 #endif //__object_h__

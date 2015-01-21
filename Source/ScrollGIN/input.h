@@ -30,8 +30,8 @@ typedef enum tagDPAD{
 	DP_DOWNLEFT
 }DPAD;
 
-BOOL CALLBACK EnumAxis(LPCDIDEVICEOBJECTINSTANCE lpddoi, LPVOID pvRef);
-BOOL CALLBACK EnumJoysticks(LPCDIDEVICEINSTANCE lpdii, LPVOID pvRef);
+BOOL CALLBACK EnumAxis(LPCDIDEVICEOBJECTINSTANCE lpddoi, void* pvRef);
+BOOL CALLBACK EnumJoysticks(LPCDIDEVICEINSTANCE lpdii, void* pvRef);
 
 typedef struct tagINPUTCREATEDATA{
 	LPDIRECTINPUT8 *lpDI;
@@ -58,8 +58,8 @@ private:
 	HRESULT ProcessKeyboardInput(); //processes keyboard input
 	HRESULT ProcessJoystickInput(); //processes joystick input
 	HRESULT ProcessMouseInput(); //processes mouse input
-	//BOOL CALLBACK EnumJoysticks(LPCDIDEVICEINSTANCE lpdii, LPVOID pvRef);
-	//BOOL CALLBACK EnumAxis(LPCDIDEVICEOBJECTINSTANCE lpddoi, LPVOID pvRef);
+	//BOOL CALLBACK EnumJoysticks(LPCDIDEVICEINSTANCE lpdii, void* pvRef);
+	//BOOL CALLBACK EnumAxis(LPCDIDEVICEOBJECTINSTANCE lpddoi, void* pvRef);
 
 	HRESULT InitKeyboard(HWND hWnd); //initializes the keyboard
 	HRESULT InitJoystick(HWND hWnd); //initializes the joystick

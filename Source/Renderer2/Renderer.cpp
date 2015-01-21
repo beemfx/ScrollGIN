@@ -3,6 +3,9 @@
 #include <ddraw.h>
 #include <windowsx.h>
 
+#pragma comment(lib, "../DXLIB/dxguid.lib")
+#pragma comment(lib, "../DXLIB/ddraw.lib")
+
 static class SgRenderer
 {
 private:
@@ -33,20 +36,6 @@ private:
 			m_Dd = 0;
 		}
 
-	}
-
-	void UpdateBounds()
-	{
-		if( m_InitParms.Windowed )
-		{
-			GetClientRect(m_hwnd, &m_RcWindow);
-			ClientToScreen(m_hwnd, (POINT*)&m_RcWindow);
-			ClientToScreen(m_hwnd, (POINT*)&m_RcWindow + 1);
-		}
-		else
-		{
-			SetRect( &m_RcWindow, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN) );
-		}
 	}
 
 	void AdjustWindowSize()
@@ -141,7 +130,7 @@ public:
 				ReleaseAll();
 				return;
 			}
-			
+			Clipper->SetHWnd( 0 , m_hwnd );
 			Res = m_PrimarySurface->SetClipper( Clipper );
 			Clipper->Release();
 			Clipper = 0;
@@ -182,7 +171,8 @@ public:
 			}
 			DDSCAPS2 Caps;
 			memset( &Caps , 0 , sizeof(Caps) );
-			m_PrimarySurface->GetAttachedSurface( &Caps , &m_BackSurface );
+			Caps.dwCaps=DDSCAPS_BACKBUFFER;
+			Res = m_PrimarySurface->GetAttachedSurface( &Caps , &m_BackSurface );
 			if (FAILED(Res))
 			{
 				ReleaseAll();
@@ -194,16 +184,38 @@ public:
 
 		UpdateBounds();
 		AdjustWindowSize();
+
+		if(m_InitParms.Windowed)ShowCursor(FALSE);
 	}
 
 	void Deinit()
 	{
+		m_Dd->SetCooperativeLevel(NULL, DDSCL_NORMAL);
 		ReleaseAll();
+		if(m_InitParms.Windowed)ShowCursor(TRUE);
+	}
+
+	void UpdateBounds()
+	{
+		if (m_InitParms.Windowed)
+		{
+			GetClientRect(m_hwnd, &m_RcWindow);
+			ClientToScreen(m_hwnd, (POINT*)&m_RcWindow);
+			ClientToScreen(m_hwnd, (POINT*)&m_RcWindow + 1);
+		}
+		else
+		{
+			SetRect(&m_RcWindow, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
+		}
 	}
 
 	void BeginFrame()
 	{
-
+		DDBLTFX ddbltfx;
+		ZeroMemory(&ddbltfx, sizeof(ddbltfx));
+		ddbltfx.dwSize = sizeof(ddbltfx);
+		ddbltfx.dwFillColor = RGB(0, 255, 255);
+		m_BackSurface->Blt(NULL, NULL, NULL, DDBLT_COLORFILL, &ddbltfx);
 	}
 
 	void EndFrame()
@@ -215,32 +227,31 @@ public:
 		if (!m_PrimarySurface || !m_BackSurface)
 			return;
 
-		while (TRUE){
-			if (m_InitParms.Windowed)
+
+		if (m_InitParms.Windowed)
+		{
+			DDSURFACEDESC2 desc;
+			desc.dwSize = sizeof(DDSURFACEDESC2);
+			desc.dwFlags = DDSD_WIDTH | DDSD_HEIGHT;
+			m_BackSurface->GetSurfaceDesc(&desc);
+
+			rcSource.top = rcSource.left = 0;
+			rcSource.bottom = desc.dwHeight;
+			rcSource.right = desc.dwWidth;
+
+			Res = m_PrimarySurface->Blt(&m_RcWindow, m_BackSurface, &rcSource, DDBLT_WAIT, 0);
+			if (Res == DDERR_SURFACELOST)
 			{
-				DDSURFACEDESC2 desc;
-				desc.dwSize = sizeof(DDSURFACEDESC2);
-				desc.dwFlags = DDSD_WIDTH | DDSD_HEIGHT;
-				m_BackSurface->GetSurfaceDesc(&desc);
-
-				rcSource.top = rcSource.left = 0;
-				rcSource.bottom = desc.dwHeight;
-				rcSource.right = desc.dwWidth;
-
-				Res = m_PrimarySurface->Blt(&m_RcWindow,m_BackSurface,&rcSource,DDBLT_WAIT,0);
-				if( Res == DDERR_SURFACELOST )
-				{
-					Restore();
-					return;
-				}
+				Restore();
+				return;
 			}
-			else{
-				Res = m_PrimarySurface->Flip( 0 , DDFLIP_WAIT );
-				if( DDERR_SURFACELOST == Res )
-				{
-					Restore();
-					return;
-				}
+		}
+		else{
+			Res = m_PrimarySurface->Flip(0, DDFLIP_WAIT);
+			if (DDERR_SURFACELOST == Res)
+			{
+				Restore();
+				return;
 			}
 		}
 	}
@@ -256,7 +267,7 @@ public:
 
 	void DestroySprite(class SgRendererImage* Sprite)
 	{
-		delete Sprite;
+		if( Sprite )delete Sprite;
 	}
 
 } Renderer;
@@ -290,4 +301,9 @@ class SgRendererImage* Renderer_CreateSprite(const sgRendererImageCreateParms* C
 void Renderer_DestroySprite(class SgRendererImage* Sprite)
 {
 	Renderer.DestroySprite( Sprite );
+}
+
+void Renderer_UpdateBounds()
+{
+	Renderer.UpdateBounds();
 }

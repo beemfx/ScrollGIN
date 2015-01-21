@@ -26,11 +26,10 @@ CJoes2ObjMan::~CJoes2ObjMan()
 	
 }
 
-int CJoes2ObjMan::Initialize(LPVOID lpDD, DWORD dwTransparent)
+int CJoes2ObjMan::Initialize(DWORD dwTransparent)
 {
 	if(FAILED(LoadSpritesFromFile(
 		TEXT("JoesSprites.ilb"),
-		lpDD,
 		dwTransparent)))
 	{
 		return 0;
@@ -202,7 +201,7 @@ CJoes2Object::CJoes2Object(
 
 }
 
-BOOL CJoes2Object::ProcessMessages(LPVOID lpObjMan)
+BOOL CJoes2Object::ProcessMessages(void* lpObjMan)
 {
 	for(WORD i=0; i<m_nNumMessages; i++){
 		switch(m_nMessage[i])
@@ -274,7 +273,7 @@ BOOL CJoes2Object::ProcessMessages(LPVOID lpObjMan)
 
 HRESULT CGoodCopterObject::ProcessAI(
 	CInputManager *pInput, 
-	LPVOID pObjMan, 
+	void* pObjMan, 
 	CTimerEx *timer, 
 	CMapBoard* map)
 {
@@ -489,7 +488,7 @@ BOOL CBadCopterObject::LoadObjectSprites(CSpriteManager* pSpriteMgr)
 
 HRESULT CGoodMissileObject::ProcessAI(
 	CInputManager *pInput, 
-	LPVOID pObjMan, 
+	void* pObjMan, 
 	CTimerEx *timer, 
 	CMapBoard* map)
 {
@@ -693,7 +692,7 @@ BOOL CSmokeObject::CreateObjectModes(DWORD dwTime)
 
 HRESULT CSmokeObject::ProcessAI(
 	CInputManager* pInput, 
-	LPVOID pObjMan, 
+	void* pObjMan, 
 	CTimerEx* timer, 
 	CMapBoard* map)
 {
@@ -735,7 +734,7 @@ CExplosionObject::CExplosionObject(
 
 HRESULT CExplosionObject::ProcessAI(
 	CInputManager *pInput,
-	LPVOID pObjMan,
+	void* pObjMan,
 	CTimerEx* timer,
 	CMapBoard* map)
 {
