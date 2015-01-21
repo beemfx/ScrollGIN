@@ -17,15 +17,15 @@ typedef struct tagSPRITECREATESTRUCT{
 	int nHeight;
 }SPRITECREATESTRUCT;
 
-class CSpriteManager{
+class SgSpriteManager{
 private:
 	SgSprite	m_cSprite[MAX_SPRITES]; //the sprites
 	int	m_nNumSprites; //indicates how many sprites are available
 	const DWORD m_dwMaxSprites;
 public:
 	//constructor and destruct
-	CSpriteManager(); //constructor
-	~CSpriteManager(); //destructor
+	SgSpriteManager(); //constructor
+	~SgSpriteManager(); //destructor
 
 	//Functions for restoring and destroying sprites
 	void Release(); //Releases all sprite surfaces

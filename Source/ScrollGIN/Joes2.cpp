@@ -9,13 +9,13 @@
 ////////////////////////////////////
 
 CJoes2ObjMan::CJoes2ObjMan(DWORD dwMaxObjects):
-CObjectManager(dwMaxObjects)
+SgObjectManager(dwMaxObjects)
 {
 	
 }
 
 CJoes2ObjMan::CJoes2ObjMan():
-CObjectManager()
+SgObjectManager()
 {
 	
 }
@@ -99,7 +99,7 @@ HRESULT CJoes2ObjMan::CreateObject(
 		break;
 	case OT_DEFAULT:
 	default:
-		m_ppObject[i]=new CObject(&m_SpriteManager, dwTime, x, y, nXSpeed, nYSpeed);
+		m_ppObject[i]=new SgObject(&m_SpriteManager, dwTime, x, y, nXSpeed, nYSpeed);
 		break;
 	}
 	m_pObjectType[i]=nType;
@@ -180,13 +180,13 @@ HRESULT CJoes2ObjMan::DetectCollisions()
 /////////////////////////////////////////////////////////////////
 
 CJoes2Object::CJoes2Object(
-	CSpriteManager * pSpriteMgr, 
+	SgSpriteManager * pSpriteMgr, 
 	DWORD dwTime, 
 	int x, 
 	int y, 
 	int nXSpeed, 
 	int nYSpeed):
-	CObject(
+	SgObject(
 		pSpriteMgr,
 		dwTime,
 		x,
@@ -225,7 +225,7 @@ BOOL CJoes2Object::ProcessMessages(void* lpObjMan)
 			
 			if( (GetObjectAlign()&JC_GOOD)==JC_GOOD)
 			{
-				((CObjectManager*)lpObjMan)->CreateObject(
+				((SgObjectManager*)lpObjMan)->CreateObject(
 					(OBJECTTYPE)JOES2_GOODMISSILE,
 					nX,
 					m_nY-5,
@@ -234,7 +234,7 @@ BOOL CJoes2Object::ProcessMessages(void* lpObjMan)
 			}
 			else if ( (GetObjectAlign()&JC_BAD)==JC_BAD)
 			{
-				((CObjectManager*)lpObjMan)->CreateObject(
+				((SgObjectManager*)lpObjMan)->CreateObject(
 					(OBJECTTYPE)JOES2_BADMISSILE,
 					nX,
 					m_nY-5,
@@ -248,7 +248,7 @@ BOOL CJoes2Object::ProcessMessages(void* lpObjMan)
 		case JM_HIT:
 		case JM_EXPLODE:
 			m_bAlive=FALSE;
-			((CObjectManager*)lpObjMan)->CreateObject(
+			((SgObjectManager*)lpObjMan)->CreateObject(
 				(OBJECTTYPE)JOES2_EXPLOSION, 
 				m_nX, 
 				m_nY, 
@@ -270,9 +270,9 @@ BOOL CJoes2Object::ProcessMessages(void* lpObjMan)
 ////////////////////////////////////////////
 
 HRESULT CGoodCopterObject::ProcessAI(
-	CInputManager *pInput, 
+	SgInputManager *pInput, 
 	void* pObjMan, 
-	CTimerEx *timer, 
+	SgTimer *timer, 
 	CMapBoard* map)
 {
 	#define MOVEXSPEED 10
@@ -361,7 +361,7 @@ HRESULT CGoodCopterObject::ProcessAI(
 }
 
 
-BOOL CGoodCopterObject::LoadObjectSprites(CSpriteManager* pSpriteMgr)
+BOOL CGoodCopterObject::LoadObjectSprites(SgSpriteManager* pSpriteMgr)
 {
 	if(pSpriteMgr==NULL)
 		return FALSE;
@@ -401,7 +401,7 @@ BOOL CGoodCopterObject::CreateObjectModes(DWORD dwTime)
 
 
 CGoodCopterObject::CGoodCopterObject(
-	CSpriteManager * pSpriteMgr, 
+	SgSpriteManager * pSpriteMgr, 
 	DWORD dwTime,
 	int x, 
 	int y, 
@@ -425,7 +425,7 @@ CGoodCopterObject::CGoodCopterObject(
 ////////////////////////////////
 
 CBadCopterObject::CBadCopterObject(
-	CSpriteManager * pSpriteMgr, 
+	SgSpriteManager * pSpriteMgr, 
 	DWORD dwTime, 
 	int x, 
 	int y, 
@@ -470,7 +470,7 @@ BOOL CBadCopterObject::CreateObjectModes(DWORD dwTime)
 	return TRUE;
 }
 
-BOOL CBadCopterObject::LoadObjectSprites(CSpriteManager* pSpriteMgr)
+BOOL CBadCopterObject::LoadObjectSprites(SgSpriteManager* pSpriteMgr)
 {
 	if(pSpriteMgr==NULL)
 		return FALSE;
@@ -485,9 +485,9 @@ BOOL CBadCopterObject::LoadObjectSprites(CSpriteManager* pSpriteMgr)
 ///////////////////////////////
 
 HRESULT CGoodMissileObject::ProcessAI(
-	CInputManager *pInput, 
+	SgInputManager *pInput, 
 	void* pObjMan, 
-	CTimerEx *timer, 
+	SgTimer *timer, 
 	CMapBoard* map)
 {
 	if(pInput==NULL)
@@ -510,7 +510,7 @@ HRESULT CGoodMissileObject::ProcessAI(
 			}
 			m_dwLastSmokeTime=timer->Time();
 
-			((CObjectManager*)pObjMan)->CreateObject(
+			((SgObjectManager*)pObjMan)->CreateObject(
 				(OBJECTTYPE)JOES2_SMOKE,
 				nX,
 				m_nY-5,
@@ -523,7 +523,7 @@ HRESULT CGoodMissileObject::ProcessAI(
 		{
 			SendMessage(JM_EXPLODE);
 			/*
-			((CObjectManager*)pObjMan)->CreateObject(
+			((SgObjectManager*)pObjMan)->CreateObject(
 				JOES2_EXPOSION,
 				m_nX,
 				m_nY,
@@ -541,7 +541,7 @@ HRESULT CGoodMissileObject::ProcessAI(
 }
 
 CGoodMissileObject::CGoodMissileObject(
-	CSpriteManager * pSpriteMgr, 
+	SgSpriteManager * pSpriteMgr, 
 	DWORD dwTime, 
 	int x, 
 	int y, 
@@ -566,7 +566,7 @@ CGoodMissileObject::CGoodMissileObject(
 	if(nXSpeed < 0)
 		m_nFace=SF_LEFT;
 }
-BOOL CGoodMissileObject::LoadObjectSprites(CSpriteManager *pSpriteMgr)
+BOOL CGoodMissileObject::LoadObjectSprites(SgSpriteManager *pSpriteMgr)
 {
 	if(pSpriteMgr==NULL)
 		return FALSE;
@@ -596,7 +596,7 @@ BOOL CGoodMissileObject::CreateObjectModes(DWORD dwTime)
 //////////////////////////////
 
 CBadMissileObject::CBadMissileObject(
-	CSpriteManager* pSpriteMgr, 
+	SgSpriteManager* pSpriteMgr, 
 	DWORD dwTime,
 	int x,
 	int y,
@@ -613,7 +613,7 @@ CBadMissileObject::CBadMissileObject(
 	LoadObjectSprites(pSpriteMgr);
 	CreateObjectModes(dwTime);
 }
-BOOL CBadMissileObject::LoadObjectSprites(CSpriteManager *pSpriteMgr)
+BOOL CBadMissileObject::LoadObjectSprites(SgSpriteManager *pSpriteMgr)
 {
 	if(pSpriteMgr==NULL)
 		return FALSE;
@@ -645,7 +645,7 @@ BOOL CBadMissileObject::CreateObjectModes(DWORD dwTime)
 ////////////////////////
 
 CSmokeObject::CSmokeObject(
-	CSpriteManager * pSpriteMgr, 
+	SgSpriteManager * pSpriteMgr, 
 	DWORD dwTime, 
 	int x, 
 	int y, 
@@ -663,7 +663,7 @@ CSmokeObject::CSmokeObject(
 	CreateObjectModes(dwTime);
 }
 
-BOOL CSmokeObject::LoadObjectSprites(CSpriteManager* pSpriteMgr)
+BOOL CSmokeObject::LoadObjectSprites(SgSpriteManager* pSpriteMgr)
 {
 	if(pSpriteMgr==NULL)
 		return FALSE;
@@ -689,9 +689,9 @@ BOOL CSmokeObject::CreateObjectModes(DWORD dwTime)
 }
 
 HRESULT CSmokeObject::ProcessAI(
-	CInputManager* pInput, 
+	SgInputManager* pInput, 
 	void* pObjMan, 
-	CTimerEx* timer, 
+	SgTimer* timer, 
 	CMapBoard* map)
 {
 	if(pInput==NULL)
@@ -712,7 +712,7 @@ HRESULT CSmokeObject::ProcessAI(
 ////////////////////////////
 
 CExplosionObject::CExplosionObject(
-	CSpriteManager * pSpriteMgr, 
+	SgSpriteManager * pSpriteMgr, 
 	DWORD dwTime, 
 	int x, 
 	int y, 
@@ -731,9 +731,9 @@ CExplosionObject::CExplosionObject(
 }
 
 HRESULT CExplosionObject::ProcessAI(
-	CInputManager *pInput,
+	SgInputManager *pInput,
 	void* pObjMan,
-	CTimerEx* timer,
+	SgTimer* timer,
 	CMapBoard* map)
 {
 	
@@ -743,7 +743,7 @@ HRESULT CExplosionObject::ProcessAI(
 }
 
 BOOL CExplosionObject::LoadObjectSprites(
-	CSpriteManager* pSpriteMgr)
+	SgSpriteManager* pSpriteMgr)
 {
 	if(pSpriteMgr==NULL)
 		return FALSE;

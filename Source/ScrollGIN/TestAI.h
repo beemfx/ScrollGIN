@@ -24,39 +24,39 @@
 #define OA_GOOD    0x00000001
 #define OA_BAD     0x00000002
 
-class CCrowObject: public CObject{
+class CCrowObject: public SgObject{
 protected:
-	virtual HRESULT ArchAdjust(CTimerEx *timer, CMapBoard *map);
+	virtual HRESULT ArchAdjust(SgTimer *timer, CMapBoard *map);
 	virtual BOOL PreInitialMovement(CMapBoard *map, int *nXSpeed, int *nYSpeed);
 public:
 	CCrowObject();
-	CCrowObject(CSpriteManager * pSpriteMgr, DWORD dwTime);
-	CCrowObject(CSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
-	virtual BOOL LoadObjectSprites(CSpriteManager *pSpriteMgr);
+	CCrowObject(SgSpriteManager * pSpriteMgr, DWORD dwTime);
+	CCrowObject(SgSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
+	virtual BOOL LoadObjectSprites(SgSpriteManager *pSpriteMgr);
 	virtual BOOL CreateObjectModes(DWORD dwTime);
 	virtual BOOL ProcessMessages(void* lpObjMan);
 };
 
-class CFighterObject: public CObject{
+class CFighterObject: public SgObject{
 protected:
 
 public:
 	CFighterObject();
-	CFighterObject(CSpriteManager * pSpriteMgr, DWORD dwTime);
-	CFighterObject(CSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
-	virtual BOOL LoadObjectSprites(CSpriteManager *pSpriteMgr);
+	CFighterObject(SgSpriteManager * pSpriteMgr, DWORD dwTime);
+	CFighterObject(SgSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
+	virtual BOOL LoadObjectSprites(SgSpriteManager *pSpriteMgr);
 	virtual BOOL CreateObjectModes(DWORD dwTime);
 
-	virtual HRESULT ProcessAI(CInputManager* pInput, void* pObjMan, CTimerEx* timer, CMapBoard* map);
+	virtual HRESULT ProcessAI(SgInputManager* pInput, void* pObjMan, SgTimer* timer, CMapBoard* map);
 };
 
-class CTestObjman: public CObjectManager{
+class CTestObjman: public SgObjectManager{
 protected:
 
 public:
 	CTestObjman();
 	CTestObjman(DWORD dwMax);
-	CTestObjman(DWORD dwMax, CTimerEx * pTimer);
+	CTestObjman(DWORD dwMax, SgTimer * pTimer);
 	virtual ~CTestObjman();
 	virtual int Initialize();
 	virtual HRESULT CreateObject(const OBJECTTYPE nType, int x, int y, int nXSpeed, int nYSpeed);

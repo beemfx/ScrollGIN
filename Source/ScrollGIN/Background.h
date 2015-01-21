@@ -19,15 +19,15 @@ typedef enum tagSCROLLMODE
 	NO_SCROLL
 }SCROLLMODE;
 
-class CBackground{
+class SgBackground{
 private:
 	SgRendererImage* m_cBackgroundImage[MAX_BACKGROUNDS]; //background images
 	int m_nScrollRatio[MAX_BACKGROUNDS]; //ratio for each image
 	int m_nCurrentImage; //how many images there are
 	SCROLLMODE m_nScrollMode; //the current scroll mode
 public:
-	CBackground(); //constructor
-	~CBackground(); //destructor
+	SgBackground(); //constructor
+	~SgBackground(); //destructor
 	void Release(); //release
 	void SetScrollMode(SCROLLMODE nNewMode); //sets current scroll mode
 	bool DrawBackgrounds(int x, int y, DWORD dwWidth, DWORD dwHeight); //draw all backgrounds

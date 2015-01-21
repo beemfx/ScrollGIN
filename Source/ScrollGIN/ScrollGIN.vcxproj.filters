@@ -23,9 +23,6 @@
     <ClCompile Include="Background.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="error.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="GenFuncs.c">
       <Filter>Source</Filter>
     </ClCompile>
@@ -45,9 +42,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="ScrollGIN.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="ScrollGINFunc.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Sprite.cpp">
@@ -108,9 +102,6 @@
     <ClInclude Include="defines.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="error.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="GenFuncs.h">
       <Filter>Source</Filter>
     </ClInclude>
@@ -127,9 +118,6 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="ScrollGIN.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="ScrollGINFunc.h">
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Sprite.h">

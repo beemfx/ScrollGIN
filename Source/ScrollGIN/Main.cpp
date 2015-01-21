@@ -13,13 +13,12 @@
 #include <stdio.h>
 #include <windows.h>
 #include "defines.h"
-#include "error.h"
 #include "../Renderer2/Renderer.h"
 
 
 #include "ScrollGIN.h"
 #include "Joes2.h"
-CScrollGINGame Game;
+SgScrollGINGame Game;
 
 #define WM_USER_ACTIVEAPP (WM_USER+1)
 

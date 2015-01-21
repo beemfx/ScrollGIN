@@ -10,34 +10,34 @@
 #include "SpriteManager.h"
 #include "View.h"
 #include "Input.h"
-#include "ScrollGINFunc.h"
 #include "Timer.h"
+#include "Background.h"
 
-class CScrollGINGame
+class SgScrollGINGame
 {
 protected:
 	//ScrollGIN classes
-	CSTileManager m_TileManager;
-	CTimerEx m_Timer;
-	CViewPort m_Viewport;
-	CInputManager m_Input;
+	SgTileManager m_TileManager;
+	SgTimer m_Timer;
+	SgViewPort m_Viewport;
+	SgInputManager m_Input;
 	CMapBoard m_Mapboard;
-	CBackground m_Background;
+	SgBackground m_Background;
 
-	CObjectManager* m_lpObjectManager;
+	SgObjectManager* m_lpObjectManager;
 
 	BOOL m_bInitialized;
 
 	DWORD m_dwWidth;
 	DWORD m_dwHeight;
 public:
-	CScrollGINGame();
-	~CScrollGINGame();
+	SgScrollGINGame();
+	~SgScrollGINGame();
 
 	int GameInit(
 		DWORD dwWidth, 
 		DWORD dwHeight,
-		CObjectManager* lpObjMan, 
+		SgObjectManager* lpObjMan, 
 		HWND hwnd);
 
 	int Shutdown();
@@ -55,6 +55,21 @@ public:
 	int PreRenderProcess();
 
 	int IsKeyPressed(int nKey);
+
+	BOOL DrawMapBoard(
+		SgViewPort * pViewport, 
+		CMapBoard * pMap, 
+		SgTileManager * pTileManager,
+		SgBackground * pBG);
+
+	BOOL LoadMapBoard(
+		LPTSTR szFilename, 
+		DWORD dwScreenWidth,
+		DWORD dwScreenHeight,
+		CMapBoard * pMap, 
+		SgBackground * pBG, 
+		SgTileManager * pTileMgr,
+		SgViewPort * pView);
 };
 
 #endif //__SCROLLGIN_H__

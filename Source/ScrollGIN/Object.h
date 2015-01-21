@@ -67,7 +67,7 @@ typedef struct tagOBJECTMODE
 }OBJECTMODE;
 
 
-class CObject
+class SgObject
 {
 protected:
 	int m_nX, m_nY;	//The objects location
@@ -91,20 +91,20 @@ protected:
 
 public:
 	//Constructors destructors
-	CObject();
-	CObject(CSpriteManager * pSpriteMgr, DWORD dwTime);
-	CObject(CSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
-	virtual ~CObject();
+	SgObject();
+	SgObject(SgSpriteManager * pSpriteMgr, DWORD dwTime);
+	SgObject(SgSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
+	virtual ~SgObject();
 
 	//Initialization functions
-	virtual BOOL LoadObjectSprites(CSpriteManager* pSpriteMgr);
+	virtual BOOL LoadObjectSprites(SgSpriteManager* pSpriteMgr);
 	virtual BOOL CreateObjectModes(DWORD dwTime);
 
 	//animation functions
 	HRESULT Animate(
-		CTimerEx *timer, 
+		SgTimer *timer, 
 		CMapBoard *map, 
-		CInputManager* pInput, 
+		SgInputManager* pInput, 
 		void* pObjMan); //Moves the sprite, based on how much time has passed
 
 	BOOL SendMessage(LONG nMsg); //Sends a message to the object
@@ -112,9 +112,9 @@ public:
 	virtual BOOL ProcessMessages(void* lpObjMan); //should process all messages in que
 
 	virtual HRESULT ProcessAI(
-		CInputManager* pInput, 
+		SgInputManager* pInput, 
 		void* pObjMan, 
-		CTimerEx* timer,
+		SgTimer* timer,
 		CMapBoard* map);
 
 	virtual BOOL PreInitialMovement(
@@ -123,12 +123,12 @@ public:
 		int *nYSpeed);
 
 	virtual HRESULT InitialMovement(
-		CTimerEx *timer, 
+		SgTimer *timer, 
 		int nXSpeed, 
 		int nYSpeed);
 
 	virtual HRESULT ArchAdjust(
-		CTimerEx *timer, 
+		SgTimer *timer, 
 		CMapBoard *map);
 
 	HRESULT DefaultArchAdjust(CMapBoard *map);
@@ -149,10 +149,10 @@ public:
 		int x, 
 		int y);
 
-	int DistanceFrom(CObject *cObject);
+	int DistanceFrom(SgObject *cObject);
 
 	virtual COLLISIONTYPE DetectCollision(
-		CObject *cObject);
+		SgObject *cObject);
 
 	//Object mode functions
 	BOOL CreateMode(
@@ -213,7 +213,7 @@ public:
 	BOOL SetNumSprites(int nNumSprites);
 
 	//Drawing function
-	void Draw(CViewPort *vp); //Draws the appropriate sprites for object
+	void Draw(SgViewPort *vp); //Draws the appropriate sprites for object
 };
 
 #endif //__object_h__

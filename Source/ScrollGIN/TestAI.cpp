@@ -5,7 +5,7 @@
 #include "TestAI.h"
 
 
-void TestCreate(void* lpDD, DWORD dwTrans, CObjectManager* lpObjMan)
+void TestCreate(void* lpDD, DWORD dwTrans, SgObjectManager* lpObjMan)
 {
 	//This function is merely a test to demonstrate how to create a sprite from data
 	char szImageName[] = TEXT("freedom sprites2.bmp");
@@ -35,7 +35,7 @@ void TestCreate(void* lpDD, DWORD dwTrans, CObjectManager* lpObjMan)
 
 }
 
-BOOL TestCreateObject(void* lpDD, CObjectManager* lpObjMan)
+BOOL TestCreateObject(void* lpDD, SgObjectManager* lpObjMan)
 {
 	//This function creates an object for testing purposes
 	TestCreate(lpDD, dwTrans, lpObjMan);
@@ -56,10 +56,10 @@ BOOL TestCreateObject(void* lpDD, CObjectManager* lpObjMan)
 	return TRUE;
 }
 
-//be sure to call overloaded CObjectManager when
+//be sure to call overloaded SgObjectManager when
 //calling user defined object manager consturctor...
 CTestObjman::CTestObjman(DWORD dwMaxObjects):
-CObjectManager(dwMaxObjects)
+SgObjectManager(dwMaxObjects)
 {
 	SetError(TEXT("Test object manager created with user max"));
 }
@@ -68,8 +68,8 @@ CTestObjman::CTestObjman(){
 	SetError(TEXT("Test object manager with default max created"));
 }
 
-CTestObjman::CTestObjman(DWORD dwMax, CTimerEx * pTimer):
-CObjectManager(dwMax, pTimer)
+CTestObjman::CTestObjman(DWORD dwMax, SgTimer * pTimer):
+SgObjectManager(dwMax, pTimer)
 {
 	SetError(TEXT("Test object manager complete created"));
 }
@@ -102,10 +102,10 @@ HRESULT CTestObjman::CreateObject(const OBJECTTYPE nType, int x, int y, int nXSp
 			m_ppObject[i]=new CFighterObject(&m_SpriteManager, dwTime, x, y, nXSpeed, nYSpeed);
 			break;
 		case OT_DEFAULT:
-			m_ppObject[i]=new CObject(&m_SpriteManager, dwTime, x, y, nXSpeed, nYSpeed);
+			m_ppObject[i]=new SgObject(&m_SpriteManager, dwTime, x, y, nXSpeed, nYSpeed);
 			break;
 		default:
-			m_ppObject[i]=new CObject(&m_SpriteManager, dwTime, x, y, nXSpeed, nYSpeed);
+			m_ppObject[i]=new SgObject(&m_SpriteManager, dwTime, x, y, nXSpeed, nYSpeed);
 			break;
 		}
 		m_pObjectType[i]=nType;
@@ -156,7 +156,7 @@ HRESULT CTestObjman::DetectCollisions(){
 	return S_OK;
 }
 
-HRESULT CFighterObject::ProcessAI(CInputManager *pInput, void* pObjMan, CTimerEx *timer, CMapBoard* map){
+HRESULT CFighterObject::ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *timer, CMapBoard* map){
 	if(pInput==NULL){
 		//ai
 	}else{
@@ -217,7 +217,7 @@ HRESULT CFighterObject::ProcessAI(CInputManager *pInput, void* pObjMan, CTimerEx
 	return S_OK;
 }
 
-BOOL CFighterObject::LoadObjectSprites(CSpriteManager *pSprite){
+BOOL CFighterObject::LoadObjectSprites(SgSpriteManager *pSprite){
 	//crow objects has one sprite
 	if(pSprite==NULL)return FALSE;
 	ObtainPointerToSprite(1, pSprite->LetPointer(TEXT("legsrunning")), 0, 18, 150, LP_FORWARD);
@@ -283,26 +283,26 @@ BOOL CFighterObject::CreateObjectModes(DWORD dwTime){
 }
 
 CFighterObject::CFighterObject():
-	CObject()
+	SgObject()
 {
 	CreateObjectModes(0);
 }
 
-CFighterObject::CFighterObject(CSpriteManager * pSpriteMgr, DWORD dwTime):
-CObject(pSpriteMgr, dwTime)
+CFighterObject::CFighterObject(SgSpriteManager * pSpriteMgr, DWORD dwTime):
+SgObject(pSpriteMgr, dwTime)
 {
 	LoadObjectSprites(pSpriteMgr);
 	CreateObjectModes(dwTime);
 }
 
 CFighterObject::CFighterObject(
-	CSpriteManager * pSpriteMgr, 
+	SgSpriteManager * pSpriteMgr, 
 	DWORD dwTime,
 	int x, 
 	int y, 
 	int nXSpeed, 
 	int nYSpeed):
-	CObject(pSpriteMgr, dwTime, x, y, nXSpeed, nYSpeed)
+	SgObject(pSpriteMgr, dwTime, x, y, nXSpeed, nYSpeed)
 
 {
 	LoadObjectSprites(pSpriteMgr);
@@ -327,7 +327,7 @@ BOOL CCrowObject::ProcessMessages(void* lpObjMan)
 	return TRUE;
 }
 
-HRESULT CCrowObject::ArchAdjust(CTimerEx *timer, CMapBoard *map){
+HRESULT CCrowObject::ArchAdjust(SgTimer *timer, CMapBoard *map){
 	return S_OK;
 }
 
@@ -335,7 +335,7 @@ BOOL CCrowObject::PreInitialMovement(CMapBoard *map, int *nXSpeed, int *nYSpeed)
 	return TRUE;
 }
 
-BOOL CCrowObject::LoadObjectSprites(CSpriteManager *pSprite){
+BOOL CCrowObject::LoadObjectSprites(SgSpriteManager *pSprite){
 	if(pSprite==NULL)return FALSE;
 	//crow objects has one sprite
 	ObtainPointerToSprite(1,
@@ -368,26 +368,26 @@ BOOL CCrowObject::CreateObjectModes(DWORD dwTime){
 
 
 CCrowObject::CCrowObject():
-	CObject()
+	SgObject()
 {
 	CreateObjectModes(0);
 }
 
-CCrowObject::CCrowObject(CSpriteManager * pSpriteMgr, DWORD dwTime):
-CObject(pSpriteMgr, dwTime)
+CCrowObject::CCrowObject(SgSpriteManager * pSpriteMgr, DWORD dwTime):
+SgObject(pSpriteMgr, dwTime)
 {
 	LoadObjectSprites(pSpriteMgr);
 	CreateObjectModes(dwTime);
 }
 
 CCrowObject::CCrowObject(
-	CSpriteManager * pSpriteMgr, 
+	SgSpriteManager * pSpriteMgr, 
 	DWORD dwTime,
 	int x, 
 	int y, 
 	int nXSpeed,
 	int nYSpeed):
-	CObject(pSpriteMgr, dwTime, x, y, nXSpeed, nYSpeed)
+	SgObject(pSpriteMgr, dwTime, x, y, nXSpeed, nYSpeed)
 {
 	LoadObjectSprites(pSpriteMgr);
 	CreateObjectModes(dwTime);

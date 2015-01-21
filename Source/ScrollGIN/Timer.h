@@ -10,15 +10,15 @@
 #include <windows.h> 
 
 
-class CTimerEx{
+class SgTimer{
 protected:
 	DWORD m_nStartTime;
 
 	DWORD m_nPausedTime;
 	BOOL m_bPaused;
 public:
-	CTimerEx();
-	~CTimerEx();
+	SgTimer();
+	~SgTimer();
 	void Start();
 	DWORD Time();
 	BOOL Elapsed(DWORD * pStart, DWORD nInterval);

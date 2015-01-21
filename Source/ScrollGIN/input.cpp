@@ -1,5 +1,5 @@
 /*
-	input.cpp - routines for CInputManager DirectInput
+	input.cpp - routines for SgInputManager DirectInput
 
 	Copyright (c) 2002, Blaine Myers
 */
@@ -26,7 +26,7 @@ BOOL CALLBACK EnumAxis(LPCDIDEVICEOBJECTINSTANCE lpddoi, void* pvRef){
 	if(FAILED((*lpJoystick)->SetProperty(DIPROP_RANGE, &diprg.diph)))
 		return DIENUM_STOP;
 
-    return DIENUM_CONTINUE;
+	 return DIENUM_CONTINUE;
 }
 
 
@@ -52,7 +52,7 @@ BOOL CALLBACK EnumJoysticks(LPCDIDEVICEINSTANCE lpdii, void* pvRef){
 
 
 
-CInputManager::CInputManager(){
+SgInputManager::SgInputManager(){
 	//m_lpDIObject=NULL;
 	m_lpDIObject=NULL;
 	m_lpKeyboard=NULL;
@@ -65,14 +65,14 @@ CInputManager::CInputManager(){
 	m_bJoystick=FALSE;
 }
 
-CInputManager::~CInputManager(){
+SgInputManager::~SgInputManager(){
 	ShutDownDevices();
 	SAFE_RELEASE(m_lpDIObject);
 }
 
 
 
-HRESULT CInputManager::ShutDownDevices(){
+HRESULT SgInputManager::ShutDownDevices(){
 	if(m_lpKeyboard)m_lpKeyboard->Unacquire();
 	SAFE_RELEASE(m_lpKeyboard);
 
@@ -89,7 +89,7 @@ HRESULT CInputManager::ShutDownDevices(){
 }
 
 
-HRESULT CInputManager::CreateInputDevice(HINSTANCE hInst){
+HRESULT SgInputManager::CreateInputDevice(HINSTANCE hInst){
 	HRESULT hr;
 	
 	hr = DirectInput8Create(
@@ -103,7 +103,7 @@ HRESULT CInputManager::CreateInputDevice(HINSTANCE hInst){
 }
 
 
-HRESULT CInputManager::InitKeyboard(HWND hWnd){
+HRESULT SgInputManager::InitKeyboard(HWND hWnd){
 	/*
 		Getting the keyboard
 	*/
@@ -123,7 +123,7 @@ HRESULT CInputManager::InitKeyboard(HWND hWnd){
 	return hr;
 }
 
-HRESULT CInputManager::InitMouse(HWND hWnd){
+HRESULT SgInputManager::InitMouse(HWND hWnd){
 	if(!m_lpDIObject)return E_FAIL;
 	HRESULT hr;
 	//create mouse object
@@ -140,7 +140,7 @@ HRESULT CInputManager::InitMouse(HWND hWnd){
 	return hr;
 }
 
-HRESULT CInputManager::InitJoystick(HWND hWnd){
+HRESULT SgInputManager::InitJoystick(HWND hWnd){
 	/*
 		getting the joystick
 	*/
@@ -168,7 +168,7 @@ HRESULT CInputManager::InitJoystick(HWND hWnd){
 	return S_OK;
 }
 
-HRESULT CInputManager::CreateDevices(HWND hWnd, DWORD dwCreateFlags){
+HRESULT SgInputManager::CreateDevices(HWND hWnd, DWORD dwCreateFlags){
 	HRESULT hr=S_OK;
 
 	if(!m_lpDIObject)return E_FAIL;
@@ -190,7 +190,7 @@ HRESULT CInputManager::CreateDevices(HWND hWnd, DWORD dwCreateFlags){
 	return hr;
 }
 
-HRESULT CInputManager::ProcessJoystickInput(){
+HRESULT SgInputManager::ProcessJoystickInput(){
 	if(!m_lpJoystick)return E_FAIL;
 	if(!m_bJoystick)return E_FAIL;
 
@@ -212,7 +212,7 @@ HRESULT CInputManager::ProcessJoystickInput(){
 	return hr;
 }
 
-HRESULT CInputManager::ProcessMouseInput(){
+HRESULT SgInputManager::ProcessMouseInput(){
 	if(!m_lpMouse)return E_FAIL;
 	if(!m_bMouse)return E_FAIL;
 
@@ -238,7 +238,7 @@ HRESULT CInputManager::ProcessMouseInput(){
 	return hr;
 }
 
-HRESULT CInputManager::ProcessKeyboardInput(){
+HRESULT SgInputManager::ProcessKeyboardInput(){
 	if(!m_lpKeyboard)return E_FAIL;
 	if(!m_bKeyboard)return E_FAIL;
 	
@@ -266,7 +266,7 @@ HRESULT CInputManager::ProcessKeyboardInput(){
 	return hr;
 }
 
-HRESULT CInputManager::UpdateInputValues(){
+HRESULT SgInputManager::UpdateInputValues(){
 	if(!m_lpDIObject)return E_FAIL;
 	HRESULT hr=S_OK;
 	if(m_bKeyboard)if(FAILED(ProcessKeyboardInput()))hr=E_FAIL;
@@ -276,14 +276,14 @@ HRESULT CInputManager::UpdateInputValues(){
 	return hr;
 }
 
-BOOL CInputManager::GetEscapeStatus(){
+BOOL SgInputManager::GetEscapeStatus(){
 	if(!m_lpDIObject)return E_FAIL;
 	if(KEYDOWN(m_cKeyboardBuffer, DIK_ESCAPE))return TRUE;
 	else return FALSE;
 }
 
 
-DPAD CInputManager::GetDPad(){
+DPAD SgInputManager::GetDPad(){
 	if(!m_lpDIObject)return DP_CENTER;
 	BOOL up=FALSE, down=FALSE, left=FALSE, right=FALSE;
 
@@ -333,14 +333,14 @@ DPAD CInputManager::GetDPad(){
 	return DP_CENTER;
 }
 
-BOOL CInputManager::GetKeyState(int nKey){
+BOOL SgInputManager::GetKeyState(int nKey){
 	if(!m_lpDIObject)return FALSE;
 	if(!m_lpKeyboard)return FALSE;
 	if(KEYDOWN(m_cKeyboardBuffer, nKey))return TRUE;
 	else return FALSE;
 }
 
-BOOL CInputManager::GetButtonState(BYTE nButton){
+BOOL SgInputManager::GetButtonState(BYTE nButton){
 	if(!m_lpDIObject)return FALSE;
 	if(!m_lpJoystick)return FALSE;
 	if((m_jsState.rgbButtons[nButton]&0x80)==0x80)return TRUE;

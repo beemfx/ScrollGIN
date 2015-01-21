@@ -11,32 +11,32 @@ extern DWORD g_nDeviceWidth;
 extern DWORD g_nDeviceHeight;
 */
 
-CBackground::CBackground(){
+SgBackground::SgBackground(){
 	m_nCurrentImage=0;
 	m_nScrollMode=FOUR_DIRECTIONS;
 }
 
-CBackground::~CBackground(){
+SgBackground::~SgBackground(){
 
 }
 
-SgRendererImage* CBackground::LetPointer(int nImage){
+SgRendererImage* SgBackground::LetPointer(int nImage){
 	if(nImage<m_nCurrentImage || nImage>MAX_BACKGROUNDS)return NULL;
 	return m_cBackgroundImage[nImage-1];
 }
 
-void CBackground::SetScrollMode(SCROLLMODE nNewMode){
+void SgBackground::SetScrollMode(SCROLLMODE nNewMode){
 	m_nScrollMode=nNewMode;
 }
 
-bool CBackground::DrawBackgrounds(int x, int y, DWORD dwWidth, DWORD dwHeight){
+bool SgBackground::DrawBackgrounds(int x, int y, DWORD dwWidth, DWORD dwHeight){
 	for(int i=0; i<m_nCurrentImage; i++){
 		DisplayBackground(i+1, x, y, dwWidth, dwHeight);
 	}
 	return TRUE;
 }
 
-HRESULT CBackground::DisplayBackground(int nBGLayer, int x, int y, DWORD dwWidth, DWORD dwHeight){
+HRESULT SgBackground::DisplayBackground(int nBGLayer, int x, int y, DWORD dwWidth, DWORD dwHeight){
 	//check scrollmode and disable necessary scrolling
 	switch(m_nScrollMode){
 		case FOUR_DIRECTIONS:break;
@@ -62,7 +62,7 @@ HRESULT CBackground::DisplayBackground(int nBGLayer, int x, int y, DWORD dwWidth
 	return S_OK;
 }
 
-HRESULT CBackground::LoadBackgroundImage(
+HRESULT SgBackground::LoadBackgroundImage(
 	char szBitmapName[MAX_PATH], 
 	int nScrollRatio,
 	DWORD dwDeviceWidth,
@@ -80,7 +80,7 @@ HRESULT CBackground::LoadBackgroundImage(
 	return E_FAIL;
 }
 
-HRESULT CBackground::LoadBackgroundImage(
+HRESULT SgBackground::LoadBackgroundImage(
 	int nImage, char szBitmapName[MAX_PATH], 
 	int nScrollRatio,
 	DWORD dwDeviceWidth,
@@ -125,7 +125,7 @@ HRESULT CBackground::LoadBackgroundImage(
 	return S_OK;
 }
 
-void CBackground::Release(){
+void SgBackground::Release(){
 	for(int i=0; i<m_nCurrentImage; i++)
 		Renderer_DestroySprite( m_cBackgroundImage[i] );
 }
