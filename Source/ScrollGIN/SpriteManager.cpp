@@ -35,9 +35,8 @@ void SgSpriteManager::InsertSprites(int nSprite, const char* szFilename)
 	m_nNumSprites=nSprite;
 	CImageArchive ILibrary;
 
-	HRESULT hr=0;
-	hr=ILibrary.LoadArchive(szFilename);
-	if(FAILED(hr))return;
+	bool Res = ILibrary.LoadArchive(szFilename);
+	if(!(Res))return;
 	//The following algorithm loads all sprites from library
 	DWORD i=0, j=0, nFrames=0;
 	HBITMAP hBitmap=0;
