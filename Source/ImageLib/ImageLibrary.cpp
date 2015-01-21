@@ -17,9 +17,9 @@ CImageLibrary::CImageLibrary(){
 	ZeroMemory(m_szBitmapFilenameA, sizeof(m_szBitmapFilenameA));
 	ZeroMemory(m_szBitmapFilenameW, sizeof(m_szBitmapFilenameW));
 	*/
-	for(int i=0; i<MAX_BITMAPS; i++){
+	for(int i=0; i<MAX_BITMAPS; i++)
+	{
 		m_szBitmapFilenameA[i][0]=0;
-		m_szBitmapFilenameW[i][0]=0;
 		m_hBitmap[i]=NULL;
 	}
 }
@@ -29,7 +29,8 @@ CImageLibrary::~CImageLibrary(){
 	CloseMainBitmaps();
 }
 
-BOOL CImageLibrary::GetImageData(DWORD nEntry, IMAGEDATA *imgData){
+BOOL CImageLibrary::GetImageData(DWORD nEntry, IMAGEDATA *imgData)
+{
 	if((nEntry<1) || (nEntry>m_nNumImages))return FALSE;
 
 	imgData->nBitmap=m_pImageData[nEntry-1].nBitmap;
@@ -41,21 +42,21 @@ BOOL CImageLibrary::GetImageData(DWORD nEntry, IMAGEDATA *imgData){
 	imgData->nX=m_pImageData[nEntry-1].nX;
 	imgData->nY=m_pImageData[nEntry-1].nY;
 
-	wcscpy(imgData->szImgLabel, m_pImageData[nEntry-1].szImgLabel);
+	wcscpy_s(imgData->szImgLabel, countof(imgData->szImgLabel), m_pImageData[nEntry-1].szImgLabel);
 
 	return TRUE;
 }
 
-WORD CImageLibrary::GetNumFrames(DWORD nEntry){
+WORD CImageLibrary::GetNumFrames(DWORD nEntry)
+{
 	//return 0 if image doesn't exist
 	if((nEntry<1) || (nEntry>m_nNumImages))return 0;
 
 	return m_pImageData[nEntry-1].nFrames;
 }
 
-BOOL CImageLibrary::GetImageNameA(char szImageName[], DWORD nEntry){
-	
-
+BOOL CImageLibrary::GetImageName(char* Out, size_t OutSize , DWORD nEntry )
+{
 	char szTemp[IMAGE_NAME_LENGTH];
 
 	BOOL result=FALSE;
@@ -70,66 +71,52 @@ BOOL CImageLibrary::GetImageNameA(char szImageName[], DWORD nEntry){
 		NULL,
 		NULL);
 
-	strcpy(szImageName, szTemp);
+	strcpy_s( Out, OutSize , szTemp);
 	return result;
 }
 
-BOOL CImageLibrary::GetImageNameW(WCHAR szImageName[], DWORD nEntry){
-	if((nEntry<1) || (nEntry>m_nNumImages))return FALSE;
-	wcscpy(szImageName, m_pImageData[nEntry-1].szImgLabel);
-	return TRUE;
-}
-
-HBITMAP CImageLibrary::GetBitmap(WORD nBitmap){
+HBITMAP CImageLibrary::GetBitmap(WORD nBitmap)
+{
 	if((nBitmap<1) || (nBitmap>MAX_BITMAPS))return NULL;
 
 	return m_hBitmap[nBitmap-1];
 }
 
-DWORD CImageLibrary::GetNumEntries(){
+DWORD CImageLibrary::GetNumEntries()
+{
 	return m_nNumImages;
 }
 
 
-HRESULT CImageLibrary::OpenBitmapA(LPSTR szFilename, WORD nBitmap){
-	return OpenBitmapOffsetA(szFilename, 0, nBitmap);
+HRESULT CImageLibrary::OpenBitmap(LPSTR szFilename, WORD nBitmap)
+{
+	return OpenBitmapOffset(szFilename, 0, nBitmap);
 }
 
-HRESULT CImageLibrary::OpenBitmapW(LPWSTR szFilename, WORD nBitmap){
-	return OpenBitmapOffsetW(szFilename, 0, nBitmap);
-}
-
-HRESULT CImageLibrary::OpenBitmapOffsetA(LPCSTR szFilename, DWORD nOffset, WORD nBitmap){
+HRESULT CImageLibrary::OpenBitmapOffset(LPCSTR szFilename, DWORD nOffset, WORD nBitmap)
+{
 	if( (nBitmap<1) || (nBitmap>MAX_BITMAPS) )return E_FAIL;
 
 	CloseHandle(m_hBitmap[nBitmap-1]);
 	m_hBitmap[nBitmap-1]=LoadBitmapOffsetA(szFilename, nOffset);
 
 	if(m_hBitmap[nBitmap-1] == NULL)return E_FAIL;
-	strcpy(m_szBitmapFilenameA[nBitmap-1], szFilename);
+	strcpy_s(m_szBitmapFilenameA[nBitmap-1], countof(m_szBitmapFilenameA[nBitmap-1]), szFilename);
 	return S_OK;
 }
 
-HRESULT CImageLibrary::OpenBitmapOffsetW(LPCWSTR szFilename, DWORD nOffset, WORD nBitmap){
-	if( (nBitmap<1) || (nBitmap>MAX_BITMAPS) )return E_FAIL;
-
-	CloseHandle(m_hBitmap[nBitmap-1]);
-	m_hBitmap[nBitmap-1]=LoadBitmapOffsetW(szFilename, nOffset);
-
-	if(m_hBitmap[nBitmap-1] == NULL)return E_FAIL;
-	wcscpy(m_szBitmapFilenameW[nBitmap-1], szFilename);
-	return S_OK;
-}
-
-void CImageLibrary::CloseMainBitmaps(){
-	for(int i=0; i<m_nNumBitmaps; i++){
+void CImageLibrary::CloseMainBitmaps()
+{
+	for(int i=0; i<m_nNumBitmaps; i++)
+	{
 		DeleteObject(m_hBitmap[i]);
 	}
 	m_nNumBitmaps=0;
 }
 
 
-HRESULT CImageLibrary::ClearDataBase(){
+HRESULT CImageLibrary::ClearDataBase()
+{
 	for(DWORD i=0;i<m_nNumImages;i++){
 		ZeroMemory(&m_pImageData[i], sizeof(IMAGEDATA));
 	}
@@ -142,12 +129,7 @@ HRESULT CImageLibrary::ClearDataBase(){
 }
 
 
-HRESULT CImageLibrary::CopyImageToDC(
-	HDC hdcDest, 
-	DWORD nEntry, 
-	int x, 
-	int y, 
-	BOOL bTransp)
+HRESULT CImageLibrary::CopyImageToDC(HDC hdcDest, DWORD nEntry, int x, int y, BOOL bTransp)
 {
 	HDC hdcMainBitmap=NULL;
 
@@ -191,20 +173,14 @@ HRESULT CImageLibrary::CopyImageToDC(
 	return S_OK;
 }
 
-WORD CImageLibrary::GetNumBitmaps(){
+WORD CImageLibrary::GetNumBitmaps()
+{
 	return m_nNumBitmaps;
 }
 
-HRESULT CImageLibrary::StretchImageToDC(
-	HDC hdcDest, 
-	DWORD nEntry, 
-	int x, 
-	int y, 
-	int nWidth, 
-	int nHeight, 
-	BOOL bTransp)
+HRESULT CImageLibrary::StretchImageToDC(HDC hdcDest, DWORD nEntry, int x, int y, int nWidth, int nHeight, BOOL bTransp)
 {
-HDC hdcMainBitmap=NULL;
+	HDC hdcMainBitmap=NULL;
 
 	if( (nEntry<1) || (nEntry>m_nNumImages) )return S_FALSE;
 
@@ -246,18 +222,11 @@ HDC hdcMainBitmap=NULL;
 	return S_OK;
 }
 
-void CImageLibrary::GetBitmapNameA(char szName[], WORD nBitmap){
+void CImageLibrary::GetBitmapName(char* Out, size_t OutSize, WORD nBitmap)
+{
 	if((nBitmap<1)||(nBitmap>m_nNumBitmaps)){
-		strcpy(szName, "");
+		strcpy_s(Out, OutSize, "");
 	}else{
-		strcpy(szName, m_szBitmapFilenameA[nBitmap-1]);
-	}
-}
-
-void CImageLibrary::GetBitmapNameW(WCHAR szName[], WORD nBitmap){
-	if((nBitmap<1)||(nBitmap>m_nNumBitmaps)){
-		wcscpy(szName, L"");
-	}else{
-		wcscpy(szName, m_szBitmapFilenameW[nBitmap-1]);
+		strcpy_s(Out, OutSize, m_szBitmapFilenameA[nBitmap-1]);
 	}
 }

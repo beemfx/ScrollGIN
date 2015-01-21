@@ -95,10 +95,10 @@ BOOL EditUpdate(HWND hwnd){
 
 		SetDlgItemInt(hwnd, IDC_ENTRYNUMBER, dwCurrentImage, FALSE);
 
-		ILibrary.GetBitmapName(szTemp, id.nBitmap);
+		ILibrary.GetBitmapName(szTemp, countof(szTemp), id.nBitmap);
 		SetDlgItemText(hwnd, IDC_BITMAPNAME, szTemp);
 		
-		ILibrary.GetImageName(szTemp, dwCurrentImage);
+		ILibrary.GetImageName(szTemp, countof(szTemp), dwCurrentImage);
 		SetDlgItemText(hwnd, IDC_LABEL, szTemp);
 		
 		SetDlgItemInt(hwnd, IDC_BMPNUMBER, id.nBitmap, FALSE);
@@ -413,7 +413,7 @@ LRESULT CALLBACK ViewProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
 void SetEditWndText(HWND hwnd, TCHAR szSaveFile[MAX_PATH]){
 	TCHAR szText[MAX_PATH+13];
 
-	_stprintf(szText, TEXT("ImageEdit [%s]"), szSaveFile);
+	_stprintf_s(szText, countof(szText), TEXT("ImageEdit [%s]"), szSaveFile);
 	SetWindowText(hwnd, szText);
 }
 
@@ -541,8 +541,8 @@ BOOL CALLBACK BitmapProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
 		TCHAR szBitmapName[MAX_PATH];
 		TCHAR szFinalString[MAX_PATH+3];
 		for(int i=1; i<=ILibrary.GetNumBitmaps(); i++){
-			ILibrary.GetBitmapName(szBitmapName, i);
-			_stprintf(szFinalString, TEXT("%i: %s"), i, szBitmapName);
+			ILibrary.GetBitmapName(szBitmapName, countof(szBitmapName), i);
+			_stprintf_s(szFinalString, countof(szFinalString), TEXT("%i: %s"), i, szBitmapName);
 			SendDlgItemMessage(hwnd, IDC_CURRENTBITMAPS, LB_ADDSTRING, 0, (LPARAM)szFinalString);
 		}
 		//SendDlgItemMessage(hwnd, IDC_CURRENTBITMAPS, CB_ADDSTRING, 0, (LPARAM)"Howdy");
@@ -563,7 +563,7 @@ BOOL CALLBACK BitmapProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
 				NotifyUser(hwnd, TEXT("Could not load selected image!"), P_HIGH, EL_FAIL);
 			}else{
 				TCHAR szFinalString[MAX_PATH+3];
-				_stprintf(szFinalString, TEXT("%i: %s"), ILibrary.GetNumBitmaps(), szNewBitmap);
+				_stprintf_s(szFinalString, countof(szFinalString), TEXT("%i: %s"), ILibrary.GetNumBitmaps(), szNewBitmap);
 				SendDlgItemMessage(hwnd, IDC_CURRENTBITMAPS, LB_ADDSTRING, 0, (LPARAM)szFinalString);
 			}
 			break;
