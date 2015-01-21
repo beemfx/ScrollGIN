@@ -34,18 +34,9 @@ int SgScrollGINGame::IsPaused()
 
 int SgScrollGINGame::Render()
 {
-	DrawMapBoard(
-		&m_Viewport,
-		&m_Mapboard,
-		&m_TileManager,
-		&m_Background);
+	DrawMapBoard();
 
-	
-	if(m_lpObjectManager)
-		m_lpObjectManager->Animate(
-			&m_Mapboard,
-			&m_Viewport,
-			&m_Input);
+	m_lpObjectManager->Animate(&m_Mapboard,&m_Viewport,&m_Input);
 
 	return 1;
 }
@@ -82,14 +73,24 @@ int SgScrollGINGame::GameInit(
 
 int SgScrollGINGame::LoadMap(LPTSTR szFilename)
 {
-	return LoadMapBoard(
-		szFilename,
-		m_dwWidth,
-		m_dwHeight,
-		&m_Mapboard,
-		&m_Background,
-		&m_TileManager,
-		&m_Viewport);
+	char szLibraryName[MAX_PATH];
+	char szBGName[MAX_PATH];
+	BOOL bResult=TRUE;
+	if(FAILED(m_Mapboard.LoadMap(szFilename)))return FALSE;
+	m_Mapboard.GetLibraryName(szLibraryName);
+	
+	m_Viewport.set_world_dimensions(m_Mapboard.GetMapWidth()*m_Mapboard.GetTileDim(), m_Mapboard.GetMapHeight()*m_Mapboard.GetTileDim());
+	m_Viewport.force_position(0, 0);
+	
+	//get library and load it
+	m_TileManager.ClearTileDatabase();
+	if(FAILED(m_TileManager.CreateTilesFromLibrary(szLibraryName, &m_Mapboard)))bResult=FALSE;
+
+	//get background and load it
+	m_Mapboard.GetBGName(szBGName);
+	m_Background.LoadBackgroundImage(szBGName, 2, m_dwWidth, m_dwHeight);
+
+	return bResult;
 }
 
 int SgScrollGINGame::Release()
@@ -102,14 +103,12 @@ int SgScrollGINGame::Release()
 	return 1;
 }
 
-int SgScrollGINGame::PreRenderProcess()
+void SgScrollGINGame::Update()
 {
 	m_Input.UpdateInputValues();
-	
-	return 1;
 }
 
-int SgScrollGINGame::IsKeyPressed(int nKey)
+bool SgScrollGINGame::IsKeyPressed(int nKey)
 {
 	return m_Input.GetKeyState(nKey);
 }
@@ -122,17 +121,13 @@ int SgScrollGINGame::Shutdown()
 	return 1;
 }
 
-BOOL SgScrollGINGame::DrawMapBoard(
-	SgViewPort * pViewport, 
-	CMapBoard * pMap, 
-	SgTileManager * pTileManager,
-	SgBackground * pBG)
+void SgScrollGINGame::DrawMapBoard()
 {
 
 	//draw the background
-	pBG->DrawBackgrounds(
-		pViewport->GetScreenXPos()-640/2, 
-		pViewport->GetScreenYPos()-480/2,
+	m_Background.DrawBackgrounds(
+		m_Viewport.GetScreenXPos()-640/2, 
+		m_Viewport.GetScreenYPos()-480/2,
 		640,
 		480);
 
@@ -144,48 +139,18 @@ BOOL SgScrollGINGame::DrawMapBoard(
 	//we do it anyway).
 	int nXStart=0, nYStart=0, nXEnd=0, nYEnd=0;
 	
-	nXStart=(pViewport->GetScreenXPos()-640/2)/pMap->GetTileDim() + 1;
-	nYStart=(pViewport->GetScreenYPos()-480/2)/pMap->GetTileDim() + 1;
+	nXStart=(m_Viewport.GetScreenXPos()-640/2)/m_Mapboard.GetTileDim() + 1;
+	nYStart=(m_Viewport.GetScreenYPos()-480/2)/m_Mapboard.GetTileDim() + 1;
 
-	nXEnd=(pViewport->GetScreenXPos()+640/2)/pMap->GetTileDim() + 1;//map->GetMapWidth();
-	nYEnd=(pViewport->GetScreenYPos()+480/2)/pMap->GetTileDim() + 1;//map->GetMapHeight();
+	nXEnd=(m_Viewport.GetScreenXPos()+640/2)/m_Mapboard.GetTileDim() + 1;//map->GetMapWidth();
+	nYEnd=(m_Viewport.GetScreenYPos()+480/2)/m_Mapboard.GetTileDim() + 1;//map->GetMapHeight();
 
 	for(int x=nXStart; x<=nXEnd; x++){
 		for(int y=nYStart; y<=nYEnd; y++){
-			pTileManager->PlaceTile(
-				pMap->GetTile(x, y), 
-				pViewport->screenX(x*pMap->GetTileDim()-pMap->GetTileDim()), 
-				pViewport->screenY(y*pMap->GetTileDim()-pMap->GetTileDim()));
+			m_TileManager.PlaceTile(
+				m_Mapboard.GetTile(x, y), 
+				m_Viewport.screenX(x*m_Mapboard.GetTileDim()-m_Mapboard.GetTileDim()), 
+				m_Viewport.screenY(y*m_Mapboard.GetTileDim()-m_Mapboard.GetTileDim()));
 		}
 	}
-	return TRUE;
-}
-
-BOOL SgScrollGINGame::LoadMapBoard(
-	LPTSTR szFilename,
-	DWORD dwScreenWidth,
-	DWORD dwScreenHeight,
-	CMapBoard * pMap,
-	SgBackground * pBG,
-	SgTileManager * pTileMgr,
-	SgViewPort * pView)
-{
-	char szLibraryName[MAX_PATH];
-	char szBGName[MAX_PATH];
-	BOOL bResult=TRUE;
-	if(FAILED(pMap->LoadMap(szFilename)))return FALSE;
-	pMap->GetLibraryName(szLibraryName);
-	
-	pView->set_world_dimensions(pMap->GetMapWidth()*pMap->GetTileDim(), pMap->GetMapHeight()*pMap->GetTileDim());
-	pView->force_position(0, 0);
-	
-	//get library and load it
-	pTileMgr->ClearTileDatabase();
-	if(FAILED(pTileMgr->CreateTilesFromLibrary(szLibraryName, pMap)))bResult=FALSE;
-
-	//get background and load it
-	pMap->GetBGName(szBGName);
-	pBG->LoadBackgroundImage(szBGName, 2, dwScreenWidth, dwScreenHeight);
-
-	return bResult;
 }

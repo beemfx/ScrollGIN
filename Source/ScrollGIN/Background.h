@@ -9,15 +9,14 @@
 
 #include "defines.h"
 #include "../Renderer2/Renderer.h"
-#include <windows.h>
 
-typedef enum tagSCROLLMODE
+enum SCROLLMODE
 {
-	FOUR_DIRECTIONS=0, 
+	FOUR_DIRECTIONS, 
 	LEFT_RIGHT, 
 	UP_DOWN, 
-	NO_SCROLL
-}SCROLLMODE;
+	NO_SCROLL,
+};
 
 class SgBackground{
 private:
@@ -30,10 +29,10 @@ public:
 	~SgBackground(); //destructor
 	void Release(); //release
 	void SetScrollMode(SCROLLMODE nNewMode); //sets current scroll mode
-	bool DrawBackgrounds(int x, int y, DWORD dwWidth, DWORD dwHeight); //draw all backgrounds
-	HRESULT DisplayBackground(int BGLayer, int x, int y, DWORD dwWidth, DWORD dwHeight); //displays chosen background
-	HRESULT LoadBackgroundImage(int nImage, char szBitmapName[MAX_PATH], int nScrollRatio,DWORD dwDeviceWidth,DWORD dwDeviceHeight); //creates a background layer in given slot
-	HRESULT LoadBackgroundImage(char szBitmapName[MAX_PATH], int nScrollRatio,DWORD dwDeviceWidth,DWORD dwDeviceHeight); //creates background layer in next available slot
+	void DrawBackgrounds(int x, int y, int dwWidth, int dwHeight); //draw all backgrounds
+	void DisplayBackground(int BGLayer, int x, int y, int dwWidth, int dwHeight); //displays chosen background
+	bool LoadBackgroundImage(int nImage, const char* szBitmapName, int nScrollRatio,int dwDeviceWidth,int dwDeviceHeight); //creates a background layer in given slot
+	bool LoadBackgroundImage(const char* szBitmapName, int nScrollRatio,int dwDeviceWidth,int dwDeviceHeight); //creates background layer in next available slot
 	SgRendererImage* LetPointer(int nImage); //relases a pointer to a background image
 };
 

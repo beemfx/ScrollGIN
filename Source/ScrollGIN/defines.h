@@ -27,14 +27,4 @@
 
 #define MAX_BACKGROUNDS 5
 
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
-#define COLOR_DEPTH 16
-
-
-//Custom DataTypes
-enum ActorStatus{AS_STANDING=0, AS_RUNNING, AS_DUCKING, AS_SLIDING, AS_JUMPING, AS_FALLING};
-enum ActorFace{AF_LEFT=0, AF_RIGHT};
-
-
 #endif // Defines.h

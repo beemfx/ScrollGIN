@@ -72,9 +72,9 @@ public:
 	HRESULT CreateDevices(HWND hWnd, DWORD dwCreateFlags); //creates the devices, specify which deviceswith createflags
 	HRESULT UpdateInputValues(); //updates input values
 	DPAD GetDPad(); //gets the direction of the d-pad
-	BOOL GetEscapeStatus(); //This function is only for development
-	BOOL GetKeyState(int nKey); //gets state of key
-	BOOL GetButtonState(BYTE nButton);
+	bool GetEscapeStatus(); //This function is only for development
+	bool GetKeyState(int nKey); //gets state of key
+	bool GetButtonState(BYTE nButton);
 };
 
 #endif //__input_h__
