@@ -19,7 +19,7 @@ typedef struct tagSPRITECREATESTRUCT{
 
 class CSpriteManager{
 private:
-	CSprite	m_cSprite[MAX_SPRITES]; //the sprites
+	SgSprite	m_cSprite[MAX_SPRITES]; //the sprites
 	int	m_nNumSprites; //indicates how many sprites are available
 	const DWORD m_dwMaxSprites;
 public:
@@ -32,8 +32,8 @@ public:
 	
 	void ClearDataBase(); //this function clears the database
 
-	CSprite* LetPointer(int nSpriteIndex); //Gives out a pointer to a sprite
-	CSprite* LetPointer(LPTSTR szSpriteName);//Give out a pointer to a sprite by name
+	SgSprite* LetPointer(int nSpriteIndex); //Gives out a pointer to a sprite
+	SgSprite* LetPointer(LPTSTR szSpriteName);//Give out a pointer to a sprite by name
 	HRESULT DisplaySprite(
 		int nSprite, 
 		int nFrame, 

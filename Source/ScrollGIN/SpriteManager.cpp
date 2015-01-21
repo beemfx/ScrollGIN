@@ -10,7 +10,6 @@
 */
 
 #include <stdio.h>
-#include <tchar.h>
 #include "../ImageLib/ImageLib.h"
 #include "spritemanager.h"
 
@@ -42,7 +41,7 @@ HRESULT CSpriteManager::CreateSpritesFromFile(DWORD nSprite, LPTSTR szFilename){
 	DWORD i=0, j=0, nFrames=0;
 	HBITMAP hBitmap=0;
 	IMAGEDATA id;
-	TCHAR szImageName[IMAGE_NAME_LENGTH];
+	char szImageName[IMAGE_NAME_LENGTH];
 	ZeroMemory(&id, sizeof(IMAGEDATA));
 
 	//loop for each of the entries
@@ -116,16 +115,16 @@ void CSpriteManager::ClearDataBase(){
 //LetPointer() function release the address of the sprite
 //of the chosen index, to allow another class to use that sprite
 //directly.
-CSprite* CSpriteManager::LetPointer(int nSpriteIndex){
+SgSprite* CSpriteManager::LetPointer(int nSpriteIndex){
 	if((nSpriteIndex<1) || (nSpriteIndex>(int)m_dwMaxSprites))return NULL;
 	return &m_cSprite[nSpriteIndex-1];
 }
 
-CSprite* CSpriteManager::LetPointer(LPTSTR szSpriteName){
-	TCHAR szTempSpriteName[MAX_SPRITE_NAME_LENGTH+1];
+SgSprite* CSpriteManager::LetPointer(LPTSTR szSpriteName){
+	char szTempSpriteName[MAX_SPRITE_NAME_LENGTH+1];
 	for(int i=0; i<m_nNumSprites; i++){
 		m_cSprite[i].GetSpriteName(szTempSpriteName);
-		if(_tcscmp(szTempSpriteName, szSpriteName)==0)
+		if(strcmp(szTempSpriteName, szSpriteName)==0)
 			return LetPointer(i+1);
 	}
 	return NULL;

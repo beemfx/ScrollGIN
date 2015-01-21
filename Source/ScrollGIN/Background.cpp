@@ -63,7 +63,7 @@ HRESULT CBackground::DisplayBackground(int nBGLayer, int x, int y, DWORD dwWidth
 }
 
 HRESULT CBackground::LoadBackgroundImage(
-	TCHAR szBitmapName[MAX_PATH], 
+	char szBitmapName[MAX_PATH], 
 	int nScrollRatio,
 	DWORD dwDeviceWidth,
 	DWORD dwDeviceHeight){
@@ -81,7 +81,7 @@ HRESULT CBackground::LoadBackgroundImage(
 }
 
 HRESULT CBackground::LoadBackgroundImage(
-	int nImage, TCHAR szBitmapName[MAX_PATH], 
+	int nImage, char szBitmapName[MAX_PATH], 
 	int nScrollRatio,
 	DWORD dwDeviceWidth,
 	DWORD dwDeviceHeight){

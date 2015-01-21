@@ -6,6 +6,5 @@
 
 #ifndef __ERROR_H__
 #define __ERROR_H__
-#include <windows.h>
-void SetError(LPCTSTR szString);
+void SetError(const char* szString);
 #endif //__error_h__
