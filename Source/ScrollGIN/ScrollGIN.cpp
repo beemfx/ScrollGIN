@@ -14,7 +14,7 @@ SgScrollGINGame::SgScrollGINGame()
 
 SgScrollGINGame::~SgScrollGINGame()
 {
-	SAFE_DELETE(m_lpObjectManager);
+
 }
 
 int SgScrollGINGame::Pause(BOOL bPause)
@@ -118,9 +118,7 @@ int SgScrollGINGame::Shutdown()
 {
 	if(m_lpObjectManager)
 		m_lpObjectManager->ClearObjects();
-
-	SAFE_DELETE(m_lpObjectManager);
-
+	m_lpObjectManager = 0;
 	return 1;
 }
 
