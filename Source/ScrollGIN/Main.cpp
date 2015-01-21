@@ -44,8 +44,7 @@ HRESULT GameInit(HWND hWnd, BOOL bWindowed, HINSTANCE hInstance, int nShowCmd)
 
 static void GameShutdown()
 {
-	Game.Release();
-	Game.Shutdown();
+	Game.Deinit();
 	delete Joes2ObjMan;
 	
 	//we need to release the screen buffers.

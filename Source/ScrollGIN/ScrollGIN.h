@@ -23,28 +23,25 @@ protected:
 	CMapBoard        m_Mapboard;
 	SgBackground     m_Background;
 	SgObjectManager* m_lpObjectManager;
-	BOOL             m_bInitialized;
-	DWORD            m_dwWidth;
-	DWORD            m_dwHeight;
+	bool             m_bInitialized;
+	int              m_dwWidth;
+	int              m_dwHeight;
 public:
 	SgScrollGINGame();
 	~SgScrollGINGame();
 
-	int Init(DWORD dwWidth, DWORD dwHeight, SgObjectManager* lpObjMan, HWND hwnd);
-	int Shutdown();
+	void Init(int dwWidth, int dwHeight, SgObjectManager* lpObjMan , HWND hwnd );
+	void Deinit();
 
-	int Pause(BOOL bPause);
-	int TogglePause();
-	int IsPaused();
-
-	int Release();
-
-	int Render();
+	void Pause(bool bPause);
+	void TogglePause();
+	bool IsPaused()const;
 
 	void Update();
+	void Render();
 
 	bool IsKeyPressed(int nKey);
-	int LoadMap(LPTSTR szFilename);
+	void LoadMap(const char* szFilename);
 
 private:
 	void DrawMapBoard();

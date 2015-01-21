@@ -24,7 +24,7 @@ public:
 	BOOL Elapsed(DWORD * pStart, DWORD nInterval);
 	BOOL Pause(BOOL bPause);
 	BOOL TogglePause();
-	BOOL IsPaused();
+	BOOL IsPaused()const;
 };
 
 

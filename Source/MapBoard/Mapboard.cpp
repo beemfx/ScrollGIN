@@ -113,7 +113,7 @@ void CMapBoard::ClearMap(){
 	m_lpMapFilenameW[0]=m_lpLibraryFilenameW[0]=m_lpBGFilenameW[0]=NULL;
 }
 
-HRESULT CMapBoard::LoadMapA(LPSTR lpMapFilename){
+HRESULT CMapBoard::LoadMapA(LPCSTR lpMapFilename){
 	HANDLE hFile;
 	//Open the file
 	hFile=CreateFileA(lpMapFilename, GENERIC_READ, FILE_SHARE_READ, (LPSECURITY_ATTRIBUTES)NULL,
@@ -186,7 +186,7 @@ HRESULT CMapBoard::LoadMapA(LPSTR lpMapFilename){
 	return S_OK;
 }
 
-HRESULT CMapBoard::LoadMapW(LPWSTR lpMapFilename){
+HRESULT CMapBoard::LoadMapW(LPCWSTR lpMapFilename){
 	HANDLE hFile;
 	//Open the file
 	hFile=CreateFileW(lpMapFilename, GENERIC_READ, FILE_SHARE_READ, (LPSECURITY_ATTRIBUTES)NULL,

@@ -57,6 +57,7 @@ BOOL SgTimer::TogglePause(){
 		return Pause(TRUE);
 }
 
-BOOL SgTimer::IsPaused(){
+BOOL SgTimer::IsPaused()const
+{
 	return m_bPaused;
 }
