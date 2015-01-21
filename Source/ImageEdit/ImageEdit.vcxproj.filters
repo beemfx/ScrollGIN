@@ -23,15 +23,6 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\ImageLib\EditImageLibrary.cpp">
-      <Filter>ImageLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ImageLib\ImageArchive.cpp">
-      <Filter>ImageLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ImageLib\ImageLibrary.cpp">
-      <Filter>ImageLib</Filter>
-    </ClCompile>
     <ClCompile Include="..\ImageLib\Bitmap.c">
       <Filter>ImageLib</Filter>
     </ClCompile>
@@ -46,6 +37,9 @@
     </ClCompile>
     <ClCompile Include="..\img_lib\img_tga.c">
       <Filter>img_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ImageLib\ImgLib.cpp">
+      <Filter>ImageLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -62,9 +56,6 @@
     <ClInclude Include="DiskDlg.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\ImageLib\ImageLib.h">
-      <Filter>ImageLib</Filter>
-    </ClInclude>
     <ClInclude Include="..\ImageLib\bitmapex.h">
       <Filter>ImageLib</Filter>
     </ClInclude>
@@ -76,6 +67,9 @@
     </ClInclude>
     <ClInclude Include="..\img_lib\img_private.h">
       <Filter>img_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ImageLib\ImgLib.h">
+      <Filter>ImageLib</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -68,15 +68,6 @@
     <ClCompile Include="..\ImageLib\Bitmap.c">
       <Filter>ImageLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\ImageLib\EditImageLibrary.cpp">
-      <Filter>ImageLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ImageLib\ImageArchive.cpp">
-      <Filter>ImageLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ImageLib\ImageLibrary.cpp">
-      <Filter>ImageLib</Filter>
-    </ClCompile>
     <ClCompile Include="..\Renderer2\Renderer.cpp">
       <Filter>Renderer2</Filter>
     </ClCompile>
@@ -97,6 +88,9 @@
     </ClCompile>
     <ClCompile Include="..\MapBoard\SgMap.cpp">
       <Filter>MapBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ImageLib\ImgLib.cpp">
+      <Filter>ImageLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -147,9 +141,6 @@
     <ClInclude Include="..\ImageLib\bitmapex.h">
       <Filter>ImageLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\ImageLib\ImageLib.h">
-      <Filter>ImageLib</Filter>
-    </ClInclude>
     <ClInclude Include="..\Renderer2\Renderer.h">
       <Filter>Renderer2</Filter>
     </ClInclude>
@@ -173,6 +164,9 @@
     </ClInclude>
     <ClInclude Include="..\MapBoard\SgMap.h">
       <Filter>MapBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ImageLib\ImgLib.h">
+      <Filter>ImageLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

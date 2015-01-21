@@ -56,7 +56,7 @@ struct BITMAPDATA
 };
 
 
-class CImageLibrary
+class SgImgLib
 {
 protected:
 	sg_uint32 m_nNumImages;
@@ -66,8 +66,8 @@ protected:
 	sg_uint16 m_nNumBitmaps;
 	
 public:
-	CImageLibrary();
-	~CImageLibrary();
+	SgImgLib();
+	~SgImgLib();
 
 	sg_uint32 GetNumEntries();
 	sg_uint16 GetNumBitmaps();
@@ -85,14 +85,14 @@ protected:
 	bool      OpenBitmapOffset(LPCSTR szFilename, sg_uint32 nOffset, sg_uint16 nBitmap);
 };
 
-class CEditImageLibrary: public CImageLibrary
+class SgImgLibEdit: public SgImgLib
 {
 protected:
 	sg_uint32 m_nMaxEntries;
 public:
-	CEditImageLibrary();
-	CEditImageLibrary(sg_uint32 nMaxEntries);
-	~CEditImageLibrary();
+	SgImgLibEdit();
+	SgImgLibEdit(sg_uint32 nMaxEntries);
+	~SgImgLibEdit();
 
 	bool    AddBitmap(LPSTR szFilename);
 	bool    AddEntry(sg_uint16 x, sg_uint16 y, sg_uint16 nWidthSrc, sg_uint16 nHeightSrc, sg_uint16 nWidth, sg_uint16 nHeight, sg_uint16 nBitmap, sg_uint16 nFrames, LPSTR szImageName);
@@ -106,13 +106,13 @@ public:
 	bool    ImportLibrary(LPSTR szFilename);
 };
 
-class CImageArchive: public CImageLibrary
+class SgImgLibArchive: public SgImgLib
 {
 protected:
 	sg_uint32 m_nSelectedEntry;
 public:
-	CImageArchive();
-	~CImageArchive();
+	SgImgLibArchive();
+	~SgImgLibArchive();
 
 	bool      LoadArchive(LPCSTR szFilename);
 	sg_uint32 GetSelectedEntry();

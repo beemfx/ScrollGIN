@@ -9,7 +9,7 @@
 	the ability to release a pointer, for other objects to use.
 */
 
-#include "../ImageLib/ImageLib.h"
+#include "ImageLib/ImgLib.h"
 #include "spritemanager.h"
 
 SgSpriteManager::SgSpriteManager():
@@ -33,7 +33,7 @@ void SgSpriteManager::InsertSprites(int nSprite, const char* szFilename)
 {
 	if((nSprite<1) || (nSprite>=MAX_SPRITES))return;
 	m_nNumSprites=nSprite;
-	CImageArchive ILibrary;
+	SgImgLibArchive ILibrary;
 
 	bool Res = ILibrary.LoadArchive(szFilename);
 	if(!(Res))return;

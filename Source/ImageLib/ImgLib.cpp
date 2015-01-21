@@ -1,30 +1,242 @@
 /*
-	EditImageLibrary.cpp - CEditImageLibrary class
+	ImageLibrary.cpp - The SgImgLib class
 
 	Copyright (c) 2003, Blaine Myers
 */
-
-#include "imagelib.h"
+#include "ImgLib.h"
+#include "bitmapex.h"
 #include <stdio.h>
 
-CEditImageLibrary::CEditImageLibrary()
+SgImgLib::SgImgLib()
+{
+	m_nNumImages=0;
+	m_nNumBitmaps=0;
+	m_pImageData=NULL;
+
+	for(int i=0; i<MAX_BITMAPS; i++)
+	{
+		m_szBitmapFilenameA[i][0]=0;
+		m_hBitmap[i]=NULL;
+	}
+}
+
+SgImgLib::~SgImgLib()
+{
+	SAFE_DELETE_ARRAY(m_pImageData);
+	CloseMainBitmaps();
+}
+
+bool SgImgLib::GetImageData(sg_uint32 nEntry, IMAGEDATA *imgData)
+{
+	if((nEntry<1) || (nEntry>m_nNumImages))return false;
+
+	*imgData = m_pImageData[nEntry-1];
+
+	return true;
+}
+
+sg_uint16 SgImgLib::GetNumFrames(sg_uint32 nEntry)
+{
+	//return 0 if image doesn't exist
+	if((nEntry<1) || (nEntry>m_nNumImages))return 0;
+
+	return m_pImageData[nEntry-1].nFrames;
+}
+
+bool SgImgLib::GetImageName(char* Out, size_t OutSize , sg_uint32 nEntry )
+{
+	char szTemp[IMAGE_NAME_LENGTH];
+
+	bool result = FALSE != WideCharToMultiByte(
+		CP_ACP, 
+		0, 
+		m_pImageData[nEntry-1].szImgLabel, 
+		-1,
+		szTemp,
+		IMAGE_NAME_LENGTH,
+		NULL,
+		NULL);
+
+	strcpy_s( Out, OutSize , szTemp);
+	return result;
+}
+
+HBITMAP SgImgLib::GetBitmap(sg_uint16 nBitmap)
+{
+	if((nBitmap<1) || (nBitmap>MAX_BITMAPS))return NULL;
+
+	return m_hBitmap[nBitmap-1];
+}
+
+sg_uint32 SgImgLib::GetNumEntries()
+{
+	return m_nNumImages;
+}
+
+
+bool SgImgLib::OpenBitmap(LPSTR szFilename, sg_uint16 nBitmap)
+{
+	return OpenBitmapOffset(szFilename, 0, nBitmap);
+}
+
+bool SgImgLib::OpenBitmapOffset(LPCSTR szFilename, sg_uint32 nOffset, sg_uint16 nBitmap)
+{
+	if( (nBitmap<1) || (nBitmap>MAX_BITMAPS) )return false;
+
+	DeleteObject(m_hBitmap[nBitmap-1]);
+	m_hBitmap[nBitmap-1]=LoadBitmapOffset(szFilename, nOffset);
+
+	if(m_hBitmap[nBitmap-1] == NULL)return false;
+	strcpy_s(m_szBitmapFilenameA[nBitmap-1], countof(m_szBitmapFilenameA[nBitmap-1]), szFilename);
+	return true;
+}
+
+void SgImgLib::CloseMainBitmaps()
+{
+	for(int i=0; i<m_nNumBitmaps; i++)
+	{
+		DeleteObject(m_hBitmap[i]);
+		m_hBitmap[i] = NULL;
+	}
+	m_nNumBitmaps=0;
+}
+
+
+void SgImgLib::ClearDataBase()
+{
+	for(sg_uint32 i=0;i<m_nNumImages;i++)
+	{
+		ZeroMemory(&m_pImageData[i], sizeof(IMAGEDATA));
+	}
+	m_nNumImages=0;
+	m_nNumBitmaps=0;
+	CloseMainBitmaps();
+	SAFE_DELETE_ARRAY(m_pImageData);
+	m_pImageData=NULL;
+}
+
+
+void SgImgLib::CopyImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, BOOL bTransp)
+{
+	HDC hdcMainBitmap=NULL;
+
+	if( (nEntry<1) || (nEntry>m_nNumImages) )return;
+
+	hdcMainBitmap=CreateCompatibleDC(hdcMainBitmap);
+	SelectObject(hdcMainBitmap, m_hBitmap[m_pImageData[nEntry-1].nBitmap-1]);
+
+
+	if(!bTransp){
+		StretchBlt(
+			hdcDest, 
+			x, 
+			y, 
+			m_pImageData[nEntry-1].nWidth, 
+			m_pImageData[nEntry-1].nHeight, 
+			hdcMainBitmap, 
+			m_pImageData[nEntry-1].nX,
+			m_pImageData[nEntry-1].nY, 
+			m_pImageData[nEntry-1].nWidthSrc, 
+			m_pImageData[nEntry-1].nHeightSrc, 
+			SRCCOPY);
+	}else{
+		TransparentBlt2(
+			hdcDest,
+			x,
+			y,
+			m_pImageData[nEntry-1].nWidth,
+			m_pImageData[nEntry-1].nHeight,
+			hdcMainBitmap,
+			m_pImageData[nEntry-1].nX,
+			m_pImageData[nEntry-1].nY, 
+			m_pImageData[nEntry-1].nWidthSrc, 
+			m_pImageData[nEntry-1].nHeightSrc,
+			RGB(255,0,255));
+
+	}
+
+	DeleteDC(hdcMainBitmap);
+}
+
+sg_uint16 SgImgLib::GetNumBitmaps()
+{
+	return m_nNumBitmaps;
+}
+
+void SgImgLib::StretchImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, int nWidth, int nHeight, BOOL bTransp)
+{
+	HDC hdcMainBitmap=NULL;
+
+	if( (nEntry<1) || (nEntry>m_nNumImages) )return;
+
+	hdcMainBitmap=CreateCompatibleDC(hdcMainBitmap);
+	SelectObject(hdcMainBitmap, m_hBitmap[m_pImageData[nEntry-1].nBitmap-1]);
+
+
+	if(!bTransp){
+		StretchBlt(
+			hdcDest, 
+			x, 
+			y, 
+			nWidth, 
+			nHeight, 
+			hdcMainBitmap, 
+			m_pImageData[nEntry-1].nX,
+			m_pImageData[nEntry-1].nY, 
+			m_pImageData[nEntry-1].nWidthSrc, 
+			m_pImageData[nEntry-1].nHeightSrc, 
+			SRCCOPY);
+	}else{
+		TransparentBlt2(
+			hdcDest,
+			x,
+			y,
+			nWidth,
+			nHeight,
+			hdcMainBitmap,
+			m_pImageData[nEntry-1].nX,
+			m_pImageData[nEntry-1].nY, 
+			m_pImageData[nEntry-1].nWidthSrc, 
+			m_pImageData[nEntry-1].nHeightSrc,
+			RGB(255,0,255));
+
+	}
+
+	DeleteDC(hdcMainBitmap);
+}
+
+void SgImgLib::GetBitmapName(char* Out, size_t OutSize, sg_uint16 nBitmap)
+{
+	if((nBitmap<1)||(nBitmap>m_nNumBitmaps)){
+		strcpy_s(Out, OutSize, "");
+	}else{
+		strcpy_s(Out, OutSize, m_szBitmapFilenameA[nBitmap-1]);
+	}
+}
+/***************************************************************************
+
+	SgImgLibEdit - For editing an SgImgLib
+
+***************************************************************************/
+
+SgImgLibEdit::SgImgLibEdit()
 {
 	m_pImageData=new IMAGEDATA[DEFAULT_MAX_ENTRIES];
 	m_nMaxEntries=DEFAULT_MAX_ENTRIES;
 }
 
-CEditImageLibrary::CEditImageLibrary(sg_uint32 nMaxEntries)
+SgImgLibEdit::SgImgLibEdit(sg_uint32 nMaxEntries)
 {
 	m_pImageData=new IMAGEDATA[nMaxEntries];
 	m_nMaxEntries=nMaxEntries;
 }
 
-CEditImageLibrary::~CEditImageLibrary()
+SgImgLibEdit::~SgImgLibEdit()
 {
 
 }
 
-bool CEditImageLibrary::AddBitmap(LPSTR szFilename)
+bool SgImgLibEdit::AddBitmap(LPSTR szFilename)
 {
 	if((m_nNumBitmaps<0) || (m_nNumBitmaps>MAX_BITMAPS))return false;
 
@@ -36,7 +248,7 @@ bool CEditImageLibrary::AddBitmap(LPSTR szFilename)
 	return true;
 }
 
-bool CEditImageLibrary::AddEntry(
+bool SgImgLibEdit::AddEntry(
 	sg_uint16 x, 
 	sg_uint16 y, 
 	sg_uint16 nWidthSrc, 
@@ -68,7 +280,7 @@ bool CEditImageLibrary::AddEntry(
 	return false;
 }
 
-bool CEditImageLibrary::SetEntry(
+bool SgImgLibEdit::SetEntry(
 	sg_uint32 nReference, 
 	sg_uint16 x, 
 	sg_uint16 y, 
@@ -103,12 +315,12 @@ bool CEditImageLibrary::SetEntry(
 	return true;
 }
 
-void CEditImageLibrary::SetNumEntries(sg_uint32 nNumEntries)
+void SgImgLibEdit::SetNumEntries(sg_uint32 nNumEntries)
 {
 	m_nNumImages=nNumEntries;
 }
 
-bool CEditImageLibrary::AutoGenerateData(
+bool SgImgLibEdit::AutoGenerateData(
 	sg_uint16 nBitmap, 
 	sg_uint16 nWidth, 
 	sg_uint16 nHeight, 
@@ -155,7 +367,7 @@ bool CEditImageLibrary::AutoGenerateData(
 }
 
 
-bool CEditImageLibrary::SaveData(LPSTR szFilename)
+bool SgImgLibEdit::SaveData(LPSTR szFilename)
 {
 	//Declare headers
 	IMGLIBHEADER lbHeader;
@@ -222,7 +434,7 @@ bool CEditImageLibrary::SaveData(LPSTR szFilename)
 }
 
 
-bool CEditImageLibrary::LoadData(LPSTR szFilename)
+bool SgImgLibEdit::LoadData(LPSTR szFilename)
 {
 	//Declare headers
 	IMGLIBHEADER lbHeader;
@@ -296,7 +508,7 @@ bool CEditImageLibrary::LoadData(LPSTR szFilename)
 	return true;
 }
 
-bool CEditImageLibrary::BuildLibrary(LPSTR szFilename)
+bool SgImgLibEdit::BuildLibrary(LPSTR szFilename)
 {
 	IMGLIBHEADER lbHeader;
 	IMGHEADER imHeader;
@@ -421,7 +633,7 @@ bool CEditImageLibrary::BuildLibrary(LPSTR szFilename)
 }
 
 
-bool CEditImageLibrary::ImportLibrary(LPSTR szFilename)
+bool SgImgLibEdit::ImportLibrary(LPSTR szFilename)
 {
 	IMGLIBHEADER lbHeader;
 	IMGHEADER imHeader;
@@ -518,7 +730,7 @@ bool CEditImageLibrary::ImportLibrary(LPSTR szFilename)
 	return true;
 }
 
-void CEditImageLibrary::ClearDataBase()
+void SgImgLibEdit::ClearDataBase()
 {
 	CloseMainBitmaps();
 
@@ -532,4 +744,103 @@ void CEditImageLibrary::ClearDataBase()
 		m_szBitmapFilenameA[i][0]=0;
 		m_hBitmap[i]=NULL;
 	}
+}
+
+/***************************************************************************
+
+	SgImgLibArchive - For reading a built SgImgLib.
+
+***************************************************************************/
+
+SgImgLibArchive::SgImgLibArchive()
+{
+	m_nSelectedEntry = 1;
+
+}
+
+SgImgLibArchive::~SgImgLibArchive()
+{
+	CloseArchive();
+}
+
+sg_uint32 SgImgLibArchive::GetSelectedEntry()
+{
+	return m_nSelectedEntry;
+}
+
+void SgImgLibArchive::SetSelectedEntry(sg_uint32 nEntry)
+{
+	if ((nEntry<1) || (nEntry>m_nNumImages))return;
+
+	m_nSelectedEntry = nEntry;
+}
+
+bool SgImgLibArchive::LoadArchive(LPCSTR szFilename)
+{
+	IMGLIBHEADER lbHeader;
+	IMGHEADER imHeader;
+	ZeroMemory(&lbHeader, sizeof(IMGLIBHEADER));
+	ZeroMemory(&imHeader, sizeof(IMGHEADER));
+
+	HANDLE hFile = NULL;
+	int i = 0;
+
+	CloseArchive();
+
+	hFile = CreateFileA(
+		szFilename,
+		GENERIC_READ,
+		FILE_SHARE_READ,
+		(LPSECURITY_ATTRIBUTES)NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		(HANDLE)NULL);
+
+	if (hFile == INVALID_HANDLE_VALUE)return false;
+
+	DWORD dwBytesRead = 0;
+	ReadFile(hFile, &lbHeader, sizeof(IMGLIBHEADER), &dwBytesRead, NULL);
+	if (dwBytesRead < sizeof(IMGLIBHEADER)){
+		CloseHandle(hFile);
+		return false;
+	}
+	if (lbHeader.wType != *(sg_uint16*)"IL"){
+		CloseHandle(hFile);
+		return false;
+	}
+	if (lbHeader.nVersion != 20){
+		CloseHandle(hFile);
+		return false;
+	}
+
+	//file is correct type so continue
+	ReadFile(hFile, &imHeader, sizeof(IMGHEADER), &dwBytesRead, NULL);
+	BITMAPDATA bmData[MAX_BITMAPS];
+	ReadFile(hFile, &bmData, imHeader.nSizeofBitmapInfo, &dwBytesRead, NULL);
+	m_pImageData = new IMAGEDATA[imHeader.nEntrys];
+	ReadFile(hFile, m_pImageData, imHeader.nSizeofEntryData, &dwBytesRead, NULL);
+
+	m_nNumImages = imHeader.nEntrys;
+
+	CloseHandle(hFile);
+
+
+	for (i = 1; i <= imHeader.nNumBMs; i++)
+	{
+		OpenBitmapOffset(szFilename, bmData[i - 1].dwOffset, i);
+		m_nNumBitmaps++;
+	}
+
+
+	return true;
+}
+
+void SgImgLibArchive::CloseArchive()
+{
+	SAFE_DELETE_ARRAY(m_pImageData);
+	for (int i = 0; i < m_nNumBitmaps; i++){
+		DeleteObject(m_hBitmap[i]);
+	}
+	m_nNumImages = 0;
+	m_nNumBitmaps = 0;
 }

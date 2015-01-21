@@ -7,7 +7,7 @@
 #include <windows.h>
 #include <tchar.h>
 #include <stdio.h>
-#include "../ImageLib/ImageLib.h"
+#include "ImageLib/ImgLib.h"
 #include "DiskDlg.h"
 #include "resource.h"
 
@@ -23,7 +23,7 @@
 typedef enum tagPRIORITY{P_LOW=0, P_MEDIUM, P_HIGH}PRIORITY;
 typedef enum tagERRORLEVEL{EL_SUCCESS=0, EL_FAIL}ERRORLEVEL;
 
-CEditImageLibrary ILibrary(256);
+SgImgLibEdit ILibrary(256);
 
 int GetScrollPosEx(HWND hwndScrollBar, int nBar){
 	SCROLLINFO si;
