@@ -49,7 +49,6 @@ public:
 	void Release(); //releases the surfaces of the sprite
 	HRESULT ClearSprite();  //clears the current sprite for replacement
 	HRESULT CreateSpriteFrameBMInMemory(
-		DWORD dwTransparent,
 		int nFrame, 
 		HBITMAP hBitmap,
 		int nWidth, 
@@ -59,7 +58,6 @@ public:
 		int nFWidth, 
 		int nFHeight);//creaet sprite fraem from bitmap
 	HRESULT CreateSpriteFrameBMInMemory(
-		DWORD dwTransparent,
 		HBITMAP hBitmap, 
 		int nWidth, 
 		int nHeight, 

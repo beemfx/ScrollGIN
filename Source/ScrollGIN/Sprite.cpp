@@ -32,7 +32,6 @@ BOOL CSprite::NameSprite(TCHAR szSpriteName[MAX_SPRITE_NAME_LENGTH+1]){
 }
 
 HRESULT CSprite::CreateSpriteFrameBMInMemory(
-	DWORD dwTransparent,
 	HBITMAP hBitmap, 
 	int nWidth, 
 	int nHeight, 
@@ -43,7 +42,6 @@ HRESULT CSprite::CreateSpriteFrameBMInMemory(
 {
 
 	if(SUCCEEDED(CreateSpriteFrameBMInMemory(
-		dwTransparent,
 		m_nFrames+1,
 		hBitmap,
 		nWidth,
@@ -60,7 +58,6 @@ HRESULT CSprite::CreateSpriteFrameBMInMemory(
 }
 
 HRESULT CSprite::CreateSpriteFrameBMInMemory(
-	DWORD dwTransparent,
 	int nFrame, 
 	HBITMAP hBitmap,
 	int nWidth, 

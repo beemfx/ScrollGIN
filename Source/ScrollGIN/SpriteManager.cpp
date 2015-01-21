@@ -24,13 +24,13 @@ CSpriteManager::~CSpriteManager(){
 
 }
 
-HRESULT CSpriteManager::CreateSpritesFromFile(DWORD dwTransparent,LPTSTR szFilename)
+HRESULT CSpriteManager::CreateSpritesFromFile(LPTSTR szFilename)
 {
 	if(m_nNumSprites>=MAX_SPRITES)return E_FAIL;
-	return CreateSpritesFromFile(dwTransparent, m_nNumSprites+1, szFilename);
+	return CreateSpritesFromFile(m_nNumSprites+1, szFilename);
 }
 
-HRESULT CSpriteManager::CreateSpritesFromFile(DWORD dwTransparent, DWORD nSprite, LPTSTR szFilename){
+HRESULT CSpriteManager::CreateSpritesFromFile(DWORD nSprite, LPTSTR szFilename){
 	if((nSprite<1) || (nSprite>=MAX_SPRITES))return E_FAIL;
 	m_nNumSprites=nSprite;
 	CImageArchive ILibrary;
@@ -59,7 +59,6 @@ HRESULT CSpriteManager::CreateSpritesFromFile(DWORD dwTransparent, DWORD nSprite
 			hBitmap=ILibrary.GetBitmap(id.nBitmap);
 
 			m_cSprite[m_nNumSprites-1].CreateSpriteFrameBMInMemory(
-				dwTransparent,
 				hBitmap,
 				id.nWidth,
 				id.nHeight,
@@ -79,7 +78,6 @@ HRESULT CSpriteManager::CreateSpritesFromFile(DWORD dwTransparent, DWORD nSprite
 				hBitmap=ILibrary.GetBitmap(id.nBitmap);
 
 				m_cSprite[m_nNumSprites-1].CreateSpriteFrameBMInMemory(
-					dwTransparent,
 					hBitmap,
 					id.nWidth,
 					id.nHeight,

@@ -156,7 +156,7 @@ public:
 	CJoes2ObjMan(DWORD dwMax);
 
 	virtual ~CJoes2ObjMan();
-	virtual int Initialize(DWORD dwTransparent);
+	virtual int Initialize();
 	virtual HRESULT CreateObject(const OBJECTTYPE nType, int x, int y, int nXSpeed, int nYSpeed);
 	virtual HRESULT DetectCollisions();
 };

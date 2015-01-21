@@ -35,11 +35,11 @@ void TestCreate(void* lpDD, DWORD dwTrans, CObjectManager* lpObjMan)
 
 }
 
-BOOL TestCreateObject(void* lpDD, DWORD dwTrans, CObjectManager* lpObjMan)
+BOOL TestCreateObject(void* lpDD, CObjectManager* lpObjMan)
 {
 	//This function creates an object for testing purposes
 	TestCreate(lpDD, dwTrans, lpObjMan);
-	lpObjMan->LoadSpritesFromFile(TEXT("NedSprites.ilb"), dwTrans);
+	lpObjMan->LoadSpritesFromFile(TEXT("NedSprites.ilb"));
 	/*
 	ObjectManager.ObtainSpriteManager(&g_cSpriteManager);
 	ObjectManager.ObtainTimer(&Timer);
@@ -78,9 +78,9 @@ CTestObjman::~CTestObjman(){
 	SetError(TEXT("Text successfully close test objmgr"));
 }
 
-int CTestObjman::Initialize(void* lpDD, DWORD dwTransparent)
+int CTestObjman::Initialize()
 {
-	TestCreateObject(lpDD, dwTransparent, this);
+	TestCreateObject(lpDD, this);
 	return 1;
 }
 

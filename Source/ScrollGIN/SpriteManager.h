@@ -43,13 +43,8 @@ public:
 
 	//I need to create a series of functions for creating sprites
 	//including functions that load sprites from a file, and others
-	HRESULT CreateSpritesFromFile(
-		DWORD dwTransparent,
-		DWORD nSprite, 
-		LPTSTR szFilename);
-	HRESULT CreateSpritesFromFile(
-		DWORD dwTransparent,
-		LPTSTR szFilename);
+	HRESULT CreateSpritesFromFile(DWORD nSprite, LPTSTR szFilename);
+	HRESULT CreateSpritesFromFile(LPTSTR szFilename);
 };
 
 

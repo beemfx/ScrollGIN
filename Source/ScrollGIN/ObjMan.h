@@ -39,7 +39,7 @@ public:
 	CObjectManager(DWORD dwMaxObjects, CTimerEx * pTimer);
 	virtual ~CObjectManager();
 
-	virtual int Initialize(DWORD dwTransparent);
+	virtual int Initialize();
 
 	HRESULT Animate(
 		CMapBoard *map,
@@ -48,9 +48,7 @@ public:
 
 	void ClearObjects(); //clear all objects from database
 
-	HRESULT LoadSpritesFromFile(
-		LPTSTR szFilename, 
-		DWORD dwTransparent);
+	HRESULT LoadSpritesFromFile(LPTSTR szFilename);
 	
 	int ClearSprites();
 

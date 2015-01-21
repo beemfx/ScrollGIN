@@ -10,8 +10,6 @@ CScrollGINGame::CScrollGINGame()
 	m_bInitialized=FALSE;
 	m_dwWidth=0;
 	m_dwHeight=0;
-
-	m_dwTransparentColor=0;
 }
 
 
@@ -56,7 +54,6 @@ int CScrollGINGame::Render()
 int CScrollGINGame::GameInit(
 	DWORD dwWidth, 
 	DWORD dwHeight, 
-	DWORD dwTransparentColor,
 	CObjectManager* lpObjMan, 
 	HWND hwnd)
 {
@@ -78,10 +75,9 @@ int CScrollGINGame::GameInit(
 	m_bInitialized=TRUE;
 	m_dwWidth=dwWidth;
 	m_dwHeight=dwHeight;
-	m_dwTransparentColor=dwTransparentColor;
 
 	lpObjMan->ObtainTimer(&m_Timer);
-	lpObjMan->Initialize(dwTransparentColor);
+	lpObjMan->Initialize();
 	return 1;
 }
 
@@ -89,7 +85,6 @@ int CScrollGINGame::LoadMap(LPTSTR szFilename)
 {
 	return LoadMapBoard(
 		szFilename,
-		m_dwTransparentColor,
 		m_dwWidth,
 		m_dwHeight,
 		&m_Mapboard,
