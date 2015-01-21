@@ -53,7 +53,8 @@ bool SgTileManager::LoadLib(const char* lpLibraryFilename, SgMap *map){
 				sgRendererImageCreateParms Parms;
 				memset( &Parms , 0 , sizeof(Parms) );
 				Parms.Type = RENDERER_IMAGE_BITMAP;
-				Parms.Bitmap = hBitmap;
+				strcpy_s( Parms.BmFile , countof(Parms.BmFile) , lpLibraryFilename );
+				Parms.BmFileOffset = ILibrary.GetBitmapOffset( id.nBitmap );
 				Parms.BmX = id.nX;
 				Parms.BmY = id.nY;
 				Parms.BmWidth = id.nWidthSrc;

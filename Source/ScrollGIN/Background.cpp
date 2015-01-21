@@ -99,26 +99,19 @@ bool SgBackground::InsertImage(int nImage, const char* szBitmapName, int nScroll
 
 	if(szBitmapName[0]==0)return false;
 	
-	HBITMAP hTempBM=LoadBitmapOffset(szBitmapName, 0);
-	BITMAP bmTemp;
-	GetObject(hTempBM, sizeof(bmTemp), &bmTemp);
-	int nFWidth=bmTemp.bmWidth;
-	int nFHeight=bmTemp.bmHeight;
-	//DeleteObject(hTempBM);
 	sgRendererImageCreateParms Parms;
 	memset(&Parms, 0, sizeof(Parms));
 	Parms.Type = RENDERER_IMAGE_BITMAP;
-	Parms.Bitmap = hTempBM;
-	Parms.BmX = 0;
-	Parms.BmY = 0;
-	Parms.BmWidth = nFWidth;
-	Parms.BmHeight = nFHeight;
+	strcpy_s( Parms.BmFile , countof(Parms.BmFile), szBitmapName );
+	Parms.BmFileOffset = 0;
+	Parms.BmX = IMAGE_CREATE_DEFAULT;
+	Parms.BmY = IMAGE_CREATE_DEFAULT;
+	Parms.BmWidth = IMAGE_CREATE_DEFAULT;
+	Parms.BmHeight = IMAGE_CREATE_DEFAULT;
 	Parms.Width = dwDeviceWidth;
 	Parms.Height = dwDeviceHeight;
 
 	m_cBackgroundImage[nImage-1] = Renderer_CreateSprite( &Parms );
-
-	DeleteObject(hTempBM);
 
 	m_nScrollRatio[nImage-1]=nScrollRatio;
 

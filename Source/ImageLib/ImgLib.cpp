@@ -17,6 +17,7 @@ SgImgLib::SgImgLib()
 	{
 		m_szBitmapFilenameA[i][0]=0;
 		m_hBitmap[i]=NULL;
+		m_BmOffsets[i] = 0;
 	}
 }
 
@@ -87,6 +88,7 @@ bool SgImgLib::OpenBitmapOffset(LPCSTR szFilename, sg_uint32 nOffset, sg_uint16 
 	m_hBitmap[nBitmap-1]=LoadBitmapOffset(szFilename, nOffset);
 
 	if(m_hBitmap[nBitmap-1] == NULL)return false;
+	m_BmOffsets[nBitmap-1] = nOffset;
 	strcpy_s(m_szBitmapFilenameA[nBitmap-1], countof(m_szBitmapFilenameA[nBitmap-1]), szFilename);
 	return true;
 }
@@ -743,6 +745,7 @@ void SgImgLibEdit::ClearDataBase()
 	{
 		m_szBitmapFilenameA[i][0]=0;
 		m_hBitmap[i]=NULL;
+		m_BmOffsets[i] = 0;
 	}
 }
 
