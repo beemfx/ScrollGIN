@@ -48,14 +48,10 @@ public:
 
 	void ClearObjects(); //clear all objects from database
 
-	HRESULT LoadSpritesFromFile(LPTSTR szFilename);
-	
-	int ClearSprites();
+	void LoadSprites(LPTSTR szFilename);
+	void ClearSprites();
 
-	void Release();
-
-	BOOL ObtainTimer(
-		SgTimer * pTimer);
+	BOOL ObtainTimer(SgTimer* pTimer);
 
 	virtual HRESULT CreateObject(
 		const OBJECTTYPE nType, 

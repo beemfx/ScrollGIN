@@ -23,12 +23,6 @@ SgBackground::~SgBackground()
 
 }
 
-SgRendererImage* SgBackground::LetPointer(int nImage)
-{
-	if(nImage<m_nCurrentImage || nImage>MAX_BACKGROUNDS)return 0;
-	return m_cBackgroundImage[nImage-1];
-}
-
 void SgBackground::SetScrollMode(SCROLLMODE nNewMode)
 {
 	m_nScrollMode=nNewMode;
@@ -68,7 +62,7 @@ void SgBackground::DisplayBackground(int nBGLayer, int x, int y, int dwWidth, in
 
 bool SgBackground::LoadBackgroundImage( const char* szBitmapName , int nScrollRatio , int dwDeviceWidth , int dwDeviceHeight )
 {
-	if(LoadBackgroundImage(
+	if(InsertImage(
 		m_nCurrentImage+1, 
 		szBitmapName, 
 		nScrollRatio, 
@@ -81,18 +75,19 @@ bool SgBackground::LoadBackgroundImage( const char* szBitmapName , int nScrollRa
 	return false;
 }
 
-void SgBackground::Release()
+void SgBackground::Destroy()
 {
 	for(int i=0; i<m_nCurrentImage; i++)
 	{
 		Renderer_DestroySprite( m_cBackgroundImage[i] );
 		m_cBackgroundImage[i] = 0;
 	}
+	m_nCurrentImage = 0;
 }
 
 #include <Windows.h>
 
-bool SgBackground::LoadBackgroundImage(int nImage, const char* szBitmapName, int nScrollRatio, int dwDeviceWidth, int dwDeviceHeight)
+bool SgBackground::InsertImage(int nImage, const char* szBitmapName, int nScrollRatio, int dwDeviceWidth, int dwDeviceHeight)
 {
 	if(nImage<1 || nImage >MAX_BACKGROUNDS)return false;
 

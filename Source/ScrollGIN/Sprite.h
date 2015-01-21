@@ -38,37 +38,16 @@ private:
 	char m_szSpriteName[MAX_SPRITE_NAME_LENGTH+1]; //The name of the sprite, used to objtain a sprite
 	//BOOL m_bLoopBackward; //if true the sprite should go through each frame, forward then backward
 public:
-	SgSprite();  //cosntructor
-	~SgSprite(); //destructor
-	HRESULT DisplaySprite(
-						int nFrame, 
-						SPRITEFACE nFace, 
-						int x, 
-						int y,
-						LOOPMODE nLoopMode); //pastes the sprite to the indicated surface using the center of the image as the x, y
-	void Release(); //releases the surfaces of the sprite
-	HRESULT ClearSprite();  //clears the current sprite for replacement
-	HRESULT CreateSpriteFrameBMInMemory(
-		int nFrame, 
-		HBITMAP hBitmap,
-		int nWidth, 
-		int nHeight, 
-		int nFX, 
-		int nFY, 
-		int nFWidth, 
-		int nFHeight);//creaet sprite fraem from bitmap
-	HRESULT CreateSpriteFrameBMInMemory(
-		HBITMAP hBitmap, 
-		int nWidth, 
-		int nHeight, 
-		int nFX, 
-		int nFY, 
-		int nFWidth, 
-		int nFHeight);
-	int GetNumFrames(LOOPMODE nLoopMode); //Returns number of frames in sprite depending on loop mode
-	BOOL NameSprite(char szSpriteName[MAX_SPRITE_NAME_LENGTH+1]); //names the sprite for reference, no more than 32 characters
-	BOOL GetSpriteName(char szSpriteName[MAX_SPRITE_NAME_LENGTH+1]); //retreives the naem of the sprite for reference
-	//HRESULT SetLoopBackward(BOOL bLoopMode);
+	SgSprite();
+	~SgSprite();
+	void Draw(int nFrame, SPRITEFACE nFace, int x, int y, LOOPMODE nLoopMode);
+	bool CreateSprite(HBITMAP hBitmap, int nWidth, int nHeight, int nFX, int nFY, int nFWidth, int nFHeight);
+	void Destroy(); //releases the surfaces of the sprite
+	int  GetNumFrames(LOOPMODE nLoopMode); //Returns number of frames in sprite depending on loop mode
+	void NameSprite(const char* szSpriteName); //names the sprite for reference, no more than 32 characters
+	void GetSpriteName(char szSpriteName[MAX_SPRITE_NAME_LENGTH+1]); //retreives the naem of the sprite for reference
+private:
+	bool CreateNextSprite(int nFrame, HBITMAP hBitmap,int nWidth, int nHeight, int nFX,int nFY, int nFWidth, int nFHeight);//creaet sprite fraem from bitmap
 };
 
 #endif //__sprite_h__

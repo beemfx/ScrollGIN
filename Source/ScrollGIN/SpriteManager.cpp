@@ -23,21 +23,21 @@ SgSpriteManager::~SgSpriteManager()
 
 }
 
-HRESULT SgSpriteManager::CreateSpritesFromFile(LPTSTR szFilename)
+void SgSpriteManager::LoadLib(const char* szFilename)
 {
-	if(m_nNumSprites>=MAX_SPRITES)return E_FAIL;
-	return CreateSpritesFromFile(m_nNumSprites+1, szFilename);
+	if(m_nNumSprites>=MAX_SPRITES)return;
+	InsertSprites(m_nNumSprites+1, szFilename);
 }
 
-HRESULT SgSpriteManager::CreateSpritesFromFile(DWORD nSprite, LPTSTR szFilename)
+void SgSpriteManager::InsertSprites(int nSprite, const char* szFilename)
 {
-	if((nSprite<1) || (nSprite>=MAX_SPRITES))return E_FAIL;
+	if((nSprite<1) || (nSprite>=MAX_SPRITES))return;
 	m_nNumSprites=nSprite;
 	CImageArchive ILibrary;
 
 	HRESULT hr=0;
 	hr=ILibrary.LoadArchive(szFilename);
-	if(FAILED(hr))return E_FAIL;
+	if(FAILED(hr))return;
 	//The following algorithm loads all sprites from library
 	DWORD i=0, j=0, nFrames=0;
 	HBITMAP hBitmap=0;
@@ -50,15 +50,12 @@ HRESULT SgSpriteManager::CreateSpritesFromFile(DWORD nSprite, LPTSTR szFilename)
 		
 		ILibrary.GetImageData(i, &id);
 		ILibrary.GetImageName(szImageName, i);
-
-		
-		
-		
-		if(id.nFrames==1){
-
+	
+		if(id.nFrames==1)
+		{
 			hBitmap=ILibrary.GetBitmap(id.nBitmap);
 
-			m_cSprite[m_nNumSprites-1].CreateSpriteFrameBMInMemory(
+			m_cSprite[m_nNumSprites-1].CreateSprite(
 				hBitmap,
 				id.nWidth,
 				id.nHeight,
@@ -69,15 +66,19 @@ HRESULT SgSpriteManager::CreateSpritesFromFile(DWORD nSprite, LPTSTR szFilename)
 			m_cSprite[m_nNumSprites-1].NameSprite(szImageName);
 
 			m_nNumSprites++;
-		}else if(id.nFrames==0){
+		}
+		else if(id.nFrames==0)
+		{
 			//do nothing this image does not need to be added
-		}else if(id.nFrames>1){
+		}
+		else if(id.nFrames>1)
+		{
 			nFrames=id.nFrames;
 			for(j=1; j<=nFrames; j++){
 				ILibrary.GetImageData(j+i-1, &id);
 				hBitmap=ILibrary.GetBitmap(id.nBitmap);
 
-				m_cSprite[m_nNumSprites-1].CreateSpriteFrameBMInMemory(
+				m_cSprite[m_nNumSprites-1].CreateSprite(
 					hBitmap,
 					id.nWidth,
 					id.nHeight,
@@ -94,44 +95,24 @@ HRESULT SgSpriteManager::CreateSpritesFromFile(DWORD nSprite, LPTSTR szFilename)
 
 
 	ILibrary.CloseArchive();
-	return S_OK;
 }
 
-void SgSpriteManager::Release()
+void SgSpriteManager::Clear()
 {
 	for(int i=0; i<m_nNumSprites; i++)
-		m_cSprite[i].Release();
-}
-
-HRESULT SgSpriteManager::DisplaySprite(int nSprite, int nFrame, SPRITEFACE nFace, int x, int y)
-{
-	if(nSprite<1 || nSprite>m_nNumSprites)return E_FAIL;
-
-	return m_cSprite[nSprite-1].DisplaySprite(nFrame, nFace, x, y, LP_FORWARD);
-}
-
-void SgSpriteManager::ClearDataBase()
-{
-	Release();
+	{
+		m_cSprite[i].Destroy();
+	}
 	m_nNumSprites=0;
 }
 
-//LetPointer() function release the address of the sprite
-//of the chosen index, to allow another class to use that sprite
-//directly.
-SgSprite* SgSpriteManager::LetPointer(int nSpriteIndex)
-{
-	if((nSpriteIndex<1) || (nSpriteIndex>(int)m_dwMaxSprites))return NULL;
-	return &m_cSprite[nSpriteIndex-1];
-}
-
-SgSprite* SgSpriteManager::LetPointer(LPTSTR szSpriteName)
+SgSprite* SgSpriteManager::GetSprite(const char* szSpriteName)
 {
 	char szTempSpriteName[MAX_SPRITE_NAME_LENGTH+1];
 	for(int i=0; i<m_nNumSprites; i++){
 		m_cSprite[i].GetSpriteName(szTempSpriteName);
 		if(strcmp(szTempSpriteName, szSpriteName)==0)
-			return LetPointer(i+1);
+			return &m_cSprite[i];
 	}
-	return NULL;
+	return 0;
 }

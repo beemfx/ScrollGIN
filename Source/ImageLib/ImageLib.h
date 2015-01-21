@@ -108,8 +108,8 @@ public:
 	HRESULT OpenBitmapA(LPSTR szFilename, WORD nBitmap);
 	HRESULT OpenBitmapW(LPWSTR szFilename, WORD nBitmap);
 
-	HRESULT OpenBitmapOffsetA(LPSTR szFilename, DWORD nOffset, WORD nBitmap);
-	HRESULT OpenBitmapOffsetW(LPWSTR szFilename, DWORD nOffset, WORD nBitmap);
+	HRESULT OpenBitmapOffsetA(LPCSTR szFilename, DWORD nOffset, WORD nBitmap);
+	HRESULT OpenBitmapOffsetW(LPCWSTR szFilename, DWORD nOffset, WORD nBitmap);
 
 	void GetBitmapNameA(char szName[], WORD nBitmap);
 	void GetBitmapNameW(WCHAR szName[], WORD nBitmap);
@@ -184,8 +184,8 @@ protected:
 public:
 	CImageArchive();
 	~CImageArchive();
-	HRESULT LoadArchiveA(LPSTR szFilename);
-	HRESULT LoadArchiveW(LPWSTR szFilename);
+	HRESULT LoadArchiveA(LPCSTR szFilename);
+	HRESULT LoadArchiveW(LPCWSTR szFilename);
 
 	DWORD GetSelectedEntry();
 	BOOL SetSelectedEntry(DWORD nEntry);

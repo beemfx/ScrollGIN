@@ -12,27 +12,29 @@
 
 
 //Constructor: Sets some default values
-SgTileManager::SgTileManager(void){
-	m_iCurrentReference=0;
+SgTileManager::SgTileManager(void)
+: m_iCurrentReference( 0 )
+{
+
 }
 
 
 
 
 //Destructor
-SgTileManager::~SgTileManager(void){
+SgTileManager::~SgTileManager(void)
+{
 
 }
 
 //creates many tile surfaces starting with chosen reference from a library
-HRESULT SgTileManager::CreateTilesFromLibrary(int reference, char lpLibraryFilename[MAX_PATH], CMapBoard *map){
+bool SgTileManager::LoadLib(const char* lpLibraryFilename, CMapBoard *map){
 	//This will use a library to call CreateTilesFromFile functions
 	CImageArchive ILibrary;
 
-	HRESULT hr=0;
-	hr=ILibrary.LoadArchive(lpLibraryFilename);
+	HRESULT hr=ILibrary.LoadArchive(lpLibraryFilename);
 
-	if(FAILED(hr))return E_FAIL;
+	if(FAILED(hr))return false;
 	
 	
 	HBITMAP hBitmap=0;
@@ -41,7 +43,8 @@ HRESULT SgTileManager::CreateTilesFromLibrary(int reference, char lpLibraryFilen
 
 	int i=0;
 	DWORD j=0;
-	for(i=reference, j=1; j<=ILibrary.GetNumEntries(); i++, j++){
+	int Start = m_iCurrentReference+1;
+	for(i=Start, j=1; j<=ILibrary.GetNumEntries(); i++, j++){
 		if( (i>0) && (i<MAX_TILESURFACES)){
 			if(ILibrary.GetImageData(j, &id)){
 
@@ -66,45 +69,29 @@ HRESULT SgTileManager::CreateTilesFromLibrary(int reference, char lpLibraryFilen
 	
 	ILibrary.CloseArchive();
 
-	return S_OK;
+	return true;
 }
-
-
-
-
-
-//creates many tile surfaces starting with first reference from a library
-HRESULT SgTileManager::CreateTilesFromLibrary(char lpLibraryFilename[MAX_PATH], CMapBoard *map){
-	if(SUCCEEDED(CreateTilesFromLibrary(m_iCurrentReference+1, lpLibraryFilename, map))){
-		return S_OK;
-	}else return E_FAIL;
-}
-
-
-
-
 
 //Clears all tiles and releases surfaces from database
-HRESULT SgTileManager::ClearTileDatabase(void){
-	Release();
-	m_iCurrentReference=0;
-	return S_OK;
-}
-
-void SgTileManager::Release(){
-	for(int i=0;i<m_iCurrentReference;i++){
+void SgTileManager::Clear()
+{
+	for(int i=0;i<m_iCurrentReference;i++)
+	{
 		Renderer_DestroySprite( m_lpTile[i] );
+		m_lpTile[i] = 0;
 	}
+
+	m_iCurrentReference=0;
 }
 
 
 //places a tile on x, y coordinate of the screen
 //remember to convert custom coords to standard before calling this
 //function is complete, but has not yet been tested.
-HRESULT SgTileManager::PlaceTile(int reference, int x, int y){
+void SgTileManager::Draw(int reference, int x, int y)
+{
 	//make sure reference is within range
-	if((reference<1)||(reference>m_iCurrentReference))return E_FAIL;
+	if((reference<1)||(reference>m_iCurrentReference))return;
 	
 	m_lpTile[reference-1]->Draw(x, y);
-	return S_OK;
 }

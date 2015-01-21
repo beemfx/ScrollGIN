@@ -8,44 +8,24 @@
 
 #include "sprite.h"
 
-struct SPRITECREATESTRUCT
+class SgSpriteManager
 {
-	int nFX;
-	int nFY;
-	int nFWidth;
-	int nFHeight;
-	int nWidth;
-	int nHeight;
-};
-
-class SgSpriteManager{
-private:
-	SgSprite	m_cSprite[MAX_SPRITES]; //the sprites
-	int	m_nNumSprites; //indicates how many sprites are available
-	const DWORD m_dwMaxSprites;
 public:
 	//constructor and destruct
 	SgSpriteManager(); //constructor
 	~SgSpriteManager(); //destructor
 
-	//Functions for restoring and destroying sprites
-	void Release(); //Releases all sprite surfaces
+	void LoadLib(const char* szFilename);
+	void Clear();
 	
-	void ClearDataBase(); //this function clears the database
+	SgSprite* GetSprite(const char* szSpriteName);
 
-	SgSprite* LetPointer(int nSpriteIndex); //Gives out a pointer to a sprite
-	SgSprite* LetPointer(LPTSTR szSpriteName);//Give out a pointer to a sprite by name
-	HRESULT DisplaySprite(
-		int nSprite, 
-		int nFrame, 
-		SPRITEFACE nFace, 
-		int x, 
-		int y); //Displays a sprite
-
-	//I need to create a series of functions for creating sprites
-	//including functions that load sprites from a file, and others
-	HRESULT CreateSpritesFromFile(DWORD nSprite, LPTSTR szFilename);
-	HRESULT CreateSpritesFromFile(LPTSTR szFilename);
+private:
+	void InsertSprites(int nSprite, const char* szFilename);
+private:
+	SgSprite	   m_cSprite[MAX_SPRITES];
+	int	      m_nNumSprites; 
+	const int   m_dwMaxSprites;
 };
 
 

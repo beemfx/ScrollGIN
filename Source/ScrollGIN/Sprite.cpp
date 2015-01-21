@@ -7,7 +7,8 @@
 #include "sprite.h"
 #include "../Renderer2/RendererImage.h"
 
-SgSprite::SgSprite(){
+SgSprite::SgSprite()
+{
 	m_nFrames=0;
 	m_szSpriteName[0]=NULL;
 	for( int i=0; i<MAX_IMAGES_PER_SPRITE; i++ )
@@ -20,27 +21,20 @@ SgSprite::SgSprite(){
 SgSprite::~SgSprite(){
 }
 
-BOOL SgSprite::GetSpriteName(char szSpriteName[MAX_SPRITE_NAME_LENGTH+1]){
+void SgSprite::GetSpriteName(char szSpriteName[MAX_SPRITE_NAME_LENGTH+1])
+{
 	strcpy(szSpriteName, m_szSpriteName);
-	return TRUE;
 }
 
-BOOL SgSprite::NameSprite(char szSpriteName[MAX_SPRITE_NAME_LENGTH+1]){
+void SgSprite::NameSprite(const char* szSpriteName)
+{
 	strcpy(m_szSpriteName, szSpriteName);
-	return TRUE;
 }
 
-HRESULT SgSprite::CreateSpriteFrameBMInMemory(
-	HBITMAP hBitmap, 
-	int nWidth, 
-	int nHeight, 
-	int nFX, 
-	int nFY, 
-	int nFWidth, 
-	int nFHeight)
+bool SgSprite::CreateSprite(HBITMAP hBitmap, int nWidth, int nHeight, int nFX, int nFY, int nFWidth, int nFHeight)
 {
 
-	if(SUCCEEDED(CreateSpriteFrameBMInMemory(
+	if(CreateNextSprite(
 		m_nFrames+1,
 		hBitmap,
 		nWidth,
@@ -48,26 +42,19 @@ HRESULT SgSprite::CreateSpriteFrameBMInMemory(
 		nFX,
 		nFY,
 		nFWidth,
-		nFHeight)))
+		nFHeight))
 	{
 		m_nFrames++;
-		return S_OK;
-	}else return E_FAIL;
-	
+		return true;
+	}
+
+	return false;	
 }
 
-HRESULT SgSprite::CreateSpriteFrameBMInMemory(
-	int nFrame, 
-	HBITMAP hBitmap,
-	int nWidth, 
-	int nHeight, 
-	int nFX, 
-	int nFY, 
-	int nFWidth, 
-	int nFHeight)
+bool SgSprite::CreateNextSprite(int nFrame, HBITMAP hBitmap,int nWidth, int nHeight, int nFX, int nFY, int nFWidth, int nFHeight)
 {
-	if(nFrame<1)return E_FAIL;
-	if(nFrame>MAX_IMAGES_PER_SPRITE)return E_FAIL;
+	if(nFrame<1)return false;
+	if(nFrame>MAX_IMAGES_PER_SPRITE)return false;
 
 	m_sImageDim[nFrame-1].nWidth=nWidth;
 	m_sImageDim[nFrame-1].nHeight=nHeight;
@@ -88,25 +75,11 @@ HRESULT SgSprite::CreateSpriteFrameBMInMemory(
 	Parms.BmWidth = -nFWidth;
 	m_cReverseSpriteImage[nFrame-1] = Renderer_CreateSprite( &Parms );
 	
-	return S_OK;
+	return true;
 }
 
-/*
-HRESULT SgSprite::SetLoopBackward(BOOL bLoopMode){
-	m_bLoopBackward=bLoopMode;
-	return S_OK;
-}
-*/
-
-HRESULT SgSprite::ClearSprite(){
-	Release();
-
-	m_nFrames=0;
-
-	return S_OK;
-}
-
-int SgSprite::GetNumFrames(LOOPMODE nLoopMode){
+int SgSprite::GetNumFrames(LOOPMODE nLoopMode)
+{
 	if((nLoopMode==LP_FORWARDBACKWARD))
 		if(m_nFrames==1)return 1;
 		else return ((m_nFrames*2)-2);
@@ -114,7 +87,8 @@ int SgSprite::GetNumFrames(LOOPMODE nLoopMode){
 	else return m_nFrames;
 }
 
-void SgSprite::Release(){
+void SgSprite::Destroy()
+{
 	for(int i=0; i<MAX_IMAGES_PER_SPRITE; i++)
 	{
 		Renderer_DestroySprite( m_cSpriteImage[i] );
@@ -122,50 +96,35 @@ void SgSprite::Release(){
 		Renderer_DestroySprite( m_cReverseSpriteImage[i] );
 		m_cReverseSpriteImage[i] = 0;
 	}
+	m_nFrames = 0;
 }
 
-HRESULT SgSprite::DisplaySprite(int nFrame, SPRITEFACE nFace, int x, int y, LOOPMODE nLoopMode)
+void SgSprite::Draw(int nFrame, SPRITEFACE nFace, int x, int y, LOOPMODE nLoopMode)
 {
 	switch(nLoopMode)
 	{
 	case LP_FORWARDBACKWARD:
 		if(m_nFrames>1)
 			if(nFrame>((m_nFrames*2)-2))
-				return E_FAIL;
+				return;
 		if(nFrame>m_nFrames)
 			nFrame=(nFrame-(2*(nFrame-m_nFrames)));
 		break;
 	case LP_FORWARD:
-		if(nFrame>m_nFrames)return E_FAIL;
+		if(nFrame>m_nFrames)return;
 		break;
 	case LP_BACKWARD:
-		if(nFrame>m_nFrames)return E_FAIL;
+		if(nFrame>m_nFrames)return;
 		nFrame=m_nFrames-nFrame+1;
 		break;
 	case LP_ONCEFORWARD:
-		if(nFrame>m_nFrames)return E_FAIL;
+		if(nFrame>m_nFrames)return;
 		break;
 	case LP_ONCEBACKWARD:
-		if(nFrame>m_nFrames)return E_FAIL;
+		if(nFrame>m_nFrames)return;
 		nFrame=m_nFrames-nFrame+1;
 		break;
 	}
-	/*
-	if(nLoopMode==LPF){
-		if(nFrame>m_nFrames)return E_FAIL;
-	}else{
-		if(nFrame>((m_nFrames*2)-2))return E_FAIL;
-	}
-	if(!lpBuffer)return E_FAIL;
-
-	//determine which frame to draw if looping
-	if(m_bLoopBackward){
-		if(nFrame>m_nFrames){
-			nFrame=(nFrame-(2*(nFrame-m_nFrames)));
-		}
-	}
-	*/
-
 
 	switch(nFace){
 	case SF_RIGHT:
@@ -177,5 +136,5 @@ HRESULT SgSprite::DisplaySprite(int nFrame, SPRITEFACE nFace, int x, int y, LOOP
 		m_cReverseSpriteImage[nFrame-1]->Draw(x-m_sImageDim[nFrame-1].nWidth/2, y-m_sImageDim[nFrame-1].nHeight/2);
 		break;
 	}
-	return S_OK;
+	return;
 }

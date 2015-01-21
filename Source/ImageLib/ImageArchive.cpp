@@ -21,7 +21,7 @@ BOOL CImageArchive::SetSelectedEntry(DWORD nEntry){
 	return TRUE;
 }
 
-HRESULT CImageArchive::LoadArchiveA(LPSTR szFilename){
+HRESULT CImageArchive::LoadArchiveA(LPCSTR szFilename){
 	IMGLIBHEADER lbHeader;
 	IMGHEADER imHeader;
 	ZeroMemory(&lbHeader, sizeof(IMGLIBHEADER));
@@ -79,7 +79,7 @@ HRESULT CImageArchive::LoadArchiveA(LPSTR szFilename){
 	return S_OK;
 }
 
-HRESULT CImageArchive::LoadArchiveW(LPWSTR szFilename){
+HRESULT CImageArchive::LoadArchiveW(LPCWSTR szFilename){
 	IMGLIBHEADER lbHeader;
 	IMGHEADER imHeader;
 	ZeroMemory(&lbHeader, sizeof(IMGLIBHEADER));

@@ -99,7 +99,7 @@ HRESULT CImageLibrary::OpenBitmapW(LPWSTR szFilename, WORD nBitmap){
 	return OpenBitmapOffsetW(szFilename, 0, nBitmap);
 }
 
-HRESULT CImageLibrary::OpenBitmapOffsetA(LPSTR szFilename, DWORD nOffset, WORD nBitmap){
+HRESULT CImageLibrary::OpenBitmapOffsetA(LPCSTR szFilename, DWORD nOffset, WORD nBitmap){
 	if( (nBitmap<1) || (nBitmap>MAX_BITMAPS) )return E_FAIL;
 
 	CloseHandle(m_hBitmap[nBitmap-1]);
@@ -110,7 +110,7 @@ HRESULT CImageLibrary::OpenBitmapOffsetA(LPSTR szFilename, DWORD nOffset, WORD n
 	return S_OK;
 }
 
-HRESULT CImageLibrary::OpenBitmapOffsetW(LPWSTR szFilename, DWORD nOffset, WORD nBitmap){
+HRESULT CImageLibrary::OpenBitmapOffsetW(LPCWSTR szFilename, DWORD nOffset, WORD nBitmap){
 	if( (nBitmap<1) || (nBitmap>MAX_BITMAPS) )return E_FAIL;
 
 	CloseHandle(m_hBitmap[nBitmap-1]);

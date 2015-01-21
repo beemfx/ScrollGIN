@@ -25,15 +25,16 @@ private:
 	int m_nCurrentImage; //how many images there are
 	SCROLLMODE m_nScrollMode; //the current scroll mode
 public:
-	SgBackground(); //constructor
-	~SgBackground(); //destructor
-	void Release(); //release
+	SgBackground();
+	~SgBackground();
+	void Destroy();
 	void SetScrollMode(SCROLLMODE nNewMode); //sets current scroll mode
 	void DrawBackgrounds(int x, int y, int dwWidth, int dwHeight); //draw all backgrounds
 	void DisplayBackground(int BGLayer, int x, int y, int dwWidth, int dwHeight); //displays chosen background
-	bool LoadBackgroundImage(int nImage, const char* szBitmapName, int nScrollRatio,int dwDeviceWidth,int dwDeviceHeight); //creates a background layer in given slot
 	bool LoadBackgroundImage(const char* szBitmapName, int nScrollRatio,int dwDeviceWidth,int dwDeviceHeight); //creates background layer in next available slot
-	SgRendererImage* LetPointer(int nImage); //relases a pointer to a background image
+
+private:
+	bool InsertImage(int nImage, const char* szBitmapName, int nScrollRatio,int dwDeviceWidth,int dwDeviceHeight); //creates a background layer in given slot
 };
 
 #endif //__background_h__
