@@ -1,13 +1,13 @@
 /*
 	MapBoard Class - Used for reading a ScrollGIN map
 
-	Coyright (c) 2002, Blaine Myers
+	Copyright (c) 2002, Blaine Myers
 */
 
 #ifndef __MAPBOARD_H__
 #define __MAPBOARD_H__
 
-#include <windows.h>
+static const size_t MAP_MAX_PATH=255;
 
 //Note on architecture type:
 //the first four bits represent the layer indirect (either blue, red, or green in the editor)
@@ -43,39 +43,34 @@ enum LAYER
 
 struct MAPHEADER
 {
-	sg_uint16		wType;				//Map type, *(sg_uint16*)"SM"
-	sg_uint16	nVersion;			//Map version, 1 for now
-
-	sg_uint32		lReserved1;			//Reserved1, 0
-	sg_uint32		lReserved2;			//Reserved2, 0
-
-	sg_uint16	nMapWidth;			//Width, in tiles, of the map
-	sg_uint16	nMapHeight;			//Height, in tiles, of the map
-	sg_uint32		lNumTiles;			//Number of tiles in the map, width*height
-
-	sg_uint32		lLibraryNameSize;	//Size, in bytes, of the library filename
-	sg_uint32		lBGNameSize;		//Size, in bytes, of the background filename
-
-	sg_uint32		lTileDataSize;		//Size, in bytes, of the tile data
-	sg_uint32		lArchDataSize;		//Size, in bytes, of the architecture data
-	sg_uint32		lObjectDataSize;	//Size, in bytes, of the object data
+	sg_uint16 wType;				//Map type, *(sg_uint16*)"SM"
+	sg_uint16 nVersion;			//Map version, 1 for now
+	sg_uint32 lReserved1;			//Reserved1, 0
+	sg_uint32 lReserved2;			//Reserved2, 0
+	sg_uint16 nMapWidth;			//Width, in tiles, of the map
+	sg_uint16 nMapHeight;			//Height, in tiles, of the map
+	sg_uint32 lNumTiles;			//Number of tiles in the map, width*height
+	sg_uint32 lLibraryNameSize;	//Size, in bytes, of the library filename
+	sg_uint32 lBGNameSize;		//Size, in bytes, of the background filename
+	sg_uint32 lTileDataSize;		//Size, in bytes, of the tile data
+	sg_uint32 lArchDataSize;		//Size, in bytes, of the architecture data
+	sg_uint32 lObjectDataSize;	//Size, in bytes, of the object data
 };
 
 class CMapBoard
 {
 protected:
 	//Private member variables
-	BOOL	m_bMapLoaded;
-	BYTE	*m_pTile;	//Visible tile data
-	BYTE	*m_pArch;	//Unseen architecture data
-	BYTE	*m_pObject;	//Object data, objects, object generators etc
-	sg_uint16	m_nMapWidth;	//Width, in tiles, of the map
-	sg_uint16	m_nMapHeight;	//Height, in tiles, of the map
-	sg_uint32   m_dwTileDim;  //width height of each tile
-	char    m_lpMapFilenameA[MAX_PATH];		//Filename of current map
-	char    m_lpLibraryFilenameA[MAX_PATH];	//Filename of the library being used
-	char    m_lpBGFilenameA[MAX_PATH];		//Filename of the background image
-
+	bool      m_bMapLoaded;
+	sg_uint8  *m_pTile;	//Visible tile data
+	sg_uint8  *m_pArch;	//Unseen architecture data
+	sg_uint8  *m_pObject;	//Object data, objects, object generators etc
+	sg_uint16 m_nMapWidth;	//Width, in tiles, of the map
+	sg_uint16 m_nMapHeight;	//Height, in tiles, of the map
+	sg_uint32 m_dwTileDim;  //width height of each tile
+	char      m_lpMapFilenameA[MAP_MAX_PATH];		//Filename of current map
+	char      m_lpLibraryFilenameA[MAP_MAX_PATH];	//Filename of the library being used
+	char      m_lpBGFilenameA[MAP_MAX_PATH];		//Filename of the background image
 	//Private member functions
 	sg_uint32 CoordToPos(int x, int y); //Converts an x,y value to an array position
 
@@ -84,16 +79,16 @@ public:
 	CMapBoard();
 	~CMapBoard();
 
-	sg_uint16      GetMapWidth();		//Returns m_nMapWidth
-	sg_uint16      GetMapHeight();	//Returns m_nMapHeight
-	sg_uint32       GetTileDim();
-	sg_uint32       SetTileDim(sg_uint32 dwDim);
-	BYTE        GetTile(int x, int y);	//Returns value of tile at x,y
-	BYTE        GetArch(int x, int y);	//Returns value of architecture at x,y
-	BYTE        GetArchType(int x, int y); //layer type (red, green, or blue)
-	BYTE        GetArchPiece(int x, int y);//get layer arch piece (1-9 or ARCH_SOLID-ARCH_SLOPEDOWNRIGHT)
-	BYTE        GetObject(int x, int y);	//Returns value of object at x,y
-	HRESULT     LoadMap(LPCSTR lpMapFilename);	//Loads map of filename into memory
+	sg_uint16   GetMapWidth();		//Returns m_nMapWidth
+	sg_uint16   GetMapHeight();	//Returns m_nMapHeight
+	sg_uint32   GetTileDim();
+	sg_uint32   SetTileDim(sg_uint32 dwDim);
+	sg_uint8    GetTile(int x, int y);	//Returns value of tile at x,y
+	sg_uint8    GetArch(int x, int y);	//Returns value of architecture at x,y
+	sg_uint8    GetArchType(int x, int y); //layer type (red, green, or blue)
+	sg_uint8    GetArchPiece(int x, int y);//get layer arch piece (1-9 or ARCH_SOLID-ARCH_SLOPEDOWNRIGHT)
+	sg_uint8    GetObj(int x, int y);	//Returns value of object at x,y
+	bool        LoadMap(sg_cpstr lpMapFilename);	//Loads map of filename into memory
 	const char* GetLibraryName()const;
 	const char* GetBGName()const;
 	void        ClearMap();	//Clear all data out of map
@@ -102,19 +97,19 @@ public:
 class CEditMapBoard: public CMapBoard
 {
 public:
-	HRESULT ClearArch();
-	HRESULT ClearTile();
-	HRESULT ClearObject();
-	HRESULT SetTile(int x, int y, BYTE nNewValue); //Set value of tile at x,y
-	HRESULT SetArch(int x, int y, BYTE nNewValue);  //Set value of architecture at x,y
-	HRESULT SetArchSmart(int x, int y, BYTE nNewValue); //automatically sets arch using 0 as base
-	HRESULT SetObject(int x, int y, BYTE nNewValue); //Set value of object at x,y
-	BYTE    GetArchSmart(int x, int y);
-	HRESULT SaveMap(LPSTR lpMapFilename); //Save the map to disk
-	HRESULT GenerateNewMap(int nWidth, int nHeight, LPSTR lpLibFilename, LPSTR lpBGFilename); //Start a new map with chosen width, height, and library
-	HRESULT ChangeMapDimensions(int nNewWidth, int nNewHeight); //Changes the map dimensions, preserving tile, arch, and object data
-	void    ChangeBackground(LPCSTR lpBackgroundFilename); //Change the current background
-	void    ChangeLibrary(LPCSTR lpLibraryFilename);
+	void     ClearArch();
+	void     ClearTile();
+	void     ClearObject();
+	bool     SetTile(int x, int y, sg_uint8 nNewValue); //Set value of tile at x,y
+	bool     SetArch(int x, int y, sg_uint8 nNewValue);  //Set value of architecture at x,y
+	bool     SetArchSmart(int x, int y, sg_uint8 nNewValue); //automatically sets arch using 0 as base
+	bool     SetObj(int x, int y, sg_uint8 nNewValue); //Set value of object at x,y
+	sg_uint8 GetArchSmart(int x, int y);
+	bool     SaveMap(sg_cpstr lpMapFilename); //Save the map to disk
+	bool     GenerateNewMap(int nWidth, int nHeight, sg_cpstr lpLibFilename, sg_cpstr lpBGFilename); //Start a new map with chosen width, height, and library
+	bool     ChangeMapDimensions(int nNewWidth, int nNewHeight); //Changes the map dimensions, preserving tile, arch, and object data
+	void     ChangeBackground(sg_cpstr lpBackgroundFilename); //Change the current background
+	void     ChangeLibrary(sg_cpstr lpLibraryFilename);
 };
 
 #endif //__mapboard_h__
