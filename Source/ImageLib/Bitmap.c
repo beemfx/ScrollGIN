@@ -4,12 +4,14 @@
 	Copyright (c) 2002, Blaine Myers
 */
 #include "bitmapex.h"
+#include "img_lib/img_lib.h"
 
 #define SAFE_FREE(p)         { if(p) { free(p); (p)=NULL; } }
 
 /* This function loads a bitmap from a given offset within a file. */
-HBITMAP LoadBitmapOffsetA(const char szFilename[MAX_PATH], int nOffset)
+HBITMAP LoadBitmapOffset(const char szFilename[MAX_PATH], int nOffset)
 {
+	#if 0
 	HBITMAP hBitmap=NULL;
 	HANDLE hFile;
 	BITMAPFILEHEADER bmfh;
@@ -18,100 +20,85 @@ HBITMAP LoadBitmapOffsetA(const char szFilename[MAX_PATH], int nOffset)
 	DWORD dwBytesRead;
 	BOOL bSuccess;
 	DWORD dwInfoSize;
-
-	hFile=CreateFileA(szFilename, GENERIC_READ, FILE_SHARE_READ, NULL,
-							OPEN_EXISTING, 0, NULL);
+	#endif
+	HANDLE hFile=CreateFileA(szFilename, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+	DWORD FileSize = GetFileSize( hFile , NULL );
 
 	if(hFile==INVALID_HANDLE_VALUE)return NULL;
-
-	SetFilePointer(hFile, nOffset, NULL, FILE_BEGIN);
-	bSuccess=ReadFile(hFile, &bmfh, sizeof(BITMAPFILEHEADER), &dwBytesRead, NULL);
-
-	if(!bSuccess || (dwBytesRead != sizeof(BITMAPFILEHEADER))
-					|| (bmfh.bfType != * (WORD *) "BM"))
+	unsigned __int8* FileData = malloc( FileSize );
+	if( NULL == FileData )
 	{
-		CloseHandle(hFile);
+		CloseHandle( hFile );
+		return NULL;
+	}
+	SetFilePointer( hFile , 0, NULL, FILE_BEGIN );
+	DWORD SizeRead = 0;
+	BOOL ReadSucc = ReadFile( hFile , FileData , FileSize, &SizeRead , NULL );
+
+	if( !ReadSucc || SizeRead != FileSize )
+	{
+		SAFE_FREE( FileData );
+		CloseHandle( hFile );
 		return NULL;
 	}
 
-	dwInfoSize=bmfh.bfOffBits - sizeof(BITMAPFILEHEADER);
-	pbmi = calloc(dwInfoSize, sizeof(BITMAPINFO));
-	bSuccess=ReadFile(hFile, pbmi, dwInfoSize, &dwBytesRead, NULL);
-	if(!bSuccess ||(dwBytesRead != dwInfoSize))
+	HIMG Img = IMG_OpenMemory( &FileData[nOffset] , FileSize-nOffset );
+	SAFE_FREE( FileData );
+	CloseHandle( hFile );
+
+	if( IMG_NULL == Img )
 	{
-		SAFE_FREE(pbmi);
-		CloseHandle(hFile);
 		return NULL;
 	}
 
-	hBitmap=CreateDIBSection(NULL, pbmi, DIB_RGB_COLORS, (void**)&pBits, NULL, 0);
-	if(hBitmap==NULL)
+	IMG_DESC ImgDesc;
+	IMG_GetDesc( Img , &ImgDesc );
+
+	BITMAPINFO BmInfo;
+	memset( &BmInfo, 0, sizeof(BmInfo) );
+	BmInfo.bmiHeader.biCompression   = BI_RGB;
+	BmInfo.bmiHeader.biPlanes   = 1;
+	BmInfo.bmiHeader.biBitCount = 32;
+	BmInfo.bmiHeader.biHeight   = ImgDesc.Height;
+	BmInfo.bmiHeader.biWidth    = ImgDesc.Width;
+	BmInfo.bmiHeader.biSizeImage=0;
+	BmInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	unsigned __int32* Bits = NULL;
+
+	HBITMAP hBitmap = CreateDIBSection( NULL , &BmInfo , DIB_RGB_COLORS , &Bits , NULL , 0 );
+	
+	if (NULL == hBitmap )
 	{
-		SAFE_FREE(pbmi);
-		CloseHandle(hFile);
+		IMG_Delete(Img);
 		return NULL;
 	}
 
-	ReadFile(hFile, pBits, bmfh.bfSize-bmfh.bfOffBits, &dwBytesRead, NULL);
+	IMG_DEST_RECT DestRect;
+	DestRect.nFormat = IMGFMT_A8R8G8B8;
+	DestRect.nWidth  = ImgDesc.Width;
+	DestRect.nHeight = ImgDesc.Height;
+	DestRect.nPitch  = sizeof( unsigned __int32)*ImgDesc.Width;
+	DestRect.nOrient = IMGORIENT_BOTTOMLEFT;
+	DestRect.pImage  = Bits;
 
-	SAFE_FREE(pbmi);
-	CloseHandle(hFile);
+	DestRect.rcCopy.top    = 0;
+	DestRect.rcCopy.left   = 0;
+	DestRect.rcCopy.bottom = ImgDesc.Height;
+	DestRect.rcCopy.right  = ImgDesc.Width;
+
+	img_bool Copied = IMG_CopyBits( Img , &DestRect , IMGFILTER_NONE , IMG_NULL , 0 );
+
+	IMG_Delete(Img);
+	Img = IMG_NULL;
+
+	if( IMG_FALSE == Copied )
+	{
+		DeleteObject( hBitmap );
+		hBitmap = NULL;
+	}
 
 	return hBitmap;
 }
-
-//This function loads a bitmap from a given offset within a file
-HBITMAP LoadBitmapOffsetW(const WCHAR szFilename[MAX_PATH], int nOffset){
-	HBITMAP hBitmap=NULL;
-	HANDLE hFile;
-	BITMAPFILEHEADER bmfh;
-	BITMAPINFO *pbmi;
-	BYTE *pBits;
-	DWORD dwBytesRead;
-	BOOL bSuccess;
-	DWORD dwInfoSize;
-
-	hFile=CreateFileW(szFilename, GENERIC_READ, FILE_SHARE_READ, NULL,
-							OPEN_EXISTING, 0, NULL);
-
-	if(hFile==INVALID_HANDLE_VALUE)return NULL;
-
-	SetFilePointer(hFile, nOffset, NULL, FILE_BEGIN);
-	bSuccess=ReadFile(hFile, &bmfh, sizeof(BITMAPFILEHEADER), &dwBytesRead, NULL);
-
-	if(!bSuccess || (dwBytesRead != sizeof(BITMAPFILEHEADER))
-					|| (bmfh.bfType != * (WORD *) "BM"))
-	{
-		CloseHandle(hFile);
-		return NULL;
-	}
-
-	dwInfoSize=bmfh.bfOffBits - sizeof(BITMAPFILEHEADER);
-	pbmi = calloc(dwInfoSize, sizeof(BITMAPINFO));
-	bSuccess=ReadFile(hFile, pbmi, dwInfoSize, &dwBytesRead, NULL);
-	if(!bSuccess ||(dwBytesRead != dwInfoSize))
-	{
-		SAFE_FREE(pbmi);
-		CloseHandle(hFile);
-		return NULL;
-	}
-
-	hBitmap=CreateDIBSection(NULL, pbmi, DIB_RGB_COLORS, (void**)&pBits, NULL, 0);
-	if(hBitmap==NULL)
-	{
-		SAFE_FREE(pbmi);
-		CloseHandle(hFile);
-		return NULL;
-	}
-
-	ReadFile(hFile, pBits, bmfh.bfSize-bmfh.bfOffBits, &dwBytesRead, NULL);
-
-	SAFE_FREE(pbmi);
-	CloseHandle(hFile);
-
-	return hBitmap;
-}
-
 
 //TransparentBlt2 transparently blt
 BOOL TransparentBlt2(

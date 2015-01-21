@@ -60,6 +60,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
       <ForcedIncludeFiles>../ScrollGIN/SgCommon.h</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>../;</AdditionalIncludeDirectories>
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -97,6 +98,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
       <ForcedIncludeFiles>../ScrollGIN/SgCommon.h</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>../;</AdditionalIncludeDirectories>
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -124,6 +126,10 @@
     <ClCompile Include="..\ImageLib\EditImageLibrary.cpp" />
     <ClCompile Include="..\ImageLib\ImageArchive.cpp" />
     <ClCompile Include="..\ImageLib\ImageLibrary.cpp" />
+    <ClCompile Include="..\img_lib\img_bmp.c" />
+    <ClCompile Include="..\img_lib\img_cb.c" />
+    <ClCompile Include="..\img_lib\img_lib.c" />
+    <ClCompile Include="..\img_lib\img_tga.c" />
     <ClCompile Include="DiskDlg.c" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
@@ -134,6 +140,9 @@
     <ClInclude Include="..\ImageLib\bitmapex.h" />
     <ClInclude Include="..\ImageLib\Defines.h" />
     <ClInclude Include="..\ImageLib\ImageLib.h" />
+    <ClInclude Include="..\img_lib\img_lib.h" />
+    <ClInclude Include="..\img_lib\img_lib_types.h" />
+    <ClInclude Include="..\img_lib\img_private.h" />
     <ClInclude Include="DiskDlg.h" />
   </ItemGroup>
   <ItemGroup>

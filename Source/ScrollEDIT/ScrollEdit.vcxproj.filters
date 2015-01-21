@@ -15,6 +15,9 @@
     <Filter Include="MapBoard">
       <UniqueIdentifier>{41d064e8-1a66-4386-b42a-139ae54bcfb2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="img_lib">
+      <UniqueIdentifier>{dbdc00fc-be4a-4e16-941f-385c99740837}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConstLibrary.cpp">
@@ -43,6 +46,18 @@
     </ClCompile>
     <ClCompile Include="..\MapBoard\Mapboard.cpp">
       <Filter>MapBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\img_lib\img_bmp.c">
+      <Filter>img_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\img_lib\img_cb.c">
+      <Filter>img_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\img_lib\img_lib.c">
+      <Filter>img_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\img_lib\img_tga.c">
+      <Filter>img_lib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +89,15 @@
     </ClInclude>
     <ClInclude Include="..\MapBoard\Mapboard.h">
       <Filter>MapBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\img_lib\img_lib.h">
+      <Filter>img_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\img_lib\img_lib_types.h">
+      <Filter>img_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\img_lib\img_private.h">
+      <Filter>img_lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
