@@ -17,15 +17,14 @@ sg_uint32 CImageArchive::GetSelectedEntry()
 	return m_nSelectedEntry;
 }
 
-BOOL CImageArchive::SetSelectedEntry(sg_uint32 nEntry)
+void CImageArchive::SetSelectedEntry(sg_uint32 nEntry)
 {
-	if((nEntry<1) ||(nEntry>m_nNumImages))return FALSE;
+	if((nEntry<1) ||(nEntry>m_nNumImages))return;
 
 	m_nSelectedEntry=nEntry;
-	return TRUE;
 }
 
-HRESULT CImageArchive::LoadArchive(LPCSTR szFilename)
+bool CImageArchive::LoadArchive(LPCSTR szFilename)
 {
 	IMGLIBHEADER lbHeader;
 	IMGHEADER imHeader;
@@ -46,21 +45,21 @@ HRESULT CImageArchive::LoadArchive(LPCSTR szFilename)
 		FILE_ATTRIBUTE_NORMAL,
 		(HANDLE)NULL);
 	
-	if(hFile==INVALID_HANDLE_VALUE)return E_FAIL;
+	if(hFile==INVALID_HANDLE_VALUE)return false;
 
 	DWORD dwBytesRead=0;
 	ReadFile(hFile, &lbHeader, sizeof(IMGLIBHEADER), &dwBytesRead, NULL);
 	if(dwBytesRead<sizeof(IMGLIBHEADER)){
 		CloseHandle(hFile);
-		return E_FAIL;
+		return false;
 	}
 	if(lbHeader.wType!=*(sg_uint16*)"IL"){
 		CloseHandle(hFile);
-		return E_FAIL;
+		return false;
 	}
 	if(lbHeader.nVersion!=20){
 		CloseHandle(hFile);
-		return E_FAIL;
+		return false;
 	}
 
 	//file is correct type so continue
@@ -82,7 +81,7 @@ HRESULT CImageArchive::LoadArchive(LPCSTR szFilename)
 	}
 
 
-	return S_OK;
+	return true;
 }
 
 void CImageArchive::CloseArchive()

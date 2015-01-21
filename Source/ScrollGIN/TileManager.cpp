@@ -32,9 +32,9 @@ bool SgTileManager::LoadLib(const char* lpLibraryFilename, CMapBoard *map){
 	//This will use a library to call CreateTilesFromFile functions
 	CImageArchive ILibrary;
 
-	HRESULT hr=ILibrary.LoadArchive(lpLibraryFilename);
+	bool Res = ILibrary.LoadArchive(lpLibraryFilename);
 
-	if(FAILED(hr))return false;
+	if(!(Res))return false;
 	
 	
 	HBITMAP hBitmap=0;

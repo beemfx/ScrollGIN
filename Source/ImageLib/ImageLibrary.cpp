@@ -28,22 +28,13 @@ CImageLibrary::~CImageLibrary()
 	CloseMainBitmaps();
 }
 
-BOOL CImageLibrary::GetImageData(sg_uint32 nEntry, IMAGEDATA *imgData)
+bool CImageLibrary::GetImageData(sg_uint32 nEntry, IMAGEDATA *imgData)
 {
-	if((nEntry<1) || (nEntry>m_nNumImages))return FALSE;
+	if((nEntry<1) || (nEntry>m_nNumImages))return false;
 
-	imgData->nBitmap=m_pImageData[nEntry-1].nBitmap;
-	imgData->nFrames=m_pImageData[nEntry-1].nFrames;
-	imgData->nHeight=m_pImageData[nEntry-1].nHeight;
-	imgData->nHeightSrc=m_pImageData[nEntry-1].nHeightSrc;
-	imgData->nWidth=m_pImageData[nEntry-1].nWidth;
-	imgData->nWidthSrc=m_pImageData[nEntry-1].nWidthSrc;
-	imgData->nX=m_pImageData[nEntry-1].nX;
-	imgData->nY=m_pImageData[nEntry-1].nY;
+	*imgData = m_pImageData[nEntry-1];
 
-	wcscpy_s(imgData->szImgLabel, countof(imgData->szImgLabel), m_pImageData[nEntry-1].szImgLabel);
-
-	return TRUE;
+	return true;
 }
 
 sg_uint16 CImageLibrary::GetNumFrames(sg_uint32 nEntry)
@@ -54,13 +45,11 @@ sg_uint16 CImageLibrary::GetNumFrames(sg_uint32 nEntry)
 	return m_pImageData[nEntry-1].nFrames;
 }
 
-BOOL CImageLibrary::GetImageName(char* Out, size_t OutSize , sg_uint32 nEntry )
+bool CImageLibrary::GetImageName(char* Out, size_t OutSize , sg_uint32 nEntry )
 {
 	char szTemp[IMAGE_NAME_LENGTH];
 
-	BOOL result=FALSE;
-
-	result=WideCharToMultiByte(
+	bool result = FALSE != WideCharToMultiByte(
 		CP_ACP, 
 		0, 
 		m_pImageData[nEntry-1].szImgLabel, 
@@ -87,21 +76,21 @@ sg_uint32 CImageLibrary::GetNumEntries()
 }
 
 
-HRESULT CImageLibrary::OpenBitmap(LPSTR szFilename, sg_uint16 nBitmap)
+bool CImageLibrary::OpenBitmap(LPSTR szFilename, sg_uint16 nBitmap)
 {
 	return OpenBitmapOffset(szFilename, 0, nBitmap);
 }
 
-HRESULT CImageLibrary::OpenBitmapOffset(LPCSTR szFilename, sg_uint32 nOffset, sg_uint16 nBitmap)
+bool CImageLibrary::OpenBitmapOffset(LPCSTR szFilename, sg_uint32 nOffset, sg_uint16 nBitmap)
 {
-	if( (nBitmap<1) || (nBitmap>MAX_BITMAPS) )return E_FAIL;
+	if( (nBitmap<1) || (nBitmap>MAX_BITMAPS) )return false;
 
 	DeleteObject(m_hBitmap[nBitmap-1]);
 	m_hBitmap[nBitmap-1]=LoadBitmapOffset(szFilename, nOffset);
 
-	if(m_hBitmap[nBitmap-1] == NULL)return E_FAIL;
+	if(m_hBitmap[nBitmap-1] == NULL)return false;
 	strcpy_s(m_szBitmapFilenameA[nBitmap-1], countof(m_szBitmapFilenameA[nBitmap-1]), szFilename);
-	return S_OK;
+	return true;
 }
 
 void CImageLibrary::CloseMainBitmaps()
@@ -115,7 +104,7 @@ void CImageLibrary::CloseMainBitmaps()
 }
 
 
-HRESULT CImageLibrary::ClearDataBase()
+void CImageLibrary::ClearDataBase()
 {
 	for(sg_uint32 i=0;i<m_nNumImages;i++)
 	{
@@ -126,15 +115,14 @@ HRESULT CImageLibrary::ClearDataBase()
 	CloseMainBitmaps();
 	SAFE_DELETE_ARRAY(m_pImageData);
 	m_pImageData=NULL;
-	return S_OK;
 }
 
 
-HRESULT CImageLibrary::CopyImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, BOOL bTransp)
+void CImageLibrary::CopyImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, BOOL bTransp)
 {
 	HDC hdcMainBitmap=NULL;
 
-	if( (nEntry<1) || (nEntry>m_nNumImages) )return S_FALSE;
+	if( (nEntry<1) || (nEntry>m_nNumImages) )return;
 
 	hdcMainBitmap=CreateCompatibleDC(hdcMainBitmap);
 	SelectObject(hdcMainBitmap, m_hBitmap[m_pImageData[nEntry-1].nBitmap-1]);
@@ -170,8 +158,6 @@ HRESULT CImageLibrary::CopyImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y
 	}
 
 	DeleteDC(hdcMainBitmap);
-
-	return S_OK;
 }
 
 sg_uint16 CImageLibrary::GetNumBitmaps()
@@ -179,11 +165,11 @@ sg_uint16 CImageLibrary::GetNumBitmaps()
 	return m_nNumBitmaps;
 }
 
-HRESULT CImageLibrary::StretchImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, int nWidth, int nHeight, BOOL bTransp)
+void CImageLibrary::StretchImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, int nWidth, int nHeight, BOOL bTransp)
 {
 	HDC hdcMainBitmap=NULL;
 
-	if( (nEntry<1) || (nEntry>m_nNumImages) )return S_FALSE;
+	if( (nEntry<1) || (nEntry>m_nNumImages) )return;
 
 	hdcMainBitmap=CreateCompatibleDC(hdcMainBitmap);
 	SelectObject(hdcMainBitmap, m_hBitmap[m_pImageData[nEntry-1].nBitmap-1]);
@@ -219,8 +205,6 @@ HRESULT CImageLibrary::StretchImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, in
 	}
 
 	DeleteDC(hdcMainBitmap);
-
-	return S_OK;
 }
 
 void CImageLibrary::GetBitmapName(char* Out, size_t OutSize, sg_uint16 nBitmap)

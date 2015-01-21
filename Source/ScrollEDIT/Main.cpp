@@ -251,7 +251,7 @@ BOOL CALLBACK LibDlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				TEXT("ScrollEdit"), 
 				MB_YESNO|MB_ICONQUESTION)==IDYES)
 			{
-				if(FAILED(ITileArchive.LoadArchive(szTempName)))
+				if(!(ITileArchive.LoadArchive(szTempName)))
 				{
 					MessageBox(
 						hwnd, 
@@ -511,7 +511,7 @@ BOOL CALLBACK NewDlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			TCHAR szBGName[MAX_PATH];
 			GetDlgItemText(hwnd, IDC_LIBRARYNAME, szLibraryName, MAX_PATH);
 			GetDlgItemText(hwnd, IDC_BGFILENAME, szBGName, MAX_PATH);
-			if(FAILED(ITileArchive.LoadArchive(szLibraryName)))
+			if(!(ITileArchive.LoadArchive(szLibraryName)))
 			{
 				MessageBox(hwnd, TEXT("Library was invalid."), TEXT("ScrollEdit"), MB_OK|MB_ICONWARNING);
 				break;
@@ -1322,7 +1322,7 @@ BOOL LoadMap(
 
 		const TCHAR* szLibraryName = g_cEditMapboard.GetLibraryName();
 
-		if(FAILED(ITileArchive.LoadArchive(szLibraryName)))
+		if(!(ITileArchive.LoadArchive(szLibraryName)))
 		{
 			MessageBox(
 				hwnd, 
