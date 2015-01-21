@@ -52,6 +52,10 @@ HRESULT CSTileManager::CreateTilesFromLibrary(DWORD dwTransparent, int reference
 				memset( &Parms , 0 , sizeof(Parms) );
 				Parms.Type = RENDERER_IMAGE_BITMAP;
 				Parms.Bitmap = hBitmap;
+				Parms.BmX = id.nX;
+				Parms.BmY = id.nY;
+				Parms.BmWidth = id.nWidthSrc;
+				Parms.BmHeight = id.nHeightSrc;
 				Parms.Width  = map->GetTileDim();
 				Parms.Height = map->GetTileDim();
 				m_lpTile[i-1] = Renderer_CreateSprite( &Parms );
