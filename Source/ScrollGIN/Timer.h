@@ -7,24 +7,20 @@
 #ifndef __TIMEREX_H__
 #define __TIMEREX_H__
 
-#include <windows.h> 
-
-
-class SgTimer{
-protected:
-	DWORD m_nStartTime;
-
-	DWORD m_nPausedTime;
-	BOOL m_bPaused;
+class SgTimer
+{
+private:
+	unsigned __int32  m_nStartTime;
+	unsigned __int32  m_nPausedTime;
+	bool              m_bPaused;
 public:
 	SgTimer();
 	~SgTimer();
 	void Start();
-	DWORD Time();
-	BOOL Elapsed(DWORD * pStart, DWORD nInterval);
-	BOOL Pause(BOOL bPause);
-	BOOL TogglePause();
-	BOOL IsPaused()const;
+	unsigned __int32 Time();
+	void Pause(bool bPause);
+	void TogglePause();
+	bool IsPaused()const;
 };
 
 
