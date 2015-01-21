@@ -23,7 +23,7 @@ static CJoes2ObjMan*   Joes2ObjMan = 0;
 
 #define WM_USER_ACTIVEAPP (WM_USER+1)
 
-HRESULT GameInit(HWND hWnd, BOOL bWindowed, HINSTANCE hInstance, int nShowCmd)
+static void Main_Game_Init(HWND hWnd, BOOL bWindowed, HINSTANCE hInstance)
 {
 	sgRendererInitParms InitParms;
 	InitParms.Width = 640;
@@ -33,16 +33,14 @@ HRESULT GameInit(HWND hWnd, BOOL bWindowed, HINSTANCE hInstance, int nShowCmd)
 
 	Renderer_Init( &InitParms );
 
-	ShowWindow(hWnd, nShowCmd);
+	ShowWindow( hWnd , SW_SHOWNORMAL);
 	SetFocus(hWnd);
 	Joes2ObjMan = new CJoes2ObjMan(256); 
 	Game.Init(640,480,Joes2ObjMan,hWnd);
-
-	return S_OK;
 }
 
 
-static void GameShutdown()
+static void Main_Game_Deinit()
 {
 	Game.Deinit();
 	delete Joes2ObjMan;
@@ -51,8 +49,16 @@ static void GameShutdown()
 	Renderer_Deinit();
 }
 
+static void Main_Game_Loop()
+{
+	Game.Update();
+	Renderer_BeginFrame();
+	Game.Render();
+	Renderer_EndFrame();
+}
 
-LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+
+static LRESULT CALLBACK Main_WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch(msg){
 	case WM_ACTIVATEAPP:
@@ -94,16 +100,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	return 0l;
 }
 
-static void GameLoop()
-{
-	
-	Game.Update();
-	Renderer_BeginFrame();
-	Game.Render();
-	Renderer_EndFrame();
-}
-
-BOOL ProcessCommandLine(BOOL* lpWindowed)
+static void Main_ProcessCommandLine(BOOL* lpWindowed)
 {
 	LPTSTR szCommandLine=GetCommandLine();
 	char* token=NULL;
@@ -111,15 +108,14 @@ BOOL ProcessCommandLine(BOOL* lpWindowed)
 	token=strtok(szCommandLine, steps);
 	while(token != NULL)
 	{
-		if(strnicmp("window", token, 7)==0)
+		if(_strnicmp("window", token, 7)==0)
 			*lpWindowed=TRUE;
 		
-		if(strnicmp("w", token, 2)==0)
+		if(_strnicmp("w", token, 2)==0)
 			*lpWindowed=TRUE;
 
 		token=strtok(NULL, steps);
 	}
-	return TRUE;
 }
 
 
@@ -138,7 +134,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	wc.style = CS_HREDRAW|CS_VREDRAW|CS_OWNDC;
 	wc.cbClsExtra=0;
 	wc.cbWndExtra=0;
-	wc.lpfnWndProc=MainWndProc;
+	wc.lpfnWndProc=Main_WndProc;
 	wc.hInstance=hInstance;
 	wc.hbrBackground=(HBRUSH)GetStockObject(DKGRAY_BRUSH);
 	wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(101));
@@ -152,50 +148,54 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return 0;
 	}
 
-	hWnd = CreateWindowEx(WS_EX_TOPMOST, 
-								szAppName,
-								szAppName,
-								WS_POPUP|WS_SYSMENU|WS_VISIBLE,
-								CW_USEDEFAULT,
-								CW_USEDEFAULT,
-								512,
-								512,
-								NULL,
-								NULL,
-								hInstance,
-								NULL);
+	hWnd = CreateWindowEx(
+		WS_EX_TOPMOST, 
+		szAppName,
+		szAppName,
+		WS_POPUP|WS_SYSMENU|WS_VISIBLE,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		512,
+		512,
+		NULL,
+		NULL,
+		hInstance,
+		NULL);
 
 	if(hWnd==NULL)return -1;
 
 	BOOL bWindow=0;
-	ProcessCommandLine(&bWindow);
+	Main_ProcessCommandLine(&bWindow);
 
 	#if defined(_DEBUG)
 	bWindow = TRUE;
 	#endif
 
-	GameInit(hWnd, bWindow , hInstance, nShowCmd);
+	Main_Game_Init(hWnd, bWindow , hInstance);
 
 	Game.LoadMap(TEXT("joeslevel1.map"));
 
-	while(TRUE){
-		if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)){
+	bool ShouldQuit = false;
 
+	while(true)
+	{
+		while( PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) )
+		{
 			if(msg.message==WM_QUIT)
-				break;
+				ShouldQuit = true;
 
-			
 			if(msg.message==WM_USER_ACTIVEAPP)
 				bActiveApp=msg.wParam;
-			
 
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
-
-		}else{
-			if(bActiveApp)GameLoop();else WaitMessage();
 		}
+
+		if( ShouldQuit )break;
+		
+		Main_Game_Loop();
+
 	}
-	GameShutdown();
+	Main_Game_Deinit();
 	return msg.wParam;
 }

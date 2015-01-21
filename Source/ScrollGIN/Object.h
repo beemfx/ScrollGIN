@@ -48,21 +48,21 @@ typedef struct tagSPRITEDATA
 
 	int nNumFrames; //How many frames the object has
 	int nCurrentFrame; //The current frame of animation
-	DWORD nAnimationSpeed; //The speed of the sprite animation
+	int nAnimationSpeed; //The speed of the sprite animation
 
-	DWORD nLastUpdateTime; //Last time sprite was updated
+	int nLastUpdateTime; //Last time sprite was updated
 
-	BOOL bActive;  //True if the current sprite should be drawn when draw is activated
+	bool bActive;  //True if the current sprite should be drawn when draw is activated
 
 	LOOPMODE nLoopMode; //how the sprite should loop
 }SPRITEDATA;
 
 typedef struct tagOBJECTMODE
 {
-	BOOL bActiveSprites[MAX_SPRITES_PER_OBJECT]; //An array wich tells which sprites are active
+	bool bActiveSprites[MAX_SPRITES_PER_OBJECT]; //An array wich tells which sprites are active
 	RECT rcObjDim; //rectangular structure containing size of object, this represent the dimension
 								//releative to the location of the object, in which the sprite exists
-	DWORD nType; //the type of object
+	int nType; //the type of object
 	char szModeName[MAX_SPRITE_NAME_LENGTH];
 }OBJECTMODE;
 
@@ -70,147 +70,90 @@ typedef struct tagOBJECTMODE
 class SgObject
 {
 protected:
-	int m_nX, m_nY;	//The objects location
-	int m_nDeltaX, m_nDeltaY; //change in location of object since last object
-	int m_nXSpeed, m_nYSpeed;	//The object's speed
-
-	int m_nXLastMoveTime, m_nYLastMoveTime; //Last time object moved
-
-	SgSprite* m_pSprite[MAX_SPRITES_PER_OBJECT]; //pointer to sprites used by the object
+	int        m_nX;
+	int        m_nY;
+	int        m_nDeltaX;
+	int        m_nDeltaY;
+	int        m_nXSpeed;
+	int        m_nYSpeed;
+	int        m_nXLastMoveTime; 
+	int        m_nYLastMoveTime;
+	SgSprite*  m_pSprite[MAX_SPRITES_PER_OBJECT]; //pointer to sprites used by the object
 	SPRITEDATA m_sSpriteData[MAX_SPRITES_PER_OBJECT]; //Data about each sprite
-	WORD m_nNumSprites;	//how many sprites there are
-
+	int        m_nNumSprites;	//how many sprites there are
 	OBJECTMODE m_sObjectMode[MAX_OBJECT_MODES];
-	int m_nCurrentMode;
-	int m_nNumModes;
-	BOOL m_bAlive;
-	LONG m_nMessage[MESSAGE_BUFFER_SIZE];//The message buffer, stores messages until they are processed
-	WORD m_nNumMessages;//The number of messages that need processing
-
+	int        m_nCurrentMode;
+	int        m_nNumModes;
+	bool       m_bAlive;
+	int        m_nMessage[MESSAGE_BUFFER_SIZE];//The message buffer, stores messages until they are processed
+	int        m_nNumMessages;//The number of messages that need processing
 	SPRITEFACE m_nFace;	
 
 public:
 	//Constructors destructors
 	SgObject();
-	SgObject(SgSpriteManager * pSpriteMgr, DWORD dwTime);
-	SgObject(SgSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
+	SgObject(SgSpriteManager * pSpriteMgr, unsigned int dwTime);
+	SgObject(SgSpriteManager * pSpriteMgr, unsigned int dwTime, int x, int y, int nXSpeed, int nYSpeed);
 	virtual ~SgObject();
 
 	//Initialization functions
-	virtual BOOL LoadObjectSprites(SgSpriteManager* pSpriteMgr);
-	virtual BOOL CreateObjectModes(DWORD dwTime);
+	virtual void LoadObjectSprites(SgSpriteManager* pSpriteMgr){ };
+	virtual void CreateObjectModes(int dwTime){ };
 
 	//animation functions
-	HRESULT Animate(
-		SgTimer *timer, 
-		CMapBoard *map, 
-		SgInputManager* pInput, 
-		void* pObjMan); //Moves the sprite, based on how much time has passed
+	void Animate(SgTimer *timer, CMapBoard *map, SgInputManager* pInput, void* pObjMan); //Moves the sprite, based on how much time has passed
 
-	BOOL SendMessage(LONG nMsg); //Sends a message to the object
+	bool SendMessage(int nMsg); //Sends a message to the object
 
-	virtual BOOL ProcessMessages(void* lpObjMan); //should process all messages in que
+	virtual bool ProcessMessages(void* lpObjMan); //should process all messages in que
+	virtual void ProcessAI(	SgInputManager* pInput, void* pObjMan, SgTimer* timer, CMapBoard* map);
+	virtual bool PreInitialMovement(CMapBoard *map, int *nXSpeed, int *nYSpeed);
+	virtual void InitialMovement(	SgTimer *timer, int nXSpeed, int nYSpeed);
+	virtual void ArchAdjust(SgTimer *timer, CMapBoard *map);
 
-	virtual HRESULT ProcessAI(
-		SgInputManager* pInput, 
-		void* pObjMan, 
-		SgTimer* timer,
-		CMapBoard* map);
-
-	virtual BOOL PreInitialMovement(
-		CMapBoard *map, 
-		int *nXSpeed, 
-		int *nYSpeed);
-
-	virtual HRESULT InitialMovement(
-		SgTimer *timer, 
-		int nXSpeed, 
-		int nYSpeed);
-
-	virtual HRESULT ArchAdjust(
-		SgTimer *timer, 
-		CMapBoard *map);
-
-	HRESULT DefaultArchAdjust(CMapBoard *map);
+	void DefaultArchAdjust(CMapBoard *map);
 	
 	//collision detectin with architecture
-	virtual BOOL CollisionWithRect(
-		CMapBoard *map, 
-		RECT rect, 
-		DWORD nWidth, 
-		DWORD nHeight);
-
-	BOOL ArchRelative(
-		CMapBoard* map, 
-		DWORD dwRelativeFlags);
-
-	BYTE ArchRelative(
-		CMapBoard* map, 
-		int x, 
-		int y);
+	virtual bool CollisionWithRect(CMapBoard *map, RECT rect, int nWidth, int nHeight);
+	unsigned __int8 ArchRelative(CMapBoard* map, unsigned __int32 dwRelativeFlags);
+	unsigned __int8 ArchRelative(CMapBoard* map, int x, int y);
 
 	int DistanceFrom(SgObject *cObject);
 
-	virtual COLLISIONTYPE DetectCollision(
-		SgObject *cObject);
+	virtual COLLISIONTYPE DetectCollision(	SgObject *cObject);
 
 	//Object mode functions
-	BOOL CreateMode(
-		BOOL bActiveSprites[MAX_SPRITES_PER_OBJECT], 
-		RECT rcObjDim, 
-		DWORD nType, 
-		char szModeName[MAX_SPRITE_NAME_LENGTH]);
-
-	BOOL SetObjectMode(
-		int nNewMode, 
-		DWORD dwTime);
-
-	BOOL SetObjectMode(
-		char szModeName[MAX_SPRITE_NAME_LENGTH], 
-		DWORD dwTime);
+	void CreateMode( bool bActiveSprites[MAX_SPRITES_PER_OBJECT], RECT rcObjDim, int nType, char szModeName[MAX_SPRITE_NAME_LENGTH]);
+	void SetObjectMode(int nNewMode, int dwTime);
+	void SetObjectMode(char szModeName[MAX_SPRITE_NAME_LENGTH], int dwTime);
 
 	//Object location and speed functions
 	SPRITEFACE GetFace();
-	BOOL SetObjectFace(SPRITEFACE nNewFace);
+	bool SetObjectFace(SPRITEFACE nNewFace);
 
-	BOOL SetSpeed(int nXSpeed, int nYSpeed);  //Sets the speed of the object
-	BOOL SetXSpeed(int nXSpeed); //Sets the left/right speed of the object
-	BOOL SetYSpeed(int nYSpeed); //Sets the up/down speed of the object
+	bool SetSpeed(int nXSpeed, int nYSpeed);  //Sets the speed of the object
+	bool SetXSpeed(int nXSpeed); //Sets the left/right speed of the object
+	bool SetYSpeed(int nYSpeed); //Sets the up/down speed of the object
 	int GetXSpeed(); //returns x speed
 	int GetYSpeed(); //returns y speed
 
-	BOOL SetPosition(int x, int y); //Forces the object to a certain position
+	bool SetPosition(int x, int y); //Forces the object to a certain position
 	int GetX();  //returns x coordinate of object
 	int GetY();  //recturns y coordinate of object
 
-	void GetDelta(
-		int *DeltaX, 
-		int *DeltaY);
-
-	BOOL IsAlive();
-	void SetAliveState(BOOL bAlive);
+	bool IsAlive();
+	void SetAliveState(bool bAlive);
 
 	RECT GetObjectDim();
 
-	DWORD GetObjectAlign();
+	int GetObjectAlign();
 
 	//sprite functions
-	HRESULT ObtainPointerToSprite(
-		SgSprite* pSprite, 
-		int x, 
-		int y, 
-		int nAnimSpeed, 
-		LOOPMODE nLoopMode);  //puts pointer to sprite in next available position
+	bool ObtainPointerToSprite(SgSprite* pSprite, int x, int y, int nAnimSpeed, LOOPMODE nLoopMode);
 
-	HRESULT ObtainPointerToSprite(
-		int nIndex, 
-		SgSprite* pSprite, 
-		int x, 
-		int y, 
-		int nAnimSpeed, 
-		LOOPMODE nLoopMOde); //Obtains a pointer to a sprite
+	bool ObtainPointerToSprite(int nIndex, SgSprite* pSprite, int x, int y, int nAnimSpeed, LOOPMODE nLoopMOde);
 	
-	BOOL SetNumSprites(int nNumSprites);
+	bool SetNumSprites(int nNumSprites);
 
 	//Drawing function
 	void Draw(SgViewPort *vp); //Draws the appropriate sprites for object

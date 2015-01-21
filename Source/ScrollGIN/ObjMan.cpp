@@ -15,41 +15,41 @@ SgObjectManager::SgObjectManager()
 	m_dwUserObject=0;
 	m_ppObject=new SgObject*[m_dwMaxObjects];
 	m_pObjectType=new OBJECTTYPE[m_dwMaxObjects];
-	for(DWORD i=0; i<m_dwMaxObjects; i++){
+	for(int i=0; i<m_dwMaxObjects; i++){
 		m_ppObject[i]=NULL;
 	}
 }
 
-SgObjectManager::SgObjectManager(DWORD dwMaxObjects)
+SgObjectManager::SgObjectManager(int dwMaxObjects)
 : m_dwMaxObjects(dwMaxObjects)
 {
 	m_dwCount=0;
 	m_dwUserObject=0;
 	m_ppObject=new SgObject*[m_dwMaxObjects];
 	m_pObjectType=new OBJECTTYPE[m_dwMaxObjects];
-	for(DWORD i=0; i<m_dwMaxObjects; i++){
+	for(int i=0; i<m_dwMaxObjects; i++){
 		m_ppObject[i]=NULL;
 	}
 }
 
-SgObjectManager::SgObjectManager(DWORD dwMaxObjects, SgTimer * pTimer)
+SgObjectManager::SgObjectManager(int dwMaxObjects, SgTimer * pTimer)
 : m_dwMaxObjects(dwMaxObjects)
 {
 	m_dwCount=0;
 	m_dwUserObject=0;
 	m_ppObject=new SgObject*[m_dwMaxObjects];
 	m_pObjectType=new OBJECTTYPE[m_dwMaxObjects];
-	for(DWORD i=0; i<m_dwMaxObjects; i++)
+	for(int i=0; i<m_dwMaxObjects; i++)
 	{
 		m_ppObject[i]=NULL;
 	}
 
-	ObtainTimer(pTimer);
+	SetTimer(pTimer);
 }
 
 SgObjectManager::~SgObjectManager()
 {
-	for(DWORD i=0; i<m_dwMaxObjects; i++){
+	for(int i=0; i<m_dwMaxObjects; i++){
 		SAFE_DELETE(m_ppObject[i]);
 	}
 	SAFE_DELETE_ARRAY(m_ppObject);
@@ -60,7 +60,7 @@ void SgObjectManager::ClearSprites()
 	m_SpriteManager.Clear();
 }
 
-void SgObjectManager::LoadSprites(LPTSTR szFilename)
+void SgObjectManager::LoadSprites(const char* szFilename)
 {
 	 m_SpriteManager.LoadLib(szFilename);
 }
@@ -69,13 +69,13 @@ void SgObjectManager::ClearObjects()
 {
 	m_dwCount=0;
 
-	for(DWORD i=0; i<m_dwMaxObjects; i++)
+	for(int i=0; i<m_dwMaxObjects; i++)
 	{
 		SAFE_DELETE(m_ppObject[i]);
 	}
 }
 
-void SgObjectManager::Kill(DWORD dwIndex)
+void SgObjectManager::Kill(int dwIndex)
 {
 	if((m_dwCount<1))return;
 	if(m_ppObject[dwIndex-1]){
@@ -90,7 +90,7 @@ void SgObjectManager::Cull()
 	//and kill it if it's life has expired,
 	//or technically no longer exists
 	SgObject* pObject;
-	for(DWORD i=0; i<m_dwMaxObjects; i++)
+	for(int i=0; i<m_dwMaxObjects; i++)
 	{
 		pObject=m_ppObject[i];
 		if(pObject != NULL){
@@ -105,23 +105,21 @@ void SgObjectManager::Cull()
 }
 
 
-BOOL SgObjectManager::ObtainTimer(SgTimer * pTimer)
+void SgObjectManager::SetTimer(SgTimer* pTimer)
 {
 	m_pTimer=pTimer;
-
-	if(pTimer==NULL)return FALSE;
-	else return TRUE;
 }
 
 
-HRESULT SgObjectManager::CreateObject(	const OBJECTTYPE nType, int x, int y, int nXSpeed, int nYSpeed)
+void SgObjectManager::CreateObject(	const OBJECTTYPE nType, int x, int y, int nXSpeed, int nYSpeed)
 {
-	if(m_dwCount<m_dwMaxObjects){
+	if(m_dwCount<m_dwMaxObjects)
+	{
 		//Find first free slot
-		DWORD dwTime=0;
+		int dwTime=0;
 		if(m_pTimer)
 			dwTime=m_pTimer->Time();
-		DWORD i=0;
+		int i=0;
 		while(m_ppObject[i]!=NULL)i++;
 		switch(nType)
 		{
@@ -134,43 +132,10 @@ HRESULT SgObjectManager::CreateObject(	const OBJECTTYPE nType, int x, int y, int
 		}
 		m_pObjectType[i]=nType;
 		m_dwCount++;
-		return S_OK;
-	}else return E_FAIL;
-}
-
-void SgObjectManager::Replace(DWORD dwIndex)
-{
-	if(dwIndex<1)return;
-	SgObject *pObject=m_ppObject[dwIndex-1];
-	if(pObject==NULL)return;
-
-	BOOL bKill=TRUE;
-	OBJECTTYPE nNewType=OT_DEFAULT;
-
-	//When this function is overloaded it will
-	//determine which object should replace the
-	//current object type.
-	switch(m_pObjectType[dwIndex-1])
-	{
-	case OT_DEFAULT:
-		break;
-	default:
-		break;
-	}
-
-	if(bKill)Kill(dwIndex);
-	else{
-		int nX=0, nY=0, nYSpeed=0, nXSpeed=0;
-		nX=m_ppObject[dwIndex-1]->GetX();
-		nY=m_ppObject[dwIndex-1]->GetY();
-		nXSpeed=m_ppObject[dwIndex-1]->GetXSpeed();
-		nYSpeed=m_ppObject[dwIndex-1]->GetYSpeed();
-		SAFE_DELETE(m_ppObject[dwIndex-1]);
-		CreateObject(nNewType, nX, nY, nXSpeed, nYSpeed);
 	}
 }
 
-COLLISIONTYPE SgObjectManager::DetectCollision(DWORD dwIndex1, DWORD dwIndex2)
+COLLISIONTYPE SgObjectManager::DetectCollision(int dwIndex1, int dwIndex2)
 {
 	if((dwIndex1<1) || 
 		(dwIndex2<1) || 
@@ -184,9 +149,9 @@ COLLISIONTYPE SgObjectManager::DetectCollision(DWORD dwIndex1, DWORD dwIndex2)
 	return m_ppObject[dwIndex1-1]->DetectCollision(m_ppObject[dwIndex2-1]);
 }
 
-HRESULT SgObjectManager::DetectCollisions()
+void SgObjectManager::DetectCollisions()
 {
-	DWORD i=0, j=0;
+	int i=0, j=0;
 	for(i=0; i<m_dwMaxObjects; i++){
 		if(m_ppObject[i]!=NULL){
 			for(j=i+1; j<m_dwMaxObjects; j++){
@@ -203,12 +168,11 @@ HRESULT SgObjectManager::DetectCollisions()
 			}
 		}
 	}
-	return S_OK;
 }
 
 void SgObjectManager::Update( CMapBoard *map , SgViewPort *viewport , SgInputManager* pInput )
 {
-	DWORD i=0;
+	int i=0;
 	//if the game is paused we just draw the objects (and don't animate them)
 	if(m_pTimer->IsPaused())
 	{
@@ -256,13 +220,13 @@ void SgObjectManager::Draw( SgViewPort *viewport )
 	}
 }
 
-void SgObjectManager::SetUserObject(DWORD nIndex)
+void SgObjectManager::SetUserObject(int nIndex)
 {
 	if((nIndex<1) || (nIndex>m_dwMaxObjects))return;
 	else m_dwUserObject=nIndex;
 }
 
-DWORD SgObjectManager::GetUserObject()
+int SgObjectManager::GetUserObject()
 {
 	return m_dwUserObject;
 }

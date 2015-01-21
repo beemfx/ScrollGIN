@@ -59,7 +59,7 @@ void SgScrollGINGame::Init( int dwWidth , int dwHeight , SgObjectManager* lpObjM
 	m_dwWidth=dwWidth;
 	m_dwHeight=dwHeight;
 
-	lpObjMan->ObtainTimer(&m_Timer);
+	lpObjMan->SetTimer(&m_Timer);
 	lpObjMan->Initialize();
 }
 
