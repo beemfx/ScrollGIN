@@ -35,7 +35,7 @@ bool SgScrollGINGame::IsPaused()const
 void SgScrollGINGame::Render()
 {
 	DrawMapBoard();
-	m_lpObjectManager->Animate(&m_Mapboard,&m_Viewport,&m_Input);
+	m_lpObjectManager->Draw(&m_Viewport);
 }
 
 void SgScrollGINGame::Init( int dwWidth , int dwHeight , SgObjectManager* lpObjMan , HWND hwnd )
@@ -85,6 +85,7 @@ void SgScrollGINGame::LoadMap(const char* szFilename)
 void SgScrollGINGame::Update()
 {
 	m_Input.UpdateInputValues();
+	m_lpObjectManager->Update(&m_Mapboard,&m_Viewport,&m_Input);
 }
 
 bool SgScrollGINGame::IsKeyPressed(int nKey)

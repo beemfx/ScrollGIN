@@ -206,16 +206,13 @@ HRESULT SgObjectManager::DetectCollisions()
 	return S_OK;
 }
 
-HRESULT SgObjectManager::Animate(CMapBoard *map,SgViewPort *viewport,SgInputManager* pInput)
+void SgObjectManager::Update( CMapBoard *map , SgViewPort *viewport , SgInputManager* pInput )
 {
 	DWORD i=0;
 	//if the game is paused we just draw the objects (and don't animate them)
-	if(m_pTimer->IsPaused()){
-		for(i=0; i<m_dwMaxObjects; i++){
-			if(m_ppObject[i]!=NULL)
-				m_ppObject[i]->Draw(viewport);
-		}
-		return S_OK;
+	if(m_pTimer->IsPaused())
+	{
+		return;
 	}
 	//Create a new random seed for randomness.
 	RandomSeed(timeGetTime());
@@ -236,9 +233,7 @@ HRESULT SgObjectManager::Animate(CMapBoard *map,SgViewPort *viewport,SgInputMana
 
 	if((m_dwUserObject>0) && (m_ppObject[m_dwUserObject-1]!=NULL) )
 	{
-		viewport->force_position(
-			m_ppObject[m_dwUserObject-1]->GetX(), 
-			m_ppObject[m_dwUserObject-1]->GetY());
+		viewport->force_position(m_ppObject[m_dwUserObject-1]->GetX(), m_ppObject[m_dwUserObject-1]->GetY());
 		
 	}
 	else
@@ -250,14 +245,15 @@ HRESULT SgObjectManager::Animate(CMapBoard *map,SgViewPort *viewport,SgInputMana
 	DetectCollisions();
 	
 	Cull(); //cull old objects
+}
 
+void SgObjectManager::Draw( SgViewPort *viewport )
+{
 	//Draw each of the objects
-	for(i=0; i<m_dwMaxObjects; i++){
-		if(m_ppObject[i]!=NULL)
-			m_ppObject[i]->Draw(viewport);
+	for(int i=0; i<m_dwMaxObjects; i++)
+	{
+		if(m_ppObject[i])m_ppObject[i]->Draw(viewport);
 	}
-
-	return S_OK;
 }
 
 void SgObjectManager::SetUserObject(DWORD nIndex)
