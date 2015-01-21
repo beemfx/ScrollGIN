@@ -62,10 +62,10 @@ void SgRendererImage::CreateBitmap()
 		m_D->CreateParms.Width,
 		m_D->CreateParms.Height,
 		hdcImage,
-		0,
-		0,
-		m_D->CreateParms.Width,
-		m_D->CreateParms.Height,
+		m_D->CreateParms.BmX,
+		m_D->CreateParms.BmY,
+		m_D->CreateParms.BmWidth,
+		m_D->CreateParms.BmHeight,
 		SRCCOPY);
 
 	DeleteDC(hdcImage);

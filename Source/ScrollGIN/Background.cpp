@@ -107,6 +107,10 @@ HRESULT CBackground::LoadBackgroundImage(
 	memset(&Parms, 0, sizeof(Parms));
 	Parms.Type = RENDERER_IMAGE_BITMAP;
 	Parms.Bitmap = hTempBM;
+	Parms.BmX = 0;
+	Parms.BmY = 0;
+	Parms.BmWidth = nFWidth;
+	Parms.BmHeight = nFHeight;
 	Parms.Width = dwDeviceWidth;
 	Parms.Height = dwDeviceHeight;
 

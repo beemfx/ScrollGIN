@@ -79,6 +79,10 @@ HRESULT CSprite::CreateSpriteFrameBMInMemory(
 	sgRendererImageCreateParms Parms;
 	memset( &Parms , 0 , sizeof(Parms) );
 	Parms.Type = RENDERER_IMAGE_BITMAP;
+	Parms.BmX = nFX;
+	Parms.BmY = nFY;
+	Parms.BmWidth = nFWidth;
+	Parms.BmHeight = nFHeight;
 	Parms.Bitmap = hBitmap;
 	Parms.Width = nWidth;
 	Parms.Height = nHeight;
