@@ -76,7 +76,7 @@ HBITMAP LoadBitmapOffset(const char szFilename[MAX_PATH], int nOffset)
 	DestRect.rcCopy.bottom = ImgDesc.Height;
 	DestRect.rcCopy.right  = ImgDesc.Width;
 
-	img_bool Copied = IMG_CopyBits( Img , &DestRect , IMGFILTER_NONE , IMG_NULL , 0 );
+	img_bool Copied = IMG_CopyBits( Img , &DestRect , IMGFILTER_NONE , IMG_NULL , 0xFF );
 	
 	IMG_Delete(Img);
 	Img = IMG_NULL;
