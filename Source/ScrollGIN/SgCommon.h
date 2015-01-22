@@ -12,6 +12,21 @@ typedef wchar_t          sg_char16;
 
 #endif
 
+struct sg_vec4
+{
+	float x , y , z, w;
+};
+
+struct sg_vec2
+{
+	float x , y;
+};
+
+struct sg_color
+{
+	float r , g , b , a;
+};
+
 
 #define SAFE_DELETE(p)       { if(p) { delete (p);     (p)=NULL; } }
 #define SAFE_DELETE_ARRAY(p) { if(p) { delete[] (p);   (p)=NULL; } }
@@ -19,3 +34,9 @@ typedef wchar_t          sg_char16;
 #define SAFE_RELEASE(p)      { if(p) { (p)->Release(); (p)=NULL; } }
 
 #define SAFE_FREE(p)         { if(p) { free(p); (p)=NULL; } }
+
+#if defined( DEBUG )
+#define assert( x ) if ( !(x) ){ __debugbreak(); }
+#else
+#define assert( x )
+#endif

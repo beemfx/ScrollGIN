@@ -72,7 +72,7 @@
       <BrowseInformation>true</BrowseInformation>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalIncludeDirectories>../;../DXLIB;./;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../;../DXLIB;./;$(IntDir)/code/;</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>ScrollGIN/SgCommon.h</ForcedIncludeFiles>
     </ClCompile>
     <ResourceCompile>
@@ -112,7 +112,7 @@
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>../;../DXLIB;./;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../;../DXLIB;./;$(IntDir)/code/;</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>ScrollGIN/SgCommon.h</ForcedIncludeFiles>
     </ClCompile>
     <ResourceCompile>
@@ -138,8 +138,22 @@
     <ClCompile Include="..\img_lib\img_lib.c" />
     <ClCompile Include="..\img_lib\img_tga.c" />
     <ClCompile Include="..\MapBoard\SgMap.cpp" />
-    <ClCompile Include="..\Renderer2\Renderer.cpp" />
-    <ClCompile Include="..\Renderer2\RendererImage.cpp" />
+    <ClCompile Include="..\Renderer2\Renderer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Renderer2\RendererD3D11.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Renderer2\RendererImage.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Renderer2\RendererImageD3D11.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Background.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug Unicode|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -260,6 +274,26 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="icon1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\Renderer2\Shaders.fx">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">3.0</ShaderModel>
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">set OPTS=/nologo 
+fxc %OPTS% /T vs_5_0 /E "VS_Color" /Fh "$(IntDir)/code/VS_Color.h" "%(FullPath)"
+fxc %OPTS% /T vs_5_0 /E "VS_Texture" /Fh "$(IntDir)/code/VS_Texture.h" "%(FullPath)"
+fxc %OPTS% /T ps_5_0 /E "PS_Color" /Fh "$(IntDir)/code/PS_Color.h" "%(FullPath)"
+fxc %OPTS% /T ps_5_0 /E "PS_Texture" /Fh "$(IntDir)/code/PS_Texture.h" "%(FullPath)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">set OPTS=/nologo 
+fxc %OPTS% /T vs_5_0 /E "VS_Color" /Fh "$(IntDir)/code/VS_Color.h" "%(FullPath)"
+fxc %OPTS% /T vs_5_0 /E "VS_Texture" /Fh "$(IntDir)/code/VS_Texture.h" "%(FullPath)"
+fxc %OPTS% /T ps_5_0 /E "PS_Color" /Fh "$(IntDir)/code/PS_Color.h" "%(FullPath)"
+fxc %OPTS% /T ps_5_0 /E "PS_Texture" /Fh "$(IntDir)/code/PS_Texture.h" "%(FullPath)"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)/code/VS_Color.h;$(IntDir)/code/PS_Color.h;$(IntDir)/code/VS_Texture.h;$(IntDir)/code/PS_Texture.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)/code/VS_Color.h;$(IntDir)/code/PS_Color.h;$(IntDir)/code/VS_Texture.h;$(IntDir)/code/PS_Texture.h</Outputs>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
