@@ -73,8 +73,8 @@ bool SgSprite::CreateNextSprite(int nFrame, sg_cpstr BmFile , int BmOffset, int 
 	Parms.BmFileOffset = BmOffset;
 
 	m_cSpriteImage[nFrame-1]        = Renderer_CreateSprite( &Parms );
-	Parms.BmX = nFX + nFWidth;
-	Parms.BmWidth = -nFWidth;
+	Parms.BmX = nFX + nFWidth+1;
+	Parms.BmWidth = -nFWidth+1;
 	m_cReverseSpriteImage[nFrame-1] = Renderer_CreateSprite( &Parms );
 	
 	return true;
