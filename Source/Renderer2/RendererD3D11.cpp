@@ -154,9 +154,9 @@ public:
 		Sd.BufferUsage = DXGI_USAGE_BACK_BUFFER|DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		Sd.BufferCount = 1;
 		Sd.OutputWindow = m_hwnd;
-		Sd.Windowed = InitParms->Windowed;
+		Sd.Windowed = TRUE;//InitParms->Windowed;
 		Sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-		Sd.Flags = 0;
+		Sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 		Res = D3D11CreateDeviceAndSwapChain( NULL , D3D_DRIVER_TYPE_HARDWARE, NULL , 0 , FeatureLevels , countof(FeatureLevels), D3D11_SDK_VERSION , &Sd , &m_SwapChain , &m_Device , &m_FeatureLevel , &m_ImmContext );
 		if( FAILED( Res ) )
@@ -171,7 +171,7 @@ public:
 		}
 		else
 		{
-			SetWindowLong( m_hwnd , GWL_STYLE , WS_POPUP );
+			m_SwapChain->SetFullscreenState( TRUE , NULL );
 		}
 
 		m_SwapChain->GetBuffer( 0 , __uuidof(m_RtTex) , reinterpret_cast<void**>(&m_RtTex) );
@@ -272,13 +272,13 @@ public:
 			AdjustWindowSize();
 		}
 
-		if(m_InitParms.Windowed)ShowCursor(FALSE);
+		ShowCursor(FALSE);
 	}
 
 	void Deinit()
 	{
 		ReleaseAll();
-		if(m_InitParms.Windowed)ShowCursor(TRUE);
+		ShowCursor(TRUE);
 	}
 
 	void UpdateBounds()
