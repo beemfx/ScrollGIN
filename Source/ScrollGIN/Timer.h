@@ -10,9 +10,8 @@
 class SgTimer
 {
 private:
-	unsigned __int32  m_nStartTime;
-	unsigned __int32  m_nPausedTime;
-	bool              m_bPaused;
+	unsigned __int32  m_Time;
+	bool              m_Paused;
 
 	unsigned __int64  m_PF;
 	unsigned __int64  m_TmLast;
