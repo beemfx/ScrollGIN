@@ -1,0 +1,368 @@
+#include "Renderer.h"
+#include "RendererImage.h"
+#include <d3d11.h>
+#include <DirectXMath.h>
+#include <windowsx.h>
+
+#pragma comment(lib, "d3d11.lib")
+
+#include "VS_Color.h"
+#include "PS_Color.h"
+#include "VS_Texture.h"
+#include "PS_Texture.h"
+
+struct SgVert
+{
+	sg_vec4  Pos;   // : POSITION;
+	sg_vec2  Tex0;  // : TEXCOORD0;
+	sg_color Color; // : COLOR0;
+};
+
+static const D3D11_INPUT_ELEMENT_DESC SgRenderer_VertexFormat[] = 
+{
+	{ "SV_POSITION", 0 , DXGI_FORMAT_R32G32B32A32_FLOAT , 0 ,  0 , D3D11_INPUT_PER_VERTEX_DATA , 0 },
+	{ "TEXCOORD"   , 0 , DXGI_FORMAT_R32G32_FLOAT       , 0 , 16 , D3D11_INPUT_PER_VERTEX_DATA , 0 },
+	{ "COLOR"      , 0 , DXGI_FORMAT_R32G32B32A32_FLOAT , 0 , 24 , D3D11_INPUT_PER_VERTEX_DATA , 0 },
+};
+
+static class SgRenderer
+{
+private:
+	struct sgVsConsts
+	{
+		DirectX::XMMATRIX mWVP; //vs c0
+	};
+
+private:
+	IDXGISwapChain*         m_SwapChain;
+	ID3D11Device*           m_Device;
+	D3D_FEATURE_LEVEL       m_FeatureLevel;
+	ID3D11DeviceContext*    m_ImmContext;
+	ID3D11Texture2D*        m_RtTex;
+	ID3D11RenderTargetView* m_RtView;
+
+	ID3D11VertexShader*     m_VS_Color;
+	ID3D11VertexShader*     m_VS_Texture;
+	ID3D11PixelShader*      m_PS_Color;
+	ID3D11PixelShader*      m_PS_Texture;
+
+	ID3D11InputLayout*      m_VS_Texture_InputLayout;
+	ID3D11InputLayout*      m_VS_Color_InputLayout;
+	ID3D11Buffer*           m_VbTest;
+
+	sgRendererInitParms     m_InitParms;
+	HWND                    m_hwnd;
+	RECT                    m_RcWindow;
+
+	sgVsConsts              m_VsConsts;
+	ID3D11Buffer*           m_VsConstsBuffer;
+private:
+	void ReleaseAll()
+	{
+		m_SwapChain->SetFullscreenState(false, NULL);
+
+		SAFE_RELEASE( m_VbTest );
+		SAFE_RELEASE( m_VsConstsBuffer );
+
+		SAFE_RELEASE( m_VS_Color_InputLayout );
+		SAFE_RELEASE( m_VS_Texture_InputLayout );
+		
+		SAFE_RELEASE( m_VS_Color );
+		SAFE_RELEASE( m_VS_Texture );
+		SAFE_RELEASE( m_PS_Color );
+		SAFE_RELEASE( m_PS_Texture );
+
+		SAFE_RELEASE( m_RtView );
+		SAFE_RELEASE( m_RtTex );
+		SAFE_RELEASE( m_ImmContext );
+
+		SAFE_RELEASE(m_SwapChain);
+
+		if (m_Device)
+		{
+			ULONG NumLeft = m_Device->Release();
+			m_Device = 0;
+			assert( 0 == NumLeft );
+			NumLeft = NumLeft;
+		}
+	}
+
+	void AdjustWindowSize()
+	{
+		if( m_InitParms.Windowed )
+		{
+			RECT rcWork;
+			RECT rc;
+			DWORD dwStyle;
+
+			dwStyle = GetWindowStyle(m_hwnd);
+			dwStyle &= ~WS_POPUP;
+			dwStyle |= WS_SYSMENU | WS_OVERLAPPED | WS_CAPTION | WS_DLGFRAME | WS_MINIMIZEBOX;
+			SetWindowLong(m_hwnd, GWL_STYLE, dwStyle);
+			SetRect( &rc , 0 , 0 , m_InitParms.Width, m_InitParms.Height );
+			AdjustWindowRectEx( &rc , GetWindowStyle(m_hwnd) , false, GetWindowExStyle(m_hwnd) );
+			SetWindowPos(m_hwnd, NULL, 0, 0, rc.right - rc.left, rc.bottom - rc.top, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+			SetWindowPos(m_hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
+
+			/*  Make sure our window does not hang outside of the work area. */
+			SystemParametersInfo(SPI_GETWORKAREA, 0, &rcWork, 0);
+			GetWindowRect(m_hwnd, &rc);
+			if (rc.left < rcWork.left) rc.left = rcWork.left;
+			if (rc.top < rcWork.top)  rc.top = rcWork.top;
+			SetWindowPos(m_hwnd, NULL, rc.left, rc.top, 0, 0, SWP_NOSIZE|SWP_NOZORDER|SWP_NOACTIVATE);
+		}
+	}
+
+	void Restore()
+	{
+		//TODO: Reload all graphics...
+		
+	}
+
+public:
+	SgRenderer()
+	: m_Device( 0 )
+	, m_hwnd( 0 )
+	, m_SwapChain( 0 )
+	, m_ImmContext( 0 )
+	, m_RtTex( 0 )
+	, m_RtView( 0 )
+	, m_VS_Color(0)
+	, m_VS_Texture(0)
+	, m_PS_Color(0)
+	, m_PS_Texture(0)
+	, m_VS_Texture_InputLayout(0)
+	, m_VS_Color_InputLayout(0)
+	, m_VbTest( 0 )
+	, m_VsConstsBuffer( 0 )
+	{
+		m_VsConsts.mWVP = DirectX::XMMatrixIdentity();
+	}
+
+	void Init(  const sgRendererInitParms* InitParms )
+	{
+		m_InitParms = *InitParms;
+		m_hwnd = static_cast<HWND>(m_InitParms.Wnd);
+		HRESULT Res;
+		static const D3D_FEATURE_LEVEL FeatureLevels[] = { D3D_FEATURE_LEVEL_11_0 , D3D_FEATURE_LEVEL_11_1 };
+		DXGI_SWAP_CHAIN_DESC Sd;
+		memset( &Sd , 0 , sizeof(Sd) );
+		Sd.BufferDesc.Width = InitParms->Width;
+		Sd.BufferDesc.Height = InitParms->Height;
+		Sd.BufferDesc.RefreshRate.Numerator = 0;
+		Sd.BufferDesc.RefreshRate.Denominator = 1;
+		Sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		Sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+		Sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+		Sd.SampleDesc.Count = 1;
+		Sd.SampleDesc.Quality = 0;
+		Sd.BufferUsage = DXGI_USAGE_BACK_BUFFER|DXGI_USAGE_RENDER_TARGET_OUTPUT;
+		Sd.BufferCount = 1;
+		Sd.OutputWindow = m_hwnd;
+		Sd.Windowed = InitParms->Windowed;
+		Sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+		Sd.Flags = 0;
+
+		Res = D3D11CreateDeviceAndSwapChain( NULL , D3D_DRIVER_TYPE_HARDWARE, NULL , 0 , FeatureLevels , countof(FeatureLevels), D3D11_SDK_VERSION , &Sd , &m_SwapChain , &m_Device , &m_FeatureLevel , &m_ImmContext );
+		if( FAILED( Res ) )
+		{
+			ReleaseAll();
+			return;
+		}
+
+		if( m_InitParms.Windowed )
+		{
+
+		}
+		else
+		{
+			SetWindowLong( m_hwnd , GWL_STYLE , WS_POPUP );
+		}
+
+		m_SwapChain->GetBuffer( 0 , __uuidof(m_RtTex) , reinterpret_cast<void**>(&m_RtTex) );
+		m_Device->CreateRenderTargetView( m_RtTex , NULL , &m_RtView );
+		m_ImmContext->OMSetRenderTargets( 1 , &m_RtView , NULL );
+
+		//Create Pixel Shaders
+		Res = m_Device->CreatePixelShader( g_PS_Color , sizeof(g_PS_Color) , NULL , &m_PS_Color );
+		assert( SUCCEEDED(Res) );
+		Res = m_Device->CreatePixelShader( g_PS_Texture , sizeof(g_PS_Texture) , NULL , &m_PS_Texture );
+		assert( SUCCEEDED(Res) );
+		//Create Vertex Shaders
+		Res = m_Device->CreateVertexShader( g_VS_Texture , sizeof(g_VS_Texture) , NULL , &m_VS_Texture );
+		assert( SUCCEEDED(Res) );
+		Res = m_Device->CreateVertexShader( g_VS_Color , sizeof(g_VS_Color) , NULL , &m_VS_Color );
+		assert( SUCCEEDED(Res) );
+		//Create Vertex Layouts
+		Res = m_Device->CreateInputLayout( SgRenderer_VertexFormat , countof(SgRenderer_VertexFormat) , g_VS_Texture , sizeof(g_VS_Texture) , &m_VS_Texture_InputLayout );
+		assert( SUCCEEDED(Res) );
+		Res = m_Device->CreateInputLayout( SgRenderer_VertexFormat , countof(SgRenderer_VertexFormat) , g_VS_Color , sizeof(g_VS_Color) , &m_VS_Color_InputLayout );
+		assert( SUCCEEDED(Res) );
+
+
+		D3D11_BUFFER_DESC cbDesc;
+		cbDesc.ByteWidth           = sizeof( sgVsConsts );
+		cbDesc.Usage               = D3D11_USAGE_DYNAMIC;
+		cbDesc.BindFlags           = D3D11_BIND_CONSTANT_BUFFER;
+		cbDesc.CPUAccessFlags      = D3D11_CPU_ACCESS_WRITE;
+		cbDesc.MiscFlags           = 0;
+		cbDesc.StructureByteStride = 0;
+
+		Res = m_Device->CreateBuffer( &cbDesc , NULL , &m_VsConstsBuffer );
+		assert( SUCCEEDED( Res ) );
+
+		
+		SgVert Verts[] =
+		{
+			{ { 0.0f  , 0.5f , 0.0f , 1.0f } , { 0 , 0 } , { 1.0f, 0.0f, 0.0f, 1.0f } },
+			{ { 0.45f , -0.5 , 0.0f , 1.0f } , { 0 , 0 } , { 0.0f, 1.0f, 0.0f, 1.0f } },
+			{ { -0.45f, -0.5f, 0.0f , 1.0f } , { 0 , 0 } , { 0.0f, 0.0f, 1.0f, 1.0f } },
+		};
+
+		// Fill in a buffer description.
+		D3D11_BUFFER_DESC bufferDesc;
+		bufferDesc.Usage            = D3D11_USAGE_DEFAULT;
+		bufferDesc.ByteWidth        = sizeof( SgVert ) * 3;
+		bufferDesc.BindFlags        = D3D11_BIND_VERTEX_BUFFER;
+		bufferDesc.CPUAccessFlags   = 0;
+		bufferDesc.MiscFlags        = 0;
+
+		// Fill in the subresource data.
+		D3D11_SUBRESOURCE_DATA InitData;
+		InitData.pSysMem = Verts;
+		InitData.SysMemPitch = 0;
+		InitData.SysMemSlicePitch = 0;
+
+		// Create the vertex buffer.
+		Res = m_Device->CreateBuffer( &bufferDesc, &InitData, &m_VbTest );
+		assert( SUCCEEDED( Res ) );
+
+		if( m_InitParms.Windowed )
+		{
+			UpdateBounds();
+			AdjustWindowSize();
+		}
+
+		if(m_InitParms.Windowed)ShowCursor(FALSE);
+	}
+
+	void Deinit()
+	{
+		ReleaseAll();
+		if(m_InitParms.Windowed)ShowCursor(TRUE);
+	}
+
+	void UpdateBounds()
+	{
+		if (m_InitParms.Windowed)
+		{
+			GetClientRect(m_hwnd, &m_RcWindow);
+			ClientToScreen(m_hwnd, (POINT*)&m_RcWindow);
+			ClientToScreen(m_hwnd, (POINT*)&m_RcWindow + 1);
+		}
+		else
+		{
+			SetRect(&m_RcWindow, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
+		}
+	}
+
+	void UpdloadConsts()
+	{
+		D3D11_MAPPED_SUBRESOURCE Resource;
+		m_ImmContext->Map( m_VsConstsBuffer , 0 , D3D11_MAP_WRITE_DISCARD , 0 , &Resource );
+		memcpy( Resource.pData , &m_VsConsts , sizeof(m_VsConsts) );
+		m_ImmContext->Unmap( m_VsConstsBuffer , 0 );
+		m_ImmContext->VSSetConstantBuffers( 0 , 1 , &m_VsConstsBuffer );
+	}
+
+	void BeginFrame()
+	{
+		
+		D3D11_VIEWPORT Vp;
+		memset(&Vp, 0, sizeof(Vp));
+		
+		Vp.TopLeftX = 0;
+		Vp.TopLeftY = 0;
+		Vp.Width    = m_InitParms.Width;
+		Vp.Height   = m_InitParms.Height;
+		
+		m_ImmContext->RSSetViewports(1, &Vp);
+
+		FLOAT Color[] = { 0.25f , 0.25f, 1.0f, 1.0f };
+		m_ImmContext->ClearRenderTargetView( m_RtView , Color );
+
+		//Test Draw!
+		m_ImmContext->IASetInputLayout( m_VS_Color_InputLayout );
+		UINT Stride = sizeof(SgVert);
+		UINT Offset = 0;
+		m_ImmContext->IASetVertexBuffers( 0 , 1 , &m_VbTest , &Stride , &Offset );
+		m_ImmContext->IASetPrimitiveTopology( D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
+
+		sg_vec4 vpos = { 1 , 0 , 0 , 0.5f };
+		memcpy( &m_VsConsts.mWVP.r[0] , &vpos , sizeof(vpos) );
+		UpdloadConsts();
+		m_ImmContext->VSSetShader( m_VS_Color , 0 , 0 );
+		m_ImmContext->PSSetShader( m_PS_Color , 0 , 0 );
+
+		m_ImmContext->Draw( 3 , 0 );
+	}
+
+	void EndFrame()
+	{
+		m_SwapChain->Present(0,0);
+		m_ImmContext->IASetInputLayout( NULL );
+	}
+
+	class SgRendererImage* CreateSprite( const sgRendererImageCreateParms* CreateParms )
+	{
+		sgRendererData Data;
+		Data.Dd = 0;
+		Data.BackSurface = 0;
+		Data.Dev11 = m_Device;
+		Data.DevContext11 = m_ImmContext;
+		SgRendererImage* NewImg = new SgRendererImage( CreateParms , &Data );
+		return NewImg;
+	}
+
+	void DestroySprite(class SgRendererImage* Sprite)
+	{
+		if( Sprite )delete Sprite;
+	}
+
+} Renderer;
+
+void Renderer_Init( const sgRendererInitParms* InitParms )
+{
+	Renderer.Init( InitParms );
+}
+
+void Renderer_Deinit()
+{
+	Renderer.Deinit();
+}
+
+void Renderer_BeginFrame()
+{
+
+	Renderer.BeginFrame();
+}
+
+void Renderer_EndFrame()
+{
+	Renderer.EndFrame();
+}
+
+class SgRendererImage* Renderer_CreateSprite(const sgRendererImageCreateParms* CreateParms)
+{
+	return Renderer.CreateSprite( CreateParms );
+}
+
+void Renderer_DestroySprite(class SgRendererImage* Sprite)
+{
+	Renderer.DestroySprite( Sprite );
+}
+
+void Renderer_UpdateBounds()
+{
+	Renderer.UpdateBounds();
+}

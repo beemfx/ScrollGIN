@@ -92,6 +92,12 @@
     <ClCompile Include="..\ImageLib\ImgLib.cpp">
       <Filter>ImageLib</Filter>
     </ClCompile>
+    <ClCompile Include="..\Renderer2\RendererD3D11.cpp">
+      <Filter>Renderer2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Renderer2\RendererImageD3D11.cpp">
+      <Filter>Renderer2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc">
@@ -173,5 +179,10 @@
     <None Include="icon1.ico">
       <Filter>Resource Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\Renderer2\Shaders.fx">
+      <Filter>Renderer2</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

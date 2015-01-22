@@ -10,6 +10,8 @@
 
 #include "input.h"
 
+#pragma comment(lib, "../DXLIB/dxguid.lib")
+
 BOOL CALLBACK EnumAxis(LPCDIDEVICEOBJECTINSTANCE lpddoi, void* pvRef){
 
 	LPDIRECTINPUTDEVICE8 *lpJoystick=(LPDIRECTINPUTDEVICE8*)pvRef;

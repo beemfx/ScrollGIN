@@ -3,7 +3,6 @@
 #include <ddraw.h>
 #include <windowsx.h>
 
-#pragma comment(lib, "../DXLIB/dxguid.lib")
 #pragma comment(lib, "../DXLIB/ddraw.lib")
 
 static class SgRenderer

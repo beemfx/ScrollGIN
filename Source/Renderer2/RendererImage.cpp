@@ -119,14 +119,14 @@ void SgRendererImage::CreateBitmap()
 		SrcY = 0;
 	}
 
-	if( DestHeight == IMAGE_CREATE_DEFAULT )
+	if( DestWidth == IMAGE_CREATE_DEFAULT )
 	{
-		DestHeight = m_D->CreateParms.Width;
+		DestWidth = m_D->CreateParms.Width;
 	}
 
-	if( SrcHeight == IMAGE_CREATE_DEFAULT )
+	if( DestHeight == IMAGE_CREATE_DEFAULT )
 	{
-		SrcHeight = m_D->CreateParms.Height;
+		DestHeight = m_D->CreateParms.Height;
 	}
 
 	DDSURFACEDESC2 LockDesc;
