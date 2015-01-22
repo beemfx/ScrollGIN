@@ -4,7 +4,6 @@
 #include <d3d11.h>
 #include "img_lib/img_lib.h"
 
-static const DWORD RENDER_IMAGE_TRANSPARENT_COLOR = 0xFFFF00FF;
 
 struct SgRendererImage::sgData
 {
@@ -98,13 +97,16 @@ void SgRendererImage::CreateBitmap()
 
 	if (DestWidth == IMAGE_CREATE_DEFAULT)
 	{
-		DestWidth = m_D->CreateParms.Width;
+		DestWidth = Desc.Width;
 	}
 
 	if (DestHeight == IMAGE_CREATE_DEFAULT)
 	{
-		DestHeight = m_D->CreateParms.Height;
+		DestHeight = Desc.Height;
 	}
+
+	//DestWidth  = 128;
+	//DestHeight = 128;
 
 	sg_uint32* Colors = new sg_uint32[ DestWidth*DestHeight ];
 	
@@ -141,14 +143,14 @@ void SgRendererImage::CreateBitmap()
 	{
 		D3D11_TEXTURE2D_DESC Desc;
 		memset( &Desc , 0 , sizeof(Desc) );
-		Desc.Width = m_D->CreateParms.Width;
-		Desc.Height = m_D->CreateParms.Height;
+		Desc.Width = DestWidth;
+		Desc.Height = DestHeight;
 		Desc.MipLevels = 1;
 		Desc.ArraySize = 1;
 		Desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 		Desc.SampleDesc.Count = 1;
 		Desc.SampleDesc.Quality = 0;
-		Desc.Usage = D3D11_USAGE_DEFAULT;
+		Desc.Usage = D3D11_USAGE_IMMUTABLE;
 		Desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 		Desc.CPUAccessFlags = 0;
 		Desc.MiscFlags = 0;
