@@ -7,6 +7,14 @@
 #include <DirectXMath.h>
 #include <windowsx.h>
 
+//Stupid DirectXMath.h is including assert.h
+#undef assert
+#if defined( DEBUG )
+#define assert( x ) if ( !(x) ){ __debugbreak(); }
+#else
+#define assert( x )
+#endif
+
 #pragma comment(lib, "d3d11.lib")
 
 #include "VS_Color.h"
@@ -39,8 +47,7 @@ private:
 	ID3D11VertexShader*     m_VS_Texture;
 	ID3D11PixelShader*      m_PS_Color;
 	ID3D11PixelShader*      m_PS_Texture;
-	ID3D11InputLayout*      m_VS_Texture_InputLayout;
-	ID3D11InputLayout*      m_VS_Color_InputLayout;
+	ID3D11InputLayout*      m_InputLayout;
 	ID3D11Buffer*           m_VbQuad;
 	ID3D11Buffer*           m_VsConstsBuffer;
 	ID3D11BlendState*       m_BlendState;
@@ -63,8 +70,7 @@ private:
 		SAFE_RELEASE( m_VbQuad );
 		SAFE_RELEASE( m_VsConstsBuffer );
 
-		SAFE_RELEASE( m_VS_Color_InputLayout );
-		SAFE_RELEASE( m_VS_Texture_InputLayout );
+		SAFE_RELEASE( m_InputLayout );
 		
 		SAFE_RELEASE( m_VS_Color );
 		SAFE_RELEASE( m_VS_Texture );
@@ -81,14 +87,14 @@ private:
 		{
 			ULONG NumLeft = m_Device->Release();
 			m_Device = 0;
-			if( !(0 == NumLeft) )__debugbreak();
+			assert(0 == NumLeft);
 			NumLeft = NumLeft;
 		}
 	}
 
 	void AdjustWindowSize()
 	{
-		if( m_InitParms.Windowed )
+		//if( m_InitParms.Windowed )
 		{
 			RECT rc;
 
@@ -126,8 +132,7 @@ public:
 	, m_VS_Texture(0)
 	, m_PS_Color(0)
 	, m_PS_Texture(0)
-	, m_VS_Texture_InputLayout(0)
-	, m_VS_Color_InputLayout(0)
+	, m_InputLayout(0)
 	, m_VbQuad( 0 )
 	, m_VsConstsBuffer( 0 )
 	, m_BlendState( 0 )
@@ -178,8 +183,8 @@ public:
 		}
 
 		m_SwapChain->GetBuffer( 0 , __uuidof(m_RtTex) , reinterpret_cast<void**>(&m_RtTex) );
-		m_Device->CreateRenderTargetView( m_RtTex , NULL , &m_RtView );
-		m_Context->OMSetRenderTargets( 1 , &m_RtView , NULL );
+		Res = m_Device->CreateRenderTargetView( m_RtTex , NULL , &m_RtView );
+		assert( SUCCEEDED(Res) );
 
 		//Create Pixel Shaders
 		Res = m_Device->CreatePixelShader( g_PS_Color , sizeof(g_PS_Color) , NULL , &m_PS_Color );
@@ -192,9 +197,10 @@ public:
 		Res = m_Device->CreateVertexShader( g_VS_Color , sizeof(g_VS_Color) , NULL , &m_VS_Color );
 		assert( SUCCEEDED(Res) );
 		//Create Vertex Layouts
-		Res = m_Device->CreateInputLayout( SgRenderer_VertexFormat , countof(SgRenderer_VertexFormat) , g_VS_Texture , sizeof(g_VS_Texture) , &m_VS_Texture_InputLayout );
+		Res = m_Device->CreateInputLayout( SgRenderer_VertexFormat , countof(SgRenderer_VertexFormat) , g_VS_Texture , sizeof(g_VS_Texture) , &m_InputLayout );
 		assert( SUCCEEDED(Res) );
-		Res = m_Device->CreateInputLayout( SgRenderer_VertexFormat , countof(SgRenderer_VertexFormat) , g_VS_Color , sizeof(g_VS_Color) , &m_VS_Color_InputLayout );
+		//Verify other shaders input values
+		Res = m_Device->CreateInputLayout( SgRenderer_VertexFormat , countof(SgRenderer_VertexFormat) , g_VS_Color , sizeof(g_VS_Color) , NULL );
 		assert( SUCCEEDED(Res) );
 
 
@@ -284,8 +290,11 @@ public:
 
 		if( m_InitParms.Windowed )
 		{
-			UpdateBounds();
 			AdjustWindowSize();
+		}
+		else
+		{
+			m_SwapChain->SetFullscreenState( !m_InitParms.Windowed , NULL );
 		}
 
 		ShowCursor(FALSE);
@@ -299,7 +308,18 @@ public:
 
 	void UpdateBounds()
 	{
-
+		AdjustWindowSize();
+		//m_SwapChain->ResizeBuffers( 1, m_InitParms.Width , m_InitParms.Height , DXGI_FORMAT_R8G8B8A8_UNORM , DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH );
+		//DXGI_MODE_DESC Desc;
+		//Desc.Width = m_InitParms.Width;
+		//Desc.Height = m_InitParms.Height;
+		//Desc.Format  = DXGI_FORMAT_R8G8B8A8_UNORM;
+		//Desc.RefreshRate.Denominator = 0;
+		//Desc.RefreshRate.Numerator = 0;
+		//Desc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+		//Desc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+		//m_SwapChain->ResizeTarget( &Desc );
+		m_SwapChain->SetFullscreenState( !m_InitParms.Windowed , NULL );
 	}
 
 	void UpdloadConsts()
@@ -313,7 +333,6 @@ public:
 
 	void BeginFrame()
 	{
-		
 		D3D11_VIEWPORT Vp;
 		memset(&Vp, 0, sizeof(Vp));
 		
@@ -324,36 +343,29 @@ public:
 		Vp.MinDepth = 0;
 		Vp.MaxDepth = 1.0f;
 		
+		m_Context->OMSetRenderTargets( 1 , &m_RtView , NULL );
+		m_Context->OMSetBlendState( m_BlendState , NULL , 0xFFFFFFFF );
 		m_Context->RSSetViewports(1, &Vp);
-
 		FLOAT Color[] = { 0.25f , 0.25f, 1.0f, 1.0f };
 		m_Context->ClearRenderTargetView( m_RtView , Color );
 		m_Context->PSSetSamplers( 0 , 1 , &m_Sampler );
 		m_Context->RSSetState( m_RsState );
+		m_Context->IASetInputLayout( m_InputLayout );
 	}
 
 	void EndFrame()
 	{
 		m_SwapChain->Present(0,0);
-
-		m_Context->IASetVertexBuffers( 0 , 0 , NULL , NULL , NULL );
-		m_Context->VSSetConstantBuffers( 0 , 0 , NULL );
-		ID3D11ShaderResourceView* Texture = NULL;
-		m_Context->PSSetShaderResources( 0 , 1 , &Texture );
-		ID3D11SamplerState* Sampler = NULL;
-		m_Context->PSSetSamplers( 0 , NULL , &Sampler );
-		m_Context->IASetInputLayout( NULL );
+		m_Context->ClearState();
 	}
 
 	virtual void DrawQuad( struct ID3D11ShaderResourceView* Texture , float x , float y , float Width , float Height )
 	{
 		//Test Draw!
-		m_Context->IASetInputLayout( m_VS_Texture_InputLayout );
 		UINT Stride = sizeof(SgVert);
 		UINT Offset = 0;
 		m_Context->IASetVertexBuffers( 0 , 1 , &m_VbQuad , &Stride , &Offset );
 		m_Context->IASetPrimitiveTopology( D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP );
-		m_Context->OMSetBlendState( m_BlendState , NULL , 0xFFFFFFFF );
 
 		DirectX::XMMATRIX WVP = DirectX::XMMatrixIdentity();
 		WVP *= DirectX::XMMatrixScaling( Width/VIEW_WIDTH , Height/VIEW_HEIGHT , 1.0f );

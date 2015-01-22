@@ -28,7 +28,7 @@ static void Main_Game_Init(HWND hWnd, BOOL bWindowed, HINSTANCE hInstance)
 	sgRendererInitParms InitParms;
 	InitParms.Width = 1024;
 	InitParms.Height = 768;
-	InitParms.Windowed = FALSE != bWindowed;
+	InitParms.Windowed = true;//false;//FALSE != bWindowed;
 	InitParms.Wnd = hWnd;
 
 	Renderer_Init( &InitParms );
@@ -84,7 +84,7 @@ static LRESULT CALLBACK Main_WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 		}		
 		break;
 	}
-	case WM_MOVE:
+	case WM_SIZE:
 		Renderer_UpdateBounds();
 		break;
 	case WM_CLOSE:
