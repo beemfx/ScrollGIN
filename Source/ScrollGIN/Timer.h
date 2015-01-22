@@ -13,10 +13,15 @@ private:
 	unsigned __int32  m_nStartTime;
 	unsigned __int32  m_nPausedTime;
 	bool              m_bPaused;
+
+	unsigned __int64  m_PF;
+	unsigned __int64  m_TmLast;
 public:
 	SgTimer();
 	~SgTimer();
 	void Start();
+	float GetRawElapsedSec()const;
+	void Update();
 	unsigned __int32 Time();
 	void Pause(bool bPause);
 	void TogglePause();

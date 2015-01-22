@@ -15,3 +15,4 @@ static const int MAX_SPRITE_NAME_LENGTH = 15;
 static const int MAX_BACKGROUNDS = 5;
 static const int VIEW_WIDTH  = 640;
 static const int VIEW_HEIGHT = 480;
+static const float GAME_FPS = 60.0f;

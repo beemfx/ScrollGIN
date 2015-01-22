@@ -82,6 +82,13 @@ void SgScrollGINGame::LoadMap(const char* szFilename)
 
 void SgScrollGINGame::Update()
 {
+	float RawElapsed = m_Timer.GetRawElapsedSec();
+	if( RawElapsed < 1.0f/GAME_FPS )
+	{
+		Sleep(0);
+		return;
+	}
+	m_Timer.Update();
 	m_Input.UpdateInputValues();
 	m_lpObjectManager->Update(&m_Mapboard,&m_Viewport,&m_Input);
 }
