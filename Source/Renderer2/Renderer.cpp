@@ -1,3 +1,4 @@
+#if __DXVERSION__ == 7
 #include "Renderer.h"
 #include "RendererImage.h"
 #include <ddraw.h>
@@ -306,3 +307,5 @@ void Renderer_UpdateBounds()
 {
 	Renderer.UpdateBounds();
 }
+
+#endif __DXVERSION__ == 7

@@ -30,5 +30,5 @@ SgVert VS_Texture( SgVert IN )
 
 float4 PS_Texture( SgVert IN ) : SV_Target
 {
-	return g_tex0.Sample( g_samp0 , IN.Tex0 );// * IN.Color;
+	return g_tex0.Sample( g_samp0 , IN.Tex0 ) * IN.Color;
 }

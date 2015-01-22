@@ -1,3 +1,4 @@
+#if __DXVERSION__ == 7
 #include "RendererImage.h"
 #include <ddraw.h>
 #include "img_lib/img_lib.h"
@@ -285,3 +286,4 @@ void SgRendererImage::Draw( int x , int y )
 	}
 	return;
 }
+#endif __DXVERSION__ == 7

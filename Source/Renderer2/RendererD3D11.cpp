@@ -1,3 +1,4 @@
+#if __DXVERSION__ == 11
 #include "Renderer.h"
 #include "RendererImage.h"
 #include "RendererD3D11_Private.h"
@@ -403,3 +404,4 @@ void Renderer_UpdateBounds()
 {
 	Renderer.UpdateBounds();
 }
+#endif __DXVERSION__ == 11
