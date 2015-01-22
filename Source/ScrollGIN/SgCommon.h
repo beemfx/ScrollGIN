@@ -37,7 +37,7 @@ struct sg_color
 
 #define SAFE_FREE(p)         { if(p) { free(p); (p)=NULL; } }
 
-#if defined( DEBUG )
+#if defined( _DEBUG )
 #define assert( x ) if ( !(x) ){ __debugbreak(); }
 #else
 #define assert( x )
