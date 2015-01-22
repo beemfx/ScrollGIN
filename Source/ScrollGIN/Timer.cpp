@@ -10,11 +10,13 @@
 SgTimer::SgTimer()
 : m_TmLast( 0 )
 , m_PF( 0 )
+, m_Time( 0 )
+, m_Paused( false )
 {
-	m_nStartTime=0;
-	m_bPaused=false;
 	BOOL Res = QueryPerformanceFrequency( reinterpret_cast<LARGE_INTEGER*>(&m_PF) );
 	assert( Res );
+	Update();
+	Update();
 }
 
 SgTimer::~SgTimer()
@@ -24,7 +26,7 @@ SgTimer::~SgTimer()
 
 void SgTimer::Start()
 {
-	m_nStartTime=timeGetTime();
+	m_Time = 0;
 }
 
 float SgTimer::GetRawElapsedSec()const
@@ -45,34 +47,23 @@ void SgTimer::Update()
 	unsigned __int64 Elapsed = Tm - m_TmLast;
 	float ElapsedSec = static_cast<float>(static_cast<double>(Elapsed)/m_PF);
 	m_TmLast = Tm;
+
+	m_Time += m_Paused ? 0 : static_cast<unsigned __int32>(ElapsedSec*1000);
 }
 
 unsigned __int32 SgTimer::Time()
 {
-	if(!m_bPaused)
-		return timeGetTime()-m_nStartTime;
-	else return m_nPausedTime;
+	return m_Time;
 }
 
 void SgTimer::Pause(bool bPause)
 {
-	if(bPause)
-	{
-		//Pause
-		m_nPausedTime=Time();
-	}
-	else
-	{
-		//resume
-		m_nStartTime=timeGetTime()-m_nPausedTime;
-	}
-
-	m_bPaused=bPause;
+	m_Paused=bPause;
 }
 
 void SgTimer::TogglePause()
 {
-	if(m_bPaused)
+	if(m_Paused)
 		 Pause(false);
 	else
 		 Pause(true);
@@ -80,5 +71,5 @@ void SgTimer::TogglePause()
 
 bool SgTimer::IsPaused()const
 {
-	return m_bPaused;
+	return m_Paused;
 }
