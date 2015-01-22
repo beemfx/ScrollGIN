@@ -1,6 +1,6 @@
 #include "RendererImage.h"
 #include <ddraw.h>
-#include "ImageLib/bitmapex.h"
+#include "img_lib/img_lib.h"
 
 static const DWORD RENDER_IMAGE_TRANSPARENT_COLOR = 0xFFFF00FF;
 
@@ -59,17 +59,6 @@ SgRendererImage::~SgRendererImage()
 
 void SgRendererImage::CreateBitmap()
 {
-	HDC hdcSurface = 0, hdcImage = 0;
-	HBITMAP Bm = LoadBitmapOffset( m_D->CreateParms.BmFile , m_D->CreateParms.BmFileOffset );
-
-	m_D->Surface->GetDC(&hdcSurface);
-	hdcImage = CreateCompatibleDC(hdcSurface);
-
-	SelectObject(hdcImage, Bm);
-
-	SetMapMode(hdcImage, GetMapMode(hdcSurface));
-	SetStretchBltMode(hdcImage, COLORONCOLOR);
-
 	int SrcWidth = m_D->CreateParms.BmWidth;
 	int SrcHeight = m_D->CreateParms.BmHeight;
 	int SrcX = m_D->CreateParms.BmX;
@@ -77,17 +66,47 @@ void SgRendererImage::CreateBitmap()
 	int DestWidth = m_D->CreateParms.Width;
 	int DestHeight = m_D->CreateParms.Height;
 
-	BITMAP bmTemp;
-	GetObject(Bm, sizeof(bmTemp), &bmTemp);
+	HANDLE File = CreateFileA(m_D->CreateParms.BmFile, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+	if( INVALID_HANDLE_VALUE == File )
+	{
+		return;
+	}
+
+	DWORD DataSize = GetFileSize( File , NULL );
+	sg_uint8* Data = new sg_uint8[DataSize];
+	if( !Data )
+	{
+		CloseHandle( File );
+		return;
+	}
+	DWORD SizeRead = 0;
+	BOOL ReadStatus = ReadFile( File , Data , DataSize , &SizeRead , NULL );
+	CloseHandle( File );
+	if( !ReadStatus || SizeRead != DataSize )
+	{
+		delete [] Data;
+		return;
+	}
+
+	HIMG Img = IMG_OpenMemory( &Data[m_D->CreateParms.BmFileOffset] , DataSize-m_D->CreateParms.BmFileOffset );
+	delete [] Data;
+	Data = 0;
+	if( IMG_NULL == Img )
+	{
+		return;
+	}
+
+	IMG_DESC Desc;
+	IMG_GetDesc( Img , &Desc );
 
 	if( SrcWidth == IMAGE_CREATE_DEFAULT )
 	{
-		SrcWidth = bmTemp.bmWidth;
+		SrcWidth = Desc.Width;
 	}
 
 	if( SrcHeight == IMAGE_CREATE_DEFAULT )
 	{
-		SrcHeight = bmTemp.bmHeight;
+		SrcHeight = Desc.Height;
 	}
 
 	if( SrcX == IMAGE_CREATE_DEFAULT )
@@ -110,22 +129,39 @@ void SgRendererImage::CreateBitmap()
 		SrcHeight = m_D->CreateParms.Height;
 	}
 
-	StretchBlt(
-		hdcSurface,
-		0,
-		0,
-		DestWidth,
-		DestHeight,
-		hdcImage,
-		SrcX,
-		SrcY,
-		SrcWidth,
-		SrcHeight,
-		SRCCOPY);
+	DDSURFACEDESC2 LockDesc;
+	memset( &LockDesc , 0 , sizeof(LockDesc) );
+	LockDesc.dwSize = sizeof( LockDesc );	
+	if( SUCCEEDED( m_D->Surface->Lock( NULL , &LockDesc , DDLOCK_WAIT , NULL ) ) )
+	{
+		if( LockDesc.ddpfPixelFormat.dwRGBBitCount == 32 )
+		{
+			IMG_DEST_RECT DestRect;
+			DestRect.nFormat = IMGFMT_A8R8G8B8;
+			DestRect.nWidth  = LockDesc.dwWidth;
+			DestRect.nHeight = LockDesc.dwHeight;
+			DestRect.nPitch  = LockDesc.lPitch;
+			DestRect.nOrient = IMGORIENT_TOPLEFT;
+			DestRect.pImage  = LockDesc.lpSurface;
 
-	DeleteDC(hdcImage);
-	DeleteObject( Bm );
-	m_D->Surface->ReleaseDC(hdcSurface);
+			DestRect.rcCopy.top    = 0;
+			DestRect.rcCopy.left   = 0;
+			DestRect.rcCopy.bottom = LockDesc.dwHeight;
+			DestRect.rcCopy.right  = LockDesc.dwWidth;
+
+			IMG_RECT SrcRect;
+			SrcRect.top = SrcY;
+			SrcRect.bottom = SrcHeight+SrcY;
+			SrcRect.left = SrcX;
+			SrcRect.right = SrcWidth+SrcX;
+
+			img_bool Copied = IMG_CopyBits( Img , &DestRect , IMGFILTER_NONE , &SrcRect , 0xFF );
+		}
+		m_D->Surface->Unlock( NULL );
+	}
+
+	IMG_Delete( Img );
+	Img = 0;
 }
 
 void SgRendererImage::CreateColor()
