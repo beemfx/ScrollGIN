@@ -1,6 +1,7 @@
 #if __DXVERSION__ == 7
 #include "Renderer.h"
 #include "RendererImage.h"
+#include "GameConfig.h"
 #include <ddraw.h>
 #include <windowsx.h>
 
@@ -42,25 +43,21 @@ private:
 	{
 		if( m_InitParms.Windowed )
 		{
-			RECT rcWork;
 			RECT rc;
-			DWORD dwStyle;
 
-			dwStyle = GetWindowStyle(m_hwnd);
-			dwStyle &= ~WS_POPUP;
-			dwStyle |= WS_SYSMENU | WS_OVERLAPPED | WS_CAPTION | WS_DLGFRAME | WS_MINIMIZEBOX;
-			SetWindowLong(m_hwnd, GWL_STYLE, dwStyle);
-			SetRect( &rc , 0 , 0 , m_InitParms.Width, m_InitParms.Height );
+			DWORD DeskWidth = GetSystemMetrics( SM_CXSCREEN );
+			DWORD DeskHeight = GetSystemMetrics( SM_CYSCREEN );
+
+			DWORD Width  = m_InitParms.Width;
+			DWORD Height = m_InitParms.Height;
+			DWORD X = (DeskWidth-Width)/2;
+			DWORD Y = (DeskHeight-Height)/2;
+
+			SetRect( &rc , X , Y , X+Width, Y+Height );
+
 			AdjustWindowRectEx( &rc , GetWindowStyle(m_hwnd) , false, GetWindowExStyle(m_hwnd) );
-			SetWindowPos(m_hwnd, NULL, 0, 0, rc.right - rc.left, rc.bottom - rc.top, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+			SetWindowPos(m_hwnd, NULL, X, Y, rc.right - rc.left, rc.bottom - rc.top, SWP_NOZORDER | SWP_NOACTIVATE);
 			SetWindowPos(m_hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
-
-			/*  Make sure our window does not hang outside of the work area. */
-			SystemParametersInfo(SPI_GETWORKAREA, 0, &rcWork, 0);
-			GetWindowRect(m_hwnd, &rc);
-			if (rc.left < rcWork.left) rc.left = rcWork.left;
-			if (rc.top < rcWork.top)  rc.top = rcWork.top;
-			SetWindowPos(m_hwnd, NULL, rc.left, rc.top, 0, 0, SWP_NOSIZE|SWP_NOZORDER|SWP_NOACTIVATE);
 		}
 	}
 
@@ -84,7 +81,13 @@ public:
 	void Init(  const sgRendererInitParms* InitParms )
 	{
 		m_InitParms = *InitParms;
+		m_InitParms.Width = VIEW_WIDTH;
+		m_InitParms.Height = VIEW_HEIGHT;
+		m_InitParms.Windowed = true;
 		m_hwnd = static_cast<HWND>(m_InitParms.Wnd);
+
+		AdjustWindowSize();
+
 		HRESULT Res;
 		Res = DirectDrawCreateEx( 0 , (void**)&m_Dd , IID_IDirectDraw7 , 0 );
 		if( FAILED( Res ) )
@@ -178,12 +181,9 @@ public:
 				ReleaseAll();
 				return;
 			}
-
-			SetWindowLong( m_hwnd , GWL_STYLE , WS_POPUP );
 		}
 
 		UpdateBounds();
-		AdjustWindowSize();
 
 		if(m_InitParms.Windowed)ShowCursor(FALSE);
 	}
