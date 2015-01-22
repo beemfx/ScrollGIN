@@ -13,3 +13,5 @@ static const int MAX_SPRITES_PER_OBJECT = 10;
 static const int MAX_OBJECT_MODES = 25;
 static const int MAX_SPRITE_NAME_LENGTH = 15;
 static const int MAX_BACKGROUNDS = 5;
+static const int VIEW_WIDTH  = 640;
+static const int VIEW_HEIGHT = 480;
