@@ -94,15 +94,15 @@ bool SgScrollGINGame::IsKeyPressed(int nKey)
 void SgScrollGINGame::Deinit()
 {
 	if(m_lpObjectManager)
+	{
+		m_lpObjectManager->ClearSprites();
 		m_lpObjectManager->ClearObjects();
+	}
+
 	m_lpObjectManager = 0;
 
 	m_TileManager.Clear();
 	m_Background.Destroy();
-	if(m_lpObjectManager)
-	{
-		m_lpObjectManager->ClearSprites();
-	}
 }
 
 void SgScrollGINGame::DrawMapBoard()
