@@ -165,25 +165,11 @@ void SgRendererImage::CreateBitmap()
 	Img = 0;
 }
 
-void SgRendererImage::CreateColor()
-{
-	//check to make sure surface exists
-	if (!m_D->Surface)return;
-
-	DDBLTFX ddbltfx;
-	memset(&ddbltfx, 0, sizeof(ddbltfx));
-	ddbltfx.dwSize = sizeof(ddbltfx);
-	ddbltfx.dwFillColor = m_D->CreateParms.Color.Color;
-
-	m_D->Surface->Blt(NULL, NULL, NULL, DDBLT_COLORFILL, &ddbltfx);
-}
-
 void SgRendererImage::Restore()
 {
 	switch (m_D->CreateParms.Type)
 	{
 	case RENDERER_IMAGE_BITMAP: CreateBitmap(); break;
-	case RENDERER_IMAGE_COLOR : CreateColor(); break;
 	}
 }
 

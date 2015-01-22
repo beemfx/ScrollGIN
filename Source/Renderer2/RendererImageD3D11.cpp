@@ -176,11 +176,6 @@ void SgRendererImage::CreateBitmap()
 	Img = 0;
 }
 
-void SgRendererImage::CreateColor()
-{
-	assert( false ); //Color not supported!
-}
-
 void SgRendererImage::Restore()
 {
 	SAFE_RELEASE( m_D->ShaderView );
@@ -189,7 +184,6 @@ void SgRendererImage::Restore()
 	switch (m_D->CreateParms.Type)
 	{
 	case RENDERER_IMAGE_BITMAP: CreateBitmap(); break;
-	case RENDERER_IMAGE_COLOR : CreateColor(); break;
 	}
 }
 
