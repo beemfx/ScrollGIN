@@ -49,6 +49,7 @@ struct sgRendererData
 	struct IDirectDrawSurface7* BackSurface;
 	struct ID3D11Device*        Dev11;
 	struct ID3D11DeviceContext* DevContext11;
+	class IRendererD3D11*       Renderer;
 };
 
 class SgRendererImage

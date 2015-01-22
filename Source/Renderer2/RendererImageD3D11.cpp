@@ -1,4 +1,5 @@
 #include "RendererImage.h"
+#include "RendererD3D11_Private.h"
 #include <d3d11.h>
 #include "img_lib/img_lib.h"
 
@@ -8,6 +9,7 @@ struct SgRendererImage::sgData
 {
 	sgRendererImageCreateParms CreateParms;
 	sgRendererData             RendererData;
+	ID3D11ShaderResourceView*  ShaderView;
 	ID3D11Texture2D*           Texture;
 };
 
@@ -17,13 +19,17 @@ SgRendererImage::SgRendererImage( const sgRendererImageCreateParms* CreateParms 
 	m_D->CreateParms  = *CreateParms;
 	m_D->RendererData = *RendererData;
 	m_D->Texture = NULL;
+	m_D->ShaderView = NULL;
 	
 	Restore();
 }
 
 SgRendererImage::~SgRendererImage()
 {
-	if( m_D->Texture )m_D->Texture->Release();
+
+	SAFE_RELEASE( m_D->ShaderView );
+	SAFE_RELEASE( m_D->Texture );
+
 	delete m_D;
 }
 
@@ -102,7 +108,7 @@ void SgRendererImage::CreateBitmap()
 	sg_uint32* Colors = new sg_uint32[ DestWidth*DestHeight ];
 	
 	IMG_DEST_RECT DestRect;
-	DestRect.nFormat = IMGFMT_A8R8G8B8;
+	DestRect.nFormat = IMGFMT_A8B8R8G8;
 	DestRect.nWidth = DestWidth;
 	DestRect.nHeight = DestHeight;
 	DestRect.nPitch = DestWidth*sizeof(sg_uint32);
@@ -121,6 +127,14 @@ void SgRendererImage::CreateBitmap()
 	SrcRect.right = SrcWidth + SrcX;
 
 	img_bool Copied = IMG_CopyBits(Img, &DestRect, IMGFILTER_NONE, &SrcRect, 0xFF);
+	//Add alpha chanel.
+	for( int i=0; i<DestWidth*DestHeight; i++ )
+	{
+		if( Colors[i] == 0xFFFF00FF )
+		{
+			Colors[i] &= 0x00FFFFFFF;
+		}
+	}
 
 	if( Copied )
 	{
@@ -135,7 +149,7 @@ void SgRendererImage::CreateBitmap()
 		Desc.SampleDesc.Quality = 0;
 		Desc.Usage = D3D11_USAGE_DEFAULT;
 		Desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-		Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		Desc.CPUAccessFlags = 0;
 		Desc.MiscFlags = 0;
 
 		D3D11_SUBRESOURCE_DATA ResData;
@@ -143,13 +157,17 @@ void SgRendererImage::CreateBitmap()
 		ResData.SysMemPitch = DestWidth*sizeof(sg_uint32);
 		ResData.SysMemSlicePitch = 0;
 
-		HRESULT Res = m_D->RendererData.Dev11->CreateTexture2D( &Desc , &ResData , &m_D->Texture );
+		HRESULT Res;
+		Res = m_D->RendererData.Dev11->CreateTexture2D( &Desc , &ResData , &m_D->Texture );
+		assert( SUCCEEDED(Res) );
 
-		Res = Res;
-		if( FAILED(Res) )
-		{
-			assert( false );
-		}
+		D3D11_SHADER_RESOURCE_VIEW_DESC ResDesc;
+		ResDesc.Format = Desc.Format;
+		ResDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		ResDesc.Texture2D.MostDetailedMip = 0;
+		ResDesc.Texture2D.MipLevels = -1;
+		Res = m_D->RendererData.Dev11->CreateShaderResourceView( m_D->Texture , &ResDesc , &m_D->ShaderView );
+		assert( SUCCEEDED(Res) );
 	}
 
 	delete [] Colors;
@@ -164,11 +182,8 @@ void SgRendererImage::CreateColor()
 
 void SgRendererImage::Restore()
 {
-	if( m_D->Texture )
-	{
-		m_D->Texture->Release();
-		m_D->Texture = 0;
-	}
+	SAFE_RELEASE( m_D->ShaderView );
+	SAFE_RELEASE( m_D->Texture );
 
 	switch (m_D->CreateParms.Type)
 	{
@@ -179,5 +194,5 @@ void SgRendererImage::Restore()
 
 void SgRendererImage::Draw( int x , int y )
 {
-	
+	m_D->RendererData.Renderer->DrawQuad( m_D->ShaderView , static_cast<float>(x) , static_cast<float>(y) , static_cast<float>(m_D->CreateParms.Width) , static_cast<float>(m_D->CreateParms.Height) );
 }

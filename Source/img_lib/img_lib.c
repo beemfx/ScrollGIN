@@ -254,6 +254,9 @@ img_bool IMG_ChangePixelFmt(
 		case IMGFMT_A8R8G8B8:
 			*color=(a<<24)|(r<<16)|(g<<8)|(b<<0);
 			break;
+		case IMGFMT_A8B8R8G8:
+			*color=(a<<24)|(b<<16)|(g<<8)|(r<<0);
+			break;
 		case IMGFMT_B8G8R8:
 			*color=(a<<24)|(b<<16)|(g<<8)|(r<<0);
 			break;
@@ -464,7 +467,7 @@ img_bool IMG_FUNC IMG_CopyBits(
 	case IMGFMT_R8G8B8:
 		nDestBitDepth=24;
 		break;
-	case IMGFMT_R8G8B8A8:
+	case IMGFMT_A8B8R8G8:
 	case IMGFMT_A8R8G8B8:
 		nDestBitDepth=32;
 		break;
