@@ -132,7 +132,7 @@ void SgRendererImage::CreateBitmap()
 	{
 		if( Colors[i] == 0xFFFF00FF )
 		{
-			Colors[i] &= 0x00FFFFFFF;
+			Colors[i] = 0;//&= 0x00FFFFFF;
 		}
 	}
 

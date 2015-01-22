@@ -241,10 +241,10 @@ public:
 		SampDesc.MipLODBias = 0;
 		SampDesc.MaxAnisotropy = 16;
 		SampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-		SampDesc.BorderColor[0] = 1.0f;
+		SampDesc.BorderColor[0] = 0.0f;
 		SampDesc.BorderColor[1] = 0.0f;
 		SampDesc.BorderColor[2] = 0.0f;
-		SampDesc.BorderColor[3] = 1.0f;
+		SampDesc.BorderColor[3] = 0.0f;
 		SampDesc.MinLOD = -D3D11_FLOAT32_MAX;
 		SampDesc.MaxLOD = D3D11_FLOAT32_MAX;
 		Res = m_Device->CreateSamplerState( &SampDesc , &m_Sampler );
