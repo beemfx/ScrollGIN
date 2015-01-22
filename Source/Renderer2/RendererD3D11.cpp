@@ -43,11 +43,11 @@ private:
 	ID3D11Buffer*           m_VbQuad;
 	ID3D11Buffer*           m_VsConstsBuffer;
 	ID3D11BlendState*       m_BlendState;
+	ID3D11SamplerState*     m_Sampler;
 
 	D3D_FEATURE_LEVEL       m_FeatureLevel;
 	sgRendererInitParms     m_InitParms;
 	HWND                    m_hwnd;
-	RECT                    m_RcWindow;
 	sgVsConsts              m_VsConsts;
 	
 private:
@@ -55,6 +55,7 @@ private:
 	{
 		m_SwapChain->SetFullscreenState(false, NULL);
 
+		SAFE_RELEASE( m_Sampler );
 		SAFE_RELEASE( m_BlendState );
 		SAFE_RELEASE( m_VbQuad );
 		SAFE_RELEASE( m_VsConstsBuffer );
@@ -127,6 +128,7 @@ public:
 	, m_VbQuad( 0 )
 	, m_VsConstsBuffer( 0 )
 	, m_BlendState( 0 )
+	, m_Sampler( 0 )
 	{
 		m_VsConsts.mWVP = DirectX::XMMatrixIdentity();
 	}
@@ -230,24 +232,23 @@ public:
 		Res = m_Device->CreateBuffer( &bufferDesc, &InitData, &m_VbQuad );
 		assert( SUCCEEDED( Res ) );
 
-		#if 0
+
 		D3D11_SAMPLER_DESC SampDesc;
-		SampDesc.Filter = D3D11_FILTER_ANISOTROPIC;
+		SampDesc.Filter   = false ? D3D11_FILTER_MIN_MAG_MIP_POINT : D3D11_FILTER_ANISOTROPIC;
 		SampDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SampDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SampDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SampDesc.MipLODBias = 0;
 		SampDesc.MaxAnisotropy = 16;
-		SampDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+		SampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
 		SampDesc.BorderColor[0] = 1.0f;
-		SampDesc.BorderColor[1] = 1.0f;
-		SampDesc.BorderColor[2] = 1.0f;
+		SampDesc.BorderColor[1] = 0.0f;
+		SampDesc.BorderColor[2] = 0.0f;
 		SampDesc.BorderColor[3] = 1.0f;
 		SampDesc.MinLOD = -D3D11_FLOAT32_MAX;
 		SampDesc.MaxLOD = D3D11_FLOAT32_MAX;
-		Res = m_D->RendererData.Dev11->CreateSamplerState( &SampDesc , &m_Sampler );
+		Res = m_Device->CreateSamplerState( &SampDesc , &m_Sampler );
 		assert( SUCCEEDED(Res) );
-		#endif
 
 		D3D11_BLEND_DESC BlendDesc;
 		BlendDesc.AlphaToCoverageEnable = FALSE;
@@ -280,16 +281,7 @@ public:
 
 	void UpdateBounds()
 	{
-		if (m_InitParms.Windowed)
-		{
-			GetClientRect(m_hwnd, &m_RcWindow);
-			ClientToScreen(m_hwnd, (POINT*)&m_RcWindow);
-			ClientToScreen(m_hwnd, (POINT*)&m_RcWindow + 1);
-		}
-		else
-		{
-			SetRect(&m_RcWindow, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
-		}
+
 	}
 
 	void UpdloadConsts()
@@ -318,7 +310,7 @@ public:
 
 		FLOAT Color[] = { 0.25f , 0.25f, 1.0f, 1.0f };
 		m_ImmContext->ClearRenderTargetView( m_RtView , Color );
-
+		m_ImmContext->PSSetSamplers( 0 , 1 , &m_Sampler );
 	}
 
 	void EndFrame()
@@ -354,7 +346,6 @@ public:
 		m_ImmContext->VSSetShader( m_VS_Texture , 0 , NULL );
 		m_ImmContext->PSSetShader( m_PS_Texture , 0 , NULL );
 		m_ImmContext->PSSetShaderResources( 0 , 1 , &Texture );
-
 		m_ImmContext->Draw( 4 , 0 );
 	}
 
