@@ -32,7 +32,7 @@ private:
 private:
 	IDXGISwapChain*         m_SwapChain;
 	ID3D11Device*           m_Device;
-	ID3D11DeviceContext*    m_ImmContext;
+	ID3D11DeviceContext*    m_Context;
 	ID3D11Texture2D*        m_RtTex;
 	ID3D11RenderTargetView* m_RtView;
 	ID3D11VertexShader*     m_VS_Color;
@@ -45,6 +45,7 @@ private:
 	ID3D11Buffer*           m_VsConstsBuffer;
 	ID3D11BlendState*       m_BlendState;
 	ID3D11SamplerState*     m_Sampler;
+	ID3D11RasterizerState*  m_RsState;
 
 	D3D_FEATURE_LEVEL       m_FeatureLevel;
 	sgRendererInitParms     m_InitParms;
@@ -56,6 +57,7 @@ private:
 	{
 		m_SwapChain->SetFullscreenState(false, NULL);
 
+		SAFE_RELEASE( m_RsState );
 		SAFE_RELEASE( m_Sampler );
 		SAFE_RELEASE( m_BlendState );
 		SAFE_RELEASE( m_VbQuad );
@@ -71,7 +73,7 @@ private:
 
 		SAFE_RELEASE( m_RtView );
 		SAFE_RELEASE( m_RtTex );
-		SAFE_RELEASE( m_ImmContext );
+		SAFE_RELEASE( m_Context );
 
 		SAFE_RELEASE(m_SwapChain);
 
@@ -117,7 +119,7 @@ public:
 	: m_Device( 0 )
 	, m_hwnd( 0 )
 	, m_SwapChain( 0 )
-	, m_ImmContext( 0 )
+	, m_Context( 0 )
 	, m_RtTex( 0 )
 	, m_RtView( 0 )
 	, m_VS_Color(0)
@@ -130,6 +132,7 @@ public:
 	, m_VsConstsBuffer( 0 )
 	, m_BlendState( 0 )
 	, m_Sampler( 0 )
+	, m_RsState( 0 )
 	{
 		m_VsConsts.mWVP = DirectX::XMMatrixIdentity();
 	}
@@ -158,7 +161,7 @@ public:
 		Sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 		Sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
-		Res = D3D11CreateDeviceAndSwapChain( NULL , D3D_DRIVER_TYPE_HARDWARE, NULL , 0 , FeatureLevels , countof(FeatureLevels), D3D11_SDK_VERSION , &Sd , &m_SwapChain , &m_Device , &m_FeatureLevel , &m_ImmContext );
+		Res = D3D11CreateDeviceAndSwapChain( NULL , D3D_DRIVER_TYPE_HARDWARE, NULL , 0 , FeatureLevels , countof(FeatureLevels), D3D11_SDK_VERSION , &Sd , &m_SwapChain , &m_Device , &m_FeatureLevel , &m_Context );
 		if( FAILED( Res ) )
 		{
 			ReleaseAll();
@@ -176,7 +179,7 @@ public:
 
 		m_SwapChain->GetBuffer( 0 , __uuidof(m_RtTex) , reinterpret_cast<void**>(&m_RtTex) );
 		m_Device->CreateRenderTargetView( m_RtTex , NULL , &m_RtView );
-		m_ImmContext->OMSetRenderTargets( 1 , &m_RtView , NULL );
+		m_Context->OMSetRenderTargets( 1 , &m_RtView , NULL );
 
 		//Create Pixel Shaders
 		Res = m_Device->CreatePixelShader( g_PS_Color , sizeof(g_PS_Color) , NULL , &m_PS_Color );
@@ -262,7 +265,21 @@ public:
 		BlendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
 		BlendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 		BlendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-		m_Device->CreateBlendState( &BlendDesc , &m_BlendState );
+		Res = m_Device->CreateBlendState( &BlendDesc , &m_BlendState );
+		assert( SUCCEEDED(Res) );
+
+		D3D11_RASTERIZER_DESC RsDesc;
+		RsDesc.FillMode = D3D11_FILL_SOLID;
+		RsDesc.CullMode = D3D11_CULL_BACK;
+		RsDesc.FrontCounterClockwise = FALSE;
+		RsDesc.DepthBias = 0;
+		RsDesc.SlopeScaledDepthBias = 0;
+		RsDesc.DepthBiasClamp = 0;
+		RsDesc.DepthClipEnable = TRUE;
+		RsDesc.ScissorEnable = FALSE;
+		RsDesc.MultisampleEnable = FALSE;
+		RsDesc.AntialiasedLineEnable = FALSE;
+		Res = m_Device->CreateRasterizerState( &RsDesc , &m_RsState );
 		assert( SUCCEEDED(Res) );
 
 		if( m_InitParms.Windowed )
@@ -288,10 +305,10 @@ public:
 	void UpdloadConsts()
 	{
 		D3D11_MAPPED_SUBRESOURCE Resource;
-		m_ImmContext->Map( m_VsConstsBuffer , 0 , D3D11_MAP_WRITE_DISCARD , 0 , &Resource );
+		m_Context->Map( m_VsConstsBuffer , 0 , D3D11_MAP_WRITE_DISCARD , 0 , &Resource );
 		memcpy( Resource.pData , &m_VsConsts , sizeof(m_VsConsts) );
-		m_ImmContext->Unmap( m_VsConstsBuffer , 0 );
-		m_ImmContext->VSSetConstantBuffers( 0 , 1 , &m_VsConstsBuffer );
+		m_Context->Unmap( m_VsConstsBuffer , 0 );
+		m_Context->VSSetConstantBuffers( 0 , 1 , &m_VsConstsBuffer );
 	}
 
 	void BeginFrame()
@@ -307,35 +324,36 @@ public:
 		Vp.MinDepth = 0;
 		Vp.MaxDepth = 1.0f;
 		
-		m_ImmContext->RSSetViewports(1, &Vp);
+		m_Context->RSSetViewports(1, &Vp);
 
 		FLOAT Color[] = { 0.25f , 0.25f, 1.0f, 1.0f };
-		m_ImmContext->ClearRenderTargetView( m_RtView , Color );
-		m_ImmContext->PSSetSamplers( 0 , 1 , &m_Sampler );
+		m_Context->ClearRenderTargetView( m_RtView , Color );
+		m_Context->PSSetSamplers( 0 , 1 , &m_Sampler );
+		m_Context->RSSetState( m_RsState );
 	}
 
 	void EndFrame()
 	{
 		m_SwapChain->Present(0,0);
 
-		m_ImmContext->IASetVertexBuffers( 0 , 0 , NULL , NULL , NULL );
-		m_ImmContext->VSSetConstantBuffers( 0 , 0 , NULL );
+		m_Context->IASetVertexBuffers( 0 , 0 , NULL , NULL , NULL );
+		m_Context->VSSetConstantBuffers( 0 , 0 , NULL );
 		ID3D11ShaderResourceView* Texture = NULL;
-		m_ImmContext->PSSetShaderResources( 0 , 1 , &Texture );
+		m_Context->PSSetShaderResources( 0 , 1 , &Texture );
 		ID3D11SamplerState* Sampler = NULL;
-		m_ImmContext->PSSetSamplers( 0 , NULL , &Sampler );
-		m_ImmContext->IASetInputLayout( NULL );
+		m_Context->PSSetSamplers( 0 , NULL , &Sampler );
+		m_Context->IASetInputLayout( NULL );
 	}
 
 	virtual void DrawQuad( struct ID3D11ShaderResourceView* Texture , float x , float y , float Width , float Height )
 	{
 		//Test Draw!
-		m_ImmContext->IASetInputLayout( m_VS_Texture_InputLayout );
+		m_Context->IASetInputLayout( m_VS_Texture_InputLayout );
 		UINT Stride = sizeof(SgVert);
 		UINT Offset = 0;
-		m_ImmContext->IASetVertexBuffers( 0 , 1 , &m_VbQuad , &Stride , &Offset );
-		m_ImmContext->IASetPrimitiveTopology( D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP );
-		m_ImmContext->OMSetBlendState( m_BlendState , NULL , 0xFFFFFFFF );
+		m_Context->IASetVertexBuffers( 0 , 1 , &m_VbQuad , &Stride , &Offset );
+		m_Context->IASetPrimitiveTopology( D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP );
+		m_Context->OMSetBlendState( m_BlendState , NULL , 0xFFFFFFFF );
 
 		DirectX::XMMATRIX WVP = DirectX::XMMatrixIdentity();
 		WVP *= DirectX::XMMatrixScaling( Width/VIEW_WIDTH , Height/VIEW_HEIGHT , 1.0f );
@@ -344,10 +362,10 @@ public:
 		//WVP *= DirectX::XMMatrixScaling( ((float)m_InitParms.Height/(float)m_InitParms.Width) , 1.0f , 1.0f );
 		m_VsConsts.mWVP = DirectX::XMMatrixTranspose( WVP );
 		UpdloadConsts();
-		m_ImmContext->VSSetShader( m_VS_Texture , 0 , NULL );
-		m_ImmContext->PSSetShader( m_PS_Texture , 0 , NULL );
-		m_ImmContext->PSSetShaderResources( 0 , 1 , &Texture );
-		m_ImmContext->Draw( 4 , 0 );
+		m_Context->VSSetShader( m_VS_Texture , 0 , NULL );
+		m_Context->PSSetShader( m_PS_Texture , 0 , NULL );
+		m_Context->PSSetShaderResources( 0 , 1 , &Texture );
+		m_Context->Draw( 4 , 0 );
 	}
 
 	class SgRendererImage* CreateSprite( const sgRendererImageCreateParms* CreateParms )
@@ -356,7 +374,7 @@ public:
 		Data.Dd = 0;
 		Data.BackSurface = 0;
 		Data.Dev11 = m_Device;
-		Data.DevContext11 = m_ImmContext;
+		Data.DevContext11 = m_Context;
 		Data.Renderer = this;
 		SgRendererImage* NewImg = new SgRendererImage( CreateParms , &Data );
 		return NewImg;
