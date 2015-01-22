@@ -110,10 +110,10 @@ void SgScrollGINGame::DrawMapBoard()
 
 	//draw the background
 	m_Background.DrawBackgrounds(
-		m_Viewport.GetScreenXPos()-640/2, 
-		m_Viewport.GetScreenYPos()-480/2,
-		640,
-		480);
+		m_Viewport.GetScreenXPos()-VIEW_WIDTH/2, 
+		m_Viewport.GetScreenYPos()-VIEW_HEIGHT/2,
+		VIEW_WIDTH,
+		VIEW_HEIGHT);
 
 	//draw the mapboard
 
@@ -123,11 +123,11 @@ void SgScrollGINGame::DrawMapBoard()
 	//we do it anyway).
 	int nXStart=0, nYStart=0, nXEnd=0, nYEnd=0;
 	
-	nXStart=(m_Viewport.GetScreenXPos()-640/2)/m_Mapboard.GetTileDim() + 1;
-	nYStart=(m_Viewport.GetScreenYPos()-480/2)/m_Mapboard.GetTileDim() + 1;
+	nXStart=(m_Viewport.GetScreenXPos()-VIEW_WIDTH/2)/m_Mapboard.GetTileDim() + 1;
+	nYStart=(m_Viewport.GetScreenYPos()-VIEW_HEIGHT/2)/m_Mapboard.GetTileDim() + 1;
 
-	nXEnd=(m_Viewport.GetScreenXPos()+640/2)/m_Mapboard.GetTileDim() + 1;//map->GetMapWidth();
-	nYEnd=(m_Viewport.GetScreenYPos()+480/2)/m_Mapboard.GetTileDim() + 1;//map->GetMapHeight();
+	nXEnd=(m_Viewport.GetScreenXPos()+VIEW_WIDTH/2)/m_Mapboard.GetTileDim() + 1;//map->GetMapWidth();
+	nYEnd=(m_Viewport.GetScreenYPos()+VIEW_HEIGHT/2)/m_Mapboard.GetTileDim() + 1;//map->GetMapHeight();
 
 	for(int x=nXStart; x<=nXEnd; x++){
 		for(int y=nYStart; y<=nYEnd; y++){

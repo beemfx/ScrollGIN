@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include "RendererImage.h"
 #include "RendererD3D11_Private.h"
+#include "GameConfig.h"
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <windowsx.h>
@@ -85,25 +86,21 @@ private:
 	{
 		if( m_InitParms.Windowed )
 		{
-			RECT rcWork;
 			RECT rc;
-			DWORD dwStyle;
 
-			dwStyle = GetWindowStyle(m_hwnd);
-			dwStyle &= ~WS_POPUP;
-			dwStyle |= WS_SYSMENU | WS_OVERLAPPED | WS_CAPTION | WS_DLGFRAME | WS_MINIMIZEBOX;
-			SetWindowLong(m_hwnd, GWL_STYLE, dwStyle);
-			SetRect( &rc , 0 , 0 , m_InitParms.Width, m_InitParms.Height );
+			DWORD DeskWidth = GetSystemMetrics( SM_CXSCREEN );
+			DWORD DeskHeight = GetSystemMetrics( SM_CYSCREEN );
+
+			DWORD Width  = m_InitParms.Width;
+			DWORD Height = m_InitParms.Height;
+			DWORD X = (DeskWidth-Width)/2;
+			DWORD Y = (DeskHeight-Height)/2;
+
+			SetRect( &rc , X , Y , X+Width, Y+Height );
+
 			AdjustWindowRectEx( &rc , GetWindowStyle(m_hwnd) , false, GetWindowExStyle(m_hwnd) );
-			SetWindowPos(m_hwnd, NULL, 0, 0, rc.right - rc.left, rc.bottom - rc.top, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+			SetWindowPos(m_hwnd, NULL, X, Y, rc.right - rc.left, rc.bottom - rc.top, SWP_NOZORDER | SWP_NOACTIVATE);
 			SetWindowPos(m_hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
-
-			/*  Make sure our window does not hang outside of the work area. */
-			SystemParametersInfo(SPI_GETWORKAREA, 0, &rcWork, 0);
-			GetWindowRect(m_hwnd, &rc);
-			if (rc.left < rcWork.left) rc.left = rcWork.left;
-			if (rc.top < rcWork.top)  rc.top = rcWork.top;
-			SetWindowPos(m_hwnd, NULL, rc.left, rc.top, 0, 0, SWP_NOSIZE|SWP_NOZORDER|SWP_NOACTIVATE);
 		}
 	}
 
@@ -312,8 +309,10 @@ public:
 		
 		Vp.TopLeftX = 0;
 		Vp.TopLeftY = 0;
-		Vp.Width    = m_InitParms.Width;
-		Vp.Height   = m_InitParms.Height;
+		Vp.Width    = static_cast<float>(m_InitParms.Width);
+		Vp.Height   = static_cast<float>(m_InitParms.Height);
+		Vp.MinDepth = 0;
+		Vp.MaxDepth = 1.0f;
 		
 		m_ImmContext->RSSetViewports(1, &Vp);
 
@@ -346,8 +345,8 @@ public:
 		m_ImmContext->OMSetBlendState( m_BlendState , NULL , 0xFFFFFFFF );
 
 		DirectX::XMMATRIX WVP = DirectX::XMMatrixIdentity();
-		WVP *= DirectX::XMMatrixScaling( Width/m_InitParms.Width , Height/m_InitParms.Height , 1.0f );
-		WVP *= DirectX::XMMatrixTranslation( ((x+Width/2.0f)-m_InitParms.Width/2.0f)/m_InitParms.Width , -((y+Height/2.0f)-m_InitParms.Height/2.0f)/m_InitParms.Height , 0 );
+		WVP *= DirectX::XMMatrixScaling( Width/VIEW_WIDTH , Height/VIEW_HEIGHT , 1.0f );
+		WVP *= DirectX::XMMatrixTranslation( ((x+Width/2.0f)-VIEW_WIDTH/2.0f)/VIEW_WIDTH , -((y+Height/2.0f)-VIEW_HEIGHT/2.0f)/VIEW_HEIGHT , 0 );
 		WVP *= DirectX::XMMatrixScaling( 2.0f , 2.0f , 1.0f );
 		//WVP *= DirectX::XMMatrixScaling( ((float)m_InitParms.Height/(float)m_InitParms.Width) , 1.0f , 1.0f );
 		m_VsConsts.mWVP = DirectX::XMMatrixTranspose( WVP );

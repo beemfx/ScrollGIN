@@ -26,15 +26,15 @@ static CJoes2ObjMan*   Joes2ObjMan = 0;
 static void Main_Game_Init(HWND hWnd, BOOL bWindowed, HINSTANCE hInstance)
 {
 	sgRendererInitParms InitParms;
-	InitParms.Width = 640;
-	InitParms.Height = 480;
+	InitParms.Width = 1024;
+	InitParms.Height = 768;
 	InitParms.Windowed = FALSE != bWindowed;
 	InitParms.Wnd = hWnd;
 
 	Renderer_Init( &InitParms );
 
 	Joes2ObjMan = new CJoes2ObjMan(256); 
-	Game.Init(640,480,Joes2ObjMan,hWnd);
+	Game.Init(VIEW_WIDTH,VIEW_HEIGHT,Joes2ObjMan,hWnd);
 }
 
 
@@ -151,7 +151,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		WS_EX_TOPMOST, 
 		szAppName,
 		szAppName,
-		WS_POPUP|WS_SYSMENU|WS_VISIBLE,
+		WS_POPUP|WS_SYSMENU|WS_VISIBLE|WS_SYSMENU | WS_OVERLAPPED | WS_CAPTION | WS_DLGFRAME | WS_MINIMIZEBOX,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
 		512,
