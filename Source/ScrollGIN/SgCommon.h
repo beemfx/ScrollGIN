@@ -1,5 +1,7 @@
 #pragma once
 
+#define __DXVERSION__ 11
+
 #define countof( x ) ( sizeof(x)/sizeof(x[0]))
 
 typedef const char*      sg_cpstr;

@@ -1,3 +1,4 @@
+#if __DXVERSION__ == 11
 #include "RendererImage.h"
 #include "RendererD3D11_Private.h"
 #include <d3d11.h>
@@ -196,3 +197,5 @@ void SgRendererImage::Draw( int x , int y )
 {
 	m_D->RendererData.Renderer->DrawQuad( m_D->ShaderView , static_cast<float>(x) , static_cast<float>(y) , static_cast<float>(m_D->CreateParms.Width) , static_cast<float>(m_D->CreateParms.Height) );
 }
+
+#endif __DXVERSION__ == 11

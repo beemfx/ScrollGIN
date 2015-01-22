@@ -1,3 +1,4 @@
+#if __DXVERSION__ == 11
 #pragma once
 
 struct SgVert
@@ -11,3 +12,4 @@ class IRendererD3D11
 {
 	public: virtual void DrawQuad( struct ID3D11ShaderResourceView* Texture , float x , float y , float Width , float Height )=0;
 };
+#endif __DXVERSION__ == 11
