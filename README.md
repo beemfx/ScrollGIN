@@ -1,18 +1,38 @@
 ScrollGIN
 =========
 
-ScrollGIN(tm) is a 32 bit Scrolling engine intended for platform
+ScrollGIN(tm) is a Scrolling engine intended for platform
 based games, as well as overhead RPG type games.  It is heavily
-based off 8 bit scrolling engines of the mid 80's, only much more
-advanced.
+based off 8 bit scrolling engines of the mid 80's.
 
-Notes
-=====
-To build the game and tools you'll need the enviornment variable BEEMOUT set
-to something useful such as "D:\BuildOut\".
+It is currently using DirectX 11 as the primary render (though a DirectX 7
+Renderer also exists, but it no longer maintained) so the game requires
+Windows 7 or higher and the graphics adapter must support Shader Model 5.
+
+BUILDING
+========
+For the game to build properly you need Visual Studio 2013. The Community
+Edition of VS 2013 is free! 
+
+You also need to set the environment variable BEEMOUT ot the path you would like
+the game to build to, such as "D:\BuildOut\". You can set environment variables
+in the windows system settings.
+
+If you build from the command line you could do:
+
+set BEEMOUT="D:\BuildOut\"
+MSBuild SCrollGIN.vcxproj
 
 Log
 ===
+January 22, 2015
+
+While the game isn't really maintained anymore I did write a DirectX 11 renderer
+for it, mostly so that I could learn the DX11 API before attempting to put it
+into a larger project. It's not really doing any DX11 stuff, and the shaders
+written for it are pretty close to Shader Model 1, but it has at least the gist
+of the graphics pipeline.
+
 May 26, 2012
 
 I'm not really resurrecting this project or anything. I just thought I'd make
