@@ -28,13 +28,11 @@ static void Main_Game_Init(HWND hWnd, BOOL bWindowed, HINSTANCE hInstance)
 	sgRendererInitParms InitParms;
 	InitParms.Width = 640;
 	InitParms.Height = 480;
-	InitParms.Windowed = true;
+	InitParms.Windowed = FALSE != bWindowed;
 	InitParms.Wnd = hWnd;
 
 	Renderer_Init( &InitParms );
 
-	ShowWindow( hWnd , SW_SHOWNORMAL);
-	SetFocus(hWnd);
 	Joes2ObjMan = new CJoes2ObjMan(256); 
 	Game.Init(640,480,Joes2ObjMan,hWnd);
 }
@@ -139,7 +137,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	wc.hInstance=hInstance;
 	wc.hbrBackground=(HBRUSH)GetStockObject(DKGRAY_BRUSH);
 	wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(101));
-	wc.hIconSm = NULL;//LoadIcon(NULL, IDI_APPLICATION);
+	wc.hIconSm = NULL;
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.lpszMenuName=NULL;
 	wc.lpszClassName=szAppName;
@@ -164,6 +162,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		NULL);
 
 	if(hWnd==NULL)return -1;
+
+	ShowWindow( hWnd , SW_SHOWNORMAL);
+	SetFocus(hWnd);
 
 	BOOL bWindow=0;
 	Main_ProcessCommandLine(&bWindow);
