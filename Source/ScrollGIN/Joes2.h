@@ -18,7 +18,7 @@ public:
 	virtual ~CJoes2ObjMan();
 	virtual int Initialize();
 	virtual void CreateObject(const OBJECTTYPE nType, int x, int y, int nXSpeed, int nYSpeed);
-	virtual void DetectCollisions();
+	virtual void OnCollision( SgObject* Obj1 , SgObject* Obj2 );
 };
 
 
