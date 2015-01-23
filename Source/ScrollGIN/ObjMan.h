@@ -48,8 +48,9 @@ public:
 	void SetTimer(SgTimer* pTimer);
 	virtual void CreateObject( const OBJECTTYPE nType, int x, int y, int nXSpeed, int nYSpeed);
 
-	virtual void DetectCollisions(); //detect collisions and take necessarys steps
-	COLLISIONTYPE DetectCollision(int nIndex1, int dwIndex2);
+	void DetectCollisions(); //detect collisions and take necessarys steps
+	virtual void OnCollision( SgObject* Obj1 , SgObject* Obj2 )=0;
+	COLLISIONTYPE DetectCollision( SgObject* Obj1 , SgObject* Obj2 );
 
 	void SetUserObject(int nIndex);
 	int GetUserObject();

@@ -135,32 +135,29 @@ void SgObjectManager::CreateObject(	const OBJECTTYPE nType, int x, int y, int nX
 	}
 }
 
-COLLISIONTYPE SgObjectManager::DetectCollision(int dwIndex1, int dwIndex2)
+COLLISIONTYPE SgObjectManager::DetectCollision( SgObject* Obj1 , SgObject* Obj2 )
 {
-	if((dwIndex1<1) || 
-		(dwIndex2<1) || 
-		(dwIndex1>m_dwMaxObjects) || 
-		(dwIndex2>m_dwMaxObjects) )return CT_NOCLSN;
+	assert( Obj1 && Obj2 );
 
-	if(m_ppObject[dwIndex1-1]==NULL)return CT_NOCLSN;
-	if(m_ppObject[dwIndex2-1]==NULL)return CT_NOCLSN;
-
-
-	return m_ppObject[dwIndex1-1]->DetectCollision(m_ppObject[dwIndex2-1]);
+	return Obj1->DetectCollision(Obj2);
 }
 
 void SgObjectManager::DetectCollisions()
 {
-	int i=0, j=0;
-	for(i=0; i<m_dwMaxObjects; i++){
-		if(m_ppObject[i]!=NULL){
-			for(j=i+1; j<m_dwMaxObjects; j++){
+	for(int i=0; i<m_dwMaxObjects; i++)
+	{
+		if(m_ppObject[i]!=NULL)
+		{
+			for(int j=i+1; j<m_dwMaxObjects; j++)
+			{
+				if( NULL == m_ppObject[j] )continue;
 				//here overloaded function should do
 				//appropriate action depending on type
 				//of collision.
-				switch(DetectCollision(i+1, j+1))
+				switch(DetectCollision(m_ppObject[i], m_ppObject[j]))
 				{
-				case CT_NOCLSN:
+				case CT_STDCLSN:
+					OnCollision( m_ppObject[i] , m_ppObject[j] );
 					break;
 				default:
 					break;
@@ -172,7 +169,6 @@ void SgObjectManager::DetectCollisions()
 
 void SgObjectManager::Update( SgMap *map , SgViewPort *viewport , SgInputManager* pInput )
 {
-	int i=0;
 	//if the game is paused we just draw the objects (and don't animate them)
 	if(m_pTimer->IsPaused())
 	{
@@ -181,7 +177,7 @@ void SgObjectManager::Update( SgMap *map , SgViewPort *viewport , SgInputManager
 	//Create a new random seed for randomness.
 	RandomSeed(timeGetTime());
 	//animate each object individually (if user object we pass the input along)
-	for(i=0; i<m_dwMaxObjects; i++){
+	for(int i=0; i<m_dwMaxObjects; i++){
 		//if object exists
 		if(m_ppObject[i]!=NULL){
 			if(i!=(m_dwUserObject-1)){

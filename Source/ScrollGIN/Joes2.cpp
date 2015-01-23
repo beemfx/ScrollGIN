@@ -69,21 +69,11 @@ public:
 			
 				if( (GetObjectAlign()&JC_GOOD)==JC_GOOD)
 				{
-					((SgObjectManager*)lpObjMan)->CreateObject(
-						(OBJECTTYPE)JOES2_GOODMISSILE,
-						nX,
-						m_nY-5,
-						nXSpeed,
-						0);
+					((SgObjectManager*)lpObjMan)->CreateObject((OBJECTTYPE)JOES2_GOODMISSILE,nX,m_nY-5,nXSpeed,0);
 				}
 				else if ( (GetObjectAlign()&JC_BAD)==JC_BAD)
 				{
-					((SgObjectManager*)lpObjMan)->CreateObject(
-						(OBJECTTYPE)JOES2_BADMISSILE,
-						nX,
-						m_nY-5,
-						nXSpeed,
-						0);
+					((SgObjectManager*)lpObjMan)->CreateObject((OBJECTTYPE)JOES2_BADMISSILE,nX,m_nY-5,nXSpeed,0);
 				}
 
 
@@ -92,12 +82,7 @@ public:
 			case JM_HIT:
 			case JM_EXPLODE:
 				m_bAlive=false;
-				((SgObjectManager*)lpObjMan)->CreateObject(
-					(OBJECTTYPE)JOES2_EXPLOSION, 
-					m_nX, 
-					m_nY, 
-					m_nXSpeed/8, 
-					m_nYSpeed/8);
+				((SgObjectManager*)lpObjMan)->CreateObject(	(OBJECTTYPE)JOES2_EXPLOSION, m_nX, m_nY, m_nXSpeed/8, m_nYSpeed/8);
 				break;
 			default:
 				break;
@@ -304,11 +289,7 @@ protected:
 	int m_nLastX;
 	int m_nLastY;
 public:
-	void CGoodMissileObject::ProcessAI(
-		SgInputManager *pInput, 
-		void* pObjMan, 
-		SgTimer *timer, 
-		SgMap* map)
+	void CGoodMissileObject::ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *timer, SgMap* map)
 	{
 		if(pInput==NULL)
 		{
@@ -330,26 +311,13 @@ public:
 				}
 				m_dwLastSmokeTime=timer->Time();
 
-				((SgObjectManager*)pObjMan)->CreateObject(
-					(OBJECTTYPE)JOES2_SMOKE,
-					nX,
-					m_nY-5,
-					0,
-					2);
+				((SgObjectManager*)pObjMan)->CreateObject((OBJECTTYPE)JOES2_SMOKE,nX,m_nY-5,0,2);
 			}
 
 			//If the missile is no longer moving...
 			if(ArchRelative(map, AR_ABOVE|AR_BELOW|AR_LEFT|AR_RIGHT))
 			{
 				SendMessage(JM_EXPLODE);
-				/*
-				((SgObjectManager*)pObjMan)->CreateObject(
-					JOES2_EXPOSION,
-					m_nX,
-					m_nY,
-					0,
-					0);
-				*/
 			}
 
 		}
@@ -612,67 +580,40 @@ void CJoes2ObjMan::CreateObject(const OBJECTTYPE nType, int x, int y, int nXSpee
 }
 
 
-void CJoes2ObjMan::DetectCollisions()
+void CJoes2ObjMan::OnCollision( SgObject* Obj1 , SgObject* Obj2 )
 {
-	for(int i=0; i<m_dwMaxObjects; i++)
-	{
-		if(m_ppObject[i]!=NULL)
-		{
-			for(int j=i+1; j<m_dwMaxObjects; j++)
-			{
-				if(m_ppObject[j]==NULL)
-					continue;
+	int dwFirstAlign =Obj1->GetObjectAlign();
+	int dwSecondAlign=Obj2->GetObjectAlign();
+	//here overloaded function should do
+	//appropriate action depending on type
+	//of collision.
+	bool bDestruct=false;
 
-				int dwFirstAlign=0, dwSecondAlign=0;
+	//If both objects are nondestructive, continue
+	if( ((dwFirstAlign&JC_DESTRUCT)==JC_DESTRUCT) )
+		bDestruct=true;
 
-				dwFirstAlign=m_ppObject[i]->GetObjectAlign();
-				dwSecondAlign=m_ppObject[j]->GetObjectAlign();
-				//here overloaded function should do
-				//appropriate action depending on type
-				//of collision.
-
-				bool bDestruct=false;
-
-				
-				//If both objects are nondestructive, continue
-				if( ((dwFirstAlign&JC_DESTRUCT)==JC_DESTRUCT) )
-					bDestruct=true;
-
-				if( ((dwSecondAlign&JC_DESTRUCT)==JC_DESTRUCT) )
-					bDestruct=true;
-				
-				if(bDestruct==false)
-					continue;
+	if( ((dwSecondAlign&JC_DESTRUCT)==JC_DESTRUCT) )
+		bDestruct=true;
+	
+	if(bDestruct==false)
+		return;
 
 
-				//If objects ahve the same alignment, continue.
-				if( (dwFirstAlign&0x0000000F) == (dwSecondAlign&0x0000000F))
-				{	
-					continue;
-				}
-
-				//If one object is neutral, continue.
-				if( ((dwFirstAlign&JC_NEUTRAL)==JC_NEUTRAL) ||
-					((dwSecondAlign&JC_NEUTRAL)==JC_NEUTRAL) )
-				{
-					continue;
-				}
-				
-
-
-				switch(DetectCollision(i+1, j+1))
-				{
-				case CT_NOCLSN:
-					break;
-				case CT_STDCLSN:				
-					//If we've made it here the objects are enemies and should be destroyed.
-					m_ppObject[i]->SendMessage(JM_HIT);
-					m_ppObject[j]->SendMessage(JM_HIT);
-					break;
-				default:
-					break;
-				}
-			}
-		}
+	//If objects ahve the same alignment, continue.
+	if( (dwFirstAlign&0x0000000F) == (dwSecondAlign&0x0000000F))
+	{	
+		return;
 	}
+
+	//If one object is neutral, continue.
+	if( ((dwFirstAlign&JC_NEUTRAL)==JC_NEUTRAL) ||
+		((dwSecondAlign&JC_NEUTRAL)==JC_NEUTRAL) )
+	{
+		return;
+	}
+					
+	//If we've made it here the objects are enemies and should be destroyed.
+	Obj1->SendMessage(JM_HIT);
+	Obj2->SendMessage(JM_HIT);
 }

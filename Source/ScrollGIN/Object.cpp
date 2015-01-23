@@ -197,16 +197,6 @@ COLLISIONTYPE SgObject::DetectCollision(SgObject *cObject){
 		//apppropriate value depending on if the objects are fatal to each other or not
 		//the follwoing code is only an example of what the final might look like
 		return CT_STDCLSN;
-		/*
-		switch(cObject->GetObjectAlign())
-		{
-		case OA_GOOD:
-		{
-			if(m_sObjectMode[m_nCurrentMode].nType==OA_GOOD)return CT_SAFECLSN;
-		}
-		default:return CT_STDCLSN;
-		}
-		*/
 	}
 	return CT_NOCLSN;
 }
