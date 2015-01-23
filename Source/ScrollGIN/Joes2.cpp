@@ -4,26 +4,26 @@
 #include "genfuncs.h"
 #include "Joes2.h"
 
-#define JOES2_GOODCOPTER  0x00000001
-#define JOES2_GOODMISSILE 0x00000002
-#define JOES2_SMOKE       0x00000003
-#define JOES2_EXPLOSION   0x00000004
-#define JOES2_BADCOPTER   0x00000005
-#define JOES2_BADMISSILE  0x00000006
+static const sg_uint32 JOES2_GOODCOPTER  = 0x00000001;
+static const sg_uint32 JOES2_GOODMISSILE = 0x00000002;
+static const sg_uint32 JOES2_SMOKE       = 0x00000003;
+static const sg_uint32 JOES2_EXPLOSION   = 0x00000004;
+static const sg_uint32 JOES2_BADCOPTER   = 0x00000005;
+static const sg_uint32 JOES2_BADMISSILE  = 0x00000006;
 
 //Joes 2 Messages
-#define JM_KILL    0x08000001
-#define JM_EXPLODE 0x08000002
-#define JM_SHOOT   0x08000003
-#define JM_HIT     0x08000004
+static const sg_uint32 JM_KILL    = 0x08000001;
+static const sg_uint32 JM_EXPLODE = 0x08000002;
+static const sg_uint32 JM_SHOOT   = 0x08000003;
+static const sg_uint32 JM_HIT     = 0x08000004;
 
 //Joes 2 Collision types
-#define JC_GOOD        0x00000001
-#define JC_BAD         0x00000002
-#define JC_NEUTRAL     0x00000004
+static const sg_uint32 JC_GOOD    = 0x00000001;
+static const sg_uint32 JC_BAD     = 0x00000002;
+static const sg_uint32 JC_NEUTRAL = 0x00000004;
 
-#define JC_NONDESTRUCT 0x00000010
-#define JC_DESTRUCT    0x00000020
+static const sg_uint32 JC_NONDESTRUCT = 0x00000010;
+static const sg_uint32 JC_DESTRUCT    = 0x00000020;
 
 /////////////////////////////////////////////////////////////////
 /// Generic Joes2 Object covers things for all joes2 objects. ///
@@ -297,7 +297,7 @@ public:
 			if( (timer->Time()-m_dwCreateTime) > 800)
 				SendMessage(JM_KILL);
 
-			if( (timer->Time()-m_dwLastSmokeTime)>100)
+			if( (timer->Time()-m_dwLastSmokeTime)>20)
 			{
 				int nX=0;
 
@@ -311,7 +311,7 @@ public:
 				}
 				m_dwLastSmokeTime=timer->Time();
 
-				((SgObjectManager*)pObjMan)->CreateObject((OBJECTTYPE)JOES2_SMOKE,nX,m_nY-5,0,2);
+				((SgObjectManager*)pObjMan)->CreateObject((OBJECTTYPE)JOES2_SMOKE,nX,m_nY-5,0,Random(1,6));
 			}
 
 			//If the missile is no longer moving...
