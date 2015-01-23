@@ -25,123 +25,495 @@
 #define JC_NONDESTRUCT 0x00000010
 #define JC_DESTRUCT    0x00000020
 
+/////////////////////////////////////////////////////////////////
+/// Generic Joes2 Object covers things for all joes2 objects. ///
+/////////////////////////////////////////////////////////////////
+
 class CJoes2Object: public SgObject
 {
 protected:
 	int m_dwCreateTime;
 	int m_dwLastAIUpdate;
 public:
-	CJoes2Object(SgSpriteManager * pSpriteMgr, int dwTime, int x, int y, int nXSpeed, int nYSpeed);
-	virtual bool ProcessMessages(void* lpObjMan);
+	CJoes2Object(SgSpriteManager * pSpriteMgr, int dwTime, int x, int y, int nXSpeed, int nYSpeed)
+	: SgObject(pSpriteMgr,dwTime,x,y,nXSpeed,nYSpeed)
+	, m_dwCreateTime(dwTime)
+	, m_dwLastAIUpdate(dwTime)
+	{
+
+	}
+
+	virtual bool ProcessMessages(void* lpObjMan)
+	{
+		for(WORD i=0; i<m_nNumMessages; i++){
+			switch(m_nMessage[i])
+			{
+			case JM_KILL:
+				m_bAlive=false;
+				break;
+			case JM_SHOOT:
+			{
+				int nX=m_nX, nXSpeed=30;
+
+				if(m_nFace==SF_RIGHT)
+				{
+					nXSpeed=30;
+					nX=m_nX+50;
+				}
+				else if(m_nFace==SF_LEFT)
+				{
+					nXSpeed=-30;
+					nX=m_nX-50;
+				}
+
+			
+				if( (GetObjectAlign()&JC_GOOD)==JC_GOOD)
+				{
+					((SgObjectManager*)lpObjMan)->CreateObject(
+						(OBJECTTYPE)JOES2_GOODMISSILE,
+						nX,
+						m_nY-5,
+						nXSpeed,
+						0);
+				}
+				else if ( (GetObjectAlign()&JC_BAD)==JC_BAD)
+				{
+					((SgObjectManager*)lpObjMan)->CreateObject(
+						(OBJECTTYPE)JOES2_BADMISSILE,
+						nX,
+						m_nY-5,
+						nXSpeed,
+						0);
+				}
+
+
+				break;
+			}
+			case JM_HIT:
+			case JM_EXPLODE:
+				m_bAlive=false;
+				((SgObjectManager*)lpObjMan)->CreateObject(
+					(OBJECTTYPE)JOES2_EXPLOSION, 
+					m_nX, 
+					m_nY, 
+					m_nXSpeed/8, 
+					m_nYSpeed/8);
+				break;
+			default:
+				break;
+			}
+		}
+		//Clear the message que
+		m_nNumMessages=0;
+		return true;
+	}
 };
 
+
+////////////////////////////////////////////
+/// The Joes Copter 2 Good Copter Object ///
+////////////////////////////////////////////
 class CGoodCopterObject: public CJoes2Object
 {
 protected:
 	int m_dwLastShot;
-
-	SgObject* m_lpEnemy; //Pointer to target chosen as enemy.
-	bool ChooseEnemy(SgObject* lpEnemy); //Chooses which target it would like as enemy.
-
-	virtual void ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *timer, SgMap* map);
 public:
-	CGoodCopterObject(SgSpriteManager * pSpriteMgr, int dwTime, int x, int y, int nXSpeed, int nYSpeed);
+	void ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *timer, SgMap* map)
+	{
+		static const int MOVEXSPEED = 10;
+		static const int MOVEYSPEED = 10;
+
+		if(pInput==NULL)
+		{
+			//ai
+			//Need to generate an ai.
+		
+			//Simple AI shoot every second.
+			if ((timer->Time()-m_dwLastShot)>1000)
+			{
+				SendMessage(JM_SHOOT);
+				m_dwLastShot=timer->Time();
+			}
+
+			//Simple movement randomly moves up down and left right, changing
+			//course five times a second, very similar to original ai.
+			if( (timer->Time()-m_dwLastAIUpdate)>200)
+			{
+				m_dwLastAIUpdate=timer->Time();
+				//RandomSeed(timer->Time());  //This seemed to make all AI's use the same random numbers
+			
+				m_nXSpeed=Random(-10, 10);
+				m_nYSpeed=Random(-10, 10);
+
+
+				if(m_nYSpeed < 0)
+					SetObjectFace(SF_LEFT);
+				else
+					SetObjectFace(SF_RIGHT);
+			}
+		}
+		else
+		{
+			DPAD dpad;
+			//g_cInput.ProcessKeyboardInput();
+			dpad=pInput->GetDPad();
+
+			//Shoot if button is down, thsi button should be mappable.
+			if( ((pInput->GetButtonState(0)) || (pInput->GetKeyState(DIK_LCONTROL))) && ((timer->Time()-m_dwLastShot)>500) )
+			{
+				SendMessage(JM_SHOOT);
+				m_dwLastShot=timer->Time();
+			}
 	
-	virtual void LoadObjectSprites(SgSpriteManager *pSpriteMgr);
-	virtual void CreateObjectModes(int dwTime);
+			switch(dpad)
+			{
+			case DP_RIGHT: 
+				SetObjectFace(SF_RIGHT);
+				SetSpeed(MOVEXSPEED, 0);
+				break;
+			case DP_LEFT:
+				SetObjectFace(SF_LEFT);
+				SetSpeed(-MOVEXSPEED, 0);
+				break;		
+			case DP_UP: 
+				SetSpeed(0, MOVEYSPEED);
+				break;
+			case DP_DOWN:
+				SetSpeed(0, -MOVEYSPEED);
+				break;
+			case DP_UPRIGHT:
+				SetObjectFace(SF_RIGHT);
+				SetSpeed(MOVEXSPEED, MOVEYSPEED);
+				break;
+			case DP_DOWNRIGHT:
+				SetObjectFace(SF_RIGHT);
+				SetSpeed(MOVEXSPEED, -MOVEYSPEED);
+				break;
+			case DP_UPLEFT:
+				SetObjectFace(SF_LEFT);
+				SetSpeed(-MOVEXSPEED, MOVEYSPEED);
+				break;
+			case DP_DOWNLEFT:
+				SetObjectFace(SF_LEFT);
+				SetSpeed(-MOVEXSPEED, -MOVEYSPEED);
+				break;
+			default:
+				SetSpeed(0, 0);
+				break;
+			}
+		}
+	}
+
+	void LoadObjectSprites(SgSpriteManager* pSpriteMgr)
+	{
+		ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("COPTER1")), 0, 19, 150, LP_FORWARD);
+		ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("DOWNCOPTER1")), 0, 15, 0, LP_FORWARD);
+	}
+
+	void CreateObjectModes(int dwTime)
+	{
+		//RECT rcDims={left, top, right, bottom};
+		RECT rcDims;
+		rcDims.top=36;
+		rcDims.bottom=0;
+		rcDims.left=-34;
+		rcDims.right=34;
+		bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
+		memset(&bActiveSprites, 0, sizeof(bActiveSprites));
+		bActiveSprites[0]=true;
+		CreateMode(bActiveSprites, rcDims, JC_GOOD|JC_NONDESTRUCT, TEXT("FLYING"));
+
+		rcDims.top=30;
+		rcDims.bottom=0;
+		rcDims.left=-34;
+		rcDims.right=34;
+
+		bActiveSprites[0]=false;
+		bActiveSprites[1]=true;
+
+		CreateMode(bActiveSprites, rcDims, JC_NEUTRAL|JC_NONDESTRUCT, TEXT("DEAD"));
+
+		SetObjectMode(1, dwTime);
+	}
+
+	CGoodCopterObject::CGoodCopterObject(SgSpriteManager * pSpriteMgr, int dwTime,int x, int y, int nXSpeed, int nYSpeed )
+	: CJoes2Object(pSpriteMgr, dwTime, x, y, nXSpeed, nYSpeed)
+	, m_dwLastShot(0)
+	{
+		if( !pSpriteMgr )return; //If this is null then we inherited from bad and we want different sprites.
+
+		LoadObjectSprites(pSpriteMgr);
+		CreateObjectModes(dwTime);
+	}
+
 };
 
+////////////////////////////////
+/// Joes 2 Bad Copter Object ///
+////////////////////////////////
 class CBadCopterObject: public CGoodCopterObject
 {
-protected:
-
 public:
-	CBadCopterObject(SgSpriteManager * pSpriteMgr, int dwTime, int x, int y, int nXSpeed, int nYSpeed);
-	
-	virtual void LoadObjectSprites(SgSpriteManager* pSpriteMgr);
-	virtual void CreateObjectModes(int dwTime);
+	CBadCopterObject(SgSpriteManager * pSpriteMgr, int dwTime,	int x, int y, int nXSpeed, int nYSpeed)
+	: CGoodCopterObject(0,dwTime,x,y,nXSpeed,nYSpeed)
+	{
+		LoadObjectSprites(pSpriteMgr);
+		CreateObjectModes(dwTime);
+		SetObjectFace(SF_LEFT);
+	}
+
+	void CreateObjectModes(int dwTime)
+	{
+		RECT rcDims;
+		rcDims.top=36;
+		rcDims.bottom=0;
+		rcDims.left=-34;
+		rcDims.right=34;
+		bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
+		memset(&bActiveSprites, 0, sizeof(bActiveSprites));
+		bActiveSprites[0]=true;
+		CreateMode(bActiveSprites, rcDims, JC_BAD|JC_NONDESTRUCT, TEXT("FLYING"));
+
+		rcDims.top=30;
+		rcDims.bottom=0;
+		rcDims.left=-34;
+		rcDims.right=34;
+
+		bActiveSprites[0]=false;
+		bActiveSprites[1]=true;
+
+		CreateMode(bActiveSprites, rcDims, JC_NEUTRAL|JC_NONDESTRUCT, TEXT("DEAD"));
+
+		SetObjectMode(1, dwTime);
+	}
+
+	void LoadObjectSprites(SgSpriteManager* pSpriteMgr)
+	{
+		ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("COPTER2")), 0, 19, 150, LP_FORWARD);
+		ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("DOWNCOPTER2")), 0, 15, 0, LP_FORWARD);
+	}
 };
 
+///////////////////////////////
+/// The Good Missile Object ///
+///////////////////////////////
 class CGoodMissileObject: public CJoes2Object
 {
 protected:
 	int m_dwLastSmokeTime;
 	int m_nLastX;
 	int m_nLastY;
-	virtual void ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *timer, SgMap* map);
 public:
-	CGoodMissileObject(
-		SgSpriteManager * pSpriteMgr, 
-		int dwTime, 
-		int x, 
-		int y, 
-		int nXSpeed, 
-		int nYSpeed);
-
-	virtual void LoadObjectSprites(SgSpriteManager *pSpriteMgr);
-	virtual void CreateObjectModes(int dwTime);
-};
-
-class CBadMissileObject: public CGoodMissileObject
-{
-protected:
-
-public:
-	CBadMissileObject(
-		SgSpriteManager * pSpriteMgr, 
-		int dwTime, 
-		int x, 
-		int y, 
-		int nXSpeed, 
-		int nYSpeed);
-
-	virtual void LoadObjectSprites(SgSpriteManager *pSpriteMgr);
-	virtual void CreateObjectModes(int dwTime);
-};
-
-class CSmokeObject: public CJoes2Object
-{
-protected:
-
-	virtual void ProcessAI(
+	void CGoodMissileObject::ProcessAI(
 		SgInputManager *pInput, 
 		void* pObjMan, 
 		SgTimer *timer, 
-		SgMap* map);
+		SgMap* map)
+	{
+		if(pInput==NULL)
+		{
+			//The missile exists for 8/10 second.
+			if( (timer->Time()-m_dwCreateTime) > 800)
+				SendMessage(JM_KILL);
 
-public:
-	CSmokeObject(
-		SgSpriteManager * pSpriteMgr, 
-		int dwTime, 
-		int x, 
-		int y, 
-		int nXSpeed, 
-		int nYSpeed);
+			if( (timer->Time()-m_dwLastSmokeTime)>100)
+			{
+				int nX=0;
 
-	virtual void LoadObjectSprites(SgSpriteManager *pSpriteMgr);
-	virtual void CreateObjectModes(int dwTime);
+				if(m_nFace==SF_RIGHT)
+				{
+					nX=m_nX-25;
+				}
+				else if(m_nFace==SF_LEFT)
+				{
+					nX=m_nX+25;
+				}
+				m_dwLastSmokeTime=timer->Time();
+
+				((SgObjectManager*)pObjMan)->CreateObject(
+					(OBJECTTYPE)JOES2_SMOKE,
+					nX,
+					m_nY-5,
+					0,
+					2);
+			}
+
+			//If the missile is no longer moving...
+			if(ArchRelative(map, AR_ABOVE|AR_BELOW|AR_LEFT|AR_RIGHT))
+			{
+				SendMessage(JM_EXPLODE);
+				/*
+				((SgObjectManager*)pObjMan)->CreateObject(
+					JOES2_EXPOSION,
+					m_nX,
+					m_nY,
+					0,
+					0);
+				*/
+			}
+
+		}
+		else
+		{
+
+		}
+	}
+
+	CGoodMissileObject(	SgSpriteManager * pSpriteMgr, int dwTime, int x, int y, int nXSpeed, int nYSpeed)
+	: CJoes2Object(pSpriteMgr,dwTime,x,y,nXSpeed,nYSpeed)
+	, m_dwLastSmokeTime(dwTime)
+	, m_nLastX(x)
+	, m_nLastY(y)
+	{
+		if(pSpriteMgr)
+		{
+			LoadObjectSprites(pSpriteMgr);
+			CreateObjectModes(dwTime);
+		}
+		if(nXSpeed < 0)
+			m_nFace=SF_LEFT;
+	}
+	void LoadObjectSprites(SgSpriteManager *pSpriteMgr)
+	{
+		ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("MISSILE2")), 0, 8, 150, LP_FORWARD);
+	}
+	void CreateObjectModes(int dwTime)
+	{
+		RECT rcDims;
+		rcDims.top=16;
+		rcDims.bottom=0;
+		rcDims.left=-20;
+		rcDims.right=20;
+		bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
+		memset(&bActiveSprites, 0, sizeof(bActiveSprites));
+		bActiveSprites[0]=true;
+		CreateMode(bActiveSprites, rcDims, JC_GOOD|JC_DESTRUCT, TEXT("MISSILE"));
+	
+		SetObjectMode(1, dwTime);
+	}
 };
+
+//////////////////////////////
+/// The bad missile object ///
+//////////////////////////////
+class CBadMissileObject: public CGoodMissileObject
+{
+public:
+	CBadMissileObject(SgSpriteManager* pSpriteMgr, int dwTime,int x,int y,int nXSpeed,int nYSpeed)
+	: CGoodMissileObject(NULL,dwTime,x,y,nXSpeed,nYSpeed)
+	{
+		LoadObjectSprites(pSpriteMgr);
+		CreateObjectModes(dwTime);
+	}
+
+	void LoadObjectSprites(SgSpriteManager *pSpriteMgr)
+	{
+		ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("MISSILE3")), 0, 8, 150, LP_FORWARD);
+	}
+
+	void CreateObjectModes(int dwTime)
+	{
+		RECT rcDims;
+		rcDims.top=16;
+		rcDims.bottom=0;
+		rcDims.left=-20;
+		rcDims.right=20;
+		bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
+		memset(&bActiveSprites, 0, sizeof(bActiveSprites));
+		bActiveSprites[0]=true;
+		CreateMode(bActiveSprites, rcDims, JC_BAD|JC_DESTRUCT, TEXT("MISSILE"));
+	
+		SetObjectMode(1, dwTime);
+	}
+};
+
+////////////////////////
+/// The smoke object ///
+////////////////////////
+class CSmokeObject: public CJoes2Object
+{
+public:
+	CSmokeObject(SgSpriteManager * pSpriteMgr, int dwTime, int x, int y, int nXSpeed, int nYSpeed)
+	: CJoes2Object(	pSpriteMgr,	dwTime,	x,	y,	nXSpeed,nYSpeed)
+	{
+		LoadObjectSprites(pSpriteMgr);
+		CreateObjectModes(dwTime);
+	}
+
+	void LoadObjectSprites(SgSpriteManager* pSpriteMgr)
+	{
+		ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("SMOKE")), 0, 0, 150, LP_FORWARD);
+	}
+
+	void CreateObjectModes(int dwTime)
+	{
+		RECT rcDims;
+		rcDims.top=0;
+		rcDims.bottom=0;
+		rcDims.left=0;
+		rcDims.right=0;
+		bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
+		memset(&bActiveSprites, 0, sizeof(bActiveSprites));
+		bActiveSprites[0]=true;
+		CreateMode(bActiveSprites, rcDims, JC_NEUTRAL|JC_NONDESTRUCT, TEXT("SMOKE"));
+	
+		SetObjectMode(1, dwTime);
+	}
+
+	void ProcessAI(	SgInputManager* pInput, void* pObjMan, SgTimer* timer, SgMap* map)
+	{
+		if(pInput==NULL)
+		{
+			//The missile exists for 8/10 second.
+			if( (timer->Time()-m_dwCreateTime) > 200)
+				SendMessage(JM_KILL);
+		}
+		else
+		{
+
+		}
+	}
+};
+
+////////////////////////////
+/// The explosion object ///
+////////////////////////////
 
 class CExplosionObject: public CJoes2Object
 {
-protected:
-
-	virtual void ProcessAI(
-		SgInputManager *pInput, 
-		void* pObjMan, 
-		SgTimer *timer, 
-		SgMap* map);
 public:
-	CExplosionObject(
-		SgSpriteManager * pSpriteMgr, 
-		int dwTime, 
-		int x, 
-		int y, 
-		int nXSpeed, 
-		int nYSpeed);
+	CExplosionObject(SgSpriteManager * pSpriteMgr, int dwTime, int x, int y, int nXSpeed, int nYSpeed)
+	: CJoes2Object(	pSpriteMgr,	dwTime,	x,y,nXSpeed,nYSpeed)
+	{
+		LoadObjectSprites(pSpriteMgr);
+		CreateObjectModes(dwTime);
+	}
 
-	virtual void LoadObjectSprites(SgSpriteManager *pSpriteMgr);
-	virtual void CreateObjectModes(int dwTime);
+	void ProcessAI(	SgInputManager *pInput,void* pObjMan,SgTimer* timer,SgMap* map)
+	{
+		if( (timer->Time()-m_dwCreateTime) > 300)
+			SendMessage(JM_KILL);
+	}
+
+	void LoadObjectSprites(SgSpriteManager* pSpriteMgr)
+	{
+		ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("EXPLOSION")), 0, 0, 25, LP_ONCEFORWARD);
+	}
+
+	void CreateObjectModes(int dwTime)
+	{
+		RECT rcDims;
+		rcDims.top=0;
+		rcDims.bottom=0;
+		rcDims.left=0;
+		rcDims.right=0;
+		bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
+		memset(&bActiveSprites, 0, sizeof(bActiveSprites));
+		bActiveSprites[0]=true;
+		CreateMode(bActiveSprites, rcDims, JC_NEUTRAL|JC_NONDESTRUCT, TEXT("EXPLODE"));
+	
+		SetObjectMode(1, dwTime);
+	}
 };
 
 ////////////////////////////////////
@@ -304,554 +676,3 @@ void CJoes2ObjMan::DetectCollisions()
 		}
 	}
 }
-
-/////////////////////////////////////////////////////////////////
-/// Generic Joes2 Object covers things for all joes2 objects. ///
-/////////////////////////////////////////////////////////////////
-
-CJoes2Object::CJoes2Object(
-	SgSpriteManager * pSpriteMgr, 
-	int dwTime, 
-	int x, 
-	int y, 
-	int nXSpeed, 
-	int nYSpeed):
-	SgObject(
-		pSpriteMgr,
-		dwTime,
-		x,
-		y,
-		nXSpeed,
-		nYSpeed),
-	m_dwCreateTime(dwTime),
-	m_dwLastAIUpdate(dwTime)
-{
-
-}
-
-bool CJoes2Object::ProcessMessages(void* lpObjMan)
-{
-	for(WORD i=0; i<m_nNumMessages; i++){
-		switch(m_nMessage[i])
-		{
-		case JM_KILL:
-			m_bAlive=false;
-			break;
-		case JM_SHOOT:
-		{
-			int nX=m_nX, nXSpeed=30;
-
-			if(m_nFace==SF_RIGHT)
-			{
-				nXSpeed=30;
-				nX=m_nX+50;
-			}
-			else if(m_nFace==SF_LEFT)
-			{
-				nXSpeed=-30;
-				nX=m_nX-50;
-			}
-
-			
-			if( (GetObjectAlign()&JC_GOOD)==JC_GOOD)
-			{
-				((SgObjectManager*)lpObjMan)->CreateObject(
-					(OBJECTTYPE)JOES2_GOODMISSILE,
-					nX,
-					m_nY-5,
-					nXSpeed,
-					0);
-			}
-			else if ( (GetObjectAlign()&JC_BAD)==JC_BAD)
-			{
-				((SgObjectManager*)lpObjMan)->CreateObject(
-					(OBJECTTYPE)JOES2_BADMISSILE,
-					nX,
-					m_nY-5,
-					nXSpeed,
-					0);
-			}
-
-
-			break;
-		}
-		case JM_HIT:
-		case JM_EXPLODE:
-			m_bAlive=false;
-			((SgObjectManager*)lpObjMan)->CreateObject(
-				(OBJECTTYPE)JOES2_EXPLOSION, 
-				m_nX, 
-				m_nY, 
-				m_nXSpeed/8, 
-				m_nYSpeed/8);
-			break;
-		default:
-			break;
-		}
-	}
-	//Clear the message que
-	m_nNumMessages=0;
-	return true;
-}
-
-
-////////////////////////////////////////////
-/// The Joes Copter 2 Good Copter Object ///
-////////////////////////////////////////////
-
-void CGoodCopterObject::ProcessAI(
-	SgInputManager *pInput, 
-	void* pObjMan, 
-	SgTimer *timer, 
-	SgMap* map)
-{
-	#define MOVEXSPEED 10
-	#define MOVEYSPEED 10
-
-	if(pInput==NULL)
-	{
-		//ai
-		//Need to generate an ai.
-		
-		//Simple AI shoot every second.
-		if ((timer->Time()-m_dwLastShot)>1000)
-		{
-			SendMessage(JM_SHOOT);
-			m_dwLastShot=timer->Time();
-		}
-
-		//Simple movement randomly moves up down and left right, changing
-		//course five times a second, very similar to original ai.
-		if( (timer->Time()-m_dwLastAIUpdate)>200)
-		{
-			m_dwLastAIUpdate=timer->Time();
-			//RandomSeed(timer->Time());  //This seemed to make all AI's use the same random numbers
-			
-			m_nXSpeed=Random(-10, 10);
-			m_nYSpeed=Random(-10, 10);
-
-
-			if(m_nYSpeed < 0)
-				SetObjectFace(SF_LEFT);
-			else
-				SetObjectFace(SF_RIGHT);
-		}
-	}
-	else
-	{
-		DPAD dpad;
-		//g_cInput.ProcessKeyboardInput();
-		dpad=pInput->GetDPad();
-
-		//Shoot if button is down, thsi button should be mappable.
-		if( ((pInput->GetButtonState(0)) || (pInput->GetKeyState(DIK_LCONTROL))) && ((timer->Time()-m_dwLastShot)>500) )
-		{
-			SendMessage(JM_SHOOT);
-			m_dwLastShot=timer->Time();
-		}
-	
-		switch(dpad)
-		{
-		case DP_RIGHT: 
-			SetObjectFace(SF_RIGHT);
-			SetSpeed(MOVEXSPEED, 0);
-			break;
-		case DP_LEFT:
-			SetObjectFace(SF_LEFT);
-			SetSpeed(-MOVEXSPEED, 0);
-			break;		
-		case DP_UP: 
-			SetSpeed(0, MOVEYSPEED);
-			break;
-		case DP_DOWN:
-			SetSpeed(0, -MOVEYSPEED);
-			break;
-		case DP_UPRIGHT:
-			SetObjectFace(SF_RIGHT);
-			SetSpeed(MOVEXSPEED, MOVEYSPEED);
-			break;
-		case DP_DOWNRIGHT:
-			SetObjectFace(SF_RIGHT);
-			SetSpeed(MOVEXSPEED, -MOVEYSPEED);
-			break;
-		case DP_UPLEFT:
-			SetObjectFace(SF_LEFT);
-			SetSpeed(-MOVEXSPEED, MOVEYSPEED);
-			break;
-		case DP_DOWNLEFT:
-			SetObjectFace(SF_LEFT);
-			SetSpeed(-MOVEXSPEED, -MOVEYSPEED);
-			break;
-		default:
-			SetSpeed(0, 0);
-			break;
-		}
-	}
-}
-
-
-void CGoodCopterObject::LoadObjectSprites(SgSpriteManager* pSpriteMgr)
-{
-	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("COPTER1")), 0, 19, 150, LP_FORWARD);
-	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("DOWNCOPTER1")), 0, 15, 0, LP_FORWARD);
-}
-
-void CGoodCopterObject::CreateObjectModes(int dwTime)
-{
-	//RECT rcDims={left, top, right, bottom};
-	RECT rcDims;
-	rcDims.top=36;
-	rcDims.bottom=0;
-	rcDims.left=-34;
-	rcDims.right=34;
-	bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
-	memset(&bActiveSprites, 0, sizeof(bActiveSprites));
-	bActiveSprites[0]=true;
-	CreateMode(bActiveSprites, rcDims, JC_GOOD|JC_NONDESTRUCT, TEXT("FLYING"));
-
-	rcDims.top=30;
-	rcDims.bottom=0;
-	rcDims.left=-34;
-	rcDims.right=34;
-
-	bActiveSprites[0]=false;
-	bActiveSprites[1]=true;
-
-	CreateMode(bActiveSprites, rcDims, JC_NEUTRAL|JC_NONDESTRUCT, TEXT("DEAD"));
-
-	SetObjectMode(1, dwTime);
-}
-
-
-CGoodCopterObject::CGoodCopterObject(
-	SgSpriteManager * pSpriteMgr, 
-	int dwTime,
-	int x, 
-	int y, 
-	int nXSpeed, 
-	int nYSpeed
-)
-: CJoes2Object(pSpriteMgr, dwTime, x, y, nXSpeed, nYSpeed)
-, m_dwLastShot(0)
-{
-	if( !pSpriteMgr )return; //If this is null then we inherited from bad and we want different sprites.
-
-	LoadObjectSprites(pSpriteMgr);
-	CreateObjectModes(dwTime);
-}
-
-////////////////////////////////
-/// Joes 2 Bad Copter Object ///
-////////////////////////////////
-
-CBadCopterObject::CBadCopterObject(
-	SgSpriteManager * pSpriteMgr, 
-	int dwTime, 
-	int x, 
-	int y, 
-	int nXSpeed, 
-	int nYSpeed):
-	CGoodCopterObject(
-		0,
-		dwTime,
-		x,
-		y,
-		nXSpeed,
-		nYSpeed)
-{
-	LoadObjectSprites(pSpriteMgr);
-	CreateObjectModes(dwTime);
-	SetObjectFace(SF_LEFT);
-}
-
-void CBadCopterObject::CreateObjectModes(int dwTime)
-{
-	RECT rcDims;
-	rcDims.top=36;
-	rcDims.bottom=0;
-	rcDims.left=-34;
-	rcDims.right=34;
-	bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
-	memset(&bActiveSprites, 0, sizeof(bActiveSprites));
-	bActiveSprites[0]=true;
-	CreateMode(bActiveSprites, rcDims, JC_BAD|JC_NONDESTRUCT, TEXT("FLYING"));
-
-	rcDims.top=30;
-	rcDims.bottom=0;
-	rcDims.left=-34;
-	rcDims.right=34;
-
-	bActiveSprites[0]=false;
-	bActiveSprites[1]=true;
-
-	CreateMode(bActiveSprites, rcDims, JC_NEUTRAL|JC_NONDESTRUCT, TEXT("DEAD"));
-
-	SetObjectMode(1, dwTime);
-}
-
-void CBadCopterObject::LoadObjectSprites(SgSpriteManager* pSpriteMgr)
-{
-	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("COPTER2")), 0, 19, 150, LP_FORWARD);
-	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("DOWNCOPTER2")), 0, 15, 0, LP_FORWARD);
-}
-
-///////////////////////////////
-/// The Good Missile Object ///
-///////////////////////////////
-
-void CGoodMissileObject::ProcessAI(
-	SgInputManager *pInput, 
-	void* pObjMan, 
-	SgTimer *timer, 
-	SgMap* map)
-{
-	if(pInput==NULL)
-	{
-		//The missile exists for 8/10 second.
-		if( (timer->Time()-m_dwCreateTime) > 800)
-			SendMessage(JM_KILL);
-
-		if( (timer->Time()-m_dwLastSmokeTime)>100)
-		{
-			int nX=0;
-
-			if(m_nFace==SF_RIGHT)
-			{
-				nX=m_nX-25;
-			}
-			else if(m_nFace==SF_LEFT)
-			{
-				nX=m_nX+25;
-			}
-			m_dwLastSmokeTime=timer->Time();
-
-			((SgObjectManager*)pObjMan)->CreateObject(
-				(OBJECTTYPE)JOES2_SMOKE,
-				nX,
-				m_nY-5,
-				0,
-				2);
-		}
-
-		//If the missile is no longer moving...
-		if(ArchRelative(map, AR_ABOVE|AR_BELOW|AR_LEFT|AR_RIGHT))
-		{
-			SendMessage(JM_EXPLODE);
-			/*
-			((SgObjectManager*)pObjMan)->CreateObject(
-				JOES2_EXPOSION,
-				m_nX,
-				m_nY,
-				0,
-				0);
-			*/
-		}
-
-	}
-	else
-	{
-
-	}
-}
-
-CGoodMissileObject::CGoodMissileObject(
-	SgSpriteManager * pSpriteMgr, 
-	int dwTime, 
-	int x, 
-	int y, 
-	int nXSpeed, 
-	int nYSpeed):
-	CJoes2Object(
-	pSpriteMgr,
-	dwTime,
-	x,
-	y,
-	nXSpeed,
-	nYSpeed),
-	m_dwLastSmokeTime(dwTime),
-	m_nLastX(x),
-	m_nLastY(y)
-{
-	if(pSpriteMgr)
-	{
-		LoadObjectSprites(pSpriteMgr);
-		CreateObjectModes(dwTime);
-	}
-	if(nXSpeed < 0)
-		m_nFace=SF_LEFT;
-}
-void CGoodMissileObject::LoadObjectSprites(SgSpriteManager *pSpriteMgr)
-{
-	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("MISSILE2")), 0, 8, 150, LP_FORWARD);
-}
-void CGoodMissileObject::CreateObjectModes(int dwTime)
-{
-	RECT rcDims;
-	rcDims.top=16;
-	rcDims.bottom=0;
-	rcDims.left=-20;
-	rcDims.right=20;
-	bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
-	memset(&bActiveSprites, 0, sizeof(bActiveSprites));
-	bActiveSprites[0]=true;
-	CreateMode(bActiveSprites, rcDims, JC_GOOD|JC_DESTRUCT, TEXT("MISSILE"));
-	
-	SetObjectMode(1, dwTime);
-}
-
-//////////////////////////////
-/// The bad missile object ///
-//////////////////////////////
-
-CBadMissileObject::CBadMissileObject(
-	SgSpriteManager* pSpriteMgr, 
-	int dwTime,
-	int x,
-	int y,
-	int nXSpeed,
-	int nYSpeed):
-	CGoodMissileObject(
-		NULL,
-		dwTime,
-		x,
-		y,
-		nXSpeed,
-		nYSpeed)
-{
-	LoadObjectSprites(pSpriteMgr);
-	CreateObjectModes(dwTime);
-}
-void CBadMissileObject::LoadObjectSprites(SgSpriteManager *pSpriteMgr)
-{
-	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("MISSILE3")), 0, 8, 150, LP_FORWARD);
-}
-void CBadMissileObject::CreateObjectModes(int dwTime)
-{
-	RECT rcDims;
-	rcDims.top=16;
-	rcDims.bottom=0;
-	rcDims.left=-20;
-	rcDims.right=20;
-	bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
-	memset(&bActiveSprites, 0, sizeof(bActiveSprites));
-	bActiveSprites[0]=true;
-	CreateMode(bActiveSprites, rcDims, JC_BAD|JC_DESTRUCT, TEXT("MISSILE"));
-	
-	SetObjectMode(1, dwTime);
-}
-
-////////////////////////
-/// The smoke object ///
-////////////////////////
-
-CSmokeObject::CSmokeObject(
-	SgSpriteManager * pSpriteMgr, 
-	int dwTime, 
-	int x, 
-	int y, 
-	int nXSpeed, 
-	int nYSpeed):
-	CJoes2Object(
-		pSpriteMgr,
-		dwTime,
-		x,
-		y,
-		nXSpeed,
-		nYSpeed)
-{
-	LoadObjectSprites(pSpriteMgr);
-	CreateObjectModes(dwTime);
-}
-
-void CSmokeObject::LoadObjectSprites(SgSpriteManager* pSpriteMgr)
-{
-	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("SMOKE")), 0, 0, 150, LP_FORWARD);
-}
-
-void CSmokeObject::CreateObjectModes(int dwTime)
-{
-	RECT rcDims;
-	rcDims.top=0;
-	rcDims.bottom=0;
-	rcDims.left=0;
-	rcDims.right=0;
-	bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
-	memset(&bActiveSprites, 0, sizeof(bActiveSprites));
-	bActiveSprites[0]=true;
-	CreateMode(bActiveSprites, rcDims, JC_NEUTRAL|JC_NONDESTRUCT, TEXT("SMOKE"));
-	
-	SetObjectMode(1, dwTime);
-}
-
-void CSmokeObject::ProcessAI(
-	SgInputManager* pInput, 
-	void* pObjMan, 
-	SgTimer* timer, 
-	SgMap* map)
-{
-	if(pInput==NULL)
-	{
-		//The missile exists for 8/10 second.
-		if( (timer->Time()-m_dwCreateTime) > 200)
-			SendMessage(JM_KILL);
-	}
-	else
-	{
-
-	}
-}
-
-////////////////////////////
-/// The explosion object ///
-////////////////////////////
-
-CExplosionObject::CExplosionObject(
-	SgSpriteManager * pSpriteMgr, 
-	int dwTime, 
-	int x, 
-	int y, 
-	int nXSpeed, 
-	int nYSpeed):
-	CJoes2Object(
-		pSpriteMgr,
-		dwTime,
-		x,
-		y,
-		nXSpeed,
-		nYSpeed)
-{
-	LoadObjectSprites(pSpriteMgr);
-	CreateObjectModes(dwTime);
-}
-
-void CExplosionObject::ProcessAI(
-	SgInputManager *pInput,
-	void* pObjMan,
-	SgTimer* timer,
-	SgMap* map)
-{
-	
-	if( (timer->Time()-m_dwCreateTime) > 300)
-		SendMessage(JM_KILL);
-}
-
-void CExplosionObject::LoadObjectSprites(SgSpriteManager* pSpriteMgr)
-{
-	ObtainPointerToSprite(pSpriteMgr->GetSprite(TEXT("EXPLOSION")), 0, 0, 25, LP_ONCEFORWARD);
-}
-
-void CExplosionObject::CreateObjectModes(int dwTime)
-{
-	RECT rcDims;
-	rcDims.top=0;
-	rcDims.bottom=0;
-	rcDims.left=0;
-	rcDims.right=0;
-	bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
-	memset(&bActiveSprites, 0, sizeof(bActiveSprites));
-	bActiveSprites[0]=true;
-	CreateMode(bActiveSprites, rcDims, JC_NEUTRAL|JC_NONDESTRUCT, TEXT("EXPLODE"));
-	
-	SetObjectMode(1, dwTime);
-}
-
