@@ -85,7 +85,7 @@ static LRESULT CALLBACK Main_WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 		}		
 		break;
 	}
-	case WM_SIZE:
+	case WM_MOVE:
 		Renderer_UpdateBounds();
 		break;
 	case WM_CLOSE:
