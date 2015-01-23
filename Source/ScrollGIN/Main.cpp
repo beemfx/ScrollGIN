@@ -28,7 +28,7 @@ static void Main_Game_Init(HWND hWnd, BOOL bWindowed, HINSTANCE hInstance)
 	sgRendererInitParms InitParms;
 	InitParms.Width = 1024;
 	InitParms.Height = 768;
-	InitParms.Windowed = true;//false;//FALSE != bWindowed;
+	InitParms.Windowed = FALSE != bWindowed;
 	InitParms.Wnd = hWnd;
 
 	Renderer_Init( &InitParms );
@@ -62,6 +62,7 @@ static LRESULT CALLBACK Main_WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 	case WM_ACTIVATEAPP:
 		if(wParam)
 		{
+			Renderer_OnActivateApp();
 			Game.Pause(FALSE);
 			PostMessage(hWnd, WM_USER_ACTIVEAPP, TRUE, 0);
 		}
@@ -107,11 +108,17 @@ static void Main_ProcessCommandLine(BOOL* lpWindowed)
 	token=strtok_s(szCommandLine, steps, &NextToken );
 	while(token != NULL)
 	{
-		if(_strnicmp("window", token, 7)==0)
+		if(_strnicmp("windowed", token, 7)==0)
 			*lpWindowed=TRUE;
 		
 		if(_strnicmp("w", token, 2)==0)
 			*lpWindowed=TRUE;
+
+		if(_strnicmp("fullscreen", token, 7)==0)
+			*lpWindowed=FALSE;
+		
+		if(_strnicmp("fs", token, 2)==0)
+			*lpWindowed=FALSE;
 
 		token=strtok_s(NULL, steps, &NextToken );
 	}
@@ -166,12 +173,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ShowWindow( hWnd , SW_SHOWNORMAL);
 	SetFocus(hWnd);
 
-	BOOL bWindow=0;
+	BOOL bWindow=TRUE;
 	Main_ProcessCommandLine(&bWindow);
 
-	#if defined(_DEBUG)
-	bWindow = TRUE;
-	#endif
 
 	Main_Game_Init(hWnd, bWindow , hInstance);
 
