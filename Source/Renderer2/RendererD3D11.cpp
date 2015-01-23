@@ -114,12 +114,6 @@ private:
 		}
 	}
 
-	void Restore()
-	{
-		//TODO: Reload all graphics...
-		
-	}
-
 public:
 	SgRenderer()
 	: m_Device( 0 )
@@ -294,7 +288,7 @@ public:
 		}
 		else
 		{
-			m_SwapChain->SetFullscreenState( !m_InitParms.Windowed , NULL );
+			m_SwapChain->SetFullscreenState( TRUE , NULL );
 		}
 
 		ShowCursor(FALSE);
@@ -308,7 +302,6 @@ public:
 
 	void UpdateBounds()
 	{
-		AdjustWindowSize();
 		//m_SwapChain->ResizeBuffers( 1, m_InitParms.Width , m_InitParms.Height , DXGI_FORMAT_R8G8B8A8_UNORM , DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH );
 		//DXGI_MODE_DESC Desc;
 		//Desc.Width = m_InitParms.Width;
@@ -319,7 +312,15 @@ public:
 		//Desc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 		//Desc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 		//m_SwapChain->ResizeTarget( &Desc );
-		m_SwapChain->SetFullscreenState( !m_InitParms.Windowed , NULL );
+		//m_SwapChain->SetFullscreenState( !m_InitParms.Windowed , NULL );
+	}
+
+	void OnActivateApp()
+	{
+		if( !m_InitParms.Windowed )
+		{
+			m_SwapChain->SetFullscreenState( TRUE , NULL );
+		}
 	}
 
 	void UpdloadConsts()
@@ -434,4 +435,10 @@ void Renderer_UpdateBounds()
 {
 	Renderer.UpdateBounds();
 }
+
+void Renderer_OnActivateApp()
+{
+	Renderer.OnActivateApp();
+}
+
 #endif __DXVERSION__ == 11

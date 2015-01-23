@@ -308,4 +308,9 @@ void Renderer_UpdateBounds()
 	Renderer.UpdateBounds();
 }
 
+void Renderer_OnActivateApp()
+{
+
+}
+
 #endif __DXVERSION__ == 7
