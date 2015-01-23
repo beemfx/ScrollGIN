@@ -288,7 +288,7 @@ public:
 		}
 		else
 		{
-			m_SwapChain->SetFullscreenState( TRUE , NULL );
+			//m_SwapChain->SetFullscreenState( TRUE , NULL );
 		}
 
 		ShowCursor(FALSE);
@@ -298,21 +298,6 @@ public:
 	{
 		ReleaseAll();
 		ShowCursor(TRUE);
-	}
-
-	void UpdateBounds()
-	{
-		//m_SwapChain->ResizeBuffers( 1, m_InitParms.Width , m_InitParms.Height , DXGI_FORMAT_R8G8B8A8_UNORM , DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH );
-		//DXGI_MODE_DESC Desc;
-		//Desc.Width = m_InitParms.Width;
-		//Desc.Height = m_InitParms.Height;
-		//Desc.Format  = DXGI_FORMAT_R8G8B8A8_UNORM;
-		//Desc.RefreshRate.Denominator = 0;
-		//Desc.RefreshRate.Numerator = 0;
-		//Desc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-		//Desc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-		//m_SwapChain->ResizeTarget( &Desc );
-		//m_SwapChain->SetFullscreenState( !m_InitParms.Windowed , NULL );
 	}
 
 	void OnActivateApp()
@@ -433,7 +418,7 @@ void Renderer_DestroySprite(class SgRendererImage* Sprite)
 
 void Renderer_UpdateBounds()
 {
-	Renderer.UpdateBounds();
+
 }
 
 void Renderer_OnActivateApp()
