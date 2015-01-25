@@ -15,7 +15,8 @@
 #define assert( x )
 #endif
 
-#pragma comment(lib, "d3d11.lib")
+#pragma comment( lib , "d3d11.lib" )
+#pragma comment( lib , "dxgi.lib" )
 
 #include "VS_Color.h"
 #include "PS_Color.h"
@@ -136,21 +137,51 @@ public:
 		m_VsConsts.mWVP = DirectX::XMMatrixIdentity();
 	}
 
+	void AdjustRes( DXGI_MODE_DESC* ModeOut )
+	{
+		IDXGIFactory* Factory = NULL;
+		HRESULT Res = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)(&Factory) );
+		assert( SUCCEEDED(Res) );
+
+		IDXGIAdapter* Adapter = NULL;
+		Res = Factory->EnumAdapters( 0 , &Adapter );
+		assert( SUCCEEDED(Res) );
+
+		IDXGIOutput* Output = NULL;
+		Res = Adapter->EnumOutputs( 0 , &Output );
+		assert( SUCCEEDED(Res) );
+
+		DXGI_MODE_DESC MatchMode;
+		MatchMode.Width = m_InitParms.Width;
+		MatchMode.Height = m_InitParms.Height;
+		MatchMode.RefreshRate.Numerator = 60;
+		MatchMode.RefreshRate.Denominator = 1;
+		MatchMode.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		MatchMode.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+		MatchMode.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+
+		memset( ModeOut , 0 , sizeof(*ModeOut) );
+		Output->FindClosestMatchingMode( &MatchMode , ModeOut , NULL );
+
+		m_InitParms.Width  = ModeOut->Width;
+		m_InitParms.Height = ModeOut->Height;
+
+		SAFE_RELEASE( Output );
+		SAFE_RELEASE( Adapter );
+		SAFE_RELEASE( Factory );
+	}
+
 	void Init(  const sgRendererInitParms* InitParms )
 	{
 		m_InitParms = *InitParms;
+		DXGI_MODE_DESC Mode;
+		AdjustRes( &Mode );
 		m_hwnd = static_cast<HWND>(m_InitParms.Wnd);
 		HRESULT Res;
 		static const D3D_FEATURE_LEVEL FeatureLevels[] = { D3D_FEATURE_LEVEL_11_0 , D3D_FEATURE_LEVEL_11_1 };
 		DXGI_SWAP_CHAIN_DESC Sd;
 		memset( &Sd , 0 , sizeof(Sd) );
-		Sd.BufferDesc.Width = InitParms->Width;
-		Sd.BufferDesc.Height = InitParms->Height;
-		Sd.BufferDesc.RefreshRate.Numerator = 0;
-		Sd.BufferDesc.RefreshRate.Denominator = 1;
-		Sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-		Sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-		Sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+		Sd.BufferDesc = Mode;
 		Sd.SampleDesc.Count = 1;
 		Sd.SampleDesc.Quality = 0;
 		Sd.BufferUsage = DXGI_USAGE_BACK_BUFFER|DXGI_USAGE_RENDER_TARGET_OUTPUT;
