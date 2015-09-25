@@ -25,9 +25,22 @@
 
 static const D3D11_INPUT_ELEMENT_DESC SgRenderer_VertexFormat[] = 
 {
+	#if 1
 	{ "SV_POSITION", 0 , DXGI_FORMAT_R32G32B32A32_FLOAT , 0 ,  0 , D3D11_INPUT_PER_VERTEX_DATA , 0 },
 	{ "TEXCOORD"   , 0 , DXGI_FORMAT_R32G32_FLOAT       , 0 , 16 , D3D11_INPUT_PER_VERTEX_DATA , 0 },
 	{ "COLOR"      , 0 , DXGI_FORMAT_R32G32B32A32_FLOAT , 0 , 24 , D3D11_INPUT_PER_VERTEX_DATA , 0 },
+	#else
+	{ "SV_POSITION"  , 0 , DXGI_FORMAT_R32G32B32A32_FLOAT , 0 , 0  , D3D11_INPUT_PER_VERTEX_DATA , 0 },
+	{ "NORMAL"       , 0 , DXGI_FORMAT_R32G32B32A32_FLOAT , 0 , 16 , D3D11_INPUT_PER_VERTEX_DATA , 0 },
+	{ "TANGENT"      , 0 , DXGI_FORMAT_R32G32B32A32_FLOAT , 0 , 32 , D3D11_INPUT_PER_VERTEX_DATA , 0 },
+	{ "TEXCOORD"     , 0 , DXGI_FORMAT_R32G32_FLOAT       , 0 , 48 , D3D11_INPUT_PER_VERTEX_DATA , 0 },
+	{ "TEXCOORD"     , 1 , DXGI_FORMAT_R32G32_FLOAT       , 0 , 56 , D3D11_INPUT_PER_VERTEX_DATA , 0 },
+	{ "COLOR"        , 0 , DXGI_FORMAT_R32G32B32A32_FLOAT , 0 , 64 , D3D11_INPUT_PER_VERTEX_DATA , 0 },
+	{ "BLENDINDICES" , 0 , DXGI_FORMAT_R32_UINT           , 0 , 80 , D3D11_INPUT_PER_VERTEX_DATA , 0 },
+	{ "BLENDWEIGHT"  , 0 , DXGI_FORMAT_R32_FLOAT          , 0 , 84 , D3D11_INPUT_PER_VERTEX_DATA , 0 },
+	{ "BLENDINDICES" , 1 , DXGI_FORMAT_R32_UINT           , 0 , 88 , D3D11_INPUT_PER_VERTEX_DATA , 0 },
+	{ "BLENDWEIGHT"  , 1 , DXGI_FORMAT_R32_FLOAT          , 0 , 92 , D3D11_INPUT_PER_VERTEX_DATA , 0 },
+	#endif
 };
 
 static class SgRenderer: public IRendererD3D11
@@ -243,10 +256,17 @@ public:
 		
 		const SgVert Verts[] =
 		{
+			#if 1
 			{ { -0.5f, -0.5f, 0.0f , 1.0f } , { 0 , 1 } , { 1.0f, 1.0f, 1.0f, 1.0f } },
 			{ { -0.5f,  0.5f, 0.0f , 1.0f } , { 0 , 0 } , { 1.0f, 1.0f, 1.0f, 1.0f } },
 			{ {  0.5f, -0.5f, 0.0f , 1.0f } , { 1 , 1 } , { 1.0f, 1.0f, 1.0f, 1.0f } },
 			{ {  0.5f,  0.5f, 0.0f , 1.0f } , { 1 , 0 } , { 1.0f, 1.0f, 1.0f, 1.0f } },
+			#else
+			{ { -0.5f, -0.5f, 0.0f , 1.0f } , {0,0,0,0} , {0,0,0,0} , { 0 , 1 } , {0,0} , { 1.0f, 1.0f, 1.0f, 1.0f } , 0,0.0f,0,0.0f },
+			{ { -0.5f,  0.5f, 0.0f , 1.0f } , {0,0,0,0} , {0,0,0,0} , { 0 , 0 } , {0,0} , { 1.0f, 1.0f, 1.0f, 1.0f } , 0,0.0f,0,0.0f },
+			{ {  0.5f, -0.5f, 0.0f , 1.0f } , {0,0,0,0} , {0,0,0,0} , { 1 , 1 } , {0,0} , { 1.0f, 1.0f, 1.0f, 1.0f } , 0,0.0f,0,0.0f },
+			{ {  0.5f,  0.5f, 0.0f , 1.0f } , {0,0,0,0} , {0,0,0,0} , { 1 , 0 } , {0,0} , { 1.0f, 1.0f, 1.0f, 1.0f } , 0,0.0f,0,0.0f },
+			#endif
 		};
 
 		// Fill in a buffer description.
@@ -333,7 +353,7 @@ public:
 
 	void OnActivateApp()
 	{
-		if( !m_InitParms.Windowed )
+		if( !m_InitParms.Windowed && m_SwapChain )
 		{
 			m_SwapChain->SetFullscreenState( TRUE , NULL );
 		}
