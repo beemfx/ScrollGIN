@@ -3,3 +3,4 @@
 *Thumbs.db
 *.opensdf
 *.VC.db
+.vs/*
