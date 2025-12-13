@@ -1,5 +1,4 @@
-ScrollGIN
-=========
+# ScrollGIN&trade;
 
 ScrollGIN(tm) is a Scrolling engine intended for platform
 based games, as well as overhead RPG type games.  It is heavily
@@ -9,8 +8,8 @@ It is currently using DirectX 11 as the primary render (though a DirectX 7
 Renderer also exists, but it no longer maintained) so the game requires
 Windows 7 or higher and the graphics adapter must support Shader Model 5.
 
-BUILDING
-========
+## BUILDING
+
 For the game to build properly you need Visual Studio 2013. The Community
 Edition of VS 2013 is free! 
 
@@ -20,11 +19,13 @@ in the windows system settings.
 
 If you build from the command line you could do:
 
+<pre>
 set BEEMOUT="D:\BuildOut\"
 MSBuild SCrollGIN.vcxproj
+</pre>
 
-Log
-===
+## Log
+<pre>
 January 22, 2015
 
 While the game isn't really maintained anymore I did write a DirectX 11 renderer
@@ -47,7 +48,7 @@ it used DirectDraw.
 I may dabble around with this project a little more, but any major development
 is unlinkely. I'm just happy that I got the game and tools building again.
 
-== The log is now in chronological order ==
+*The log is now in chronological order*
 
 April 07, 2002
 
@@ -342,10 +343,11 @@ January 9, 2004
 	it works.  I hope I still have interest in game
 	development in the future, and I hope I finally put
 	a sound engine in this engine.
+</pre>
 
-About:
+## About
 
-ScrollGIN(tm) copyright(c) 2002, 2003, 2004 Blaine Myers.  ScrollGIN(tm), 
+ScrollGIN(tm) copyright(c) 2002, 2003, 2004 Blaine Myers. ScrollGIN&trade;, 
 Beem Software, and all respective logos are a trademark and/or 
 registered trademark of Blaine Myers in the US and/or other
 countries.  All other logos/trademarks belong to their respective 
