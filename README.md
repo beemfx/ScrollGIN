@@ -10,19 +10,9 @@ Windows 7 or higher and the graphics adapter must support Shader Model 5.
 
 ## BUILDING
 
-For the game to build properly you need Visual Studio 2013. The Community
-Edition of VS 2013 is free! 
-
-You also need to set the environment variable BEEMOUT ot the path you would like
-the game to build to, such as "D:\BuildOut\". You can set environment variables
-in the windows system settings.
-
-If you build from the command line you could do:
-
-<pre>
-set BEEMOUT="D:\BuildOut\"
-MSBuild SCrollGIN.vcxproj
-</pre>
+The solution is set up to work with Visual Studio 2022. You can simply build the
+game, if you want to run it set the debug working directory to 
+"$(SolutionDir)/Dist" this will run it agains the current data.
 
 ## Log
 <pre>
