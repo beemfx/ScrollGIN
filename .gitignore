@@ -5,3 +5,4 @@ _BUILD/
 *.opensdf
 *.VC.db
 .vs/*
+*.vcxproj.user
