@@ -193,7 +193,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_MAINICON            ICON    DISCARDABLE     "icon1.ico"
+IDI_MAINICON            ICON    DISCARDABLE     "Res/icon1.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
