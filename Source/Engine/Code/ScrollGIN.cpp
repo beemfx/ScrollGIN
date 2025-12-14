@@ -65,7 +65,7 @@ void SgScrollGINGame::Init( int dwWidth , int dwHeight , SgObjectManager* lpObjM
 
 void SgScrollGINGame::LoadMap(const char* szFilename)
 {
-	m_Viewport.SetViewportDimensions(1, 1);
+	m_Viewport.set_world_dimensions(1, 1);
 	m_Viewport.force_position(0, 0);
 	m_TileManager.Clear();
 	m_Background.Destroy();
