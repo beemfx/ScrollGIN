@@ -65,7 +65,18 @@ void SgScrollGINGame::Init( int dwWidth , int dwHeight , SgObjectManager* lpObjM
 
 void SgScrollGINGame::LoadMap(const char* szFilename)
 {
-	m_Mapboard.LoadMap(szFilename);
+	m_Viewport.SetViewportDimensions(1, 1);
+	m_Viewport.force_position(0, 0);
+	m_TileManager.Clear();
+	m_Background.Destroy();
+	m_lpObjectManager->ClearObjects();
+
+	const bool bMapLoaded = m_Mapboard.LoadMap(szFilename);
+	if (!bMapLoaded)
+	{
+		return;
+	}
+	
 	const char* szLibraryName = m_Mapboard.GetLibraryName();
 	
 	m_Viewport.set_world_dimensions(m_Mapboard.GetMapWidth()*m_Mapboard.GetTileDim(), m_Mapboard.GetMapHeight()*m_Mapboard.GetTileDim());

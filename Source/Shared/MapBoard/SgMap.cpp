@@ -120,7 +120,10 @@ bool SgMap::LoadMap(sg_cpstr lpMapFilename)
 	//Open the file
 	hFile=CreateFileA(lpMapFilename, GENERIC_READ, FILE_SHARE_READ, (LPSECURITY_ATTRIBUTES)NULL,
 							OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, (HANDLE)NULL);
-	if(hFile==INVALID_HANDLE_VALUE)return false;
+	if(hFile==INVALID_HANDLE_VALUE)
+	{
+		return false;
+	}
 	
 	DWORD dwBytesRead;
 	//Read Header First

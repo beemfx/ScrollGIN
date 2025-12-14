@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Res">
+      <UniqueIdentifier>{06b197e0-052e-419d-bc09-7cdf0e20f513}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TestGame">
+      <UniqueIdentifier>{b2bab6f7-fc61-4b47-8e6d-355544271a0e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Games\Joes2\Res\resource.h" />
+    <ClInclude Include="..\..\Games\TestGame\TestAI.h">
+      <Filter>TestGame</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Games\TestGame\TestAI.cpp">
+      <Filter>TestGame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Games\TestGame\TestGameMain.cpp">
+      <Filter>TestGame</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\Games\TestGame\Res\icon1.ico">
+      <Filter>Res</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\Games\TestGame\Res\resource.rc">
+      <Filter>Res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

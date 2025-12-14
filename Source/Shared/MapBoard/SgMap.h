@@ -62,13 +62,13 @@ class SgMap
 {
 protected:
 	//Private member variables
-	bool      m_bMapLoaded;
-	sg_uint8  *m_pTile;	//Visible tile data
-	sg_uint8  *m_pArch;	//Unseen architecture data
-	sg_uint8  *m_pObject;	//Object data, objects, object generators etc
-	sg_uint16 m_nMapWidth;	//Width, in tiles, of the map
-	sg_uint16 m_nMapHeight;	//Height, in tiles, of the map
-	sg_uint32 m_dwTileDim;  //width height of each tile
+	bool      m_bMapLoaded = false;
+	sg_uint8  *m_pTile = nullptr;	//Visible tile data
+	sg_uint8  *m_pArch = nullptr;	//Unseen architecture data
+	sg_uint8  *m_pObject = nullptr;	//Object data, objects, object generators etc
+	sg_uint16 m_nMapWidth = 0;	//Width, in tiles, of the map
+	sg_uint16 m_nMapHeight = 0;	//Height, in tiles, of the map
+	sg_uint32 m_dwTileDim = 0;  //width height of each tile
 	char      m_lpMapFilenameA[MAP_MAX_PATH];		//Filename of current map
 	char      m_lpLibraryFilenameA[MAP_MAX_PATH];	//Filename of the library being used
 	char      m_lpBGFilenameA[MAP_MAX_PATH];		//Filename of the background image

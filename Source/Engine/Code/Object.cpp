@@ -446,9 +446,14 @@ void SgObject::DefaultArchAdjust(SgMap *map)
 
 				m_nX-=nMoveAmount;
 
-				while(CollisionWithRect(map, m_sObjectMode[m_nCurrentMode].rcObjDim, nWidth, nHeight)){
-					m_nX-=nMoveAmount;
-				}		
+				int MaxCollisionChecks = nWidth + nHeight;
+				for (int i = 0; i < MaxCollisionChecks; i++)
+				{
+					if (CollisionWithRect(map, m_sObjectMode[m_nCurrentMode].rcObjDim, nWidth, nHeight))
+					{
+						m_nX -= nMoveAmount;
+					}
+				}
 			}
 		}else { //if the amount of movement was greater than the width
 			

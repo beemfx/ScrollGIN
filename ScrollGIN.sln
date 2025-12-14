@@ -14,6 +14,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Joes2", "Source\VS\Joes2\Jo
 		{FFC17819-A5A2-4424-B99F-BFDA08AC6EB6} = {FFC17819-A5A2-4424-B99F-BFDA08AC6EB6}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestGame", "Source\VS\TestGame\TestGame.vcxproj", "{DCB82E82-5B96-437A-9979-9661B49122D3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FFC17819-A5A2-4424-B99F-BFDA08AC6EB6} = {FFC17819-A5A2-4424-B99F-BFDA08AC6EB6}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -36,6 +41,10 @@ Global
 		{D379D5E8-09C8-4F16-A00D-C44F9FEBC89B}.Debug|x86.Build.0 = Debug|Win32
 		{D379D5E8-09C8-4F16-A00D-C44F9FEBC89B}.Release|x86.ActiveCfg = Release|Win32
 		{D379D5E8-09C8-4F16-A00D-C44F9FEBC89B}.Release|x86.Build.0 = Release|Win32
+		{DCB82E82-5B96-437A-9979-9661B49122D3}.Debug|x86.ActiveCfg = Debug|Win32
+		{DCB82E82-5B96-437A-9979-9661B49122D3}.Debug|x86.Build.0 = Debug|Win32
+		{DCB82E82-5B96-437A-9979-9661B49122D3}.Release|x86.ActiveCfg = Release|Win32
+		{DCB82E82-5B96-437A-9979-9661B49122D3}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

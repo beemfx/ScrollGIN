@@ -1,8 +1,6 @@
 #ifndef __TESTAI_H__
 #define __TESTAI_H__
 
-#if 0
-
 #include "object.h"
 #include "objman.h"
 
@@ -25,44 +23,34 @@
 #define OA_BAD     0x00000002
 
 class CCrowObject: public SgObject{
-protected:
-	virtual HRESULT ArchAdjust(SgTimer *timer, SgMap *map);
-	virtual BOOL PreInitialMovement(SgMap *map, int *nXSpeed, int *nYSpeed);
 public:
 	CCrowObject();
 	CCrowObject(SgSpriteManager * pSpriteMgr, DWORD dwTime);
 	CCrowObject(SgSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
-	virtual BOOL LoadObjectSprites(SgSpriteManager *pSpriteMgr);
-	virtual BOOL CreateObjectModes(DWORD dwTime);
-	virtual BOOL ProcessMessages(void* lpObjMan);
+	virtual void LoadObjectSprites(SgSpriteManager *pSpriteMgr) override;
+	virtual void CreateObjectModes(int dwTime) override;
+	virtual bool ProcessMessages(void* lpObjMan) override;
 };
 
 class CFighterObject: public SgObject{
-protected:
-
 public:
 	CFighterObject();
 	CFighterObject(SgSpriteManager * pSpriteMgr, DWORD dwTime);
 	CFighterObject(SgSpriteManager * pSpriteMgr, DWORD dwTime, int x, int y, int nXSpeed, int nYSpeed);
-	virtual BOOL LoadObjectSprites(SgSpriteManager *pSpriteMgr);
-	virtual BOOL CreateObjectModes(DWORD dwTime);
 
-	virtual HRESULT ProcessAI(SgInputManager* pInput, void* pObjMan, SgTimer* timer, SgMap* map);
+	virtual void LoadObjectSprites(SgSpriteManager *pSpriteMgr) override;
+	virtual void CreateObjectModes(int dwTime) override;
+
+	virtual void ProcessAI(SgInputManager* pInput, void* pObjMan, SgTimer* timer, SgMap* map);
 };
 
 class CTestObjman: public SgObjectManager{
-protected:
-
 public:
-	CTestObjman();
 	CTestObjman(DWORD dwMax);
-	CTestObjman(DWORD dwMax, SgTimer * pTimer);
-	virtual ~CTestObjman();
-	virtual int Initialize();
-	virtual HRESULT CreateObject(const OBJECTTYPE nType, int x, int y, int nXSpeed, int nYSpeed);
-	virtual HRESULT DetectCollisions();
-};
 
-#endif
+	virtual void Initialize(SgScrollGINGame* InGame) override;
+	virtual void CreateObject(const OBJECTTYPE nType, int x, int y, int nXSpeed, int nYSpeed) override;
+	virtual void OnCollision(SgObject* Obj1, SgObject* Obj2) override;
+};
 
 #endif //__TESTAI_H__
