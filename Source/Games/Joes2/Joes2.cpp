@@ -221,7 +221,7 @@ public:
 		SetObjectMode(1, dwTime);
 	}
 
-	CGoodCopterObject::CGoodCopterObject(SgSpriteManager * pSpriteMgr, int dwTime,int x, int y, int nXSpeed, int nYSpeed )
+	CGoodCopterObject(SgSpriteManager * pSpriteMgr, int dwTime,int x, int y, int nXSpeed, int nYSpeed )
 	: CJoes2Object(pSpriteMgr, dwTime, x, y, nXSpeed, nYSpeed)
 	, m_dwLastShot(0)
 	{

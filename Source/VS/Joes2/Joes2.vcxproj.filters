@@ -9,6 +9,9 @@
     <ClCompile Include="..\..\Games\Joes2\Joes2.cpp">
       <Filter>Joes2</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Games\Joes2\Joes2Main.cpp">
+      <Filter>Joes2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Games\Joes2\Joes2.h">

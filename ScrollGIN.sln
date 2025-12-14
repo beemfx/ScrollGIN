@@ -10,6 +10,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageEdit", "Source\VS\ImageEdit\ImageEdit.vcxproj", "{411FAAE8-024E-036D-B910-0D6202C8F708}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Joes2", "Source\VS\Joes2\Joes2.vcxproj", "{D379D5E8-09C8-4F16-A00D-C44F9FEBC89B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FFC17819-A5A2-4424-B99F-BFDA08AC6EB6} = {FFC17819-A5A2-4424-B99F-BFDA08AC6EB6}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

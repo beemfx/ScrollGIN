@@ -20,7 +20,6 @@
     <ClCompile Include="..\..\Engine\Code\Background.cpp" />
     <ClCompile Include="..\..\Engine\Code\GenFuncs.c" />
     <ClCompile Include="..\..\Engine\Code\input.cpp" />
-    <ClCompile Include="..\..\Engine\Code\Main.cpp" />
     <ClCompile Include="..\..\Engine\Code\Object.cpp" />
     <ClCompile Include="..\..\Engine\Code\ObjMan.cpp" />
     <ClCompile Include="..\..\Engine\Code\Renderer2\Renderer.cpp" />
@@ -98,13 +97,13 @@ fxc %OPTS% /T ps_5_0 /E "PS_Texture" /Fh "$(IntDir)/code/PS_Texture.h" "%(FullPa
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
@@ -124,10 +123,10 @@ fxc %OPTS% /T ps_5_0 /E "PS_Texture" /Fh "$(IntDir)/code/PS_Texture.h" "%(FullPa
   <PropertyGroup>
     <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug Unicode|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)_BUILD\$(PlatformShortName)_$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)_BUILD\Lib\$(PlatformShortName)_$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)_BUILD\Int\$(ProjectName)\$(PlatformShortName)_$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)_BUILD\$(PlatformShortName)_$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)_BUILD\Lib\$(PlatformShortName)_$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)_BUILD\Int\$(ProjectName)\$(PlatformShortName)_$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release Unicode|Win32'">$(BEEMOUT)\$(ProjectName)\$(Configuration)\</OutDir>
@@ -171,9 +170,7 @@ fxc %OPTS% /T ps_5_0 /E "PS_Texture" /Fh "$(IntDir)/code/PS_Texture.h" "%(FullPa
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Bscmake>
-    <PostBuildEvent>
-      <Command>xcopy /Y "$(TargetPath)" "$(SolutionDir)Dist\"</Command>
-    </PostBuildEvent>
+    <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>

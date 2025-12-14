@@ -55,9 +55,6 @@
     <ClCompile Include="..\..\Engine\Code\input.cpp">
       <Filter>Engine\Code</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Engine\Code\Main.cpp">
-      <Filter>Engine\Code</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Engine\Code\Object.cpp">
       <Filter>Engine\Code</Filter>
     </ClCompile>

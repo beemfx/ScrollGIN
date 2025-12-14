@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Games\Joes2\Joes2.cpp" />
+    <ClCompile Include="..\..\Games\Joes2\Joes2Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Games\Joes2\Joes2.h" />
@@ -79,7 +80,7 @@
       <BrowseInformation>true</BrowseInformation>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalIncludeDirectories>../../Engine/Code;../../Games/Joes2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Engine/Code;../../Games/Joes2;../../Shared</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>SgCommon.h</ForcedIncludeFiles>
     </ClCompile>
     <ResourceCompile>
@@ -87,11 +88,11 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>dinput8.lib;winmm.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ScrollGIN.lib;dinput8.lib;winmm.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>../../DXLIB;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../DXLIB;$(SolutionDir)_BUILD\Lib\$(PlatformShortName)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -119,7 +120,7 @@
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(IntDir)/code/;../../Shared;../../Engine/Code;../../Games/Joes2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Engine/Code;../../Games/Joes2;../../Shared</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>SgCommon.h</ForcedIncludeFiles>
     </ClCompile>
     <ResourceCompile>
@@ -127,12 +128,12 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>dinput8.lib;winmm.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ScrollGIN.lib;dinput8.lib;winmm.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>../../DXLIB;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../DXLIB;$(SolutionDir)_BUILD\Lib\$(PlatformShortName)_$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
