@@ -1,12 +1,19 @@
 # ScrollGIN&trade;
 
-ScrollGIN&trade; is a Scrolling engine intended for platform
-based games, as well as overhead RPG type games.  It is heavily
-based off 8 bit scrolling engines of the mid 80's.
+ScrollGIN&trade; is a Scrolling engine intended for platform based games, as
+well as overhead RPG type games. It is heavily based off 8 bit scrolling engines
+of the mid 80's.
 
 It is currently using DirectX 11 as the primary render (though a DirectX 7
 Renderer also exists, but it no longer maintained) so the game requires
 Windows 7 or higher and the graphics adapter must support Shader Model 5.
+
+There are currently two game demos built with this engine.
+
+* Joes2 - A demo of Joes Copter II: The Revenge. This demo has most of the
+features of the DOS version, but is missing the UI, story, and some death
+animations.
+* TestGame - A small demo of moving objects.
 
 ## BUILDING
 
