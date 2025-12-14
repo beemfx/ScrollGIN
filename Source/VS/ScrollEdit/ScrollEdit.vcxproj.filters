@@ -22,6 +22,9 @@
     <Filter Include="ScrollEdit\Res">
       <UniqueIdentifier>{d8e6fb15-2b6e-4e51-b9ad-31915f21edf0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ScrollEdit\Content">
+      <UniqueIdentifier>{8309494c-7096-4bd0-b474-604bebddde28}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Tools\ScrollEdit\Code\ConstLibrary.cpp">
@@ -108,5 +111,10 @@
     <ResourceCompile Include="..\..\Tools\ScrollEdit\Res\Resource.rc">
       <Filter>ScrollEdit\Res</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Tools\ScrollEdit\Content\ScrollEditHelp.chm">
+      <Filter>ScrollEdit\Content</Filter>
+    </None>
   </ItemGroup>
 </Project>

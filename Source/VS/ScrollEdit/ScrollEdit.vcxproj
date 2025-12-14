@@ -44,6 +44,9 @@
   <ItemGroup>
     <ResourceCompile Include="..\..\Tools\ScrollEdit\Res\Resource.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Tools\ScrollEdit\Content\ScrollEditHelp.chm" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <SccProjectName />
     <SccLocalPath />
@@ -118,7 +121,8 @@
       <AdditionalDependencies>htmlhelp.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y "$(TargetPath)" "$(SolutionDir)Dist\"</Command>
+      <Command>xcopy /Y "$(TargetPath)" "$(SolutionDir)Dist\"
+xcopy /Y "$(ProjectDir)..\..\Tools\ScrollEdit\Content\*" "$(SolutionDir)Dist\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

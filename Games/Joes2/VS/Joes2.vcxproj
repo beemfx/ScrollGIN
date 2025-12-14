@@ -111,7 +111,9 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Bscmake>
     <PostBuildEvent>
-      <Command>xcopy /Y "$(TargetPath)" "$(SolutionDir)Dist\"</Command>
+      <Command>xcopy /Y "$(TargetPath)" "$(SolutionDir)Dist\"
+xcopy /Y "$(ProjectDir)..\Content\*" "$(SolutionDir)Dist\"
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

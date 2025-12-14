@@ -13,12 +13,6 @@
     <Filter Include="Engine\Shaders">
       <UniqueIdentifier>{c91be5ac-ab2d-453a-96a5-11a33bd046a9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Games">
-      <UniqueIdentifier>{199dcc6e-2fdd-422e-84db-06d930a51667}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Games\Joes2">
-      <UniqueIdentifier>{93739731-837a-4a59-933c-08d468314a12}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shared">
       <UniqueIdentifier>{5af53d5f-e189-476c-97d0-c644eda4268b}</UniqueIdentifier>
     </Filter>
@@ -83,9 +77,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Engine\Code\Renderer2\RendererImageD3D11.cpp">
       <Filter>Engine\Code\Renderer2</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Games\Joes2\Joes2.cpp">
-      <Filter>Games\Joes2</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Shared\MapBoard\SgMap.cpp">
       <Filter>Shared\MapBoard</Filter>
@@ -157,9 +148,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Engine\Code\Renderer2\RendererImage.h">
       <Filter>Engine\Code\Renderer2</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Games\Joes2\Joes2.h">
-      <Filter>Games\Joes2</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Shared\MapBoard\SgMap.h">
       <Filter>Shared\MapBoard</Filter>
