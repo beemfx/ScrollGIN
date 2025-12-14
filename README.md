@@ -1,6 +1,6 @@
 # ScrollGIN&trade;
 
-ScrollGIN(tm) is a Scrolling engine intended for platform
+ScrollGIN&trade; is a Scrolling engine intended for platform
 based games, as well as overhead RPG type games.  It is heavily
 based off 8 bit scrolling engines of the mid 80's.
 
@@ -11,11 +11,19 @@ Windows 7 or higher and the graphics adapter must support Shader Model 5.
 ## BUILDING
 
 The solution is set up to work with Visual Studio 2022. You can simply build the
-game, if you want to run it set the debug working directory to 
-"$(SolutionDir)/Dist" this will run it agains the current data.
+game. You should be able to build and run TestGame or Joes2 from Visual Studio
+without any problems. If you build a Release version of any of the Tools or
+Games then they will copy the appropriate binaries and data to the "Dist"
+directory.
 
 ## Log
 <pre>
+December 14, 2025
+
+Did another overhaul of the engine to separate game logic from engine logic.
+Also got the TestGame working again. Also fixed various bugs. Not really
+resurrecting this, but it is fun to fix the old bad code.
+
 January 22, 2015
 
 While the game isn't really maintained anymore I did write a DirectX 11 renderer
