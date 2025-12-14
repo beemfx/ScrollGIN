@@ -95,7 +95,7 @@ private:
 		wc.lpfnWndProc = MainWndProc;
 		wc.hInstance = hInst;
 		wc.hbrBackground = reinterpret_cast<HBRUSH>(GetStockObject(DKGRAY_BRUSH));
-		wc.hIcon = LoadIcon(hInst, MAKEINTRESOURCE(101));
+		wc.hIcon = LoadIconW(hInst, L"APPICON");
 		wc.hIconSm = NULL;
 		wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 		wc.lpszMenuName = NULL;

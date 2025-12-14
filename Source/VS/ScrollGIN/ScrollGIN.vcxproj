@@ -11,12 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\Engine\Res\icon1.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="..\..\Engine\Res\resource.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\..\Engine\Code\Background.cpp" />
     <ClCompile Include="..\..\Engine\Code\GenFuncs.c" />
     <ClCompile Include="..\..\Engine\Code\input.cpp" />
@@ -89,6 +83,9 @@ fxc %OPTS% /T ps_5_0 /E "PS_Texture" /Fh "$(IntDir)/code/PS_Texture.h" "%(FullPa
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Shaders: "%(FullPath)"</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Shaders: "%(FullPath)"</Message>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\Engine\Res\icon1.ico" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FFC17819-A5A2-4424-B99F-BFDA08AC6EB6}</ProjectGuid>

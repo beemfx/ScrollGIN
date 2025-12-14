@@ -7,9 +7,6 @@
     <Filter Include="Engine\Code">
       <UniqueIdentifier>{95cdaa27-215e-4506-a517-d5fa0ec72f1e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Res">
-      <UniqueIdentifier>{9f59bec5-e54b-4bfb-be26-6d49d8daf4f9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Code\Renderer2">
       <UniqueIdentifier>{8c621497-b4e9-40b9-bec2-675603ba3d42}</UniqueIdentifier>
     </Filter>
@@ -34,16 +31,9 @@
     <Filter Include="Shared\ImageLib">
       <UniqueIdentifier>{c91b7125-7c57-458c-a054-92625c67945b}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\Engine\Res\icon1.ico">
-      <Filter>Engine\Res</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="..\..\Engine\Res\resource.rc">
-      <Filter>Engine\Res</Filter>
-    </ResourceCompile>
+    <Filter Include="Engine\Res">
+      <UniqueIdentifier>{3091ea69-2e5a-40e7-838a-3d7f2b3b93be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Engine\Code\Background.cpp">
@@ -200,5 +190,10 @@
     <CustomBuild Include="..\..\Engine\Shaders\Shaders.fx">
       <Filter>Engine\Shaders</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\Engine\Res\icon1.ico">
+      <Filter>Engine\Res</Filter>
+    </Image>
   </ItemGroup>
 </Project>

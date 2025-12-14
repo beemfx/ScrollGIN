@@ -16,6 +16,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Games\Joes2\Joes2.h" />
+    <ClInclude Include="..\..\Games\Joes2\Res\resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\Games\Joes2\Res\icon1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\Games\Joes2\Res\resource.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D379D5E8-09C8-4F16-A00D-C44F9FEBC89B}</ProjectGuid>

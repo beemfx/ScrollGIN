@@ -4,6 +4,9 @@
     <Filter Include="Joes2">
       <UniqueIdentifier>{b2bab6f7-fc61-4b47-8e6d-355544271a0e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Res">
+      <UniqueIdentifier>{06b197e0-052e-419d-bc09-7cdf0e20f513}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Games\Joes2\Joes2.cpp">
@@ -17,5 +20,16 @@
     <ClInclude Include="..\..\Games\Joes2\Joes2.h">
       <Filter>Joes2</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Games\Joes2\Res\resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\Games\Joes2\Res\icon1.ico">
+      <Filter>Res</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\Games\Joes2\Res\resource.rc">
+      <Filter>Res</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
