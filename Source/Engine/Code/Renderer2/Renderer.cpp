@@ -5,7 +5,7 @@
 #include <ddraw.h>
 #include <windowsx.h>
 
-#pragma comment(lib, "../DXLIB/ddraw.lib")
+#pragma comment(lib, "ddraw.lib")
 
 static class SgRenderer
 {
@@ -84,7 +84,7 @@ public:
 		m_InitParms.Width = VIEW_WIDTH;
 		m_InitParms.Height = VIEW_HEIGHT;
 		m_InitParms.Windowed = true;
-		m_hwnd = static_cast<HWND>(m_InitParms.Wnd);
+		m_hwnd = reinterpret_cast<HWND>(m_InitParms.Wnd);
 
 		AdjustWindowSize();
 
