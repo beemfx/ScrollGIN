@@ -12,7 +12,7 @@ void CTestObjman::Initialize(SgScrollGINGame* InGame)
 {
 	SgObjectManager::Initialize(InGame);
 
-	LoadSprites(TEXT("NedSprites.ilb"));
+	LoadSprites(TEXT("TestSprites.ilb"));
 
 	InGame->LoadMap("test.map");
 
@@ -85,13 +85,13 @@ void CFighterObject::ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *t
 			break;		
 		case DP_UP: 
 			SetObjectMode(FM_LOOKUP, timer->Time());
-			SetSpeed(0, 0);//MOVEYSPEED);
+			SetSpeed(0, MOVEYSPEED);
 			break;
 		case DP_DOWN:
 			if((pInput->GetButtonState(1)) && (m_nCurrentMode!=7))
 				SetObjectMode(FM_LOOKDOWN, timer->Time());
 			else SetObjectMode(FM_DUCK, timer->Time());
-			SetSpeed(0, 0);//-MOVEYSPEED);
+			SetSpeed(0, -MOVEYSPEED);
 			break;
 		case DP_UPRIGHT:
 			SetObjectMode(FM_RUNLOOKUP, timer->Time());
@@ -124,60 +124,82 @@ void CFighterObject::ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *t
 void CFighterObject::LoadObjectSprites(SgSpriteManager *pSprite){
 	//crow objects has one sprite
 	if(pSprite==NULL)return;
-	ObtainPointerToSprite(pSprite->GetSprite(TEXT("legsrunning")), 0, 18, 150, LP_FORWARD);
-	ObtainPointerToSprite(pSprite->GetSprite(TEXT("upperbody")), 0, 53, 100, LP_FORWARD);
-	ObtainPointerToSprite(pSprite->GetSprite(TEXT("legsstanding")), 0, 18, 100, LP_FORWARD);
-	ObtainPointerToSprite(pSprite->GetSprite(TEXT("ubangleup")), 0, 56, 100, LP_FORWARD);
-	ObtainPointerToSprite(pSprite->GetSprite(TEXT("ubangledown")), 0, 45, 100, LP_FORWARD);
-	ObtainPointerToSprite(pSprite->GetSprite(TEXT("ubup")), 0, 61, 100, LP_FORWARD);
-	ObtainPointerToSprite(pSprite->GetSprite(TEXT("ubdown")), 0, 37, 100, LP_FORWARD);
-	ObtainPointerToSprite(pSprite->GetSprite(TEXT("ducking")), 0, 15, 100, LP_FORWARD);
+	ObtainPointerToSprite(pSprite->GetSprite("TestA"), 0, 13, 150,  LP_FORWARD);
 }
 
 void CFighterObject::CreateObjectModes(int dwTime){
+	const bool bUseTestSprites = true;
 	
-	RECT rcDims;
-	rcDims.top=70;
-	rcDims.bottom=0;
-	rcDims.left=-20;
-	rcDims.right=20;
-	bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
-	bActiveSprites[0]=false;
-	bActiveSprites[1]=true;
-	bActiveSprites[2]=true;
-	//This first mode represents a standing character, standing legs and upper body
-	CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("standing"));
+	if (bUseTestSprites)
+	{
+		RECT rcDims;
+		rcDims.top = 30;
+		rcDims.bottom = 0;
+		rcDims.left = -20;
+		rcDims.right = 20;
+
+		bool bActiveSprites[MAX_SPRITES_PER_OBJECT] = { false };
+		bActiveSprites[0] = true;
+		//This first mode represents a standing character, standing legs and upper body
+		CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("standing"));
+		CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("running"));
+		CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("runlookup"));
+		CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("runlookdown"));
+		CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("lookup"));
+		CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("lookdown"));
+		rcDims.top = 25;
+		rcDims.bottom = 0;
+		rcDims.left = -45;
+		rcDims.right = 45;
+		CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("ducking"));
+		SetObjectMode(1, dwTime);
+	}
+	else
+	{
+		// Original Freedom Fighter sprites
+		RECT rcDims;
+		rcDims.top=70;
+		rcDims.bottom=0;
+		rcDims.left=-20;
+		rcDims.right=20;
+		bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
+		bActiveSprites[0]=false;
+		bActiveSprites[1]=true;
+		bActiveSprites[2]=true;
+		//This first mode represents a standing character, standing legs and upper body
+		CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("standing"));
 	
 	
-	bActiveSprites[0]=true;
-	bActiveSprites[2]=false;
-	//this second mode represents a runnng character, animated legs and upper body
-	CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("running"));
-	bActiveSprites[0]=true;
-	bActiveSprites[1]=false;
-	bActiveSprites[2]=false;
-	bActiveSprites[3]=true;
-	CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("runlookup"));
-	bActiveSprites[3]=false;
-	bActiveSprites[4]=true;
-	CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("runlookdown"));
-	bActiveSprites[0]=false;
-	bActiveSprites[2]=true;
-	bActiveSprites[4]=false;
-	bActiveSprites[5]=true;
-	CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("lookup"));
-	bActiveSprites[5]=false;
-	bActiveSprites[6]=true;
-	CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("lookdown"));
-	bActiveSprites[2]=false;
-	bActiveSprites[6]=false;
-	bActiveSprites[7]=true;
-	rcDims.top=25;
-	rcDims.bottom=0;
-	rcDims.left=-45;
-	rcDims.right=45;
-	CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("ducking"));
-	SetObjectMode(1, dwTime);
+		bActiveSprites[0]=true;
+		bActiveSprites[2]=false;
+		//this second mode represents a runnng character, animated legs and upper body
+		CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("running"));
+		bActiveSprites[0]=true;
+		bActiveSprites[1]=false;
+		bActiveSprites[2]=false;
+		bActiveSprites[3]=true;
+		CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("runlookup"));
+		bActiveSprites[3]=false;
+		bActiveSprites[4]=true;
+		CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("runlookdown"));
+		bActiveSprites[0]=false;
+		bActiveSprites[2]=true;
+		bActiveSprites[4]=false;
+		bActiveSprites[5]=true;
+		CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("lookup"));
+		bActiveSprites[5]=false;
+		bActiveSprites[6]=true;
+		CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("lookdown"));
+		bActiveSprites[2]=false;
+		bActiveSprites[6]=false;
+		bActiveSprites[7]=true;
+		rcDims.top=25;
+		rcDims.bottom=0;
+		rcDims.left=-45;
+		rcDims.right=45;
+		CreateMode(bActiveSprites, rcDims, OA_GOOD, TEXT("ducking"));
+		SetObjectMode(1, dwTime);
+	}
 }
 
 CFighterObject::CFighterObject():
@@ -227,9 +249,10 @@ bool CCrowObject::ProcessMessages(void* lpObjMan)
 
 void CCrowObject::LoadObjectSprites(SgSpriteManager *pSprite){
 	if(pSprite==NULL)return;
+
 	//crow objects has one sprite
 	ObtainPointerToSprite(
-		pSprite->GetSprite(TEXT("CROW")), 
+		pSprite->GetSprite(TEXT("TestB")), 
 		0, 
 		0, 
 		150, 
@@ -237,17 +260,36 @@ void CCrowObject::LoadObjectSprites(SgSpriteManager *pSprite){
 }
 
 void CCrowObject::CreateObjectModes(int dwTime){
-	RECT rcDims;
-	bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
-	//crow object has one mode see the following
-	rcDims.top=15;
-	rcDims.bottom=-15;
-	rcDims.left=-29;
-	rcDims.right=29;
-	bActiveSprites[0]=true;
-	CreateMode(bActiveSprites, rcDims, OA_BAD, TEXT("FLYING"));
-	SetObjectMode(1, dwTime);
-	SetObjectFace(SF_LEFT);
+	const bool bUseTestSprites = true;
+
+	if (bUseTestSprites)
+	{
+		RECT rcDims;
+		bool bActiveSprites[MAX_SPRITES_PER_OBJECT] = { false };
+		//crow object has one mode see the following
+		rcDims.top = 13;
+		rcDims.bottom = 0;
+		rcDims.left = -10;
+		rcDims.right = 10;
+		bActiveSprites[0] = true;
+		CreateMode(bActiveSprites, rcDims, OA_BAD, TEXT("FLYING"));
+		SetObjectMode(1, dwTime);
+		SetObjectFace(SF_RIGHT);
+	}
+	else
+	{
+		RECT rcDims;
+		bool bActiveSprites[MAX_SPRITES_PER_OBJECT];
+		//crow object has one mode see the following
+		rcDims.top=15;
+		rcDims.bottom=-15;
+		rcDims.left=-29;
+		rcDims.right=29;
+		bActiveSprites[0]=true;
+		CreateMode(bActiveSprites, rcDims, OA_BAD, TEXT("FLYING"));
+		SetObjectMode(1, dwTime);
+		SetObjectFace(SF_LEFT);
+	}
 }
 
 
@@ -275,5 +317,4 @@ CCrowObject::CCrowObject(
 {
 	LoadObjectSprites(pSpriteMgr);
 	CreateObjectModes(dwTime);
-
 }
