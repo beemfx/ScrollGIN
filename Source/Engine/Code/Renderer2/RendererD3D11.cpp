@@ -289,7 +289,8 @@ public:
 
 
 		D3D11_SAMPLER_DESC SampDesc;
-		SampDesc.Filter   = false ? D3D11_FILTER_MIN_MAG_MIP_POINT : D3D11_FILTER_ANISOTROPIC;
+		const bool bUsePointFiltering = true; // We should be using point filtering because of the way ImageLib works.
+		SampDesc.Filter   = bUsePointFiltering ? D3D11_FILTER_MIN_MAG_MIP_POINT : D3D11_FILTER_ANISOTROPIC;
 		SampDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SampDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 		SampDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;

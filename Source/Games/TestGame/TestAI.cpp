@@ -124,7 +124,7 @@ void CFighterObject::ProcessAI(SgInputManager *pInput, void* pObjMan, SgTimer *t
 void CFighterObject::LoadObjectSprites(SgSpriteManager *pSprite){
 	//crow objects has one sprite
 	if(pSprite==NULL)return;
-	ObtainPointerToSprite(pSprite->GetSprite("TestA"), 0, 13, 150,  LP_FORWARD);
+	ObtainPointerToSprite(pSprite->GetSprite("TestA"), 0, 15, 150,  LP_FORWARD);
 }
 
 void CFighterObject::CreateObjectModes(int dwTime){
@@ -254,7 +254,7 @@ void CCrowObject::LoadObjectSprites(SgSpriteManager *pSprite){
 	ObtainPointerToSprite(
 		pSprite->GetSprite(TEXT("TestB")), 
 		0, 
-		0, 
+		7, 
 		150, 
 		LP_FORWARDBACKWARD);
 }
