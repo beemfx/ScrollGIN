@@ -11,88 +11,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\Engine\Res\icon1.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="..\..\Engine\Res\resource.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\Engine\Code\Background.cpp" />
-    <ClCompile Include="..\..\Engine\Code\GenFuncs.c" />
-    <ClCompile Include="..\..\Engine\Code\input.cpp" />
-    <ClCompile Include="..\..\Engine\Code\Main.cpp" />
-    <ClCompile Include="..\..\Engine\Code\Object.cpp" />
-    <ClCompile Include="..\..\Engine\Code\ObjMan.cpp" />
-    <ClCompile Include="..\..\Engine\Code\Renderer2\Renderer.cpp" />
-    <ClCompile Include="..\..\Engine\Code\Renderer2\RendererD3D11.cpp" />
-    <ClCompile Include="..\..\Engine\Code\Renderer2\RendererImage.cpp" />
-    <ClCompile Include="..\..\Engine\Code\Renderer2\RendererImageD3D11.cpp" />
-    <ClCompile Include="..\..\Engine\Code\ScrollGIN.cpp" />
-    <ClCompile Include="..\..\Engine\Code\SgEngine.cpp" />
-    <ClCompile Include="..\..\Engine\Code\Sprite.cpp" />
-    <ClCompile Include="..\..\Engine\Code\SpriteManager.cpp" />
-    <ClCompile Include="..\..\Engine\Code\TileLibrary.cpp" />
-    <ClCompile Include="..\..\Engine\Code\TileManager.cpp" />
-    <ClCompile Include="..\..\Engine\Code\Timer.cpp" />
-    <ClCompile Include="..\..\Engine\Code\view.cpp" />
     <ClCompile Include="..\..\Games\Joes2\Joes2.cpp" />
-    <ClCompile Include="..\..\Shared\ImageLib\Bitmap.c" />
-    <ClCompile Include="..\..\Shared\ImageLib\ImgLib.cpp" />
-    <ClCompile Include="..\..\Shared\img_lib\img_bmp.c" />
-    <ClCompile Include="..\..\Shared\img_lib\img_cb.c" />
-    <ClCompile Include="..\..\Shared\img_lib\img_lib.c" />
-    <ClCompile Include="..\..\Shared\img_lib\img_tga.c" />
-    <ClCompile Include="..\..\Shared\MapBoard\SgMap.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Engine\Code\Background.h" />
-    <ClInclude Include="..\..\Engine\Code\GameConfig.h" />
-    <ClInclude Include="..\..\Engine\Code\GenFuncs.h" />
-    <ClInclude Include="..\..\Engine\Code\input.h" />
-    <ClInclude Include="..\..\Engine\Code\Object.h" />
-    <ClInclude Include="..\..\Engine\Code\ObjMan.h" />
-    <ClInclude Include="..\..\Engine\Code\Renderer2\Renderer.h" />
-    <ClInclude Include="..\..\Engine\Code\Renderer2\RendererD3D11_Private.h" />
-    <ClInclude Include="..\..\Engine\Code\Renderer2\RendererImage.h" />
-    <ClInclude Include="..\..\Engine\Code\ScrollGIN.h" />
-    <ClInclude Include="..\..\Engine\Code\SgEngine.h" />
-    <ClInclude Include="..\..\Engine\Code\Sprite.h" />
-    <ClInclude Include="..\..\Engine\Code\SpriteManager.h" />
-    <ClInclude Include="..\..\Engine\Code\TileManager.h" />
-    <ClInclude Include="..\..\Engine\Code\Timer.h" />
-    <ClInclude Include="..\..\Engine\Code\view.h" />
     <ClInclude Include="..\..\Games\Joes2\Joes2.h" />
-    <ClInclude Include="..\..\Shared\ImageLib\bitmapex.h" />
-    <ClInclude Include="..\..\Shared\ImageLib\ImgLib.h" />
-    <ClInclude Include="..\..\Shared\img_lib\img_lib.h" />
-    <ClInclude Include="..\..\Shared\img_lib\img_lib_types.h" />
-    <ClInclude Include="..\..\Shared\img_lib\img_private.h" />
-    <ClInclude Include="..\..\Shared\MapBoard\SgMap.h" />
-    <ClInclude Include="..\..\Shared\SgCommon.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="..\..\Engine\Shaders\Shaders.fx">
-      <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">set OPTS=/nologo 
-fxc %OPTS% /T vs_5_0 /E "VS_Color" /Fh "$(IntDir)/code/VS_Color.h" "%(FullPath)"
-fxc %OPTS% /T vs_5_0 /E "VS_Texture" /Fh "$(IntDir)/code/VS_Texture.h" "%(FullPath)"
-fxc %OPTS% /T ps_5_0 /E "PS_Color" /Fh "$(IntDir)/code/PS_Color.h" "%(FullPath)"
-fxc %OPTS% /T ps_5_0 /E "PS_Texture" /Fh "$(IntDir)/code/PS_Texture.h" "%(FullPath)"
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">set OPTS=/nologo 
-fxc %OPTS% /T vs_5_0 /E "VS_Color" /Fh "$(IntDir)/code/VS_Color.h" "%(FullPath)"
-fxc %OPTS% /T vs_5_0 /E "VS_Texture" /Fh "$(IntDir)/code/VS_Texture.h" "%(FullPath)"
-fxc %OPTS% /T ps_5_0 /E "PS_Color" /Fh "$(IntDir)/code/PS_Color.h" "%(FullPath)"
-fxc %OPTS% /T ps_5_0 /E "PS_Texture" /Fh "$(IntDir)/code/PS_Texture.h" "%(FullPath)"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)/code/VS_Color.h;$(IntDir)/code/PS_Color.h;$(IntDir)/code/VS_Texture.h;$(IntDir)/code/PS_Texture.h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)/code/VS_Color.h;$(IntDir)/code/PS_Color.h;$(IntDir)/code/VS_Texture.h;$(IntDir)/code/PS_Texture.h</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Shaders: "%(FullPath)"</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Shaders: "%(FullPath)"</Message>
-    </CustomBuild>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{FFC17819-A5A2-4424-B99F-BFDA08AC6EB6}</ProjectGuid>
+    <ProjectGuid>{D379D5E8-09C8-4F16-A00D-C44F9FEBC89B}</ProjectGuid>
     <RootNamespace>ScrollGIN</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -154,7 +79,7 @@ fxc %OPTS% /T ps_5_0 /E "PS_Texture" /Fh "$(IntDir)/code/PS_Texture.h" "%(FullPa
       <BrowseInformation>true</BrowseInformation>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalIncludeDirectories>$(IntDir)/code/;../../Shared;../../Engine/Code;../../Games/Joes2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Engine/Code;../../Games/Joes2</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>SgCommon.h</ForcedIncludeFiles>
     </ClCompile>
     <ResourceCompile>

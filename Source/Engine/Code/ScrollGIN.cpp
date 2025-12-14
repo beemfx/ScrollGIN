@@ -38,7 +38,7 @@ void SgScrollGINGame::Render()
 	m_lpObjectManager->Draw(&m_Viewport);
 }
 
-void SgScrollGINGame::Init( int dwWidth , int dwHeight , SgObjectManager* lpObjMan , HWND hwnd )
+void SgScrollGINGame::Init( int dwWidth , int dwHeight , SgObjectManager* lpObjMan , std::uintptr_t hwnd )
 {
 	if(m_bInitialized)
 		return;
@@ -51,7 +51,7 @@ void SgScrollGINGame::Init( int dwWidth , int dwHeight , SgObjectManager* lpObjM
 
 	m_Viewport.SetViewportDimensions(dwWidth, dwHeight);
 	m_Viewport.set_scroll_speed(0, 0);
-	m_Input.CreateDevices(hwnd, CD_KEYBOARD|CD_JOYSTICK);
+	m_Input.CreateDevices(reinterpret_cast<HWND>(hwnd), CD_KEYBOARD|CD_JOYSTICK);
 	
 	m_Timer.Start();
 

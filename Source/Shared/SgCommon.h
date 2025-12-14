@@ -1,5 +1,9 @@
 #pragma once
 
+#if defined( __cplusplus )
+#include <cstdint>
+#endif
+
 #define __DXVERSION__ 11
 
 #define countof( x ) ( sizeof(x)/sizeof(x[0]))

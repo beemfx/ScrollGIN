@@ -41,19 +41,19 @@ typedef struct tagINPUTCREATEDATA{
 
 class SgInputManager{
 private:
-	LPDIRECTINPUT8 m_lpDIObject; //direct input interface
-	LPDIRECTINPUTDEVICE8 m_lpKeyboard; //keyboard device
-	char m_cKeyboardBuffer[256]; //buffer for keyboard data
-	BOOL m_bKeyboard; //whether or not the keyboard was created
+	LPDIRECTINPUT8 m_lpDIObject = nullptr; //direct input interface
+	LPDIRECTINPUTDEVICE8 m_lpKeyboard = nullptr; //keyboard device
+	char m_cKeyboardBuffer[256] = { }; //buffer for keyboard data
+	BOOL m_bKeyboard = FALSE; //whether or not the keyboard was created
 
-	LPDIRECTINPUTDEVICE8 m_lpJoystick; //joystick device
-	DIDEVCAPS m_diJoystickCaps; //capabilities of joystick
-	DIJOYSTATE2 m_jsState; //state of joystick
-	BOOL m_bJoystick; //whether or not the joystick was created
+	LPDIRECTINPUTDEVICE8 m_lpJoystick = nullptr; //joystick device
+	DIDEVCAPS m_diJoystickCaps = { }; //capabilities of joystick
+	DIJOYSTATE2 m_jsState = { }; //state of joystick
+	BOOL m_bJoystick = FALSE; //whether or not the joystick was created
 
-	LPDIRECTINPUTDEVICE8 m_lpMouse; //mouse device
-	DIMOUSESTATE2	m_diMouseState; //state of mouse
-	BOOL m_bMouse;  //whether or not the mosue was created
+	LPDIRECTINPUTDEVICE8 m_lpMouse = nullptr; //mouse device
+	DIMOUSESTATE2	m_diMouseState = { }; //state of mouse
+	BOOL m_bMouse = FALSE;  //whether or not the mosue was created
 
 	HRESULT ProcessKeyboardInput(); //processes keyboard input
 	HRESULT ProcessJoystickInput(); //processes joystick input

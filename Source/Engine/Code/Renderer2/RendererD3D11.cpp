@@ -189,7 +189,7 @@ public:
 		m_InitParms = *InitParms;
 		DXGI_MODE_DESC Mode;
 		AdjustRes( &Mode );
-		m_hwnd = static_cast<HWND>(m_InitParms.Wnd);
+		m_hwnd = reinterpret_cast<HWND>(m_InitParms.Wnd);
 		HRESULT Res;
 		static const D3D_FEATURE_LEVEL FeatureLevels[] = { D3D_FEATURE_LEVEL_11_0 , D3D_FEATURE_LEVEL_11_1 };
 		DXGI_SWAP_CHAIN_DESC Sd;

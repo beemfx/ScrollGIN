@@ -9,10 +9,10 @@
 
 struct sgRendererInitParms
 {
-	int   Width;
-	int   Height;
-	bool  Windowed;
-	void* Wnd;
+	int   Width = 0;
+	int   Height = 0;
+	bool  Windowed = false;
+	std::uintptr_t Wnd = 0;
 };
 
 void Renderer_Init( const sgRendererInitParms* InitParms );

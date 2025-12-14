@@ -3,7 +3,6 @@
 
 #ifndef __SCROLLGIN_H__
 #define __SCROLLGIN_H__
-#include <windows.h>
 
 #include "ObjMan.h"
 #include "TileManager.h"
@@ -30,7 +29,7 @@ public:
 	SgScrollGINGame();
 	~SgScrollGINGame();
 
-	void Init(int dwWidth, int dwHeight, SgObjectManager* lpObjMan , HWND hwnd );
+	void Init(int dwWidth, int dwHeight, SgObjectManager* lpObjMan, std::uintptr_t hwnd);
 	void Deinit();
 
 	void Pause(bool bPause);

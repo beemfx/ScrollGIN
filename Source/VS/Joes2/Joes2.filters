@@ -121,9 +121,6 @@
     <ClCompile Include="..\..\Shared\ImageLib\ImgLib.cpp">
       <Filter>Shared\ImageLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Engine\Code\SgEngine.cpp">
-      <Filter>Engine\Code</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Engine\Code\Background.h">
@@ -194,9 +191,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Shared\SgCommon.h">
       <Filter>Shared</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Engine\Code\SgEngine.h">
-      <Filter>Engine\Code</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
