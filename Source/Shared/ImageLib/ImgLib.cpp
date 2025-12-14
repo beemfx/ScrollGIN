@@ -420,7 +420,7 @@ bool SgImgLibEdit::SaveData(LPSTR szFilename)
 
 	//we now write the bitmap filenamedata
 	sg_uint16 nBMNameLen=0;
-	sg_char16 szTemp[MAX_PATH];
+	sg_char16 szTemp[MAX_PATH] = { };
 	for(int i=0; i<m_nNumBitmaps; i++){
 		nBMNameLen=static_cast<sg_uint16>(strlen(m_szBitmapFilenameA[i])+1)*sizeof(sg_char16);
 		//convert bimtap name to wide char
