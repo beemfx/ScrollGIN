@@ -10,6 +10,35 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Tools\ImageEdit\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Shared\ImageLib\bitmapex.h" />
+    <ClInclude Include="..\..\Shared\ImageLib\ImgLib.h" />
+    <ClInclude Include="..\..\Shared\img_lib\img_lib.h" />
+    <ClInclude Include="..\..\Shared\img_lib\img_lib_types.h" />
+    <ClInclude Include="..\..\Shared\img_lib\img_private.h" />
+    <ClInclude Include="..\..\Shared\SgCommon.h" />
+    <ClInclude Include="..\..\Tools\ImageEdit\Code\DiskDlg.h" />
+    <ClInclude Include="..\..\Tools\ImageEdit\Res\resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Shared\ImageLib\Bitmap.c" />
+    <ClCompile Include="..\..\Shared\ImageLib\ImgLib.cpp" />
+    <ClCompile Include="..\..\Shared\img_lib\img_bmp.c" />
+    <ClCompile Include="..\..\Shared\img_lib\img_cb.c" />
+    <ClCompile Include="..\..\Shared\img_lib\img_lib.c" />
+    <ClCompile Include="..\..\Shared\img_lib\img_tga.c" />
+    <ClCompile Include="..\..\Tools\ImageEdit\Code\DiskDlg.c" />
+    <ClCompile Include="..\..\Tools\ImageEdit\Code\Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\Tools\ImageEdit\Res\icon1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\Tools\ImageEdit\Res\Resource.rc" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <SccProjectName />
     <SccLocalPath />
@@ -60,8 +89,8 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
-      <ForcedIncludeFiles>ScrollGIN/SgCommon.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>../;../DXLIB;./;</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>SgCommon.h</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>../../Shared;../../Tools/ImageEdit/Res;../../Tools/ImageEdit/Code</AdditionalIncludeDirectories>
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -97,8 +126,8 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
-      <ForcedIncludeFiles>ScrollGIN/SgCommon.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>../;../DXLIB;./;</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>SgCommon.h</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>../../Shared;../../Tools/ImageEdit/Res;../../Tools/ImageEdit/Code</AdditionalIncludeDirectories>
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -121,30 +150,6 @@
       <AdditionalDependencies>winmm.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="..\ImageLib\Bitmap.c" />
-    <ClCompile Include="..\ImageLib\ImgLib.cpp" />
-    <ClCompile Include="..\img_lib\img_bmp.c" />
-    <ClCompile Include="..\img_lib\img_cb.c" />
-    <ClCompile Include="..\img_lib\img_lib.c" />
-    <ClCompile Include="..\img_lib\img_tga.c" />
-    <ClCompile Include="DiskDlg.c" />
-    <ClCompile Include="Main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Resource.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\ImageLib\bitmapex.h" />
-    <ClInclude Include="..\ImageLib\ImgLib.h" />
-    <ClInclude Include="..\img_lib\img_lib.h" />
-    <ClInclude Include="..\img_lib\img_lib_types.h" />
-    <ClInclude Include="..\img_lib\img_private.h" />
-    <ClInclude Include="DiskDlg.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="icon1.ico" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

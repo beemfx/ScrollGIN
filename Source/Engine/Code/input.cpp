@@ -10,7 +10,7 @@
 
 #include "input.h"
 
-#pragma comment(lib, "../DXLIB/dxguid.lib")
+#pragma comment(lib, "dxguid.lib")
 
 BOOL CALLBACK EnumAxis(LPCDIDEVICEOBJECTINSTANCE lpddoi, void* pvRef){
 

@@ -7,7 +7,7 @@
 #define __TILEMANAGER_H__
 
 #include "GameConfig.h"
-#include "../Renderer2/Renderer.h"
+#include "Renderer2/Renderer.h"
 #include "Mapboard/SgMap.h"
 
 class SgTileManager

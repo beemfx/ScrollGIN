@@ -5,8 +5,8 @@
 */
 
 #include "background.h"
-#include "../Renderer2/RendererImage.h"
-#include "../ImageLib/bitmapex.h"
+#include "Renderer2/RendererImage.h"
+#include "ImageLib/bitmapex.h"
 
 SgBackground::SgBackground()
 {

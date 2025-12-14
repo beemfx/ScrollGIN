@@ -1,4 +1,4 @@
-#include "../ImageLib/bitmapex.h"
+#include "ImageLib/bitmapex.h"
 #include "ConstLibrary.h"
 
 //If transparency is defined, architecture will be blitted with

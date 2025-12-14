@@ -1,191 +1,201 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{a7dbdb79-13a8-4ed3-972d-3f3aaa4e9d5e}</UniqueIdentifier>
-      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{6f678a30-b3bd-4bd8-a4e0-2495a726a25a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source">
-      <UniqueIdentifier>{beaaedc1-2a25-4215-88ac-458319de9106}</UniqueIdentifier>
-      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    <Filter Include="Engine\Code">
+      <UniqueIdentifier>{95cdaa27-215e-4506-a517-d5fa0ec72f1e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ImageLib">
-      <UniqueIdentifier>{e71f8187-07f0-46c6-9db9-c97407177e43}</UniqueIdentifier>
+    <Filter Include="Engine\Res">
+      <UniqueIdentifier>{9f59bec5-e54b-4bfb-be26-6d49d8daf4f9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MapBoard">
-      <UniqueIdentifier>{af6584b2-04ad-401d-a5d5-1f03e67f5d6e}</UniqueIdentifier>
+    <Filter Include="Engine\Code\Renderer2">
+      <UniqueIdentifier>{8c621497-b4e9-40b9-bec2-675603ba3d42}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Renderer2">
-      <UniqueIdentifier>{aa410ad1-2e0e-4282-926c-7ac31a52e7ab}</UniqueIdentifier>
+    <Filter Include="Engine\Shaders">
+      <UniqueIdentifier>{c91be5ac-ab2d-453a-96a5-11a33bd046a9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="img_lib">
-      <UniqueIdentifier>{bccf1deb-4047-48dc-9b30-0cc543d1e838}</UniqueIdentifier>
+    <Filter Include="Games">
+      <UniqueIdentifier>{199dcc6e-2fdd-422e-84db-06d930a51667}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\Joes2">
+      <UniqueIdentifier>{93739731-837a-4a59-933c-08d468314a12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shared">
+      <UniqueIdentifier>{5af53d5f-e189-476c-97d0-c644eda4268b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shared\MapBoard">
+      <UniqueIdentifier>{82e17641-52b3-45b7-886a-79c4b8a19f53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shared\img_lib">
+      <UniqueIdentifier>{32af42a4-a8dd-4e0f-8635-4e6975d57fbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shared\ImageLib">
+      <UniqueIdentifier>{c91b7125-7c57-458c-a054-92625c67945b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Background.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="GenFuncs.c">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="input.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Joes2.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjMan.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="ScrollGIN.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteManager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="TestAI.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="TileManager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="view.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ImageLib\Bitmap.c">
-      <Filter>ImageLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Renderer2\Renderer.cpp">
-      <Filter>Renderer2</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Renderer2\RendererImage.cpp">
-      <Filter>Renderer2</Filter>
-    </ClCompile>
-    <ClCompile Include="..\img_lib\img_bmp.c">
-      <Filter>img_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\img_lib\img_cb.c">
-      <Filter>img_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\img_lib\img_lib.c">
-      <Filter>img_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\img_lib\img_tga.c">
-      <Filter>img_lib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\MapBoard\SgMap.cpp">
-      <Filter>MapBoard</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ImageLib\ImgLib.cpp">
-      <Filter>ImageLib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Renderer2\RendererD3D11.cpp">
-      <Filter>Renderer2</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Renderer2\RendererImageD3D11.cpp">
-      <Filter>Renderer2</Filter>
-    </ClCompile>
+    <Image Include="..\..\Engine\Res\icon1.ico">
+      <Filter>Engine\Res</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="resource.rc">
-      <Filter>Source</Filter>
+    <ResourceCompile Include="..\..\Engine\Res\resource.rc">
+      <Filter>Engine\Res</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Background.h">
-      <Filter>Source</Filter>
+    <ClCompile Include="..\..\Engine\Code\Background.cpp">
+      <Filter>Engine\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Code\GenFuncs.c">
+      <Filter>Engine\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Code\input.cpp">
+      <Filter>Engine\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Code\Main.cpp">
+      <Filter>Engine\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Code\Object.cpp">
+      <Filter>Engine\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Code\ObjMan.cpp">
+      <Filter>Engine\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Code\ScrollGIN.cpp">
+      <Filter>Engine\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Code\Sprite.cpp">
+      <Filter>Engine\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Code\SpriteManager.cpp">
+      <Filter>Engine\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Code\TileLibrary.cpp">
+      <Filter>Engine\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Code\TileManager.cpp">
+      <Filter>Engine\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Code\Timer.cpp">
+      <Filter>Engine\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Code\view.cpp">
+      <Filter>Engine\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Code\Renderer2\Renderer.cpp">
+      <Filter>Engine\Code\Renderer2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Code\Renderer2\RendererD3D11.cpp">
+      <Filter>Engine\Code\Renderer2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Code\Renderer2\RendererImage.cpp">
+      <Filter>Engine\Code\Renderer2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Code\Renderer2\RendererImageD3D11.cpp">
+      <Filter>Engine\Code\Renderer2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Games\Joes2\Joes2.cpp">
+      <Filter>Games\Joes2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\MapBoard\SgMap.cpp">
+      <Filter>Shared\MapBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\img_lib\img_bmp.c">
+      <Filter>Shared\img_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\img_lib\img_cb.c">
+      <Filter>Shared\img_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\img_lib\img_lib.c">
+      <Filter>Shared\img_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\img_lib\img_tga.c">
+      <Filter>Shared\img_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\ImageLib\Bitmap.c">
+      <Filter>Shared\ImageLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\ImageLib\ImgLib.cpp">
+      <Filter>Shared\ImageLib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Engine\Code\Background.h">
+      <Filter>Engine\Code</Filter>
     </ClInclude>
-    <ClInclude Include="view.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\..\Engine\Code\GameConfig.h">
+      <Filter>Engine\Code</Filter>
     </ClInclude>
-    <ClInclude Include="GenFuncs.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\..\Engine\Code\GenFuncs.h">
+      <Filter>Engine\Code</Filter>
     </ClInclude>
-    <ClInclude Include="input.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\..\Engine\Code\input.h">
+      <Filter>Engine\Code</Filter>
     </ClInclude>
-    <ClInclude Include="Joes2.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\..\Engine\Code\Object.h">
+      <Filter>Engine\Code</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\..\Engine\Code\ObjMan.h">
+      <Filter>Engine\Code</Filter>
     </ClInclude>
-    <ClInclude Include="ObjMan.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\..\Engine\Code\ScrollGIN.h">
+      <Filter>Engine\Code</Filter>
     </ClInclude>
-    <ClInclude Include="ScrollGIN.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\..\Engine\Code\Sprite.h">
+      <Filter>Engine\Code</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\..\Engine\Code\SpriteManager.h">
+      <Filter>Engine\Code</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteManager.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\..\Engine\Code\TileManager.h">
+      <Filter>Engine\Code</Filter>
     </ClInclude>
-    <ClInclude Include="TestAI.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\..\Engine\Code\Timer.h">
+      <Filter>Engine\Code</Filter>
     </ClInclude>
-    <ClInclude Include="TileManager.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\..\Engine\Code\view.h">
+      <Filter>Engine\Code</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\..\Engine\Code\Renderer2\Renderer.h">
+      <Filter>Engine\Code\Renderer2</Filter>
     </ClInclude>
-    <ClInclude Include="..\ImageLib\bitmapex.h">
-      <Filter>ImageLib</Filter>
+    <ClInclude Include="..\..\Engine\Code\Renderer2\RendererD3D11_Private.h">
+      <Filter>Engine\Code\Renderer2</Filter>
     </ClInclude>
-    <ClInclude Include="..\Renderer2\Renderer.h">
-      <Filter>Renderer2</Filter>
+    <ClInclude Include="..\..\Engine\Code\Renderer2\RendererImage.h">
+      <Filter>Engine\Code\Renderer2</Filter>
     </ClInclude>
-    <ClInclude Include="..\Renderer2\RendererImage.h">
-      <Filter>Renderer2</Filter>
+    <ClInclude Include="..\..\Games\Joes2\Joes2.h">
+      <Filter>Games\Joes2</Filter>
     </ClInclude>
-    <ClInclude Include="..\img_lib\img_lib.h">
-      <Filter>img_lib</Filter>
+    <ClInclude Include="..\..\Shared\MapBoard\SgMap.h">
+      <Filter>Shared\MapBoard</Filter>
     </ClInclude>
-    <ClInclude Include="..\img_lib\img_lib_types.h">
-      <Filter>img_lib</Filter>
+    <ClInclude Include="..\..\Shared\img_lib\img_lib.h">
+      <Filter>Shared\img_lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\img_lib\img_private.h">
-      <Filter>img_lib</Filter>
+    <ClInclude Include="..\..\Shared\img_lib\img_lib_types.h">
+      <Filter>Shared\img_lib</Filter>
     </ClInclude>
-    <ClInclude Include="SgCommon.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\..\Shared\img_lib\img_private.h">
+      <Filter>Shared\img_lib</Filter>
     </ClInclude>
-    <ClInclude Include="GameConfig.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\..\Shared\ImageLib\bitmapex.h">
+      <Filter>Shared\ImageLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\MapBoard\SgMap.h">
-      <Filter>MapBoard</Filter>
+    <ClInclude Include="..\..\Shared\ImageLib\ImgLib.h">
+      <Filter>Shared\ImageLib</Filter>
     </ClInclude>
-    <ClInclude Include="..\ImageLib\ImgLib.h">
-      <Filter>ImageLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Renderer2\RendererD3D11_Private.h">
-      <Filter>Renderer2</Filter>
+    <ClInclude Include="..\..\Shared\SgCommon.h">
+      <Filter>Shared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="icon1.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="..\Renderer2\Shaders.fx">
-      <Filter>Renderer2</Filter>
+    <CustomBuild Include="..\..\Engine\Shaders\Shaders.fx">
+      <Filter>Engine\Shaders</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

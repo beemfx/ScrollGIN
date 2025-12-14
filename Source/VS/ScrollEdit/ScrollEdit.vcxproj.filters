@@ -1,93 +1,112 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{64dca3dc-93e1-4c43-ac12-0545e69820f2}</UniqueIdentifier>
-      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    <Filter Include="Shared">
+      <UniqueIdentifier>{9e6c2364-6194-4352-a7e5-9e10f6cc9e81}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source">
-      <UniqueIdentifier>{26441f19-63e3-453a-9f99-4dc1aca6529f}</UniqueIdentifier>
-      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    <Filter Include="Shared\ImageLib">
+      <UniqueIdentifier>{a33e832b-37c3-494a-a67b-ebaf3995902f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ImageLib">
-      <UniqueIdentifier>{9417ef80-6452-41ef-ae20-25e4a295346c}</UniqueIdentifier>
+    <Filter Include="Shared\img_lib">
+      <UniqueIdentifier>{2302d871-369c-4cb7-9ad2-b744b76a686d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MapBoard">
-      <UniqueIdentifier>{41d064e8-1a66-4386-b42a-139ae54bcfb2}</UniqueIdentifier>
+    <Filter Include="Shared\MapBoard">
+      <UniqueIdentifier>{40d794dc-52fe-48d4-be71-764cd7c6806e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="img_lib">
-      <UniqueIdentifier>{dbdc00fc-be4a-4e16-941f-385c99740837}</UniqueIdentifier>
+    <Filter Include="ScrollEdit">
+      <UniqueIdentifier>{a1241081-76f2-452d-9403-38c4051584be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScrollEdit\Code">
+      <UniqueIdentifier>{8fe60d54-8804-4ca9-aafb-c1979c91b10a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScrollEdit\Res">
+      <UniqueIdentifier>{d8e6fb15-2b6e-4e51-b9ad-31915f21edf0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ConstLibrary.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="..\..\Tools\ScrollEdit\Code\ConstLibrary.cpp">
+      <Filter>ScrollEdit\Code</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="..\..\Tools\ScrollEdit\Code\Main.cpp">
+      <Filter>ScrollEdit\Code</Filter>
     </ClCompile>
-    <ClCompile Include="Registry.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="..\..\Tools\ScrollEdit\Code\Registry.cpp">
+      <Filter>ScrollEdit\Code</Filter>
     </ClCompile>
-    <ClCompile Include="..\ImageLib\Bitmap.c">
-      <Filter>ImageLib</Filter>
+    <ClCompile Include="..\..\Shared\ImageLib\Bitmap.c">
+      <Filter>Shared\ImageLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\img_lib\img_bmp.c">
-      <Filter>img_lib</Filter>
+    <ClCompile Include="..\..\Shared\ImageLib\ImgLib.cpp">
+      <Filter>Shared\ImageLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\img_lib\img_cb.c">
-      <Filter>img_lib</Filter>
+    <ClCompile Include="..\..\Shared\img_lib\img_bmp.c">
+      <Filter>Shared\img_lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\img_lib\img_lib.c">
-      <Filter>img_lib</Filter>
+    <ClCompile Include="..\..\Shared\img_lib\img_cb.c">
+      <Filter>Shared\img_lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\img_lib\img_tga.c">
-      <Filter>img_lib</Filter>
+    <ClCompile Include="..\..\Shared\img_lib\img_lib.c">
+      <Filter>Shared\img_lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\MapBoard\SgMap.cpp">
-      <Filter>MapBoard</Filter>
+    <ClCompile Include="..\..\Shared\img_lib\img_tga.c">
+      <Filter>Shared\img_lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\ImageLib\ImgLib.cpp">
-      <Filter>ImageLib</Filter>
+    <ClCompile Include="..\..\Shared\MapBoard\SgMap.cpp">
+      <Filter>Shared\MapBoard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Resource.rc">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\..\Tools\ScrollEdit\Code\ConstLibrary.h">
+      <Filter>ScrollEdit\Code</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ScrollEdit\Code\Defines.h">
+      <Filter>ScrollEdit\Code</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ScrollEdit\Code\Registry.h">
+      <Filter>ScrollEdit\Code</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ScrollEdit\Res\resource.h">
+      <Filter>ScrollEdit\Res</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\ImageLib\bitmapex.h">
+      <Filter>Shared\ImageLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\ImageLib\ImgLib.h">
+      <Filter>Shared\ImageLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\img_lib\img_lib.h">
+      <Filter>Shared\img_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\img_lib\img_lib_types.h">
+      <Filter>Shared\img_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\img_lib\img_private.h">
+      <Filter>Shared\img_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\MapBoard\SgMap.h">
+      <Filter>Shared\MapBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\SgCommon.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\Tools\ScrollEdit\Res\archtiles.bmp">
+      <Filter>ScrollEdit\Res</Filter>
+    </Image>
+    <Image Include="..\..\Tools\ScrollEdit\Res\archtiles2.bmp">
+      <Filter>ScrollEdit\Res</Filter>
+    </Image>
+    <Image Include="..\..\Tools\ScrollEdit\Res\archtiles3.bmp">
+      <Filter>ScrollEdit\Res</Filter>
+    </Image>
+    <Image Include="..\..\Tools\ScrollEdit\Res\icon1.ico">
+      <Filter>ScrollEdit\Res</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\Tools\ScrollEdit\Res\Resource.rc">
+      <Filter>ScrollEdit\Res</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="ConstLibrary.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Registry.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ImageLib\bitmapex.h">
-      <Filter>ImageLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\img_lib\img_lib.h">
-      <Filter>img_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\img_lib\img_lib_types.h">
-      <Filter>img_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\img_lib\img_private.h">
-      <Filter>img_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\MapBoard\SgMap.h">
-      <Filter>MapBoard</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ImageLib\ImgLib.h">
-      <Filter>ImageLib</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="Archtiles.bmp">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="icon1.ico">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
   </ItemGroup>
 </Project>

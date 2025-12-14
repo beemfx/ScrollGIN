@@ -8,7 +8,7 @@
 
 #include <windows.h>
 #include "GameConfig.h"
-#include "../Renderer2/Renderer.h"
+#include "Renderer2/Renderer.h"
 
 typedef enum tagSPRITEFACE{
 	SF_LEFT=0, 

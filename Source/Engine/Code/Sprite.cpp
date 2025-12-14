@@ -5,7 +5,7 @@
 */
 
 #include "sprite.h"
-#include "../Renderer2/RendererImage.h"
+#include "Renderer2/RendererImage.h"
 
 SgSprite::SgSprite()
 {

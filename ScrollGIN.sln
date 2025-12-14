@@ -1,30 +1,32 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2013
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageEdit", "Source\ImageEdit\ImageEdit.vcxproj", "{411FAAE8-024E-036D-B910-0D6202C8F708}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36717.8 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ScrollGIN", "Source\VS\ScrollGIN\ScrollGIN.vcxproj", "{FFC17819-A5A2-4424-B99F-BFDA08AC6EB6}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ScrollEdit", "Source\ScrollEDIT\ScrollEdit.vcxproj", "{17602593-00B7-F63A-A49C-40648D4EEC43}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ScrollEdit", "Source\VS\ScrollEdit\ScrollEdit.vcxproj", "{17602593-00B7-F63A-A49C-40648D4EEC43}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ScrollGIN", "Source\ScrollGIN\ScrollGIN.vcxproj", "{FFC17819-A5A2-4424-B99F-BFDA08AC6EB6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageEdit", "Source\VS\ImageEdit\ImageEdit.vcxproj", "{411FAAE8-024E-036D-B910-0D6202C8F708}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Win32 = Debug|Win32
-		Release|Win32 = Release|Win32
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{411FAAE8-024E-036D-B910-0D6202C8F708}.Debug|Win32.ActiveCfg = Debug|Win32
-		{411FAAE8-024E-036D-B910-0D6202C8F708}.Debug|Win32.Build.0 = Debug|Win32
-		{411FAAE8-024E-036D-B910-0D6202C8F708}.Release|Win32.ActiveCfg = Debug|Win32
-		{411FAAE8-024E-036D-B910-0D6202C8F708}.Release|Win32.Build.0 = Debug|Win32
-		{17602593-00B7-F63A-A49C-40648D4EEC43}.Debug|Win32.ActiveCfg = Debug|Win32
-		{17602593-00B7-F63A-A49C-40648D4EEC43}.Debug|Win32.Build.0 = Debug|Win32
-		{17602593-00B7-F63A-A49C-40648D4EEC43}.Release|Win32.ActiveCfg = Release|Win32
-		{17602593-00B7-F63A-A49C-40648D4EEC43}.Release|Win32.Build.0 = Release|Win32
-		{FFC17819-A5A2-4424-B99F-BFDA08AC6EB6}.Debug|Win32.ActiveCfg = Debug|Win32
-		{FFC17819-A5A2-4424-B99F-BFDA08AC6EB6}.Debug|Win32.Build.0 = Debug|Win32
-		{FFC17819-A5A2-4424-B99F-BFDA08AC6EB6}.Release|Win32.ActiveCfg = Release|Win32
-		{FFC17819-A5A2-4424-B99F-BFDA08AC6EB6}.Release|Win32.Build.0 = Release|Win32
+		{FFC17819-A5A2-4424-B99F-BFDA08AC6EB6}.Debug|x86.ActiveCfg = Debug|Win32
+		{FFC17819-A5A2-4424-B99F-BFDA08AC6EB6}.Debug|x86.Build.0 = Debug|Win32
+		{FFC17819-A5A2-4424-B99F-BFDA08AC6EB6}.Release|x86.ActiveCfg = Release|Win32
+		{FFC17819-A5A2-4424-B99F-BFDA08AC6EB6}.Release|x86.Build.0 = Release|Win32
+		{17602593-00B7-F63A-A49C-40648D4EEC43}.Debug|x86.ActiveCfg = Debug|Win32
+		{17602593-00B7-F63A-A49C-40648D4EEC43}.Debug|x86.Build.0 = Debug|Win32
+		{17602593-00B7-F63A-A49C-40648D4EEC43}.Release|x86.ActiveCfg = Release|Win32
+		{17602593-00B7-F63A-A49C-40648D4EEC43}.Release|x86.Build.0 = Release|Win32
+		{411FAAE8-024E-036D-B910-0D6202C8F708}.Debug|x86.ActiveCfg = Debug|Win32
+		{411FAAE8-024E-036D-B910-0D6202C8F708}.Debug|x86.Build.0 = Debug|Win32
+		{411FAAE8-024E-036D-B910-0D6202C8F708}.Release|x86.ActiveCfg = Release|Win32
+		{411FAAE8-024E-036D-B910-0D6202C8F708}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

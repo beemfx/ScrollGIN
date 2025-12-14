@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <windows.h>
 #include "GameConfig.h"
-#include "../Renderer2/Renderer.h"
+#include "Renderer2/Renderer.h"
 
 
 #include "ScrollGIN.h"

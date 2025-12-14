@@ -1,75 +1,90 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{0c6eff8d-dcb4-4826-8b96-6dc071fe7e21}</UniqueIdentifier>
-      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    <Filter Include="ImageEdit">
+      <UniqueIdentifier>{dc5d5f08-2939-4868-a44b-71986865c779}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ImageLib">
-      <UniqueIdentifier>{5e97818f-07ec-440e-9d4b-19b8be2c8451}</UniqueIdentifier>
+    <Filter Include="Shared">
+      <UniqueIdentifier>{311043d1-5c9a-44c9-9819-40983fed2ef9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source">
-      <UniqueIdentifier>{f2e9d8a7-60b9-4047-af67-aeb9e5ad3052}</UniqueIdentifier>
-      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    <Filter Include="ImageEdit\Code">
+      <UniqueIdentifier>{b20e5874-688f-4b54-9030-bf2e47a6c9a7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="img_lib">
-      <UniqueIdentifier>{b4ead6e6-773a-4201-85c0-6b8ad48aefa1}</UniqueIdentifier>
+    <Filter Include="ImageEdit\Res">
+      <UniqueIdentifier>{202beee9-5fbd-4ecf-8d1c-f66d677aec8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shared\ImageLib">
+      <UniqueIdentifier>{fd864404-005e-4b4b-bd70-2ed8c3a4b4a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shared\img_lib">
+      <UniqueIdentifier>{26d18b8b-c427-4c41-8f6f-857035549682}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DiskDlg.c">
-      <Filter>Source</Filter>
+    <None Include="..\..\Tools\ImageEdit\README.md">
+      <Filter>ImageEdit</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Shared\SgCommon.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ImageEdit\Code\DiskDlg.h">
+      <Filter>ImageEdit\Code</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ImageEdit\Res\resource.h">
+      <Filter>ImageEdit\Res</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\ImageLib\bitmapex.h">
+      <Filter>Shared\ImageLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\ImageLib\ImgLib.h">
+      <Filter>Shared\ImageLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\img_lib\img_lib.h">
+      <Filter>Shared\img_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\img_lib\img_lib_types.h">
+      <Filter>Shared\img_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\img_lib\img_private.h">
+      <Filter>Shared\img_lib</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Tools\ImageEdit\Code\DiskDlg.c">
+      <Filter>ImageEdit\Code</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="..\..\Tools\ImageEdit\Code\Main.cpp">
+      <Filter>ImageEdit\Code</Filter>
     </ClCompile>
-    <ClCompile Include="..\ImageLib\Bitmap.c">
-      <Filter>ImageLib</Filter>
+    <ClCompile Include="..\..\Shared\ImageLib\Bitmap.c">
+      <Filter>Shared\ImageLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\img_lib\img_bmp.c">
-      <Filter>img_lib</Filter>
+    <ClCompile Include="..\..\Shared\ImageLib\ImgLib.cpp">
+      <Filter>Shared\ImageLib</Filter>
     </ClCompile>
-    <ClCompile Include="..\img_lib\img_cb.c">
-      <Filter>img_lib</Filter>
+    <ClCompile Include="..\..\Shared\img_lib\img_bmp.c">
+      <Filter>Shared\img_lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\img_lib\img_lib.c">
-      <Filter>img_lib</Filter>
+    <ClCompile Include="..\..\Shared\img_lib\img_cb.c">
+      <Filter>Shared\img_lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\img_lib\img_tga.c">
-      <Filter>img_lib</Filter>
+    <ClCompile Include="..\..\Shared\img_lib\img_lib.c">
+      <Filter>Shared\img_lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\ImageLib\ImgLib.cpp">
-      <Filter>ImageLib</Filter>
+    <ClCompile Include="..\..\Shared\img_lib\img_tga.c">
+      <Filter>Shared\img_lib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Resource.rc">
-      <Filter>Source</Filter>
+    <Image Include="..\..\Tools\ImageEdit\Res\icon1.ico">
+      <Filter>ImageEdit\Res</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\Tools\ImageEdit\Res\Resource.rc">
+      <Filter>ImageEdit\Res</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="icon1.ico">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="DiskDlg.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ImageLib\bitmapex.h">
-      <Filter>ImageLib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\img_lib\img_lib.h">
-      <Filter>img_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\img_lib\img_lib_types.h">
-      <Filter>img_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\img_lib\img_private.h">
-      <Filter>img_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ImageLib\ImgLib.h">
-      <Filter>ImageLib</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

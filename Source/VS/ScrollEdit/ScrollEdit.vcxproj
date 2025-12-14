@@ -10,6 +10,40 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Shared\ImageLib\Bitmap.c" />
+    <ClCompile Include="..\..\Shared\ImageLib\ImgLib.cpp" />
+    <ClCompile Include="..\..\Shared\img_lib\img_bmp.c" />
+    <ClCompile Include="..\..\Shared\img_lib\img_cb.c" />
+    <ClCompile Include="..\..\Shared\img_lib\img_lib.c" />
+    <ClCompile Include="..\..\Shared\img_lib\img_tga.c" />
+    <ClCompile Include="..\..\Shared\MapBoard\SgMap.cpp" />
+    <ClCompile Include="..\..\Tools\ScrollEdit\Code\ConstLibrary.cpp" />
+    <ClCompile Include="..\..\Tools\ScrollEdit\Code\Main.cpp" />
+    <ClCompile Include="..\..\Tools\ScrollEdit\Code\Registry.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Shared\ImageLib\bitmapex.h" />
+    <ClInclude Include="..\..\Shared\ImageLib\ImgLib.h" />
+    <ClInclude Include="..\..\Shared\img_lib\img_lib.h" />
+    <ClInclude Include="..\..\Shared\img_lib\img_lib_types.h" />
+    <ClInclude Include="..\..\Shared\img_lib\img_private.h" />
+    <ClInclude Include="..\..\Shared\MapBoard\SgMap.h" />
+    <ClInclude Include="..\..\Shared\SgCommon.h" />
+    <ClInclude Include="..\..\Tools\ScrollEdit\Code\ConstLibrary.h" />
+    <ClInclude Include="..\..\Tools\ScrollEdit\Code\Defines.h" />
+    <ClInclude Include="..\..\Tools\ScrollEdit\Code\Registry.h" />
+    <ClInclude Include="..\..\Tools\ScrollEdit\Res\resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\Tools\ScrollEdit\Res\archtiles.bmp" />
+    <Image Include="..\..\Tools\ScrollEdit\Res\archtiles2.bmp" />
+    <Image Include="..\..\Tools\ScrollEdit\Res\archtiles3.bmp" />
+    <Image Include="..\..\Tools\ScrollEdit\Res\icon1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\Tools\ScrollEdit\Res\Resource.rc" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <SccProjectName />
     <SccLocalPath />
@@ -61,8 +95,8 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ForcedIncludeFiles>ScrollGIN/SgCommon.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>../;../DXLIB;./;</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>SgCommon.h</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>../../Shared;../../Tools/ScrollEdit/Res;../../Tools/ScrollEdit/Code</AdditionalIncludeDirectories>
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -99,8 +133,8 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <ForcedIncludeFiles>ScrollGIN/SgCommon.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>../;../DXLIB;./;</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>SgCommon.h</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>../../Shared;../../Tools/ScrollEdit/Res;../../Tools/ScrollEdit/Code</AdditionalIncludeDirectories>
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -123,35 +157,6 @@
       <AdditionalDependencies>htmlhelp.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="..\ImageLib\Bitmap.c" />
-    <ClCompile Include="..\ImageLib\ImgLib.cpp" />
-    <ClCompile Include="..\img_lib\img_bmp.c" />
-    <ClCompile Include="..\img_lib\img_cb.c" />
-    <ClCompile Include="..\img_lib\img_lib.c" />
-    <ClCompile Include="..\img_lib\img_tga.c" />
-    <ClCompile Include="..\MapBoard\SgMap.cpp" />
-    <ClCompile Include="ConstLibrary.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Registry.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Resource.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\ImageLib\bitmapex.h" />
-    <ClInclude Include="..\ImageLib\ImgLib.h" />
-    <ClInclude Include="..\img_lib\img_lib.h" />
-    <ClInclude Include="..\img_lib\img_lib_types.h" />
-    <ClInclude Include="..\img_lib\img_private.h" />
-    <ClInclude Include="..\MapBoard\SgMap.h" />
-    <ClInclude Include="ConstLibrary.h" />
-    <ClInclude Include="Registry.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="Archtiles.bmp" />
-    <CustomBuild Include="icon1.ico" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
