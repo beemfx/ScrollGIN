@@ -85,6 +85,15 @@ private:
 		ProcessCommandLine();
 
 #if defined(_WIN32)
+		
+		// This is so we don't have to specify the Content directory in the debugger.
+		LPCWSTR BuildContentDir = L"../Content";
+		const DWORD ContentDirAttrs = GetFileAttributesW(BuildContentDir);
+		if (ContentDirAttrs != INVALID_FILE_ATTRIBUTES && ((ContentDirAttrs&FILE_ATTRIBUTE_DIRECTORY) !=0))
+		{
+			SetCurrentDirectoryW(BuildContentDir);
+		}
+
 		HINSTANCE hInst = reinterpret_cast<HINSTANCE>(m_OsInstance);
 
 		WNDCLASSEXW wc;

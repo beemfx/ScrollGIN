@@ -109,8 +109,8 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Bscmake>
     <PostBuildEvent>
-      <Command>xcopy /Y "$(TargetPath)" "$(SolutionDir)Dist\"
-xcopy /Y "$(ProjectDir)..\Content\*" "$(SolutionDir)Dist\"
+      <Command>xcopy /Y "$(TargetPath)" "$(SolutionDir)Dist\TestGame\"
+xcopy /Y "$(ProjectDir)..\Content\*" "$(SolutionDir)Dist\TestGame\"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
