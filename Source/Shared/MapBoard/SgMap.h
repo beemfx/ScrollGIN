@@ -62,7 +62,6 @@ class SgMap
 {
 protected:
 	//Private member variables
-	bool      m_bMapLoaded = false;
 	sg_uint8  *m_pTile = nullptr;	//Visible tile data
 	sg_uint8  *m_pArch = nullptr;	//Unseen architecture data
 	sg_uint8  *m_pObject = nullptr;	//Object data, objects, object generators etc
