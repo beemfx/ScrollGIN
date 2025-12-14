@@ -4,21 +4,9 @@
 	Copyright (c) 2003, Blaine Myers
 */
 
-#include "GameConfig.h"
 #include "ObjMan.h"
+#include "GameConfig.h"
 #include "genfuncs.h"
-
-SgObjectManager::SgObjectManager()
-: m_dwMaxObjects(DEFAULT_MAX_OBJECTS)
-{
-	m_dwCount=0;
-	m_dwUserObject=0;
-	m_ppObject=new SgObject*[m_dwMaxObjects];
-	m_pObjectType=new OBJECTTYPE[m_dwMaxObjects];
-	for(int i=0; i<m_dwMaxObjects; i++){
-		m_ppObject[i]=NULL;
-	}
-}
 
 SgObjectManager::SgObjectManager(int dwMaxObjects)
 : m_dwMaxObjects(dwMaxObjects)
@@ -30,21 +18,6 @@ SgObjectManager::SgObjectManager(int dwMaxObjects)
 	for(int i=0; i<m_dwMaxObjects; i++){
 		m_ppObject[i]=NULL;
 	}
-}
-
-SgObjectManager::SgObjectManager(int dwMaxObjects, SgTimer * pTimer)
-: m_dwMaxObjects(dwMaxObjects)
-{
-	m_dwCount=0;
-	m_dwUserObject=0;
-	m_ppObject=new SgObject*[m_dwMaxObjects];
-	m_pObjectType=new OBJECTTYPE[m_dwMaxObjects];
-	for(int i=0; i<m_dwMaxObjects; i++)
-	{
-		m_ppObject[i]=NULL;
-	}
-
-	SetTimer(pTimer);
 }
 
 SgObjectManager::~SgObjectManager()
@@ -227,7 +200,7 @@ int SgObjectManager::GetUserObject()
 	return m_dwUserObject;
 }
 
-int SgObjectManager::Initialize()
+void SgObjectManager::Initialize(SgScrollGINGame* InGame)
 {
-	return 1;
+	
 }

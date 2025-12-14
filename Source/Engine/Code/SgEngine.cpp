@@ -19,7 +19,7 @@ static wchar_t* SgEngineRunner_WindowClassName = L"ScrollGINGameWindow";
 class SgEngineRunner
 {
 public:
-	SgEngineRunner(const wchar_t* AppName, std::uintptr_t OsInstance, SgObjectManager* InObjMan, sg_cpstr FirstMap)
+	SgEngineRunner(const wchar_t* AppName, std::uintptr_t OsInstance, SgObjectManager* InObjMan)
 		: m_OsInstance(OsInstance)
 		, m_AppName(AppName)
 	{
@@ -36,7 +36,6 @@ public:
 		if (m_Game)
 		{
 			m_Game->Init(VIEW_WIDTH, VIEW_HEIGHT, InObjMan, reinterpret_cast<std::uintptr_t>(m_MainWnd));
-			m_Game->LoadMap(FirstMap);
 
 			// Game Loop
 			while (m_bEngineRunning)
@@ -237,7 +236,7 @@ private:
 #endif
 };
 
-void SgEngine_Run(const wchar_t* AppName, std::uintptr_t OsInstance, SgObjectManager* InObjMan, sg_cpstr FirstMap)
+void SgEngine_Run(const wchar_t* AppName, std::uintptr_t OsInstance, SgObjectManager* InObjMan)
 {
-	SgEngineRunner Runner(AppName, OsInstance, InObjMan, FirstMap);
+	SgEngineRunner Runner(AppName, OsInstance, InObjMan);
 }

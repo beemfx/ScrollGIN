@@ -4,4 +4,4 @@
 
 class SgObjectManager;
 
-void SgEngine_Run(const wchar_t* AppName, std::uintptr_t OsInstance, SgObjectManager* InObjMan, sg_cpstr FirstMap);
+void SgEngine_Run(const wchar_t* AppName, std::uintptr_t OsInstance, SgObjectManager* InObjMan);

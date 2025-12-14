@@ -12,13 +12,12 @@ class CJoes2ObjMan: public SgObjectManager
 protected:
 
 public:
-	CJoes2ObjMan();
 	CJoes2ObjMan(int dwMax);
 
-	virtual ~CJoes2ObjMan();
-	virtual int Initialize();
-	virtual void CreateObject(const OBJECTTYPE nType, int x, int y, int nXSpeed, int nYSpeed);
-	virtual void OnCollision( SgObject* Obj1 , SgObject* Obj2 );
+	virtual ~CJoes2ObjMan() override;
+	virtual void Initialize(SgScrollGINGame* InGame) override;
+	virtual void CreateObject(const OBJECTTYPE nType, int x, int y, int nXSpeed, int nYSpeed) override;
+	virtual void OnCollision( SgObject* Obj1 , SgObject* Obj2 ) override;
 };
 
 

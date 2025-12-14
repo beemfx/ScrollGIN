@@ -6,15 +6,17 @@
 #ifndef __OBJMAN_H__
 #define __OBJMAN_H__
 
-#include "Mapboard/SgMap.h"
+#include "SpriteManager.h"
 #include "Object.h"
-#include "Timer.h"
-#include "View.h"
 
-#define DEFAULT_MAX_OBJECTS 256
+class SgScrollGINGame;
+class SgMap;
+class SgTimer;
+class SgObject;
+class SgViewPort;
+class SgInputManager;
 
 enum OBJECTTYPE{OT_DEFAULT=0};
-
 
 class SgObjectManager
 {
@@ -30,12 +32,10 @@ private:
 	void Cull();
 	void Kill(int dwIndex);
 public:
-	SgObjectManager();
 	SgObjectManager(int dwMaxObjects);
-	SgObjectManager(int dwMaxObjects, SgTimer* pTimer);
 	virtual ~SgObjectManager();
 
-	virtual int Initialize();
+	virtual void Initialize(SgScrollGINGame* InGame);
 
 	void Update( SgMap *map , SgViewPort *viewport , SgInputManager* pInput );
 	void Draw( SgViewPort *viewport ); //Animate all the objects and draw them

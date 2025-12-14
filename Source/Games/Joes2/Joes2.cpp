@@ -3,6 +3,7 @@
 
 #include "genfuncs.h"
 #include "Joes2.h"
+#include "ScrollGIN.h"
 
 static const sg_uint32 JOES2_GOODCOPTER  = 0x00000001;
 static const sg_uint32 JOES2_GOODMISSILE = 0x00000002;
@@ -494,21 +495,18 @@ SgObjectManager(dwMaxObjects)
 	
 }
 
-CJoes2ObjMan::CJoes2ObjMan():
-SgObjectManager()
-{
-	
-}
-
-
 CJoes2ObjMan::~CJoes2ObjMan()
 {
 	
 }
 
-int CJoes2ObjMan::Initialize()
+void CJoes2ObjMan::Initialize(SgScrollGINGame* InGame)
 {
+	SgObjectManager::Initialize(InGame);
+
 	LoadSprites("JoesSprites.ilb");
+
+	InGame->LoadMap("JoesLevel1.map");
 
 	//Should create initial object.
 	CreateObject(
@@ -534,8 +532,6 @@ int CJoes2ObjMan::Initialize()
 		0);
 
 	SetUserObject(1);
-
-	return 1;
 }
 
 void CJoes2ObjMan::CreateObject(const OBJECTTYPE nType, int x, int y, int nXSpeed, int nYSpeed)

@@ -60,7 +60,7 @@ void SgScrollGINGame::Init( int dwWidth , int dwHeight , SgObjectManager* lpObjM
 	m_dwHeight=dwHeight;
 
 	lpObjMan->SetTimer(&m_Timer);
-	lpObjMan->Initialize();
+	lpObjMan->Initialize(this);
 }
 
 void SgScrollGINGame::LoadMap(const char* szFilename)
