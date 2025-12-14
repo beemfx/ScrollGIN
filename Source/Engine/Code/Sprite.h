@@ -17,8 +17,8 @@ typedef enum tagSPRITEFACE{
 
 
 typedef struct tagIMAGEDIM{
-	int nWidth;
-	int nHeight;
+	int nWidth = 0;
+	int nHeight = 0;
 }IMAGEDIM;
 
 typedef enum tagLOOPMODE{
@@ -31,11 +31,11 @@ typedef enum tagLOOPMODE{
 
 class SgSprite{
 private:
-	SgRendererImage* m_cSpriteImage[MAX_IMAGES_PER_SPRITE]; //contains the default sprite images
-	SgRendererImage* m_cReverseSpriteImage[MAX_IMAGES_PER_SPRITE]; //contains a left/right swaped version of teh sprite images
-	IMAGEDIM m_sImageDim[MAX_IMAGES_PER_SPRITE];  //contains the dimensions of the sprite
-	int m_nFrames; //indicates how many frames are in teh sprite
-	char m_szSpriteName[MAX_SPRITE_NAME_LENGTH+1]; //The name of the sprite, used to objtain a sprite
+	SgRendererImage* m_cSpriteImage[MAX_IMAGES_PER_SPRITE] = { }; //contains the default sprite images
+	SgRendererImage* m_cReverseSpriteImage[MAX_IMAGES_PER_SPRITE] = { }; //contains a left/right swaped version of teh sprite images
+	IMAGEDIM m_sImageDim[MAX_IMAGES_PER_SPRITE] = { };  //contains the dimensions of the sprite
+	int m_nFrames = 0; //indicates how many frames are in teh sprite
+	char m_szSpriteName[MAX_SPRITE_NAME_LENGTH+1] = { }; //The name of the sprite, used to objtain a sprite
 	//BOOL m_bLoopBackward; //if true the sprite should go through each frame, forward then backward
 public:
 	SgSprite();

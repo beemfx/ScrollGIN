@@ -56,24 +56,24 @@ typedef struct tagOBJECTMODE
 class SgObject
 {
 protected:
-	int        m_nX;
-	int        m_nY;
-	int        m_nDeltaX;
-	int        m_nDeltaY;
-	int        m_nXSpeed;
-	int        m_nYSpeed;
-	int        m_nXLastMoveTime; 
-	int        m_nYLastMoveTime;
-	SgSprite*  m_pSprite[MAX_SPRITES_PER_OBJECT]; //pointer to sprites used by the object
-	SPRITEDATA m_sSpriteData[MAX_SPRITES_PER_OBJECT]; //Data about each sprite
-	int        m_nNumSprites;	//how many sprites there are
-	OBJECTMODE m_sObjectMode[MAX_OBJECT_MODES];
-	int        m_nCurrentMode;
-	int        m_nNumModes;
-	bool       m_bAlive;
-	int        m_nMessage[MESSAGE_BUFFER_SIZE];//The message buffer, stores messages until they are processed
-	int        m_nNumMessages;//The number of messages that need processing
-	SPRITEFACE m_nFace;	
+	int        m_nX = 0;
+	int        m_nY = 0;
+	int        m_nDeltaX = 0;
+	int        m_nDeltaY = 0;
+	int        m_nXSpeed = 0;
+	int        m_nYSpeed = 0;
+	int        m_nXLastMoveTime = 0; 
+	int        m_nYLastMoveTime = 0;
+	SgSprite*  m_pSprite[MAX_SPRITES_PER_OBJECT] = { }; //pointer to sprites used by the object
+	SPRITEDATA m_sSpriteData[MAX_SPRITES_PER_OBJECT] = { }; //Data about each sprite
+	int        m_nNumSprites = 0;	//how many sprites there are
+	OBJECTMODE m_sObjectMode[MAX_OBJECT_MODES] = { };
+	int        m_nCurrentMode = 0;
+	int        m_nNumModes = 0;
+	bool       m_bAlive = 0;
+	int        m_nMessage[MESSAGE_BUFFER_SIZE] = { };//The message buffer, stores messages until they are processed
+	int        m_nNumMessages = 0;//The number of messages that need processing
+	SPRITEFACE m_nFace = SF_LEFT;	
 
 public:
 	//Constructors destructors

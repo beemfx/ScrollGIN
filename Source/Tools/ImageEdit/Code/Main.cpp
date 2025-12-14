@@ -787,7 +787,7 @@ BOOL CALLBACK EditProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam){
 			break;
 		case IDC_ADDENTRY:
 			if(MessageBox(hwnd, TEXT("Are you sure you want to add another entry?"), TEXT("ImageEdit"), MB_YESNO|MB_ICONQUESTION)==IDYES){
-				if(FAILED(ILibrary.AddEntry(0,0,0,0,0,0,1,1,TEXT("")))){
+				if(!ILibrary.AddEntry(0,0,0,0,0,0,1,1,TEXT(""))){
 					NotifyUser(hwnd, TEXT("Error: Could not add another entry!"), P_HIGH, EL_FAIL);
 					break;
 				}else{
