@@ -11,18 +11,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Games\Joes2\Res\resource.h" />
-    <ClInclude Include="..\..\Games\TestGame\TestAI.h" />
+    <None Include="..\Content\Set3.ilb" />
+    <None Include="..\Content\test.map" />
+    <None Include="..\Content\TestSprites.ilb" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Games\TestGame\TestAI.cpp" />
-    <ClCompile Include="..\..\Games\TestGame\TestGameMain.cpp" />
+    <Image Include="..\Source\Res\icon1.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\Games\TestGame\Res\icon1.ico" />
+    <ResourceCompile Include="..\Source\Res\resource.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\..\Games\TestGame\Res\resource.rc" />
+    <ClCompile Include="..\Source\TestAI.cpp" />
+    <ClCompile Include="..\Source\TestGameMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Source\TestAI.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DCB82E82-5B96-437A-9979-9661B49122D3}</ProjectGuid>
@@ -87,7 +91,7 @@
       <BrowseInformation>true</BrowseInformation>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalIncludeDirectories>../../Engine/Code;../../Games/TestGame;../../Shared</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../Source/Engine/Code;../Source;../../../Source/Shared</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>SgCommon.h</ForcedIncludeFiles>
     </ClCompile>
     <ResourceCompile>
@@ -127,7 +131,7 @@
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>../../Engine/Code;../../Games/TestGame;../../Shared</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../Source/Engine/Code;../Source;../../../Source/Shared</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>SgCommon.h</ForcedIncludeFiles>
     </ClCompile>
     <ResourceCompile>

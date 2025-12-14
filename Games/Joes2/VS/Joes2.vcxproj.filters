@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{b2bab6f7-fc61-4b47-8e6d-355544271a0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Res">
+      <UniqueIdentifier>{06b197e0-052e-419d-bc09-7cdf0e20f513}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content">
+      <UniqueIdentifier>{f495616f-2254-4373-822c-39d0bcac8343}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Content\JoesBG.bmp">
+      <Filter>Content</Filter>
+    </Image>
+    <Image Include="..\Source\Res\icon1.ico">
+      <Filter>Source\Res</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Content\JoesLevel1.map">
+      <Filter>Content</Filter>
+    </None>
+    <None Include="..\Content\JoesSet.ilb">
+      <Filter>Content</Filter>
+    </None>
+    <None Include="..\Content\JoesSprites.ilb">
+      <Filter>Content</Filter>
+    </None>
+    <None Include="..\Content\README">
+      <Filter>Content</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Source\Joes2.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Joes2Main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Source\Joes2.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\Source\Res\resource.rc">
+      <Filter>Source\Res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

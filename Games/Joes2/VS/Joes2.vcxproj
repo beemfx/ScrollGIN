@@ -11,18 +11,24 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Games\Joes2\Joes2.cpp" />
-    <ClCompile Include="..\..\Games\Joes2\Joes2Main.cpp" />
+    <Image Include="..\Content\JoesBG.bmp" />
+    <Image Include="..\Source\Res\icon1.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Games\Joes2\Joes2.h" />
-    <ClInclude Include="..\..\Games\Joes2\Res\resource.h" />
+    <None Include="..\Content\JoesLevel1.map" />
+    <None Include="..\Content\JoesSet.ilb" />
+    <None Include="..\Content\JoesSprites.ilb" />
+    <None Include="..\Content\README" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\Games\Joes2\Res\icon1.ico" />
+    <ClCompile Include="..\Source\Joes2.cpp" />
+    <ClCompile Include="..\Source\Joes2Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\..\Games\Joes2\Res\resource.rc" />
+    <ClInclude Include="..\Source\Joes2.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\Source\Res\resource.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D379D5E8-09C8-4F16-A00D-C44F9FEBC89B}</ProjectGuid>
@@ -87,7 +93,7 @@
       <BrowseInformation>true</BrowseInformation>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalIncludeDirectories>../../Engine/Code;../../Games/Joes2;../../Shared</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../Source/Engine/Code;../Source;../../../Source/Shared</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>SgCommon.h</ForcedIncludeFiles>
     </ClCompile>
     <ResourceCompile>
@@ -127,7 +133,7 @@
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>../../Engine/Code;../../Games/Joes2;../../Shared</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../Source/Engine/Code;../Source;../../../Source/Shared</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>SgCommon.h</ForcedIncludeFiles>
     </ClCompile>
     <ResourceCompile>

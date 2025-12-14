@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{ed54905e-8546-4505-801c-b1fe490c63f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Res">
+      <UniqueIdentifier>{06b197e0-052e-419d-bc09-7cdf0e20f513}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content">
+      <UniqueIdentifier>{b2bab6f7-fc61-4b47-8e6d-355544271a0e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Content\Set3.ilb">
+      <Filter>Content</Filter>
+    </None>
+    <None Include="..\Content\test.map">
+      <Filter>Content</Filter>
+    </None>
+    <None Include="..\Content\TestSprites.ilb">
+      <Filter>Content</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Source\Res\icon1.ico">
+      <Filter>Source\Res</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\Source\Res\resource.rc">
+      <Filter>Source\Res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Source\TestAI.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\TestGameMain.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Source\TestAI.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
