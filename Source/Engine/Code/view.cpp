@@ -21,7 +21,7 @@ SgViewPort::SgViewPort()
 	m_nScrollSpeedX=m_nScrollSpeedY=6;
 }
 
-void SgViewPort::SetViewportDimensions(DWORD dwWidth, DWORD dwHeight)
+void SgViewPort::SetViewportDimensions(std::uint32_t dwWidth, std::uint32_t dwHeight)
 {
 	m_dwWidth=dwWidth;
 	m_dwHeight=dwHeight;
@@ -121,7 +121,7 @@ int SgViewPort::GetWorldWidth()
 	return m_nWorldWidth;
 }
 
-void SgViewPort::update(DWORD dwTime)
+void SgViewPort::update(std::uint32_t dwTime)
 {
 	int nScrollSpeedX=0;
 	int nScrollSpeedY=0;

@@ -6,7 +6,6 @@
 #ifndef __OBJECT_H__
 #define __OBJECT_H__
 
-#include <windows.h>
 #include "GameConfig.h"
 #include "Input.h"
 #include "Mapboard/SgMap.h"

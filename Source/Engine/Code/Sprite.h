@@ -6,7 +6,6 @@
 #ifndef __SPRITE_H__
 #define __SPRITE_H__
 
-#include <windows.h>
 #include "GameConfig.h"
 #include "Renderer2/Renderer.h"
 

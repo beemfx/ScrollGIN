@@ -9,9 +9,9 @@
 
 SgMap::SgMap()
 {
-	m_pTile=new BYTE;
-	m_pArch=new BYTE;
-	m_pObject=new BYTE;
+	m_pTile=new sg_uint8;
+	m_pArch=new sg_uint8;
+	m_pObject=new sg_uint8;
 
 	m_nMapWidth=m_nMapHeight=1;
 	m_dwTileDim=MAP_TILEDIM;
@@ -30,23 +30,23 @@ sg_uint32 SgMap::SetTileDim(sg_uint32 dwDim)
 	return dwTemp;
 }
 
-BYTE SgMap::GetArchType(int x, int y)
+sg_uint8 SgMap::GetArchType(int x, int y)
 {
 	if(x<1||x>m_nMapWidth)return 0x00;
 	if(y<1||y>m_nMapHeight)return 0x00;
 	
-	BYTE nByte=m_pArch[CoordToPos(x, y)];
+	sg_uint8 nByte=m_pArch[CoordToPos(x, y)];
 	nByte=nByte&0xf0;
 	nByte=nByte>>4;
 	return nByte;
 }
 
-BYTE SgMap::GetArchPiece(int x, int y)
+sg_uint8 SgMap::GetArchPiece(int x, int y)
 { 
 	if(x<1||x>m_nMapWidth)return 0x00;
 	if(y<1||y>m_nMapHeight)return 0x00;
 
-	BYTE nByte=m_pArch[CoordToPos(x, y)];
+	sg_uint8 nByte=m_pArch[CoordToPos(x, y)];
 	nByte=nByte&0x0f;
 	return (ARCHTYPE)nByte;
 }
@@ -147,9 +147,9 @@ bool SgMap::LoadMap(sg_cpstr lpMapFilename)
 	//In case there is a current map loaded lets clear it
 	ClearMap();
 	//Lets prepare the data buffers
-	m_pTile=new BYTE[sMapHeader.lNumTiles];
-	m_pArch=new BYTE[sMapHeader.lNumTiles];
-	m_pObject=new BYTE[sMapHeader.lNumTiles];
+	m_pTile=new sg_uint8[sMapHeader.lNumTiles];
+	m_pArch=new sg_uint8[sMapHeader.lNumTiles];
+	m_pObject=new sg_uint8[sMapHeader.lNumTiles];
 
 	sg_char16 szTempLibName[MAX_PATH];
 	sg_char16 szTempBGName[MAX_PATH];
@@ -224,11 +224,11 @@ bool SgMapEdit::SetArch(int x, int y, sg_uint8 nNewValue)
 	return true;
 }
 
-BYTE SgMapEdit::GetArchSmart(int x, int y){
+sg_uint8 SgMapEdit::GetArchSmart(int x, int y){
 	if(x<0||x>m_nMapWidth)return 0;
 	if(y<0||y>m_nMapWidth)return 0;
 
-	BYTE nValue=m_pArch[CoordToPos(x, y)];
+	sg_uint8 nValue=m_pArch[CoordToPos(x, y)];
 
 	if(nValue==0x00)return 1;
 	if(GetArchType(x, y)==1){
@@ -251,7 +251,7 @@ bool SgMapEdit::SetArchSmart(int x, int y, sg_uint8 nNewValue)
 	//We don't need to change the value if it's the same
 	if(m_pArch[CoordToPos(x, y)]==nNewValue)return false;
 
-	BYTE nTempValue=0x00;
+	sg_uint8 nTempValue=0x00;
 
 	switch(nNewValue){
 		case 1: nTempValue=0x00;break;
@@ -333,9 +333,9 @@ bool SgMapEdit::GenerateNewMap(int nWidth, int nHeight, sg_cpstr lpLibFilename, 
 	m_lpMapFilenameA[0]=NULL;
 
 	//Prepare data buffers
-	m_pTile=new BYTE[nWidth*nHeight];
-	m_pArch=new BYTE[nWidth*nHeight];
-	m_pObject=new BYTE[nWidth*nHeight];
+	m_pTile=new sg_uint8[nWidth*nHeight];
+	m_pArch=new sg_uint8[nWidth*nHeight];
+	m_pObject=new sg_uint8[nWidth*nHeight];
 	//Make sure the memory was allocated correctly.
 	if(!m_pTile)return false;
 	if(!m_pArch)return false;
@@ -420,13 +420,13 @@ bool SgMapEdit::ChangeMapDimensions(int nNewWidth, int nNewHeight)
 	if( (nNewWidth<1) || (nNewHeight<1) )return false;
 	
 	//We need to create temporary buffers to hold our data
-	BYTE *pTempTile;
-	BYTE *pTempArch;
-	BYTE *pTempObject;
+	sg_uint8 *pTempTile;
+	sg_uint8 *pTempArch;
+	sg_uint8 *pTempObject;
 
-	pTempTile=new BYTE[m_nMapWidth*m_nMapHeight];
-	pTempArch=new BYTE[m_nMapWidth*m_nMapHeight];
-	pTempObject=new BYTE[m_nMapWidth*m_nMapHeight];
+	pTempTile=new sg_uint8[m_nMapWidth*m_nMapHeight];
+	pTempArch=new sg_uint8[m_nMapWidth*m_nMapHeight];
+	pTempObject=new sg_uint8[m_nMapWidth*m_nMapHeight];
 	
 	//Copy current memory into our temporary mem
 	CopyMemory(pTempTile, m_pTile, sizeof(*m_pTile)*m_nMapHeight*m_nMapWidth);
@@ -439,9 +439,9 @@ bool SgMapEdit::ChangeMapDimensions(int nNewWidth, int nNewHeight)
 	SAFE_DELETE_ARRAY(m_pObject);
 
 	//Now create a buffers with the new appropriate size
-	m_pTile=new BYTE[nNewWidth*nNewHeight];
-	m_pArch=new BYTE[nNewWidth*nNewHeight];
-	m_pObject=new BYTE[nNewWidth*nNewHeight];
+	m_pTile=new sg_uint8[nNewWidth*nNewHeight];
+	m_pArch=new sg_uint8[nNewWidth*nNewHeight];
+	m_pObject=new sg_uint8[nNewWidth*nNewHeight];
 	//Clear the memory in these buffers
 	ZeroMemory(m_pTile, sizeof(*m_pTile)*nNewWidth*nNewHeight);
 	ZeroMemory(m_pArch, sizeof(*m_pArch)*nNewWidth*nNewHeight);

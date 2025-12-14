@@ -7,6 +7,8 @@
 #include "sprite.h"
 #include "Renderer2/RendererImage.h"
 
+#include <string.h>
+
 SgSprite::SgSprite()
 {
 	m_nFrames=0;

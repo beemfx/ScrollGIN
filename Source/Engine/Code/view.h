@@ -7,23 +7,21 @@
 #ifndef __VIEW_H__
 #define __VIEW_H__
 
-#include <windows.h>
-
 class SgViewPort{
 private:
-	int m_nX; //Viewport x coordinate
-	int m_nY; //viewport y coordinate
-	int m_nDesiredX; //desired x coordinate for viewport
-	int m_nDesiredY; //desirect y coordinate for viewport
-	int m_nLastTimeUpdatedX; //last time the x coord was updated
-	int m_nLastTimeUpdatedY; //last time the y coord was updated
-	int m_nWorldWidth; //stores world width
-	int m_nWorldHeight; //sotres world height
-	int m_nScrollSpeedX; //stores x scroll speed
-	int m_nScrollSpeedY; //stores y scroll speed
+	int m_nX = 0; //Viewport x coordinate
+	int m_nY = 0; //viewport y coordinate
+	int m_nDesiredX = 0; //desired x coordinate for viewport
+	int m_nDesiredY = 0; //desirect y coordinate for viewport
+	int m_nLastTimeUpdatedX = 0; //last time the x coord was updated
+	int m_nLastTimeUpdatedY = 0; //last time the y coord was updated
+	int m_nWorldWidth = 0; //stores world width
+	int m_nWorldHeight = 0; //sotres world height
+	int m_nScrollSpeedX = 0; //stores x scroll speed
+	int m_nScrollSpeedY = 0; //stores y scroll speed
 
-	DWORD m_dwWidth;
-	DWORD m_dwHeight;
+	std::uint32_t m_dwWidth = 0;
+	std::uint32_t m_dwHeight = 0;
 public:
 	SgViewPort(); //consturctor
 	int GetScreenXPos();//returns view x
@@ -36,11 +34,11 @@ public:
 	int screenY(int y); //coord relative to viewport
 	int normalizeX(int *x); //normalizes x value
 	int normalizeY(int *y); //normalizes y value
-	void update(DWORD dwTime); //updates the viewport, should be called for each game loop
+	void update(std::uint32_t dwTime); //updates the viewport, should be called for each game loop
 	void set_world_dimensions(int width, int height); //sets the world dimensions
 	void set_scroll_speed(int speedX, int speedY); //sets the scroll speeds
 	void stop_scroll(); //stops viewprot from scrolling
-	void SetViewportDimensions(DWORD dwWidth, DWORD dwHeight);
+	void SetViewportDimensions(std::uint32_t dwWidth, std::uint32_t dwHeight);
 };
 
 
