@@ -30,6 +30,7 @@ struct IMAGEDATA
 	sg_uint16 nFrames = 0; //number of frames following to make up sprite
 	sg_char16 szImgLabel[IMAGE_NAME_LENGTH + 1] = { }; //name given to image convert to multibyte for ansi
 };
+static_assert(sizeof(IMAGEDATA) == 48, "Won't serialize correctly if this size changes.");
 
 struct IMGLIBHEADER
 {
@@ -39,6 +40,7 @@ struct IMGLIBHEADER
 	sg_uint32 lReserved2 = 0; //reserved
 	sg_uint16 nOffsetBytes = 0; //how many bytes offset for the data Header
 };
+static_assert(sizeof(IMGLIBHEADER) == 16, "Won't serialize correctly if this size changes.");
 
 struct IMGDBHEADER
 {

@@ -208,8 +208,8 @@ bool SgImgLibEdit::SaveData(LPSTR szFilename)
 bool SgImgLibEdit::LoadData(LPSTR szFilename)
 {
 	//Declare headers
-	IMGLIBHEADER lbHeader;
-	IMGDBHEADER dbHeader;
+	IMGLIBHEADER lbHeader = { };
+	IMGDBHEADER dbHeader = { };
 
 	//declare file to read
 	HANDLE hFile = INVALID_HANDLE_VALUE;
