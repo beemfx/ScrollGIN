@@ -60,12 +60,6 @@ bool SgImgLib::GetImageName(char* Out, size_t OutSize, sg_uint32 nEntry)
 	return result;
 }
 
-HBITMAP SgImgLib::GetBitmap(sg_uint16 nBitmap)
-{
-	if ((nBitmap < 1) || (nBitmap > MAX_BITMAPS))return NULL;
-	return m_hBitmap[nBitmap - 1];
-}
-
 sg_uint32 SgImgLib::GetNumEntries()
 {
 	return m_ImageData.size();
@@ -278,11 +272,11 @@ bool SgImgLibArchive::LoadArchive(LPCSTR szFilename)
 		CloseHandle(hFile);
 		return false;
 	}
-	if (lbHeader.wType != *(sg_uint16*)"IL") {
+	if (lbHeader.wType != IMGLIB_HEADER_ID) {
 		CloseHandle(hFile);
 		return false;
 	}
-	if (lbHeader.nVersion != 20) {
+	if (lbHeader.nVersion != IMGLIB_ILB_VERSION) {
 		CloseHandle(hFile);
 		return false;
 	}

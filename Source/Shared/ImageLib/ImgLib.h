@@ -12,6 +12,11 @@ static const int MAX_BITMAPS = 10;
 static const int IMAGE_NAME_LENGTH = 15;
 static const int DEFAULT_MAX_ENTRIES = 256;
 
+static const sg_uint16 IMGLIB_HEADER_ID = 19529; // "IL"
+static const sg_uint16 IMGLIB_IDA_VERSION = 10;
+static const sg_uint16 IMGLIB_ILB_VERSION = 20;
+
+
 struct IMAGEDATA
 {
 	sg_uint16 nBitmap = 0; //reference to which bitmap contains the image
@@ -27,7 +32,7 @@ struct IMAGEDATA
 
 struct IMGLIBHEADER
 {
-	sg_uint16 wType = 0; //The type of file "IL"
+	sg_uint16 wType = 0; //The type of file IMGLIB_HEADER_ID
 	sg_uint16 nVersion = 0; //version 10 for database 20 for library build
 	sg_uint32 lReserved1 = 0; //reserved
 	sg_uint32 lReserved2 = 0; //reserved
@@ -72,7 +77,6 @@ public:
 	sg_uint32 GetNumEntries();
 	sg_uint16 GetNumBitmaps();
 	void GetBitmapName(char* Out, size_t OutSize, sg_uint16 nBitmap);
-	HBITMAP GetBitmap(sg_uint16 nBitmap);
 	int GetBitmapOffset(sg_uint16 nBitmap)const { return ((nBitmap < 1) || (nBitmap > m_nNumBitmaps)) ? 0 : m_BmOffsets[nBitmap - 1]; }
 	void CloseMainBitmaps();
 	void ClearDataBase();
