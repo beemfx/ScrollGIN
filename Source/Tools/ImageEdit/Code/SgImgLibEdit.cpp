@@ -188,7 +188,7 @@ bool SgImgLibEdit::SaveData(LPSTR szFilename)
 	//we now write the bitmap filenamedata
 	for (std::size_t i = 0; i < m_SourceImageData.size(); i++)
 	{
-		const sg_uint16 nBMNameSize = static_cast<sg_uint16>(m_SourceImageData[i].Filename.size());
+		const sg_uint16 nBMNameSize = static_cast<sg_uint16>(m_SourceImageData[i].Filename.length() + 1) * sizeof(wchar_t);
 
 		//Write the size of the name
 		WriteFile(hFile, &nBMNameSize, sizeof(sg_uint16), &dwBytesWritten, NULL);
@@ -253,8 +253,10 @@ bool SgImgLibEdit::LoadData(LPSTR szFilename)
 		//get size of entry
 		ReadFile(hFile, &nBMNameLen, sizeof(sg_uint16), &dwBytesRead, NULL);
 		//read entry
-		m_SourceImageData[i].Filename.resize(nBMNameLen+1);
-		ReadFile(hFile, const_cast<wchar_t*>(m_SourceImageData[i].Filename.data()), nBMNameLen, &dwBytesRead, NULL);
+		std::vector<wchar_t> TempStr;
+		TempStr.resize(nBMNameLen / sizeof(wchar_t));
+		ReadFile(hFile, TempStr.data(), nBMNameLen, &dwBytesRead, NULL);
+		m_SourceImageData[i].Filename = TempStr.data();
 	}
 	//read image data
 	ReadFile(hFile, m_ImageData.data(), dbHeader.nSizeofEntryData, &dwBytesRead, NULL);
