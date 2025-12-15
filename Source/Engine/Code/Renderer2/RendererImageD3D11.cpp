@@ -42,6 +42,21 @@ void SgRendererImage::CreateBitmap()
 	int DestWidth = m_D->CreateParms.Width;
 	int DestHeight = m_D->CreateParms.Height;
 
+	bool bReverseX = false;
+	bool bReverseY = false;
+
+	if (SrcWidth < 0)
+	{
+		bReverseX = true;
+		SrcWidth = -SrcWidth;
+	}
+
+	if (SrcHeight < 0)
+	{
+		bReverseY = true;
+		SrcHeight = -SrcHeight;
+	}
+
 	HANDLE File = CreateFileA(m_D->CreateParms.BmFile, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
 	if( INVALID_HANDLE_VALUE == File )
 	{
@@ -136,6 +151,35 @@ void SgRendererImage::CreateBitmap()
 		if( Colors[i] == 0xFFFF00FF )
 		{
 			Colors[i] = 0;//&= 0x00FFFFFF;
+		}
+	}
+
+	if (bReverseX)
+	{
+		for (int Row = 0; Row < DestHeight; Row++)
+		{
+			sg_uint32* RowColors = &Colors[Row * DestWidth];
+			for (int i = 0; i < DestWidth / 2; i++)
+			{
+				sg_uint32 Temp = RowColors[i];
+				RowColors[i] = RowColors[DestWidth-i-1];
+				RowColors[DestWidth-i-1] = Temp;
+			}
+		}
+	}
+
+	if (bReverseY)
+	{
+		for (int Col = 0; Col < DestWidth; Col++)
+		{
+			for (int i = 0; i < DestHeight / 2; i++)
+			{
+				std::size_t IdxA = i * DestWidth + Col;
+				std::size_t IdxB = (DestHeight - i - 1) * DestWidth + Col;
+				sg_uint32 Temp = Colors[IdxA];
+				Colors[IdxA] = Colors[IdxB];
+				Colors[IdxB] = Temp;
+			}
 		}
 	}
 

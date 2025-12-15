@@ -149,7 +149,7 @@ HRESULT SgInputManager::InitJoystick(HWND hWnd){
 	if(!m_lpDIObject)return E_FAIL;
 	HRESULT hr;
 	//first enumerate the devices
-	INPUTCREATEDATA diData;
+	INPUTCREATEDATA diData = { };
 	diData.lpDI=&m_lpDIObject;
 	diData.lpDevice=&m_lpJoystick;
 	if(FAILED(hr=m_lpDIObject->EnumDevices(DI8DEVCLASS_GAMECTRL,
