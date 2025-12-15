@@ -3,14 +3,16 @@
 
 #include "ImageLib/ImgLib.h"
 
-class CConstantArchive: public SgImgLibArchive{
-private:
+class CConstantArchive: public SgImgLibArchive
+{
 public:
 	CConstantArchive(LPCTSTR, int, WORD, WORD);
 	~CConstantArchive();
-	//HRESULT DisplayImage(HDC *hDc, int reference, int x, int y, BOOL bTransp);
+	
 	HRESULT StretchImageToDC(HDC hdcDest, DWORD nEntry, int x, int y, int nWidth, int nHeight, BOOL bTransp);
 
+private:
+	HBITMAP m_hBitmap = NULL;
 };
 
 #endif //__constlibrary_h__

@@ -33,7 +33,7 @@ void SgSpriteManager::InsertSprites(int nSprite, const char* szFilename)
 {
 	if((nSprite<1) || (nSprite>=MAX_SPRITES))return;
 	m_nNumSprites=nSprite;
-	SgImgLibArchive ILibrary( true );
+	SgImgLibArchive ILibrary;
 
 	bool Res = ILibrary.LoadArchive(szFilename);
 	if(!(Res))return;

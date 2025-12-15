@@ -12,13 +12,13 @@
 
 
 CConstantArchive::CConstantArchive(LPCTSTR szBitmapName, int nNumEntries, WORD nWidth, WORD nHeight)
-: SgImgLibArchive( false )
+	: SgImgLibArchive()
 {
 	m_ImageData.resize(nNumEntries);
-	m_hBitmap[0]=NULL;
+
 	m_nSelectedEntry=1;
 
-	m_hBitmap[0]=(HBITMAP)LoadImage(GetModuleHandle(NULL), szBitmapName, IMAGE_BITMAP, 0, 0, LR_DEFAULTCOLOR);
+	m_hBitmap=(HBITMAP)LoadImage(GetModuleHandle(NULL), szBitmapName, IMAGE_BITMAP, 0, 0, LR_DEFAULTCOLOR);
 	for(int i=0; i<10; i++){
 		m_ImageData[i].nHeight=nHeight;
 		m_ImageData[i].nWidth=nWidth;
@@ -49,7 +49,7 @@ HRESULT CConstantArchive::StretchImageToDC(HDC hdcDest, DWORD nEntry, int x, int
 	if((nEntry<1)||(nEntry>m_ImageData.size()))return S_FALSE;
 
 	hdcMainBitmap=CreateCompatibleDC(hdcDest);
-	SelectObject(hdcMainBitmap, m_hBitmap[0]);
+	SelectObject(hdcMainBitmap, m_hBitmap);
 
 	
 	if(!bTransp){

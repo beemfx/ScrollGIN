@@ -8,18 +8,14 @@
 #include "SgLib/SgFuncs.h"
 #include <stdio.h>
 
-SgImgLib::SgImgLib(bool DontLoadBms)
-	: m_DontLoadBms(DontLoadBms)
+SgImgLib::SgImgLib()
 {
-	for (int i = 0; i < MAX_BITMAPS; i++)
-	{
-		m_hBitmap[i] = NULL;
-	}
+	
 }
 
 SgImgLib::~SgImgLib()
 {
-	CloseMainBitmaps();
+	
 }
 
 bool SgImgLib::GetImageData(sg_uint32 nEntry, IMAGEDATA* imgData)
@@ -77,152 +73,16 @@ bool SgImgLib::OpenBitmapOffset(LPCSTR szFilename, sg_uint32 nOffset, sg_uint32 
 		return false;
 	}
 
-	if (m_DontLoadBms)
-	{
-		m_hBitmap[nBitmap - 1] = 0;
-		m_SourceImageData[nBitmap - 1].Offset = nOffset;
-		m_SourceImageData[nBitmap - 1].Filename = SgFunc_ToWString(szFilename);
-	}
-	else
-	{
-		DeleteObject(m_hBitmap[nBitmap - 1]);
-		m_hBitmap[nBitmap - 1] = LoadBitmapOffset(szFilename, nOffset, FileSize);
-
-		if (m_hBitmap[nBitmap - 1] == NULL)return false;
-		m_SourceImageData[nBitmap - 1].Offset = nOffset;
-		m_SourceImageData[nBitmap - 1].Filename = SgFunc_ToWString(szFilename);
-	}
+	m_SourceImageData[nBitmap - 1].Offset = nOffset;
+	m_SourceImageData[nBitmap - 1].FileSize = FileSize;
+	m_SourceImageData[nBitmap - 1].Filename = SgFunc_ToWString(szFilename);
+	
 	return true;
-}
-
-void SgImgLib::CloseMainBitmaps()
-{
-	for (auto& Item : m_hBitmap)
-	{
-		if (Item)
-		{
-			DeleteObject(Item);
-		}
-		Item = NULL;
-	}
-}
-
-
-void SgImgLib::OpenMainBitmaps()
-{
-	CloseMainBitmaps();
-
-	if (m_DontLoadBms)
-	{
-		return;
-	}
-
-	for (std::size_t i = 0; i < m_SourceImageData.size(); i++)
-	{
-		if (i < countof(m_hBitmap))
-		{
-			m_hBitmap[i] = LoadBitmapOffset(SgFunc_ToMBString(m_SourceImageData[i].Filename).c_str(), 0, 0);
-		}
-	}
-}
-
-void SgImgLib::ClearDataBase()
-{
-	m_ImageData.resize(0);
-	m_SourceImageData.resize(0);
-	CloseMainBitmaps();
-}
-
-
-void SgImgLib::CopyImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, BOOL bTransp)
-{
-	HDC hdcMainBitmap = NULL;
-
-	if ((nEntry < 1) || (nEntry > m_ImageData.size()))return;
-
-	hdcMainBitmap = CreateCompatibleDC(hdcMainBitmap);
-	SelectObject(hdcMainBitmap, m_hBitmap[m_ImageData[nEntry - 1].nBitmap - 1]);
-
-
-	if (!bTransp) {
-		StretchBlt(
-			hdcDest,
-			x,
-			y,
-			m_ImageData[nEntry - 1].nWidth,
-			m_ImageData[nEntry - 1].nHeight,
-			hdcMainBitmap,
-			m_ImageData[nEntry - 1].nX,
-			m_ImageData[nEntry - 1].nY,
-			m_ImageData[nEntry - 1].nWidthSrc,
-			m_ImageData[nEntry - 1].nHeightSrc,
-			SRCCOPY);
-	}
-	else {
-		TransparentBlt2(
-			hdcDest,
-			x,
-			y,
-			m_ImageData[nEntry - 1].nWidth,
-			m_ImageData[nEntry - 1].nHeight,
-			hdcMainBitmap,
-			m_ImageData[nEntry - 1].nX,
-			m_ImageData[nEntry - 1].nY,
-			m_ImageData[nEntry - 1].nWidthSrc,
-			m_ImageData[nEntry - 1].nHeightSrc,
-			RGB(255, 0, 255));
-
-	}
-
-	DeleteDC(hdcMainBitmap);
 }
 
 sg_uint16 SgImgLib::GetNumBitmaps()
 {
 	return static_cast<sg_uint16>(m_SourceImageData.size());
-}
-
-void SgImgLib::StretchImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, int nWidth, int nHeight, BOOL bTransp)
-{
-	HDC hdcMainBitmap = NULL;
-
-	if ((nEntry < 1) || (nEntry > m_ImageData.size()))return;
-
-	hdcMainBitmap = CreateCompatibleDC(hdcMainBitmap);
-	SelectObject(hdcMainBitmap, m_hBitmap[m_ImageData[nEntry - 1].nBitmap - 1]);
-
-
-	if (!bTransp) {
-		StretchBlt(
-			hdcDest,
-			x,
-			y,
-			nWidth,
-			nHeight,
-			hdcMainBitmap,
-			m_ImageData[nEntry - 1].nX,
-			m_ImageData[nEntry - 1].nY,
-			m_ImageData[nEntry - 1].nWidthSrc,
-			m_ImageData[nEntry - 1].nHeightSrc,
-			SRCCOPY);
-	}
-	else {
-		TransparentBlt2(
-			hdcDest,
-			x,
-			y,
-			nWidth,
-			nHeight,
-			hdcMainBitmap,
-			m_ImageData[nEntry - 1].nX,
-			m_ImageData[nEntry - 1].nY,
-			m_ImageData[nEntry - 1].nWidthSrc,
-			m_ImageData[nEntry - 1].nHeightSrc,
-			RGB(255, 0, 255));
-
-	}
-
-	DeleteDC(hdcMainBitmap);
 }
 
 void SgImgLib::GetBitmapName(char* Out, size_t OutSize, sg_uint16 nBitmap)
@@ -243,11 +103,10 @@ void SgImgLib::GetBitmapName(char* Out, size_t OutSize, sg_uint16 nBitmap)
 
 ***************************************************************************/
 
-SgImgLibArchive::SgImgLibArchive(bool DontLoadBms)
-	: SgImgLib(DontLoadBms)
+SgImgLibArchive::SgImgLibArchive()
+	: SgImgLib()
 {
 	m_nSelectedEntry = 1;
-
 }
 
 SgImgLibArchive::~SgImgLibArchive()
@@ -326,5 +185,6 @@ bool SgImgLibArchive::LoadArchive(LPCSTR szFilename)
 
 void SgImgLibArchive::CloseArchive()
 {
-	ClearDataBase();
+	m_ImageData.resize(0);
+	m_SourceImageData.resize(0);
 }

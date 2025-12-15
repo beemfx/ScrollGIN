@@ -67,6 +67,7 @@ struct sgSourceImageData
 {
 	std::wstring Filename;
 	int Offset = 0;
+	int FileSize = 0;
 };
 
 class SgImgLib
@@ -75,22 +76,14 @@ protected:
 	std::vector<IMAGEDATA> m_ImageData;
 	std::vector<sgSourceImageData> m_SourceImageData;
 
-	HBITMAP m_hBitmap[MAX_BITMAPS] = { };
-	const bool m_DontLoadBms = false;
-
 public:
-	SgImgLib(bool DontLoadBms);
+	SgImgLib();
 	~SgImgLib();
 
 	sg_uint32 GetNumEntries();
 	sg_uint16 GetNumBitmaps();
 	void GetBitmapName(char* Out, size_t OutSize, sg_uint16 nBitmap);
 	int GetBitmapOffset(sg_uint16 nBitmap)const { return ((nBitmap < 1) || (nBitmap > m_SourceImageData.size())) ? 0 : m_SourceImageData[nBitmap - 1].Offset; }
-	void CloseMainBitmaps();
-	void OpenMainBitmaps();
-	void ClearDataBase();
-	void CopyImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, BOOL bTransp);
-	void StretchImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, int nWidth, int nHeight, BOOL bTransp);
 	bool GetImageName(char* Out, size_t OutSize, sg_uint32 nEntry);
 	sg_uint16 GetNumFrames(sg_uint32 nEntry);
 	bool GetImageData(sg_uint32 nEntry, IMAGEDATA* imgData);
@@ -104,7 +97,7 @@ class SgImgLibArchive : public SgImgLib
 protected:
 	sg_uint32 m_nSelectedEntry;
 public:
-	SgImgLibArchive(bool DontLoadBms);
+	SgImgLibArchive();
 	~SgImgLibArchive();
 
 	bool LoadArchive(LPCSTR szFilename);

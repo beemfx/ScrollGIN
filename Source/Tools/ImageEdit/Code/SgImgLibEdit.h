@@ -20,4 +20,14 @@ public:
 	bool LoadData(LPSTR szFilename);
 	bool BuildLibrary(LPSTR szFilename);
 	bool ImportLibrary(LPSTR szFilename);
+
+	void CopyImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, BOOL bTransp);
+	void StretchImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, int nWidth, int nHeight, BOOL bTransp);
+
+private:
+	HBITMAP m_hBitmap[MAX_BITMAPS] = { };
+
+private:
+	void CloseMainBitmaps();
+	void OpenMainBitmaps();
 };
