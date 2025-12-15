@@ -12,7 +12,7 @@
 #include <tchar.h>
 
 #include "ConstLibrary.h"
-#include "ImageLib/ImgLib.h"
+#include "SgWinDCImgLib.h"
 #include "MapBoard/SgMap.h"
 #include "resource.h"
 #include "defines.h"
@@ -32,7 +32,7 @@
 #endif //unicode
 
 SgMapEdit g_cEditMapboard;
-SgImgLibArchive ITileArchive( false );
+SgWinDCImgLib ITileArchive;
 CConstantArchive g_cArchLibrary(MAKEINTRESOURCE(IDB_ARCHTILES), 28, MAP_TILEDIM, MAP_TILEDIM);
 
 BOOL g_bQueryForSave=FALSE;

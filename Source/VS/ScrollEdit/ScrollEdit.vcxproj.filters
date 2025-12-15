@@ -60,6 +60,9 @@
     <ClCompile Include="..\..\Shared\ImageLib\SgImage.cpp">
       <Filter>Shared\ImageLib</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Tools\ScrollEdit\Code\SgWinDCImgLib.cpp">
+      <Filter>ScrollEdit\Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Tools\ScrollEdit\Code\ConstLibrary.h">
@@ -97,6 +100,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Shared\ImageLib\SgImage.h">
       <Filter>Shared\ImageLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\ScrollEdit\Code\SgWinDCImgLib.h">
+      <Filter>ScrollEdit\Code</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

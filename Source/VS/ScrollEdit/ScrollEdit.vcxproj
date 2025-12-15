@@ -22,6 +22,7 @@
     <ClCompile Include="..\..\Tools\ScrollEdit\Code\ConstLibrary.cpp" />
     <ClCompile Include="..\..\Tools\ScrollEdit\Code\Main.cpp" />
     <ClCompile Include="..\..\Tools\ScrollEdit\Code\Registry.cpp" />
+    <ClCompile Include="..\..\Tools\ScrollEdit\Code\SgWinDCImgLib.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Shared\ImageLib\bitmapex.h" />
@@ -35,6 +36,7 @@
     <ClInclude Include="..\..\Tools\ScrollEdit\Code\ConstLibrary.h" />
     <ClInclude Include="..\..\Tools\ScrollEdit\Code\Defines.h" />
     <ClInclude Include="..\..\Tools\ScrollEdit\Code\Registry.h" />
+    <ClInclude Include="..\..\Tools\ScrollEdit\Code\SgWinDCImgLib.h" />
     <ClInclude Include="..\..\Tools\ScrollEdit\Res\resource.h" />
   </ItemGroup>
   <ItemGroup>
