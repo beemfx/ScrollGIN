@@ -2,6 +2,8 @@
 
 #if defined( __cplusplus )
 #include <cstdint>
+#include <fstream>
+#include <vector>
 #endif
 
 #define __DXVERSION__ 11

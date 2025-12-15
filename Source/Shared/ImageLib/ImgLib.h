@@ -85,7 +85,7 @@ public:
 	bool      GetImageData(sg_uint32 nEntry, IMAGEDATA *imgData);
 protected:
 	bool      OpenBitmap(LPSTR szFilename, sg_uint16 nBitmap);
-	bool      OpenBitmapOffset(LPCSTR szFilename, sg_uint32 nOffset, sg_uint16 nBitmap);
+	bool      OpenBitmapOffset(LPCSTR szFilename, sg_uint32 nOffset, sg_uint32 FileSize, sg_uint16 nBitmap);
 };
 
 class SgImgLibEdit: public SgImgLib

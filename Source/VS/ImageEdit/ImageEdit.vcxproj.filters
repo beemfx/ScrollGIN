@@ -50,6 +50,9 @@
     <ClInclude Include="..\..\Shared\img_lib\img_private.h">
       <Filter>Shared\img_lib</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Shared\ImageLib\SgImage.h">
+      <Filter>Shared\ImageLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Tools\ImageEdit\Code\DiskDlg.c">
@@ -57,9 +60,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Tools\ImageEdit\Code\Main.cpp">
       <Filter>ImageEdit\Code</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Shared\ImageLib\Bitmap.c">
-      <Filter>Shared\ImageLib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Shared\ImageLib\ImgLib.cpp">
       <Filter>Shared\ImageLib</Filter>
@@ -75,6 +75,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Shared\img_lib\img_tga.c">
       <Filter>Shared\img_lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\ImageLib\SgImage.cpp">
+      <Filter>Shared\ImageLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\ImageLib\BitmapEx.cpp">
+      <Filter>Shared\ImageLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

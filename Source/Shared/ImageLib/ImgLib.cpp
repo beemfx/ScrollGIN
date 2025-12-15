@@ -77,10 +77,10 @@ sg_uint32 SgImgLib::GetNumEntries()
 
 bool SgImgLib::OpenBitmap(LPSTR szFilename, sg_uint16 nBitmap)
 {
-	return OpenBitmapOffset(szFilename, 0, nBitmap);
+	return OpenBitmapOffset(szFilename, 0, 0, nBitmap);
 }
 
-bool SgImgLib::OpenBitmapOffset(LPCSTR szFilename, sg_uint32 nOffset, sg_uint16 nBitmap)
+bool SgImgLib::OpenBitmapOffset(LPCSTR szFilename, sg_uint32 nOffset, sg_uint32 FileSize, sg_uint16 nBitmap)
 {
 	if( (nBitmap<1) || (nBitmap>MAX_BITMAPS) )return false;
 
@@ -93,7 +93,7 @@ bool SgImgLib::OpenBitmapOffset(LPCSTR szFilename, sg_uint32 nOffset, sg_uint16 
 	else
 	{
 		DeleteObject(m_hBitmap[nBitmap - 1]);
-		m_hBitmap[nBitmap - 1] = LoadBitmapOffset(szFilename, nOffset);
+		m_hBitmap[nBitmap - 1] = LoadBitmapOffset(szFilename, nOffset, FileSize);
 
 		if (m_hBitmap[nBitmap - 1] == NULL)return false;
 		m_BmOffsets[nBitmap - 1] = nOffset;
@@ -842,7 +842,7 @@ bool SgImgLibArchive::LoadArchive(LPCSTR szFilename)
 
 	for (i = 1; i <= imHeader.nNumBMs; i++)
 	{
-		OpenBitmapOffset(szFilename, bmData[i - 1].dwOffset, i);
+		OpenBitmapOffset(szFilename, bmData[i - 1].dwOffset, bmData[i - 1].dwSize, i);
 		m_nNumBitmaps++;
 	}
 

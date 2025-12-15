@@ -13,7 +13,7 @@ extern "C"
 #endif //__cplusplus
 
 //The LoadBitmapOffset function loads a bitmap from and offset within a file.
-HBITMAP LoadBitmapOffset(const char szFilename[MAX_PATH], int nOffset);
+HBITMAP LoadBitmapOffset(const char szFilename[MAX_PATH], int nOffset, int FileSize);
 
 BOOL TransparentBlt2(
 	HDC hdcDest,

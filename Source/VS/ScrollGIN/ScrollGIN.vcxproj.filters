@@ -93,14 +93,17 @@
     <ClCompile Include="..\..\Shared\img_lib\img_tga.c">
       <Filter>Shared\img_lib</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Shared\ImageLib\Bitmap.c">
-      <Filter>Shared\ImageLib</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Shared\ImageLib\ImgLib.cpp">
       <Filter>Shared\ImageLib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Engine\Code\SgEngine.cpp">
       <Filter>Engine\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\ImageLib\BitmapEx.cpp">
+      <Filter>Shared\ImageLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\ImageLib\SgImage.cpp">
+      <Filter>Shared\ImageLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Engine\Code\SgEngine.h">
       <Filter>Engine\Code</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\ImageLib\SgImage.h">
+      <Filter>Shared\ImageLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

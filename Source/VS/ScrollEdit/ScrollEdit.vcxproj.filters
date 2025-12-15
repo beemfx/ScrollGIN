@@ -36,9 +36,6 @@
     <ClCompile Include="..\..\Tools\ScrollEdit\Code\Registry.cpp">
       <Filter>ScrollEdit\Code</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Shared\ImageLib\Bitmap.c">
-      <Filter>Shared\ImageLib</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Shared\ImageLib\ImgLib.cpp">
       <Filter>Shared\ImageLib</Filter>
     </ClCompile>
@@ -56,6 +53,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Shared\MapBoard\SgMap.cpp">
       <Filter>Shared\MapBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\ImageLib\BitmapEx.cpp">
+      <Filter>Shared\ImageLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\ImageLib\SgImage.cpp">
+      <Filter>Shared\ImageLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Shared\SgCommon.h">
       <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\ImageLib\SgImage.h">
+      <Filter>Shared\ImageLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

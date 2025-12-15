@@ -3,89 +3,40 @@
 
 	Copyright (c) 2002, Blaine Myers
 */
+
 #include "bitmapex.h"
+#include "SgImage.h"
 #include "img_lib/img_lib.h"
 
-#define SAFE_FREE(p)         { if(p) { free(p); (p)=NULL; } }
-
 /* This function loads a bitmap from a given offset within a file. */
-HBITMAP LoadBitmapOffset(const char szFilename[MAX_PATH], int nOffset)
+HBITMAP LoadBitmapOffset(const char szFilename[MAX_PATH], int nOffset, int FileSize)
 {
-	HANDLE hFile   = CreateFileA(szFilename, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
-	sg_uint32 FileSize = GetFileSize( hFile , NULL );
-	if(hFile==INVALID_HANDLE_VALUE)return NULL;
-
-	unsigned __int8* FileData = malloc( FileSize );
-	if( NULL == FileData )
-	{
-		CloseHandle( hFile );
-		return NULL;
-	}
-	SetFilePointer( hFile , 0, NULL, FILE_BEGIN );
-	sg_uint32 SizeRead = 0;
-	BOOL ReadSucc = ReadFile( hFile , FileData , FileSize, &SizeRead , NULL );
-
-	if( !ReadSucc || SizeRead != FileSize )
-	{
-		SAFE_FREE( FileData );
-		CloseHandle( hFile );
-		return NULL;
-	}
-	CloseHandle( hFile );
-
-	HIMG Img = IMG_OpenMemory( &FileData[nOffset] , FileSize-nOffset );
-	SAFE_FREE( FileData );
-
-	if( IMG_NULL == Img )
+	SgImage Img(szFilename, nOffset, FileSize);
+	if (!Img.IsLoaded())
 	{
 		return NULL;
 	}
 
-	IMG_DESC ImgDesc;
-	IMG_GetDesc( Img , &ImgDesc );
-
-	BITMAPINFO BmInfo;
-	memset( &BmInfo, 0, sizeof(BmInfo) );
-	BmInfo.bmiHeader.biCompression   = BI_RGB;
-	BmInfo.bmiHeader.biPlanes   = 1;
-	BmInfo.bmiHeader.biBitCount = 32;
-	BmInfo.bmiHeader.biHeight   = ImgDesc.Height;
-	BmInfo.bmiHeader.biWidth    = ImgDesc.Width;
-	BmInfo.bmiHeader.biSizeImage=0;
+	BITMAPINFO BmInfo = { };
+	BmInfo.bmiHeader.biCompression = BI_RGB;
+	BmInfo.bmiHeader.biPlanes = 1;
+	BmInfo.bmiHeader.biBitCount = sizeof(SgImage::sgPixel)*8;
+	BmInfo.bmiHeader.biHeight = -static_cast<LONG>(Img.GetHeight());
+	BmInfo.bmiHeader.biWidth = Img.GetWidth();
+	BmInfo.bmiHeader.biSizeImage = 0;
 	BmInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-	unsigned __int32* Bits = NULL;
+	SgImage::sgPixel* Bits = nullptr;
 
-	HBITMAP hBitmap = CreateDIBSection( NULL , &BmInfo , DIB_RGB_COLORS , &Bits , NULL , 0 );
-	
-	if (NULL == hBitmap )
+	const std::size_t ImageSize = Img.GetWidth() * Img.GetHeight() * sizeof(SgImage::sgPixel);
+
+	HBITMAP hBitmap = CreateDIBSection(NULL, &BmInfo, DIB_RGB_COLORS, reinterpret_cast<void**>(&Bits), NULL, 0);
+
+	if (NULL == hBitmap)
 	{
-		IMG_Delete(Img);
 		return NULL;
 	}
 
-	IMG_DEST_RECT DestRect;
-	DestRect.nFormat = IMGFMT_A8R8G8B8;
-	DestRect.nWidth  = ImgDesc.Width;
-	DestRect.nHeight = ImgDesc.Height;
-	DestRect.nPitch  = sizeof( unsigned __int32)*ImgDesc.Width;
-	DestRect.nOrient = IMGORIENT_BOTTOMLEFT;
-	DestRect.pImage  = Bits;
-
-	DestRect.rcCopy.top    = 0;
-	DestRect.rcCopy.left   = 0;
-	DestRect.rcCopy.bottom = ImgDesc.Height;
-	DestRect.rcCopy.right  = ImgDesc.Width;
-
-	img_bool Copied = IMG_CopyBits( Img , &DestRect , IMGFILTER_NONE , IMG_NULL , 0xFF );
-	
-	IMG_Delete(Img);
-	Img = IMG_NULL;
-
-	if( IMG_FALSE == Copied )
-	{
-		DeleteObject( hBitmap );
-		hBitmap = NULL;
-	}
+	std::memcpy(Bits, Img.GetPixels(), ImageSize);
 
 	return hBitmap;
 }

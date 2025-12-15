@@ -11,8 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Shared\ImageLib\Bitmap.c" />
+    <ClCompile Include="..\..\Shared\ImageLib\BitmapEx.cpp" />
     <ClCompile Include="..\..\Shared\ImageLib\ImgLib.cpp" />
+    <ClCompile Include="..\..\Shared\ImageLib\SgImage.cpp" />
     <ClCompile Include="..\..\Shared\img_lib\img_bmp.c" />
     <ClCompile Include="..\..\Shared\img_lib\img_cb.c" />
     <ClCompile Include="..\..\Shared\img_lib\img_lib.c" />
@@ -25,6 +26,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Shared\ImageLib\bitmapex.h" />
     <ClInclude Include="..\..\Shared\ImageLib\ImgLib.h" />
+    <ClInclude Include="..\..\Shared\ImageLib\SgImage.h" />
     <ClInclude Include="..\..\Shared\img_lib\img_lib.h" />
     <ClInclude Include="..\..\Shared\img_lib\img_lib_types.h" />
     <ClInclude Include="..\..\Shared\img_lib\img_private.h" />
