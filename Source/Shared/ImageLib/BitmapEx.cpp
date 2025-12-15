@@ -31,12 +31,10 @@ HBITMAP LoadBitmapOffset(const char szFilename[MAX_PATH], int nOffset, int FileS
 
 	HBITMAP hBitmap = CreateDIBSection(NULL, &BmInfo, DIB_RGB_COLORS, reinterpret_cast<void**>(&Bits), NULL, 0);
 
-	if (NULL == hBitmap)
+	if (hBitmap != NULL && Bits)
 	{
-		return NULL;
+		std::memcpy(Bits, Img.GetPixels(), ImageSize);
 	}
-
-	std::memcpy(Bits, Img.GetPixels(), ImageSize);
 
 	return hBitmap;
 }
