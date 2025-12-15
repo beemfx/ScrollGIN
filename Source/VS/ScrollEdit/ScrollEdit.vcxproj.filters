@@ -25,6 +25,9 @@
     <Filter Include="ScrollEdit\Content">
       <UniqueIdentifier>{8309494c-7096-4bd0-b474-604bebddde28}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shared\SgLib">
+      <UniqueIdentifier>{33647b50-d7f3-4ab0-aad3-05342664dfc9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Tools\ScrollEdit\Code\ConstLibrary.cpp">
@@ -62,6 +65,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Tools\ScrollEdit\Code\SgWinDCImgLib.cpp">
       <Filter>ScrollEdit\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\SgLib\SgFuncs.cpp">
+      <Filter>Shared\SgLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Tools\ScrollEdit\Code\SgWinDCImgLib.h">
       <Filter>ScrollEdit\Code</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\SgLib\SgFuncs.h">
+      <Filter>Shared\SgLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

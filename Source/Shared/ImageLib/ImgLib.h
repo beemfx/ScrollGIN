@@ -8,6 +8,7 @@
 
 #include <windows.h>
 
+static const int IMGLIB_MAX_PATH = 260;
 static const int MAX_BITMAPS = 10;
 static const int IMAGE_NAME_LENGTH = 15;
 static const int DEFAULT_MAX_ENTRIES = 256;
@@ -60,14 +61,19 @@ struct BITMAPDATA
 	sg_uint32 dwSize = 0;
 };
 
+struct sgSourceImageData
+{
+	std::wstring Filename;
+	int Offset = 0;
+};
+
 class SgImgLib
 {
 protected:
 	std::vector<IMAGEDATA> m_ImageData;
-	int m_BmOffsets[MAX_BITMAPS] = { };
+	std::vector<sgSourceImageData> m_SourceImageData;
+
 	HBITMAP m_hBitmap[MAX_BITMAPS] = { };
-	char m_szBitmapFilenameA[MAX_BITMAPS][MAX_PATH] = { };
-	sg_uint16 m_nNumBitmaps = 0;
 	const bool m_DontLoadBms = false;
 
 public:
@@ -77,8 +83,9 @@ public:
 	sg_uint32 GetNumEntries();
 	sg_uint16 GetNumBitmaps();
 	void GetBitmapName(char* Out, size_t OutSize, sg_uint16 nBitmap);
-	int GetBitmapOffset(sg_uint16 nBitmap)const { return ((nBitmap < 1) || (nBitmap > m_nNumBitmaps)) ? 0 : m_BmOffsets[nBitmap - 1]; }
+	int GetBitmapOffset(sg_uint16 nBitmap)const { return ((nBitmap < 1) || (nBitmap > m_SourceImageData.size())) ? 0 : m_SourceImageData[nBitmap - 1].Offset; }
 	void CloseMainBitmaps();
+	void OpenMainBitmaps();
 	void ClearDataBase();
 	void CopyImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, BOOL bTransp);
 	void StretchImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, int nWidth, int nHeight, BOOL bTransp);

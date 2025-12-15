@@ -19,6 +19,9 @@
     <Filter Include="Shared\img_lib">
       <UniqueIdentifier>{26d18b8b-c427-4c41-8f6f-857035549682}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shared\SgLib">
+      <UniqueIdentifier>{d96928ab-7a47-49f8-8905-a71c31f30f3f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Tools\ImageEdit\README.md">
@@ -56,6 +59,9 @@
     <ClInclude Include="..\..\Tools\ImageEdit\Code\SgImgLibEdit.h">
       <Filter>ImageEdit\Code</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Shared\SgLib\SgFuncs.h">
+      <Filter>Shared\SgLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Tools\ImageEdit\Code\DiskDlg.c">
@@ -87,6 +93,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Tools\ImageEdit\Code\SgImgLibEdit.cpp">
       <Filter>ImageEdit\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\SgLib\SgFuncs.cpp">
+      <Filter>Shared\SgLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

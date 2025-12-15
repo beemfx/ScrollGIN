@@ -19,6 +19,7 @@
     <ClCompile Include="..\..\Shared\img_lib\img_lib.c" />
     <ClCompile Include="..\..\Shared\img_lib\img_tga.c" />
     <ClCompile Include="..\..\Shared\MapBoard\SgMap.cpp" />
+    <ClCompile Include="..\..\Shared\SgLib\SgFuncs.cpp" />
     <ClCompile Include="..\..\Tools\ScrollEdit\Code\ConstLibrary.cpp" />
     <ClCompile Include="..\..\Tools\ScrollEdit\Code\Main.cpp" />
     <ClCompile Include="..\..\Tools\ScrollEdit\Code\Registry.cpp" />
@@ -33,6 +34,7 @@
     <ClInclude Include="..\..\Shared\img_lib\img_private.h" />
     <ClInclude Include="..\..\Shared\MapBoard\SgMap.h" />
     <ClInclude Include="..\..\Shared\SgCommon.h" />
+    <ClInclude Include="..\..\Shared\SgLib\SgFuncs.h" />
     <ClInclude Include="..\..\Tools\ScrollEdit\Code\ConstLibrary.h" />
     <ClInclude Include="..\..\Tools\ScrollEdit\Code\Defines.h" />
     <ClInclude Include="..\..\Tools\ScrollEdit\Code\Registry.h" />

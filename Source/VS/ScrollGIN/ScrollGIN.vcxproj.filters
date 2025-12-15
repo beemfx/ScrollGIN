@@ -28,6 +28,9 @@
     <Filter Include="Engine\Res">
       <UniqueIdentifier>{3091ea69-2e5a-40e7-838a-3d7f2b3b93be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shared\SgLib">
+      <UniqueIdentifier>{7d5ccff5-b07e-429d-8940-21b6b403c777}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Engine\Code\Background.cpp">
@@ -105,6 +108,9 @@
     <ClCompile Include="..\..\Shared\ImageLib\SgImage.cpp">
       <Filter>Shared\ImageLib</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Shared\SgLib\SgFuncs.cpp">
+      <Filter>Shared\SgLib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Engine\Code\Background.h">
@@ -178,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Shared\ImageLib\SgImage.h">
       <Filter>Shared\ImageLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\SgLib\SgFuncs.h">
+      <Filter>Shared\SgLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -5,18 +5,15 @@
 */
 #include "ImgLib.h"
 #include "bitmapex.h"
+#include "SgLib/SgFuncs.h"
 #include <stdio.h>
 
 SgImgLib::SgImgLib(bool DontLoadBms)
 	: m_DontLoadBms(DontLoadBms)
 {
-	m_nNumBitmaps = 0;
-
 	for (int i = 0; i < MAX_BITMAPS; i++)
 	{
-		m_szBitmapFilenameA[i][0] = 0;
 		m_hBitmap[i] = NULL;
-		m_BmOffsets[i] = 0;
 	}
 }
 
@@ -75,11 +72,16 @@ bool SgImgLib::OpenBitmapOffset(LPCSTR szFilename, sg_uint32 nOffset, sg_uint32 
 {
 	if ((nBitmap < 1) || (nBitmap > MAX_BITMAPS))return false;
 
+	if (nBitmap > m_SourceImageData.size())
+	{
+		return false;
+	}
+
 	if (m_DontLoadBms)
 	{
 		m_hBitmap[nBitmap - 1] = 0;
-		m_BmOffsets[nBitmap - 1] = nOffset;
-		strcpy_s(m_szBitmapFilenameA[nBitmap - 1], countof(m_szBitmapFilenameA[nBitmap - 1]), szFilename);
+		m_SourceImageData[nBitmap - 1].Offset = nOffset;
+		m_SourceImageData[nBitmap - 1].Filename = SgFunc_ToWString(szFilename);
 	}
 	else
 	{
@@ -87,27 +89,47 @@ bool SgImgLib::OpenBitmapOffset(LPCSTR szFilename, sg_uint32 nOffset, sg_uint32 
 		m_hBitmap[nBitmap - 1] = LoadBitmapOffset(szFilename, nOffset, FileSize);
 
 		if (m_hBitmap[nBitmap - 1] == NULL)return false;
-		m_BmOffsets[nBitmap - 1] = nOffset;
-		strcpy_s(m_szBitmapFilenameA[nBitmap - 1], countof(m_szBitmapFilenameA[nBitmap - 1]), szFilename);
+		m_SourceImageData[nBitmap - 1].Offset = nOffset;
+		m_SourceImageData[nBitmap - 1].Filename = SgFunc_ToWString(szFilename);
 	}
 	return true;
 }
 
 void SgImgLib::CloseMainBitmaps()
 {
-	for (int i = 0; i < m_nNumBitmaps; i++)
+	for (auto& Item : m_hBitmap)
 	{
-		if (m_hBitmap[i])DeleteObject(m_hBitmap[i]);
-		m_hBitmap[i] = NULL;
+		if (Item)
+		{
+			DeleteObject(Item);
+		}
+		Item = NULL;
 	}
-	m_nNumBitmaps = 0;
 }
 
+
+void SgImgLib::OpenMainBitmaps()
+{
+	CloseMainBitmaps();
+
+	if (m_DontLoadBms)
+	{
+		return;
+	}
+
+	for (std::size_t i = 0; i < m_SourceImageData.size(); i++)
+	{
+		if (i < countof(m_hBitmap))
+		{
+			m_hBitmap[i] = LoadBitmapOffset(SgFunc_ToMBString(m_SourceImageData[i].Filename).c_str(), 0, 0);
+		}
+	}
+}
 
 void SgImgLib::ClearDataBase()
 {
 	m_ImageData.resize(0);
-	m_nNumBitmaps = 0;
+	m_SourceImageData.resize(0);
 	CloseMainBitmaps();
 }
 
@@ -157,7 +179,7 @@ void SgImgLib::CopyImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, BOOL b
 
 sg_uint16 SgImgLib::GetNumBitmaps()
 {
-	return m_nNumBitmaps;
+	return static_cast<sg_uint16>(m_SourceImageData.size());
 }
 
 void SgImgLib::StretchImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, int nWidth, int nHeight, BOOL bTransp)
@@ -205,11 +227,13 @@ void SgImgLib::StretchImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, int
 
 void SgImgLib::GetBitmapName(char* Out, size_t OutSize, sg_uint16 nBitmap)
 {
-	if ((nBitmap < 1) || (nBitmap > m_nNumBitmaps)) {
+	if ((nBitmap < 1) || (nBitmap > m_SourceImageData.size())) {
 		strcpy_s(Out, OutSize, "");
 	}
-	else {
-		strcpy_s(Out, OutSize, m_szBitmapFilenameA[nBitmap - 1]);
+	else
+	{
+		std::string Temp = SgFunc_ToMBString(m_SourceImageData[nBitmap - 1].Filename);
+		strcpy_s(Out, OutSize, Temp.c_str());
 	}
 }
 
@@ -290,10 +314,11 @@ bool SgImgLibArchive::LoadArchive(LPCSTR szFilename)
 
 	CloseHandle(hFile);
 
+	m_SourceImageData.resize(imHeader.nNumBMs);
+
 	for (i = 1; i <= imHeader.nNumBMs; i++)
 	{
 		OpenBitmapOffset(szFilename, bmData[i - 1].dwOffset, bmData[i - 1].dwSize, i);
-		m_nNumBitmaps++;
 	}
 
 	return true;
@@ -301,13 +326,5 @@ bool SgImgLibArchive::LoadArchive(LPCSTR szFilename)
 
 void SgImgLibArchive::CloseArchive()
 {
-	for (int i = 0; i < m_nNumBitmaps; i++)
-	{
-		if (m_hBitmap[i]) DeleteObject(m_hBitmap[i]);
-		m_hBitmap[i] = NULL;
-		m_BmOffsets[i] = 0;
-		m_szBitmapFilenameA[i][0] = 0;
-	}
-	m_ImageData.resize(0);
-	m_nNumBitmaps = 0;
+	ClearDataBase();
 }
