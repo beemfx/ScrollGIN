@@ -14,29 +14,28 @@
 CConstantArchive::CConstantArchive(LPCTSTR szBitmapName, int nNumEntries, WORD nWidth, WORD nHeight)
 : SgImgLibArchive( false )
 {
-	m_nNumImages=nNumEntries;
-	m_pImageData=new IMAGEDATA[nNumEntries];
+	m_ImageData.resize(nNumEntries);
 	m_hBitmap[0]=NULL;
 	m_nSelectedEntry=1;
 
 	m_hBitmap[0]=(HBITMAP)LoadImage(GetModuleHandle(NULL), szBitmapName, IMAGE_BITMAP, 0, 0, LR_DEFAULTCOLOR);
 	for(int i=0; i<10; i++){
-		m_pImageData[i].nHeight=nHeight;
-		m_pImageData[i].nWidth=nWidth;
-		m_pImageData[i].nX=i*nWidth;
-		m_pImageData[i].nY=0;
+		m_ImageData[i].nHeight=nHeight;
+		m_ImageData[i].nWidth=nWidth;
+		m_ImageData[i].nX=i*nWidth;
+		m_ImageData[i].nY=0;
 	}
 	for(int i=0; i<9; i++){
-		m_pImageData[i+10].nHeight=nHeight;
-		m_pImageData[i+10].nWidth=nWidth;
-		m_pImageData[i+10].nX=i*nWidth;
-		m_pImageData[i+10].nY=nHeight;
+		m_ImageData[i+10].nHeight=nHeight;
+		m_ImageData[i+10].nWidth=nWidth;
+		m_ImageData[i+10].nX=i*nWidth;
+		m_ImageData[i+10].nY=nHeight;
 	}
 	for(int i=0; i<9; i++){
-		m_pImageData[i+10+9].nHeight=nHeight;
-		m_pImageData[i+10+9].nWidth=nWidth;
-		m_pImageData[i+10+9].nX=i*nWidth;
-		m_pImageData[i+10+9].nY=nHeight*2;
+		m_ImageData[i+10+9].nHeight=nHeight;
+		m_ImageData[i+10+9].nWidth=nWidth;
+		m_ImageData[i+10+9].nX=i*nWidth;
+		m_ImageData[i+10+9].nY=nHeight*2;
 	}
 }
 
@@ -47,7 +46,7 @@ CConstantArchive::~CConstantArchive(){
 HRESULT CConstantArchive::StretchImageToDC(HDC hdcDest, DWORD nEntry, int x, int y, int nWidth, int nHeight, BOOL bTransp){
 	HDC hdcMainBitmap=NULL;
 	
-	if((nEntry<1)||(nEntry>m_nNumImages))return S_FALSE;
+	if((nEntry<1)||(nEntry>m_ImageData.size()))return S_FALSE;
 
 	hdcMainBitmap=CreateCompatibleDC(hdcDest);
 	SelectObject(hdcMainBitmap, m_hBitmap[0]);
@@ -55,10 +54,10 @@ HRESULT CConstantArchive::StretchImageToDC(HDC hdcDest, DWORD nEntry, int x, int
 	
 	if(!bTransp){
 		StretchBlt(hdcDest, x, y, nWidth, nHeight, hdcMainBitmap, 
-					m_pImageData[nEntry-1].nX,
-					m_pImageData[nEntry-1].nY, 
-					m_pImageData[nEntry-1].nWidth, 
-					m_pImageData[nEntry-1].nHeight, SRCCOPY);
+					m_ImageData[nEntry-1].nX,
+					m_ImageData[nEntry-1].nY, 
+					m_ImageData[nEntry-1].nWidth, 
+					m_ImageData[nEntry-1].nHeight, SRCCOPY);
 	
 	}else{		
 		#ifdef TRANSPARENCY
@@ -70,10 +69,10 @@ HRESULT CConstantArchive::StretchImageToDC(HDC hdcDest, DWORD nEntry, int x, int
 		bf.SourceConstantAlpha=100;
 
 		AlphaBlend(hdcDest, x, y, nWidth, nHeight, hdcMainBitmap,
-						m_pImageData[nEntry-1].nX,
-						m_pImageData[nEntry-1].nY,
-						m_pImageData[nEntry-1].nWidth,
-						m_pImageData[nEntry-1].nHeight,
+						m_ImageData[nEntry-1].nX,
+						m_ImageData[nEntry-1].nY,
+						m_ImageData[nEntry-1].nWidth,
+						m_ImageData[nEntry-1].nHeight,
 						bf);
 		
 		#else //TRANSPAREnCY
@@ -85,10 +84,10 @@ HRESULT CConstantArchive::StretchImageToDC(HDC hdcDest, DWORD nEntry, int x, int
 			nWidth,
 			nHeight,
 			hdcMainBitmap,
-			m_pImageData[nEntry-1].nX,
-			m_pImageData[nEntry-1].nY,
-			m_pImageData[nEntry-1].nWidth,
-			m_pImageData[nEntry-1].nHeight,
+			m_ImageData[nEntry-1].nX,
+			m_ImageData[nEntry-1].nY,
+			m_ImageData[nEntry-1].nWidth,
+			m_ImageData[nEntry-1].nHeight,
 			RGB(255, 255, 255));
 
 		#endif //TRANSPARENCY
