@@ -22,6 +22,7 @@
     <ClInclude Include="..\..\Shared\img_lib\img_private.h" />
     <ClInclude Include="..\..\Shared\SgCommon.h" />
     <ClInclude Include="..\..\Tools\ImageEdit\Code\DiskDlg.h" />
+    <ClInclude Include="..\..\Tools\ImageEdit\Code\SgImgLibEdit.h" />
     <ClInclude Include="..\..\Tools\ImageEdit\Res\resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -34,6 +35,7 @@
     <ClCompile Include="..\..\Shared\img_lib\img_tga.c" />
     <ClCompile Include="..\..\Tools\ImageEdit\Code\DiskDlg.c" />
     <ClCompile Include="..\..\Tools\ImageEdit\Code\Main.cpp" />
+    <ClCompile Include="..\..\Tools\ImageEdit\Code\SgImgLibEdit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\Tools\ImageEdit\Res\icon1.ico" />
