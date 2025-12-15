@@ -3,6 +3,7 @@
 #pragma once
 
 #include "ImageLib/ImgLib.h"
+#include <Windows.h>
 
 class SgWinDCImgLib : public SgImgLibArchive
 {
@@ -17,7 +18,7 @@ public:
 		CloseMainBitmaps();
 	}
 
-	bool LoadArchive(LPCSTR szFilename);
+	bool LoadArchive(const char* szFilename);
 
 	void StretchImageToDC(HDC hdcDest, sg_uint32 nEntry, int x, int y, int nWidth, int nHeight, BOOL bTransp);
 

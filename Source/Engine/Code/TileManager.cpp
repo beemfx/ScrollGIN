@@ -37,11 +37,10 @@ bool SgTileManager::LoadLib(const char* lpLibraryFilename, SgMap *map){
 	if(!(Res))return false;
 	
 	
-	IMAGEDATA id;
-	ZeroMemory(&id, sizeof(IMAGEDATA));
+	IMAGEDATA id = { };
 
 	int i=0;
-	DWORD j=0;
+	std::uint32_t j=0;
 	int Start = m_iCurrentReference+1;
 	for(i=Start, j=1; j<=ILibrary.GetNumEntries(); i++, j++){
 		if( (i>0) && (i<MAX_TILESURFACES)){

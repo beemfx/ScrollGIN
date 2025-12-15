@@ -3,6 +3,7 @@
 #pragma once
 
 #include "ImageLib/ImgLib.h"
+#include <Windows.h>
 
 class SgImgLibEdit : public SgImgLib
 {

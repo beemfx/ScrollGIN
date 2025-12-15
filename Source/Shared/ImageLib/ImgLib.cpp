@@ -59,12 +59,12 @@ sg_uint32 SgImgLib::GetNumEntries()
 }
 
 
-bool SgImgLib::OpenBitmap(LPSTR szFilename, sg_uint16 nBitmap)
+bool SgImgLib::OpenBitmap(const char* szFilename, sg_uint16 nBitmap)
 {
 	return OpenBitmapOffset(szFilename, 0, 0, nBitmap);
 }
 
-bool SgImgLib::OpenBitmapOffset(LPCSTR szFilename, sg_uint32 nOffset, sg_uint32 FileSize, sg_uint16 nBitmap)
+bool SgImgLib::OpenBitmapOffset(const char* szFilename, sg_uint32 nOffset, sg_uint32 FileSize, sg_uint16 nBitmap)
 {
 	if ((nBitmap < 1) || (nBitmap > MAX_BITMAPS))return false;
 
@@ -126,7 +126,7 @@ void SgImgLibArchive::SetSelectedEntry(sg_uint32 nEntry)
 	m_nSelectedEntry = nEntry;
 }
 
-bool SgImgLibArchive::LoadArchive(LPCSTR szFilename)
+bool SgImgLibArchive::LoadArchive(const char* szFilename)
 {
 	IMGLIBHEADER lbHeader;
 	IMGHEADER imHeader;

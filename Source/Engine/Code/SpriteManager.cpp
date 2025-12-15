@@ -38,10 +38,9 @@ void SgSpriteManager::InsertSprites(int nSprite, const char* szFilename)
 	bool Res = ILibrary.LoadArchive(szFilename);
 	if(!(Res))return;
 	//The following algorithm loads all sprites from library
-	DWORD i=0, j=0, nFrames=0;
+	std::uint32_t i=0, j=0, nFrames=0;
 	IMAGEDATA id;
-	char szImageName[IMAGE_NAME_LENGTH];
-	ZeroMemory(&id, sizeof(IMAGEDATA));
+	char szImageName[IMAGE_NAME_LENGTH] = { };
 
 	//loop for each of the entries
 	for(i=1; i<=ILibrary.GetNumEntries(); i++){

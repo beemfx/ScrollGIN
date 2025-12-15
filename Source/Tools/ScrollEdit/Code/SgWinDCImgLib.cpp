@@ -4,7 +4,7 @@
 #include "ImageLib/bitmapex.h"
 #include "SgLib/SgFuncs.h"
 
-bool SgWinDCImgLib::LoadArchive(LPCSTR szFilename)
+bool SgWinDCImgLib::LoadArchive(const char* szFilename)
 {
 	if (SgImgLibArchive::LoadArchive(szFilename))
 	{

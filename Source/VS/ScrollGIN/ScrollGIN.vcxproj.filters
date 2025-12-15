@@ -102,9 +102,6 @@
     <ClCompile Include="..\..\Engine\Code\SgEngine.cpp">
       <Filter>Engine\Code</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Shared\ImageLib\BitmapEx.cpp">
-      <Filter>Shared\ImageLib</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Shared\ImageLib\SgImage.cpp">
       <Filter>Shared\ImageLib</Filter>
     </ClCompile>
@@ -169,9 +166,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Shared\img_lib\img_private.h">
       <Filter>Shared\img_lib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Shared\ImageLib\bitmapex.h">
-      <Filter>Shared\ImageLib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Shared\ImageLib\ImgLib.h">
       <Filter>Shared\ImageLib</Filter>

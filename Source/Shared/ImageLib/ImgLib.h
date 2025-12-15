@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include <windows.h>
-
 static const int IMGLIB_MAX_PATH = 260;
 static const int MAX_BITMAPS = 10;
 static const int IMAGE_NAME_LENGTH = 15;
@@ -88,8 +86,8 @@ public:
 	sg_uint16 GetNumFrames(sg_uint32 nEntry);
 	bool GetImageData(sg_uint32 nEntry, IMAGEDATA* imgData);
 protected:
-	bool OpenBitmap(LPSTR szFilename, sg_uint16 nBitmap);
-	bool OpenBitmapOffset(LPCSTR szFilename, sg_uint32 nOffset, sg_uint32 FileSize, sg_uint16 nBitmap);
+	bool OpenBitmap(const char* szFilename, sg_uint16 nBitmap);
+	bool OpenBitmapOffset(const char* szFilename, sg_uint32 nOffset, sg_uint32 FileSize, sg_uint16 nBitmap);
 };
 
 class SgImgLibArchive : public SgImgLib
@@ -100,7 +98,7 @@ public:
 	SgImgLibArchive();
 	~SgImgLibArchive();
 
-	bool LoadArchive(LPCSTR szFilename);
+	bool LoadArchive(const char* szFilename);
 	sg_uint32 GetSelectedEntry();
 	void SetSelectedEntry(sg_uint32 nEntry);
 	void CloseArchive();
